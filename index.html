@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STUDENTCONT.IA — Sistema Contable & Fiscal NIIF | Multi-Empresa & Aprendizaje</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="styles.css?v=20261110_22" />
+</head>
+<body>
+
+  <!-- =====================================================================
+       PANTALLA DE BIENVENIDA E INICIO DE SESIÓN AL ABRIR EL ENLACE
+       ===================================================================== -->
+  <div class="welcome-auth-overlay hidden" id="welcomeAuthOverlay">
+    <div class="welcome-auth-container">
+      <!-- Lado Izquierdo: Bienvenida Didáctica -->
+      <div class="welcome-hero-side">
+        <div>
+          <div style="background:#fff; padding:10px 14px; border-radius:10px; display:inline-block; margin-bottom:20px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 120" width="240" height="44">
+              <rect x="6" y="10" width="100" height="100" rx="22" fill="#0B192C" stroke="#D4AF37" stroke-width="4"/>
+              <rect x="26" y="64" width="12" height="26" rx="3" fill="#D4AF37"/>
+              <rect x="44" y="48" width="12" height="42" rx="3" fill="#F3E5AB"/>
+              <rect x="62" y="30" width="12" height="60" rx="3" fill="#10B981"/>
+              <text x="122" y="62" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="36" fill="#0B192C">STUDENTCONT.IA</text>
+              <text x="124" y="92" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="14" fill="#047857" letter-spacing="1.2">SISTEMA CONTABLE &amp; FISCAL NIIF</text>
+            </svg>
+          </div>
+          <h2 style="font-size:1.45rem; font-weight:800; color:#fff; margin-bottom:10px; line-height:1.25;">
+            Aprende y Automatiza Contabilidad NIIF en Tiempo Real
+          </h2>
+          <p style="font-size:0.84rem; color:#CBD5E1; margin-bottom:20px; line-height:1.55;">
+            Bienvenido(a) a la plataforma interactiva donde cada estudiante aprende la dinámica contable paso a paso, liquida impuestos según el régimen tributario y genera sus Estados Financieros y libros Excel al instante.
+          </p>
+
+          <div class="welcome-feature-item">
+            <div class="welcome-feature-icon">🎓</div>
+            <div><strong>Guía Didáctica en Vivo:</strong> Mientras realizas una factura o asiento, el sistema te explica por qué aplica cada retención y por qué cada cuenta va al <em>Debe</em> o al <em>Haber</em>.</div>
+          </div>
+          <div class="welcome-feature-item">
+            <div class="welcome-feature-icon">🤖</div>
+            <div><strong>Tutor IA Contable Entrenable:</strong> Pregúntale cualquier duda de PUC, NIIF, nómina o impuestos y aliméntala con tus propios apuntes de clase.</div>
+          </div>
+          <div class="welcome-feature-item">
+            <div class="welcome-feature-icon">⚖️</div>
+            <div><strong>Reformas y Leyes de Colombia:</strong> Consulta las últimas reformas tributarias, pensionales, laborales y de facturación electrónica DIAN.</div>
+          </div>
+          <div class="welcome-feature-item">
+            <div class="welcome-feature-icon">🏢</div>
+            <div><strong>Perfiles y Empresas Independientes:</strong> Crea tu perfil propio para practicar en tu taller contable sin alterar los datos de otros compañeros.</div>
+          </div>
+        </div>
+
+        <div style="font-size:0.75rem; color:#94A3B8; border-top:1px solid rgba(255,255,255,0.12); padding-top:12px;">
+          🔒 <strong>Perfiles 100% Privados:</strong> Cada estudiante ingresa con su usuario y contraseña privada. Para acceder a una empresa específica debes conocer y digitar su NIT.
+        </div>
+      </div>
+
+      <!-- Lado Derecho: Inicio de Sesión Privado o Creación de Nuevo Perfil con Contraseña -->
+      <div class="welcome-form-side">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+          <h3 style="font-size:1.12rem; font-weight:800; color:var(--brand-primary); margin:0;">🔐 Acceso Privado con Usuario y Contraseña</h3>
+          <span class="status-pill status-paid">Perfiles Privados</span>
+        </div>
+
+        <!-- 1. INICIAR SESIÓN PRIVADA -->
+        <div style="background:var(--bg-subtle); border:1px solid var(--border-strong); border-radius:10px; padding:14px 16px; margin-bottom:16px;">
+          <div style="font-size:0.78rem; font-weight:800; color:var(--brand-primary); margin-bottom:10px;">
+            1. 🔑 ¿YA TIENES PERFIL? INICIA SESIÓN CON TU NOMBRE/USUARIO Y CONTRASEÑA:
+          </div>
+          <div class="form-grid" style="margin-bottom:10px;">
+            <div class="form-group">
+              <label>Nombre Completo, Usuario o Correo</label>
+              <input type="text" id="loginUserIdent" class="form-control" placeholder="Escribe tu nombre o usuario..." />
+            </div>
+            <div class="form-group">
+              <label>Contraseña Privada</label>
+              <input type="password" id="loginUserPin" class="form-control" placeholder="Escribe tu contraseña..." onkeydown="if(event.key==='Enter') loginWithPrivateCredentials()" />
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+            <span id="loginErrorMsg" style="font-size:0.75rem; color:var(--brand-danger); font-weight:700;"></span>
+            <button class="btn btn-primary" onclick="loginWithPrivateCredentials()">
+              🔐 Iniciar Sesión en Mi Perfil Privado
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. CREAR NUEVO PERFIL PRIVADO DESDE CERO -->
+        <div style="border-top:2px solid var(--border-light); padding-top:14px;">
+          <div style="font-size:0.8rem; font-weight:800; color:var(--brand-primary); margin-bottom:10px;">
+            2. 🎓 ¿ERES NUEVO? CREA TU PERFIL PRIVADO (INICIA TALLER EN $0 O INGRESA NIT DE EMPRESA):
+          </div>
+          <div class="form-grid" style="margin-bottom:10px;">
+            <div class="form-group">
+              <label>Tu Nombre Completo (Obligatorio)</label>
+              <input type="text" id="welcomeStuNombre" class="form-control" placeholder="Ej: Camilo Andrés Pérez" />
+            </div>
+            <div class="form-group">
+              <label>Tu Contraseña Privada (Obligatoria)</label>
+              <input type="password" id="welcomeStuPin" class="form-control" placeholder="Crea tu contraseña privada..." />
+            </div>
+            <div class="form-group">
+              <label>Correo o Usuario</label>
+              <input type="text" id="welcomeStuCorreo" class="form-control" placeholder="Ej: camilo.perez@correo.edu.co" />
+            </div>
+            <div class="form-group">
+              <label>Universidad / Ficha / Semestre</label>
+              <input type="text" id="welcomeStuPrograma" class="form-control" placeholder="Ej: Contaduría Pública - Semestre V" />
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin-bottom:12px;">
+            <div class="form-group">
+              <label>Nombre de tu Taller Práctico Propio (Inicia en $0)</label>
+              <input type="text" id="welcomeStuEmpresa" class="form-control" placeholder="Ej: MI TALLER CONTABLE S.A.S (En $0)" />
+            </div>
+            <div class="form-group">
+              <label>🏢 NIT de Empresa a Consultar (Opcional)</label>
+              <input type="text" id="welcomeStuNitEmpresa" class="form-control" placeholder="Déjalo vacío para iniciar en $0, o pon el NIT..." />
+            </div>
+          </div>
+          <div style="font-size:0.73rem; color:var(--text-secondary); margin-bottom:10px;">
+            💡 <strong>Nota:</strong> Si dejas el NIT vacío, tu perfil iniciará como <strong>Taller Práctico 100% en $0</strong> (los 12 meses de Enero a Diciembre en $0 sin datos de otra empresa). Si deseas acceder a una empresa específica como ELECTROVIVIENDA, escribe su NIT (o conéctala luego desde el panel).
+          </div>
+
+          <button class="btn btn-gold" style="width:100%; justify-content:center; padding:11px; font-size:0.86rem;" onclick="registerFromWelcomeScreen()">
+            🚀 Crear Mi Perfil Privado e Ingresar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       BARRA LATERAL IZQUIERDA (ORDENADA, PULCRA Y EJECUTIVA)
+       ===================================================================== -->
+  <aside class="app-sidebar">
+    <div class="sidebar-brand" onclick="openBrandModal()" title="Personalizar Logo y Marca de STUDENTCONT.IA">
+      <div class="sidebar-logo-box" id="sidebarLogoContainer">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 120" width="100%" height="44" id="brandLogoSvgInline">
+          <rect x="6" y="10" width="100" height="100" rx="22" fill="#0B192C" stroke="#D4AF37" stroke-width="4"/>
+          <rect x="26" y="64" width="12" height="26" rx="3" fill="#D4AF37"/>
+          <rect x="44" y="48" width="12" height="42" rx="3" fill="#F3E5AB"/>
+          <rect x="62" y="30" width="12" height="60" rx="3" fill="#10B981"/>
+          <text x="122" y="62" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="36" fill="#0B192C">STUDENTCONT.IA</text>
+          <text x="124" y="92" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="14" fill="#047857" letter-spacing="1.2">SISTEMA CONTABLE &amp; FISCAL NIIF</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Tarjeta de Empresa Activa + Botón Cambiar / Modo Aprendizaje -->
+    <div class="sidebar-company-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+        <span style="font-size:0.65rem; font-weight:800; color:#34D399; letter-spacing:0.6px;" id="sidebarWsTypeBadge">EMPRESA ACTIVA</span>
+        <button onclick="openWorkspaceModal()" style="background:rgba(212,175,55,0.22); border:1px solid var(--brand-gold); color:var(--brand-gold); font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:4px; cursor:pointer;">
+          Cambiar / + Nueva
+        </button>
+      </div>
+      <h3 id="sidebarCompanyName">ELECTROVIVIENDA S.A.S</h3>
+      <p id="sidebarCompanyNit">NIT: 901.765.438-3 • Dígito 8</p>
+      <p id="sidebarCompanyRegimen">RRI • Agente Retenedor y Autorretenedor</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-group-label">Control Principal</div>
+      <button class="nav-item active" data-target="dashboard" onclick="switchSection('dashboard')">
+        <span class="nav-item-left"><span>🏛️</span><span>Inicio & Empresa</span></span>
+      </button>
+
+      <div class="nav-group-label">Documentos & Operaciones</div>
+      <button class="nav-item" data-target="facturas" onclick="switchSection('facturas')">
+        <span class="nav-item-left"><span>🧾</span><span>Facturas Realizadas</span></span>
+        <span class="nav-badge" id="navBadgeFacturas">12</span>
+      </button>
+      <button class="nav-item" data-target="comprobantes" onclick="switchSection('comprobantes')">
+        <span class="nav-item-left"><span>📑</span><span>Comprobantes del Mes</span></span>
+        <span class="nav-badge" id="navBadgeComprobantes">28</span>
+      </button>
+      <button class="nav-item" data-target="facturacion" onclick="switchSection('facturacion')">
+        <span class="nav-item-left"><span>⚡</span><span>Emitir Factura / Registro</span></span>
+        <span class="nav-badge">Auto</span>
+      </button>
+      <button class="nav-item" data-target="auxiliares" onclick="switchSection('auxiliares')">
+        <span class="nav-item-left"><span>📒</span><span>Libros Auxiliares en Vivo</span></span>
+        <span class="nav-badge">Vivo</span>
+      </button>
+      <button class="nav-item" data-target="kardex" onclick="switchSection('kardex')">
+        <span class="nav-item-left"><span>📦</span><span>Kardex de Productos</span></span>
+        <span class="nav-badge" id="navBadgeKardex">4</span>
+      </button>
+
+      <div class="nav-group-label">Informes & Fiscal</div>
+      <button class="nav-item" data-target="estados" onclick="switchSection('estados')">
+        <span class="nav-item-left"><span>📑</span><span>Estados Financieros NIIF</span></span>
+      </button>
+      <button class="nav-item" data-target="analisis" onclick="openAnalisisFinancieroSection()" style="background:rgba(212,175,55,0.12); border-left:3px solid #D4AF37;">
+        <span class="nav-item-left"><span style="font-size:1.1rem;">📊</span><span style="font-weight:800; color:var(--brand-gold);">Análisis & Gráficas NIIF</span></span>
+        <span class="nav-badge" style="background:#D4AF37; color:#0B192C; font-weight:900;">NUEVO</span>
+      </button>
+      <button class="nav-item" data-target="tributaria" onclick="switchSection('tributaria')">
+        <span class="nav-item-left"><span>⚖️</span><span>Declaraciones & Calendario</span></span>
+        <span class="nav-badge" id="navBadgeAlertas">4</span>
+      </button>
+
+      <div class="nav-group-label">Academia & IA Contable</div>
+      <button class="nav-item" data-target="ia" onclick="switchSection('ia')">
+        <span class="nav-item-left"><span>🤖</span><span>Tutor IA Contable</span></span>
+        <span class="nav-badge" style="background:#10B981; color:#fff;">IA</span>
+      </button>
+      <button class="nav-item" data-target="reformas" onclick="switchSection('reformas')">
+        <span class="nav-item-left"><span>📰</span><span>Reformas & Leyes Col.</span></span>
+        <span class="nav-badge">2026</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+        <span><strong>🎓 Elaborado por:</strong> <span id="sidebarAuthorName" style="color:#fff;">Gina Villamizar</span></span>
+      </div>
+      <div id="sidebarProfileRole">Contadora Titular • NIIF Grupo 2</div>
+      <div style="margin-top:4px; color:var(--brand-gold);">✓ Base Local & Excel en Vivo</div>
+    </div>
+  </aside>
+
+  <!-- =====================================================================
+       ÁREA PRINCIPAL DE TRABAJO
+       ===================================================================== -->
+  <div class="app-main">
+
+    <!-- BARRA SUPERIOR EJECUTIVA Y ORDENADA -->
+    <header class="app-topbar">
+      <div class="topbar-title-area">
+        <div class="topbar-company-badge">
+          <span class="live-dot-pulse"></span>
+          <span id="topbarCompanyBadge">ELECTROVIVIENDA S.A.S</span>
+          <span class="badge-separator">•</span>
+          <span id="topbarCompanyNitBadge">NIT 901.765.438-3</span>
+        </div>
+        <h1 id="topbarSectionTitle">Inicio & Resumen Ejecutivo</h1>
+        <p id="topbarSectionSubtitle">Control contable automatizado en tiempo real sincronizado con la carpeta CONTABILIDAD</p>
+      </div>
+
+      <div class="topbar-center-control">
+        <div class="period-control-card">
+          <button class="period-nav-chevron" onclick="navGlobalPeriod(-1)" title="Mes Anterior (◀)">‹</button>
+          <div class="period-active-display" title="Mes Activo del Sistema Contable">
+            <span class="period-cal-icon">📅</span>
+            <span id="topbarPeriodDisplay">ABRIL 2026</span>
+          </div>
+          <button class="period-nav-chevron" onclick="navGlobalPeriod(1)" title="Mes Siguiente (▶)">›</button>
+        </div>
+        <div class="period-pills-rail">
+          <button class="period-pill" data-period="ENERO" onclick="setGlobalPeriod('ENERO')" title="Enero 2026">ENE</button>
+          <button class="period-pill" data-period="FEBRERO" onclick="setGlobalPeriod('FEBRERO')" title="Febrero 2026">FEB</button>
+          <button class="period-pill" data-period="MARZO" onclick="setGlobalPeriod('MARZO')" title="Marzo 2026">MAR</button>
+          <button class="period-pill active" data-period="ABRIL" onclick="setGlobalPeriod('ABRIL')" title="Abril 2026">ABR</button>
+          <button class="period-pill" data-period="MAYO" onclick="setGlobalPeriod('MAYO')" title="Mayo 2026">MAY</button>
+          <button class="period-pill" data-period="JUNIO" onclick="setGlobalPeriod('JUNIO')" title="Junio 2026">JUN</button>
+          <button class="period-pill" data-period="JULIO" onclick="setGlobalPeriod('JULIO')" title="Julio 2026">JUL</button>
+          <button class="period-pill" data-period="AGOSTO" onclick="setGlobalPeriod('AGOSTO')" title="Agosto 2026">AGO</button>
+          <button class="period-pill" data-period="SEPTIEMBRE" onclick="setGlobalPeriod('SEPTIEMBRE')" title="Septiembre 2026">SEP</button>
+          <button class="period-pill" data-period="OCTUBRE" onclick="setGlobalPeriod('OCTUBRE')" title="Octubre 2026">OCT</button>
+          <button class="period-pill" data-period="NOVIEMBRE" onclick="setGlobalPeriod('NOVIEMBRE')" title="Noviembre 2026">NOV</button>
+          <button class="period-pill" data-period="DICIEMBRE" onclick="setGlobalPeriod('DICIEMBRE')" title="Diciembre 2026">DIC</button>
+        </div>
+      </div>
+
+      <div class="topbar-actions-area">
+        <div class="topbar-primary-buttons">
+          <button class="btn btn-gold btn-sm" onclick="downloadActiveMonthExcel()" title="Descargar Libro de Excel del Mes Activo">
+            📥 Excel <span id="btnActiveMonthLabel">ABRIL</span>
+          </button>
+          <button class="btn btn-primary btn-sm btn-pdf-highlight" onclick="exportSmartContextualPDF()" title="Descargar en Archivo PDF e Imprimir">
+            📄 Descargar PDF
+          </button>
+        </div>
+
+        <div class="topbar-utility-buttons">
+          <button class="topbar-util-btn" onclick="openWorkspaceModal()" title="Cambiar de Empresa o iniciar Taller Práctico en $0">
+            <span>🏢</span> <span class="util-text">Empresas</span>
+          </button>
+          <button class="topbar-util-btn" onclick="openAlertsModal()" title="Alertas Tributarias y Vencimientos">
+            <span>🔔</span> <span class="util-badge" id="notifBadgeCount">4</span>
+          </button>
+          <button class="topbar-util-btn" onclick="openBrandModal()" title="Personalizar Logo y Marca de la Empresa">
+            <span>✨</span> <span class="util-text">Logo</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENEDOR CENTRAL CON SCROLL -->
+    <div class="workspace-scroll">
+      <div class="workspace-inner">
+
+        <!-- CÁPSULA / GUÍA DIDÁCTICA DEL ESTUDIANTE PARA CADA SECCIÓN -->
+        <div id="activeSectionDidacticBanner"></div>
+
+        <!-- ===============================================================
+             1. SECCIÓN: INICIO & EMPRESA
+             =============================================================== -->
+        <section id="sec-dashboard" class="section-view active">
+          <div class="kpi-row" id="dashboardKpiGrid"></div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">🏢 Ficha Societaria y Tributaria de la Empresa Activa</div>
+                <button class="btn btn-outline btn-sm" onclick="openWorkspaceModal()">🔄 Cambiar / Crear Empresa</button>
+              </div>
+              <div class="card-body" id="companyProfileBody"></div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">📂 Libros Mensuales Excel y Documentos de Control</div>
+                <span class="status-pill status-paid">Sincronización Activa</span>
+              </div>
+              <div class="card-body">
+                <div class="table-wrap">
+                  <table class="acct-table">
+                    <thead>
+                      <tr>
+                        <th>Libro / Documento</th>
+                        <th>Archivo</th>
+                        <th>Comprobantes</th>
+                        <th>Hojas</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody id="excelFilesTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">📈 Resumen Mensual de Movimientos Contables (Enero a Abril 2026)</div>
+              <div style="display:flex; gap:8px;">
+                <button class="btn btn-primary btn-sm" onclick="switchSection('facturas')">🧾 Ver Facturas Realizadas</button>
+                <button class="btn btn-gold btn-sm" onclick="switchSection('facturacion')">+ Emitir Nueva Factura</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-wrap">
+                <table class="acct-table">
+                  <thead>
+                    <tr>
+                      <th>Mes Contable</th>
+                      <th>Comprobantes del Mes</th>
+                      <th>Informes y Estados Incluidos</th>
+                      <th class="num-col">Total Débitos</th>
+                      <th class="num-col">Total Créditos</th>
+                      <th>Estado</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody id="monthlyComparisonBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===============================================================
+             2. SECCIÓN: FACTURAS REALIZADAS Y VISTA PREVIA OFICIAL
+             =============================================================== -->
+        <section id="sec-facturas" class="section-view">
+          <div class="kpi-row" id="invoicesKpiRow"></div>
+
+          <div class="filter-bar" style="flex-direction:column; align-items:stretch; gap:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+              <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                <span style="font-size:0.75rem; font-weight:800; color:var(--brand-primary);">📅 MES (12 MESES):</span>
+                <div class="filter-tabs" id="invoiceMonthPills">
+                  <button class="filter-chip active" data-invmonth="ALL" onclick="setInvoiceMonthFilter('ALL')">📚 Todos (Ene-Dic)</button>
+                  <button class="filter-chip" data-invmonth="ENERO" onclick="setInvoiceMonthFilter('ENERO')">ENE</button>
+                  <button class="filter-chip" data-invmonth="FEBRERO" onclick="setInvoiceMonthFilter('FEBRERO')">FEB</button>
+                  <button class="filter-chip" data-invmonth="MARZO" onclick="setInvoiceMonthFilter('MARZO')">MAR</button>
+                  <button class="filter-chip" data-invmonth="ABRIL" onclick="setInvoiceMonthFilter('ABRIL')">ABR</button>
+                  <button class="filter-chip" data-invmonth="MAYO" onclick="setInvoiceMonthFilter('MAYO')">MAY</button>
+                  <button class="filter-chip" data-invmonth="JUNIO" onclick="setInvoiceMonthFilter('JUNIO')">JUN</button>
+                  <button class="filter-chip" data-invmonth="JULIO" onclick="setInvoiceMonthFilter('JULIO')">JUL</button>
+                  <button class="filter-chip" data-invmonth="AGOSTO" onclick="setInvoiceMonthFilter('AGOSTO')">AGO</button>
+                  <button class="filter-chip" data-invmonth="SEPTIEMBRE" onclick="setInvoiceMonthFilter('SEPTIEMBRE')">SEP</button>
+                  <button class="filter-chip" data-invmonth="OCTUBRE" onclick="setInvoiceMonthFilter('OCTUBRE')">OCT</button>
+                  <button class="filter-chip" data-invmonth="NOVIEMBRE" onclick="setInvoiceMonthFilter('NOVIEMBRE')">NOV</button>
+                  <button class="filter-chip" data-invmonth="DICIEMBRE" onclick="setInvoiceMonthFilter('DICIEMBRE')">DIC</button>
+                </div>
+              </div>
+
+              <div style="display:flex; gap:8px; align-items:center;">
+                <select id="invoiceMonthFilter" class="form-control" style="padding:5px 10px; font-size:0.78rem; font-weight:700;" onchange="setInvoiceMonthFilter(this.value)">
+                  <option value="ALL">Todos los 12 Meses (Enero - Diciembre)</option>
+                  <option value="ENERO">Enero 2026</option>
+                  <option value="FEBRERO">Febrero 2026</option>
+                  <option value="MARZO">Marzo 2026</option>
+                  <option value="ABRIL">Abril 2026</option>
+                  <option value="MAYO">Mayo 2026</option>
+                  <option value="JUNIO">Junio 2026</option>
+                  <option value="JULIO">Julio 2026</option>
+                  <option value="AGOSTO">Agosto 2026</option>
+                  <option value="SEPTIEMBRE">Septiembre 2026</option>
+                  <option value="OCTUBRE">Octubre 2026</option>
+                  <option value="NOVIEMBRE">Noviembre 2026</option>
+                  <option value="DICIEMBRE">Diciembre 2026</option>
+                </select>
+                <button class="btn btn-gold btn-sm" onclick="switchSection('facturacion')">+ Emitir Nueva Factura</button>
+                <button class="btn btn-primary btn-sm" onclick="exportProfessionalInvoicePDF(false)">📄 Descargar PDF Factura (DIAN)</button>
+                <button class="btn btn-outline btn-sm" onclick="exportProfessionalInvoicePDF(true)">📘 PDF Factura + Asiento</button>
+              </div>
+            </div>
+
+            <div class="filter-tabs" id="invoiceCategoryTabs" style="border-top:1px solid var(--border-light); padding-top:10px;">
+              <button class="filter-chip active" data-invcat="ALL" onclick="setInvoiceCategoryFilter('ALL')">Todas las Facturas y Documentos</button>
+              <button class="filter-chip" data-invcat="VENTA" onclick="setInvoiceCategoryFilter('VENTA')">🟢 Facturas de Venta Emitidas</button>
+              <button class="filter-chip" data-invcat="COMPRA" onclick="setInvoiceCategoryFilter('COMPRA')">🔵 Facturas de Compra / Soportes</button>
+              <button class="filter-chip" data-invcat="DEVOLUCION" onclick="setInvoiceCategoryFilter('DEVOLUCION')">🟠 Notas Crédito / Débito / Ajustes</button>
+            </div>
+          </div>
+
+          <div class="split-viewer">
+            <div class="master-list-card">
+              <div class="master-list-header">
+                <span>FACTURAS DE <span id="invoiceActiveMonthHeaderLbl">TODOS LOS MESES</span></span>
+                <span id="invoiceListCountLabel">19 documentos</span>
+              </div>
+              <div class="master-list-scroll" id="invoicesListContainer"></div>
+            </div>
+
+            <div id="invoicePreviewContainer"></div>
+          </div>
+        </section>
+
+        <!-- ===============================================================
+             3. SECCIÓN: COMPROBANTES DEL MES Y DOCUMENTOS SOPORTE
+                (RESPETANDO NUMERACIÓN EXACTA: COMPROBANTE DIARIO N° 1 AL 47 Y HOJAS 1 A 60)
+             =============================================================== -->
+        <section id="sec-comprobantes" class="section-view">
+          <!-- BARRA DE BÚSQUEDA RÁPIDA POR NUMERACIÓN EXACTA (COMPROBANTE DIARIO N° 1 AL 47 / HOJA N°) -->
+          <div style="background:var(--bg-card); border:1px solid var(--border-strong); border-left:4px solid var(--brand-gold); border-radius:var(--radius-md); padding:12px 16px; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; box-shadow:var(--shadow-xs);">
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+              <span style="font-size:0.78rem; font-weight:800; color:var(--brand-primary);">🔢 IR DIRECTO A NUMERACIÓN OFICIAL:</span>
+              <select id="quickSelectCompDiario" class="form-control" style="min-width:290px; padding:6px 10px; font-size:0.8rem; font-weight:700;" onchange="jumpToComprobanteDiario(this.value)">
+                <option value="">-- Seleccionar Comprobante Diario (N° 1 al N° 47) --</option>
+              </select>
+              <select id="quickSelectHojaExacta" class="form-control" style="min-width:250px; padding:6px 10px; font-size:0.8rem; font-weight:700;" onchange="jumpToHojaExacta(this.value)">
+                <option value="">-- Seleccionar por Hoja Exacta (1 a 60 / AD1..23) --</option>
+              </select>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button class="btn btn-outline btn-sm" id="btnScopeMesActual" onclick="setVoucherScope('MONTH')" style="border-color:var(--brand-primary);">
+                📅 Solo Mes Activo (<span id="compScopeMonthLbl">ABRIL</span>)
+              </button>
+              <button class="btn btn-primary btn-sm" id="btnScopeTodos" onclick="setVoucherScope('ALL')">
+                📚 Ver Todos (Comprobante Diario 1 al 47)
+              </button>
+            </div>
+          </div>
+
+          <div class="filter-bar">
+            <div>
+              <div style="font-size:0.74rem; font-weight:800; color:var(--text-muted); margin-bottom:6px;">
+                COMPROBANTES (<span id="compActiveMonthBadge" style="color:var(--brand-primary);">ABRIL</span>) POR CATEGORÍA:
+              </div>
+              <div class="filter-tabs" id="voucherCategoryTabs">
+                <button class="filter-chip active" data-vcat="ALL" onclick="setVoucherCategoryFilter('ALL')">Todos</button>
+                <button class="filter-chip" data-vcat="DIARIO" onclick="setVoucherCategoryFilter('DIARIO')">🔢 Por Comprobante Diario (N° 1 al 47)</button>
+                <button class="filter-chip" data-vcat="EGRESO" onclick="setVoucherCategoryFilter('EGRESO')">💸 Comprobantes de Egreso</button>
+                <button class="filter-chip" data-vcat="INGRESO" onclick="setVoucherCategoryFilter('INGRESO')">💰 Comprobantes de Ingreso</button>
+                <button class="filter-chip" data-vcat="FACTURA" onclick="setVoucherCategoryFilter('FACTURA')">🧾 Facturas y Devoluciones</button>
+                <button class="filter-chip" data-vcat="NOMINA" onclick="setVoucherCategoryFilter('NOMINA')">👥 Nómina y Seguridad Social</button>
+                <button class="filter-chip" data-vcat="CONTABLE" onclick="setVoucherCategoryFilter('CONTABLE')">📘 Contabilidad, Ajustes y Cierre</button>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <input type="text" id="searchVoucherInput" class="form-control" style="width:230px; padding:6px 10px; font-size:0.8rem;" placeholder="Ej: Comprobante Diario 1, Hoja 14, tercero..." oninput="renderVouchersList()" />
+              <button class="btn btn-outline btn-sm" onclick="setVoucherViewMode('voucher')">📄 Vista Comprobante</button>
+              <button class="btn btn-outline btn-sm" onclick="setVoucherViewMode('grid')">📊 Hoja Excel Original</button>
+              <button class="btn btn-primary btn-sm" onclick="exportProfessionalVoucherPDF()">📄 Descargar PDF Comprobante / Asiento</button>
+            </div>
+          </div>
+
+          <div class="split-viewer">
+            <div class="master-list-card">
+              <div class="master-list-header">
+                <span>NUMERACIÓN OFICIAL (<span id="compMonthTitle">ABRIL</span>)</span>
+                <span id="voucherFilteredCount">0 hojas</span>
+              </div>
+              <div class="master-list-scroll" id="vouchersListContainer"></div>
+            </div>
+
+            <div id="voucherDetailPanel"></div>
+          </div>
+        </section>
+
+        <!-- ===============================================================
+             4. SECCIÓN: EMITIR FACTURA / REGISTRO CONTABLE AUTOMÁTICO
+                (CON MATRIZ DE REGÍMENES COMPRADOR VS VENDEDOR)
+             =============================================================== -->
+        <section id="sec-facturacion" class="section-view">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">⚡ Generador Inteligente de Facturas y Comprobantes según Régimen Tributario</div>
+              <span class="status-pill status-paid" id="badgeMiRegimenHeader">Mi Régimen: RRI • Agente Retenedor y Autorretenedor Renta</span>
+            </div>
+            <div class="card-body">
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Mes Contable (12 Meses del Año)</label>
+                  <select id="txMes" class="form-control" onchange="recalcLiveTransaction()">
+                    <option value="ENERO">ENERO</option>
+                    <option value="FEBRERO">FEBRERO</option>
+                    <option value="MARZO">MARZO</option>
+                    <option value="ABRIL" selected>ABRIL</option>
+                    <option value="MAYO">MAYO</option>
+                    <option value="JUNIO">JUNIO</option>
+                    <option value="JULIO">JULIO</option>
+                    <option value="AGOSTO">AGOSTO</option>
+                    <option value="SEPTIEMBRE">SEPTIEMBRE</option>
+                    <option value="OCTUBRE">OCTUBRE</option>
+                    <option value="NOVIEMBRE">NOVIEMBRE</option>
+                    <option value="DICIEMBRE">DICIEMBRE</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Tipo de Transacción</label>
+                  <select id="txTipoOperacion" class="form-control" onchange="onChangeTipoOperacion()">
+                    <option value="VENTA">FACTURA DE VENTA (Nosotros Vendemos)</option>
+                    <option value="COMPRA">FACTURA DE COMPRA (Nosotros Compramos)</option>
+                    <option value="DEV_VENTA">DEVOLUCIÓN EN VENTA / NOTA CRÉDITO</option>
+                    <option value="DEV_COMPRA">DEVOLUCIÓN EN COMPRA / NOTA DÉBITO</option>
+                    <option value="EGRESO">COMPROBANTE DE EGRESO (Pago / Giro Cheque)</option>
+                    <option value="INGRESO">COMPROBANTE DE INGRESO / RECIBO DE CAJA</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>N° Hoja Excel / Consecutivo</label>
+                  <input type="text" id="txHoja" class="form-control" value="61" oninput="recalcLiveTransaction()" />
+                </div>
+                <div class="form-group">
+                  <label>N° Factura / Documento Soporte</label>
+                  <input type="text" id="txNumFactura" class="form-control" value="Factura de Venta N° 005" oninput="recalcLiveTransaction()" />
+                </div>
+                <div class="form-group">
+                  <label>Fecha de Emisión</label>
+                  <input type="date" id="txFecha" class="form-control" value="2026-04-15" onchange="recalcLiveTransaction()" />
+                </div>
+              </div>
+
+              <!-- MATRIZ DE REGÍMENES: COMPRADOR VS VENDEDOR -->
+              <div style="background:var(--bg-subtle); border:1px solid var(--border-strong); border-left:4px solid var(--brand-gold); border-radius:var(--radius-sm); padding:16px; margin-bottom:16px;">
+                <div style="font-size:0.82rem; font-weight:800; color:var(--brand-primary); margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                  <span>⚖️ MATRIZ DE REGÍMENES TRIBUTARIOS (CUADRO "ANTES DE LA LIQUIDACIÓN" DEL EXCEL)</span>
+                  <span style="font-size:0.75rem; color:var(--brand-emerald);">✓ Solo selecciona el régimen de la contraparte y el sistema aplica todas las tarifas de ley</span>
+                </div>
+
+                <div class="form-grid" style="margin-bottom:12px;">
+                  <div class="form-group">
+                    <label id="lblMiRolRegimen">VENDEDOR (NUESTRA EMPRESA)</label>
+                    <input type="text" id="txtMiRegimenFijo" class="form-control" value="ELECTROVIVIENDA S.A.S — RRI • Agente Retenedor y Autorretenedor Renta" readonly style="background:var(--brand-gold-soft); font-weight:800;" />
+                  </div>
+                  <div class="form-group">
+                    <label id="lblContraparteRolRegimen">SELECCIONA EL RÉGIMEN DEL COMPRADOR (CLIENTE)</label>
+                    <select id="txRegimenTercero" class="form-control" onchange="applyRegimenMatrix()"></select>
+                  </div>
+                  <div class="form-group">
+                    <label>Nombre / Razón Social del Cliente o Proveedor</label>
+                    <input type="text" id="txTercero" class="form-control" value="Industrias Super S.A.S" oninput="recalcLiveTransaction()" />
+                  </div>
+                  <div class="form-group">
+                    <label>NIT / Cédula</label>
+                    <input type="text" id="txNitTercero" class="form-control" value="950.240.208-1" oninput="recalcLiveTransaction()" />
+                  </div>
+                </div>
+
+                <!-- Tabla visual "ANTES DE LA LIQUIDACIÓN" -->
+                <div id="antesDeLiquidacionBox"></div>
+              </div>
+
+              <!-- PRODUCTO KARDEX -->
+              <div id="kardexInputBlock" style="background:var(--bg-subtle); padding:16px; border-radius:var(--radius-sm); border:1px solid var(--border-light); margin-bottom:16px;">
+                <div style="font-weight:800; font-size:0.82rem; color:var(--brand-primary); margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                  <span>📦 Producto del Catálogo (Actualiza o Crea Tarjeta Kardex Promedio Ponderado Automáticamente)</span>
+                  <span style="font-size:0.74rem; color:var(--brand-emerald);">✓ Encadenado automáticamente con Inventario 1435, Costo 6135 y Libros Auxiliares</span>
+                </div>
+                <div class="form-grid" style="margin-bottom:0;">
+                  <div class="form-group">
+                    <label>Seleccionar o Crear Artículo en Kardex</label>
+                    <select id="txProductoId" class="form-control" onchange="onSelectProductoKardex()"></select>
+                  </div>
+                  <div class="form-group">
+                    <label>Cantidad (Unidades)</label>
+                    <input type="number" id="txCantidad" class="form-control" value="2" min="1" step="1" oninput="recalcLiveTransaction()" />
+                  </div>
+                  <div class="form-group">
+                    <label>Valor Unitario ($)</label>
+                    <input type="number" id="txValorUnitario" class="form-control" value="4800000" min="0" step="1000" oninput="recalcLiveTransaction()" />
+                  </div>
+                  <div class="form-group">
+                    <label>Costo Unitario Promedio Kardex ($)</label>
+                    <input type="number" id="txCostoPromedioKardex" class="form-control" value="3500000" oninput="recalcLiveTransaction()" style="background:var(--brand-gold-soft); font-weight:800;" />
+                  </div>
+                </div>
+                <!-- Campos automáticos cuando se elige crear un nuevo producto en Kardex -->
+                <div id="newKardexProductFields" class="form-grid" style="display:none; margin-top:12px; padding-top:12px; border-top:1px dashed var(--border-strong); margin-bottom:0;">
+                  <div class="form-group">
+                    <label>Código / Referencia del Nuevo Producto</label>
+                    <input type="text" id="txNuevoProdRef" class="form-control" value="PROD-005" placeholder="Ej: LAV-005" oninput="recalcLiveTransaction()" />
+                  </div>
+                  <div class="form-group" style="grid-column: span 3;">
+                    <label>Descripción / Nombre del Nuevo Artículo para abrir su Tarjeta Kardex</label>
+                    <input type="text" id="txNuevoProdNombre" class="form-control" value="Lavadora Secadora Digital 22Kg" placeholder="Ej: Nevecón Side by Side 600L" oninput="recalcLiveTransaction()" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Forma de Pago / Cuenta Contable</label>
+                  <select id="txFormaPago" class="form-control" onchange="recalcLiveTransaction()">
+                    <option value="CREDITO">Crédito (1305 Clientes / 2205 Proveedores)</option>
+                    <option value="BANCO">Cheque / Transferencia Bancolombia (11100501 Bancos)</option>
+                    <option value="CAJA">Efectivo en Caja General (110505 Caja)</option>
+                    <option value="ANTICIPO">Cruce con Anticipo (1330 / 2705)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Cheque N° / Condición de Pago</label>
+                  <input type="text" id="txCheque" class="form-control" value="Crédito 30 días" oninput="recalcLiveTransaction()" />
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                  <label>Observación / Enunciado Contable</label>
+                  <input type="text" id="txEnunciado" class="form-control" value="Venta de mercancía con factura comercial aplicando régimen tributario correspondiente." oninput="recalcLiveTransaction()" />
+                </div>
+              </div>
+
+              <div class="checkbox-pills">
+                <label class="check-pill"><input type="checkbox" id="chkIva" checked onchange="recalcLiveTransaction()" /> IVA (19%)</label>
+                <label class="check-pill"><input type="checkbox" id="chkRetefuente" onchange="recalcLiveTransaction()" /> Retefuente (<span id="lblTarifaRete">2.5%</span>)</label>
+                <label class="check-pill"><input type="checkbox" id="chkAutorretencion" checked onchange="recalcLiveTransaction()" /> Autorretención Renta (<span id="lblTarifaAuto">2.5%</span>)</label>
+                <label class="check-pill"><input type="checkbox" id="chkAutoEspecial" onchange="recalcLiveTransaction()" /> Autorretención Especial (0.55%)</label>
+                <label class="check-pill"><input type="checkbox" id="chkReteIva" onchange="recalcLiveTransaction()" /> ReteIVA (15% del IVA)</label>
+                <label class="check-pill"><input type="checkbox" id="chkReteIca" onchange="recalcLiveTransaction()" /> ReteICA Bucaramanga (9.6‰ + Avisos 15% + Bomberil 10%)</label>
+              </div>
+
+              <!-- VISTA PREVIA DUAL EN TIEMPO REAL -->
+              <div class="grid-2" style="margin-top:16px;">
+                <div class="card" style="margin-bottom:0;">
+                  <div class="card-header">
+                    <div class="card-title">🧾 Vista Previa en Vivo de la Factura / Liquidación</div>
+                    <span class="status-pill status-paid" id="liveBaseBadge">Base: $0</span>
+                  </div>
+                  <div class="card-body" id="liveLiquidacionPreview"></div>
+                </div>
+
+                <div class="card" style="margin-bottom:0;">
+                  <div class="card-header">
+                    <div class="card-title">📘 Asiento Contable PUC + Costo Kardex Automático</div>
+                    <span class="status-pill status-paid" id="liveBalanceBadge">SUMAS IGUALES OK</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-wrap">
+                      <table class="acct-table">
+                        <thead>
+                          <tr>
+                            <th>Código PUC</th>
+                            <th>Cuenta Contable</th>
+                            <th class="num-col">Parcial</th>
+                            <th class="num-col">Debe</th>
+                            <th class="num-col">Haber</th>
+                          </tr>
+                        </thead>
+                        <tbody id="liveJournalBody"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CADENA DE TRAZABILIDAD CONTABLE EN TIEMPO REAL (FACTURA -> KARDEX -> AUXILIARES -> ESTADOS FINANCIEROS) -->
+              <div id="liveTraceabilityChainBox" style="margin-top:16px;"></div>
+
+              <!-- EXPLICACIÓN DIDÁCTICA PASO A PASO EN TIEMPO REAL DEL EJERCICIO QUE EL ESTUDIANTE ESTÁ REALIZANDO -->
+              <div id="didacticLiveExerciseBox" class="didactic-live-exercise-box"></div>
+
+              <div style="margin-top:18px; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;">
+                <button class="btn btn-outline" onclick="exportLiveTransactionPDF('FACTURA')">
+                  📄 Descargar PDF Factura Real (DIAN)
+                </button>
+                <button class="btn btn-primary" onclick="exportLiveTransactionPDF('ASIENTO')">
+                  📘 Descargar PDF Asiento Contable + Factura
+                </button>
+                <button class="btn btn-gold" onclick="saveAndSyncTransaction()">
+                  💾 Guardar Factura/Comprobante y Actualizar Excel + Kardex + Libros Auxiliares + Estados Financieros
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- ===============================================================
+             5. SECCIÓN: LIBROS AUXILIARES EN VIVO (SUBCUENTAS, TERCEROS Y BANCOS)
+             =============================================================== -->
+        <section id="sec-auxiliares" class="section-view">
+          <div class="kpi-row" id="auxiliaresKpiRow"></div>
+
+          <div class="filter-bar">
+            <div class="filter-tabs" id="auxModeTabs">
+              <button class="filter-chip active" data-auxmode="VIVO_SUBCUENTAS" onclick="setAuxMode('VIVO_SUBCUENTAS')">⚡ Libros Auxiliares en Vivo (Subcuentas 6 Dígitos + Terceros 8 Dígitos)</button>
+              <button class="filter-chip" data-auxmode="VIVO_BANCO" onclick="setAuxMode('VIVO_BANCO')">🏦 Libro Auxiliar de Bancos en Vivo (11100501 Bancolombia)</button>
+              <button class="filter-chip" data-auxmode="EXCEL_AUX" onclick="setAuxMode('EXCEL_AUX')">📊 Hoja Original L.AUXILIARES del Excel</button>
+              <button class="filter-chip" data-auxmode="EXCEL_BANCO" onclick="setAuxMode('EXCEL_BANCO')">📊 Hoja Original L.BANCO AUXILIAR del Excel</button>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <input type="text" id="searchAuxInput" class="form-control" style="width:230px; padding:5px 10px; font-size:0.78rem;" placeholder="Filtrar por código (110505, 1305) o tercero..." oninput="renderAuxiliaresSection()" />
+              <button class="btn btn-primary btn-sm" onclick="switchSection('facturacion')">+ Nuevo Movimiento</button>
+            </div>
+          </div>
+
+          <div id="auxiliaresContentContainer"></div>
+        </section>
+
+        <!-- ===============================================================
+             6. SECCIÓN: KARDEX PROMEDIO PONDERADO DE PRODUCTOS
+             =============================================================== -->
+        <section id="sec-kardex" class="section-view">
+          <div class="kpi-row" id="kardexSummaryCards"></div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">📦 Tarjetas de Kardex por Producto — Método Promedio Ponderado</div>
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <div class="filter-tabs" id="kardexProductTabs"></div>
+                <button class="btn btn-primary btn-sm" onclick="openNewProductKardexModal()">+ Agregar Producto al Kardex</button>
+              </div>
+            </div>
+            <div class="card-body" id="kardexDetailBody"></div>
+          </div>
+        </section>
+
+        <!-- ===============================================================
+             7. SECCIÓN: ESTADOS FINANCIEROS NIIF & LIBROS CONTABLES
+             =============================================================== -->
+        <section id="sec-estados" class="section-view">
+          <div class="filter-bar">
+            <div class="filter-tabs" id="efSubTabs">
+              <button class="filter-chip active" data-eftab="DINAMICO" onclick="selectEfTab('DINAMICO')">⚡ ESF & ER Automatizado</button>
+              <button class="filter-chip" data-eftab="ANALISIS" onclick="selectEfTab('ANALISIS')" style="background:linear-gradient(135deg, rgba(212,175,55,0.25), rgba(11,25,44,0.3)); border:1.5px solid var(--brand-gold); font-weight:800; color:var(--text-main);">📊 Análisis Financiero & Gráficas</button>
+              <button class="filter-chip" data-eftab="ESF" onclick="selectEfTab('ESF')">🏛️ Situación Financiera (ESF)</button>
+              <button class="filter-chip" data-eftab="ER" onclick="selectEfTab('ER')">📈 Estado de Resultados (ER)</button>
+              <button class="filter-chip" data-eftab="CONSOLIDADOS" onclick="selectEfTab('CONSOLIDADOS')">🌐 Consolidados</button>
+              <button class="filter-chip" data-eftab="ECP" onclick="selectEfTab('ECP')">💎 Patrimonio (ECP)</button>
+              <button class="filter-chip" data-eftab="FLUJO" onclick="selectEfTab('FLUJO')">💵 Flujo de Efectivo</button>
+              <button class="filter-chip" data-eftab="HOJA_TR" onclick="selectEfTab('HOJA_TR')">🧮 Hoja de Trabajo</button>
+              <button class="filter-chip" data-eftab="LIBROS" onclick="selectEfTab('LIBROS')">📚 Libro Diario y Mayor y Balances</button>
+              <button class="filter-chip" data-eftab="NOMINA_TA" onclick="selectEfTab('NOMINA_TA')">👥 Nómina & Amortización</button>
+              <button class="filter-chip" data-eftab="CUENTAS_T" onclick="selectEfTab('CUENTAS_T')">🔤 Cuentas T</button>
+              <button class="filter-chip" data-eftab="NOTAS" onclick="selectEfTab('NOTAS')">📝 Notas NIIF</button>
+              <button class="filter-chip" data-eftab="TODAS" onclick="selectEfTab('TODAS')">📂 Todas las Hojas del Excel</button>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-gold btn-sm" onclick="downloadActiveMonthExcel()">📥 Descargar Excel (<span id="efMonthLabel">ABRIL</span>)</button>
+              <button class="btn btn-outline btn-sm" onclick="exportSmartContextualPDF()">🖨️ Imprimir</button>
+            </div>
+          </div>
+
+          <div id="efContentContainer"></div>
+        </section>
+
+        <!-- ===============================================================
+             8. SECCIÓN: DECLARACIONES TRIBUTARIAS Y CALENDARIO 2026
+             =============================================================== -->
+        <section id="sec-tributaria" class="section-view">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">🗓️ Calendario Tributario 2026 & Control de Vencimientos DIAN / ICA</div>
+              <div style="display:flex; gap:8px;">
+                <a class="btn btn-gold btn-sm" href="CALENDARIO_TRIBUTARIO_2026_ELECTROVIVIENDA.xlsx" download="CALENDARIO_TRIBUTARIO_2026_ELECTROVIVIENDA.xlsx">📥 Descargar Calendario (.xlsx)</a>
+                <button class="btn btn-primary btn-sm" onclick="openNewReminderModal()">+ Nuevo Recordatorio</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-wrap">
+                <table class="acct-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Impuesto / Formulario</th>
+                      <th>Entidad</th>
+                      <th>Período Gravable</th>
+                      <th>Periodicidad</th>
+                      <th>Fecha Vencimiento</th>
+                      <th>Estado</th>
+                      <th class="num-col">Valor Liquidado</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody id="taxCalendarTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-bar">
+            <div class="filter-tabs" id="taxFormTabs">
+              <button class="filter-chip active" data-taxtab="F350" onclick="selectTaxTab('F350')">📄 Formulario 350 (Retefuente)</button>
+              <button class="filter-chip" data-taxtab="F300" onclick="selectTaxTab('F300')">📄 Formulario 300 (IVA Bimestral)</button>
+              <button class="filter-chip" data-taxtab="RETEICA" onclick="selectTaxTab('RETEICA')">🏛️ Formulario ReteICA Bucaramanga</button>
+              <button class="filter-chip" data-taxtab="ANEXO1" onclick="selectTaxTab('ANEXO1')">📋 Anexo 1 Consolidado</button>
+              <button class="filter-chip" data-taxtab="RETFTE_NOM" onclick="selectTaxTab('RETFTE_NOM')">👩‍💼 Retefuente Salarios (UVT)</button>
+              <button class="filter-chip" data-taxtab="AUTOLIQUIDADOR" onclick="selectTaxTab('AUTOLIQUIDADOR')">🤖 Autoliquidador Automático por Mes</button>
+            </div>
+          </div>
+
+          <div id="taxFormContentContainer"></div>
+        </section>
+
+        <!-- ===============================================================
+             9. SECCIÓN: TUTOR DE INTELIGENCIA ARTIFICIAL CONTABLE (ENTRENABLE)
+             =============================================================== -->
+        <section id="sec-ia" class="section-view">
+          <div class="grid-2">
+            <!-- Columna Izquierda: Chat con la IA Contable + Preguntas Rápidas -->
+            <div class="card" style="margin-bottom:0;">
+              <div class="card-header">
+                <div class="card-title">🤖 Tutor IA Contable & Tributario — STUDENTCONT.IA</div>
+                <span class="status-pill status-paid">Entrenada con PUC, NIIF y ELECTROVIVIENDA</span>
+              </div>
+              <div class="card-body">
+                <div style="font-size:0.76rem; font-weight:800; color:var(--brand-primary); margin-bottom:8px;">
+                  💡 PREGUNTAS DIDÁCTICAS RÁPIDAS (HAZ CLIC EN CUALQUIERA):
+                </div>
+                <div class="filter-tabs" style="margin-bottom:12px;">
+                  <button class="filter-chip" onclick="askAiQuickQuestion('¿Cómo funciona la naturaleza Débito y Crédito de las clases 1 a 6 del PUC?')">📘 Naturaleza Débito vs Crédito (PUC)</button>
+                  <button class="filter-chip" onclick="askAiQuickQuestion('¿Cuándo se aplica Retefuente, ReteIVA y ReteICA entre regímenes tributarios?')">⚖️ Matriz de Regímenes (RRI vs GC vs No RRI)</button>
+                  <button class="filter-chip" onclick="askAiQuickQuestion('Explícame cómo funciona el Kardex por Promedio Ponderado con un ejemplo')">📦 ¿Cómo se calcula el Promedio Ponderado?</button>
+                  <button class="filter-chip" onclick="askAiQuickQuestion('¿Qué es la Autorretención en Renta (135575 vs 246575) y por qué suma igual?')">🧮 Autorretención en Renta (1355 vs 2465)</button>
+                  <button class="filter-chip" onclick="askAiQuickQuestion('¿Cómo se liquida y contabiliza la nómina y seguridad social en Colombia 2026?')">👥 Nómina y Prestaciones 2026</button>
+                  <button class="filter-chip" onclick="askAiQuickQuestion('Dame un reto o ejercicio práctico para poner a prueba mi contabilidad')">🎯 Dame un Reto / Quiz Contable</button>
+                </div>
+
+                <div class="ia-chat-box" id="iaChatMessagesBox"></div>
+
+                <div style="display:flex; gap:8px; margin-top:12px;">
+                  <input type="text" id="iaUserQuestionInput" class="form-control" placeholder="Escribe tu pregunta contable, código PUC (ej: 1435, 2408), impuesto o ejercicio..." onkeydown="if(event.key==='Enter') sendStudentQuestionToAi()" />
+                  <button class="btn btn-primary" onclick="sendStudentQuestionToAi()">🚀 Preguntar a la IA</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Columna Derecha: Alimentar / Entrenar la IA con Links Web, Documentos o Texto -->
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <div class="card" style="margin-bottom:0;">
+                <div class="card-header">
+                  <div class="card-title">🧠 Alimentar la IA con Páginas Web (Links), Documentos o Apuntes</div>
+                  <span class="status-pill status-alert">Aprendizaje Multi-Fuente</span>
+                </div>
+                <div class="card-body">
+                  <!-- PESTAÑAS DE MODO DE ALIMENTACIÓN DE LA IA -->
+                  <div class="filter-tabs" id="iaFeedModeTabs" style="margin-bottom:14px;">
+                    <button class="filter-chip active" data-feedmode="LINK" onclick="setIaFeedMode('LINK')">🌐 1. Por Página Web / Link (URL)</button>
+                    <button class="filter-chip" data-feedmode="DOC" onclick="setIaFeedMode('DOC')">📄 2. Por Documento (PDF, Excel, Word, TXT)</button>
+                    <button class="filter-chip" data-feedmode="TEXT" onclick="setIaFeedMode('TEXT')">✍️ 3. Escribir Tema / Apunte Manual</button>
+                  </div>
+
+                  <!-- MODO 1: ALIMENTAR CON LINK / PÁGINA WEB -->
+                  <div id="iaFeedBoxLink">
+                    <p style="font-size:0.79rem; color:var(--text-secondary); margin-bottom:10px;">
+                      Pega el enlace (URL) de cualquier página contable, artículo de Gerencie, Actualícese, DIAN, Estatuto Tributario o normativa. El sistema extraerá automáticamente el contenido y alimentará a la IA.
+                    </p>
+                    <div class="form-group" style="margin-bottom:10px;">
+                      <label>🔗 Enlace / URL de la Página Web</label>
+                      <input type="url" id="iaFeedUrlInput" class="form-control" placeholder="Ej: https://www.gerencie.com/... o https://www.dian.gov.co/..." />
+                    </div>
+                    <div class="form-group" style="margin-bottom:10px;">
+                      <label>Título o Nombre del Tema (Opcional — se detecta automático si lo dejas vacío)</label>
+                      <input type="text" id="iaFeedUrlTitle" class="form-control" placeholder="Ej: Retención en la Fuente por Servicios 2026" />
+                    </div>
+                    <label class="check-pill" style="margin-bottom:12px; display:inline-flex;">
+                      <input type="checkbox" id="chkUrlAlsoReforma" checked /> Publicar también este enlace en la sección "⚖️ Reformas & Leyes Colombia"
+                    </label>
+                    <button class="btn btn-gold" style="width:100%; justify-content:center;" id="btnIngestUrl" onclick="ingestUrlIntoAi()">
+                      🌐 Extraer Contenido del Link y Alimentar IA
+                    </button>
+                  </div>
+
+                  <!-- MODO 2: ALIMENTAR CON DOCUMENTOS (PDF, XLSX, DOCX, TXT, CSV) -->
+                  <div id="iaFeedBoxDoc" style="display:none;">
+                    <p style="font-size:0.79rem; color:var(--text-secondary); margin-bottom:10px;">
+                      Sube un archivo <strong>.PDF, .XLSX, .DOCX, .DOC, .TXT o .CSV</strong> desde tu computador. El sistema leerá todas sus páginas/hojas, guardará una copia local y entrenará a la IA con su contenido.
+                    </p>
+                    <div class="form-group" style="margin-bottom:10px;">
+                      <label>📂 Seleccionar Documento de tu Computador (.PDF, .XLSX, .DOCX, .TXT, .CSV)</label>
+                      <input type="file" id="iaFeedFileInput" class="form-control" accept=".pdf,.xlsx,.xlsm,.xls,.docx,.doc,.rtf,.txt,.csv,.md,.json" style="padding:7px;" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:10px;">
+                      <label>Título del Documento / Tema (Opcional)</label>
+                      <input type="text" id="iaFeedDocTitle" class="form-control" placeholder="Ej: Guía NIIF para las PYMES / Decreto Tributario" />
+                    </div>
+                    <label class="check-pill" style="margin-bottom:12px; display:inline-flex;">
+                      <input type="checkbox" id="chkDocAlsoReforma" /> Publicar también como tarjeta en "⚖️ Reformas & Leyes Colombia"
+                    </label>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                      <button class="btn btn-gold" style="width:100%; justify-content:center;" id="btnIngestDoc" onclick="ingestDocumentIntoAi()">
+                        📄 Procesar Documento y Alimentar IA
+                      </button>
+                      <button class="btn btn-outline btn-sm" style="width:100%; justify-content:center;" onclick="ingestLocalFolderNIIFPdf()">
+                        📘 Alimentar IA con el PDF Local de la Carpeta: "ifrs-for-smes-es (1).pdf" (NIIF PYMES)
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- MODO 3: ALIMENTAR CON APUNTES / TEXTO MANUAL -->
+                  <div id="iaFeedBoxText" style="display:none;">
+                    <p style="font-size:0.79rem; color:var(--text-secondary); margin-bottom:10px;">
+                      Escribe apuntes de clase, fórmulas, cuentas PUC o reglas tributarias directamente.
+                    </p>
+                    <div class="form-group" style="margin-bottom:10px;">
+                      <label>Tema / Concepto o Pregunta Clave</label>
+                      <input type="text" id="iaTrainTopic" class="form-control" placeholder="Ej: Contabilización del GMF (4x1000) o Descuento Comercial vs Condicionado" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:10px;">
+                      <label>Palabras Clave Relacionadas (Separadas por coma)</label>
+                      <input type="text" id="iaTrainKeywords" class="form-control" placeholder="Ej: gmf, 4x1000, 530505, gasto bancario, deducible" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:10px;">
+                      <label>Explicación Didáctica y Ejemplo Contable que debe aprender la IA</label>
+                      <textarea id="iaTrainContent" class="form-control" rows="4" placeholder="Escribe la explicación clara, cuentas PUC que se debitan y acreditan, y consejos para el estudiante..."></textarea>
+                    </div>
+                    <button class="btn btn-gold" style="width:100%; justify-content:center;" onclick="feedNewKnowledgeToAi()">
+                      📥 Guardar Apunte en la Base de Conocimiento de la IA
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" style="margin-bottom:0;">
+                <div class="card-header">
+                  <div class="card-title">📚 Fuentes Aprendidas por la IA (Links, Documentos y Apuntes)</div>
+                  <span id="iaCustomKbCountBadge" class="status-pill status-paid">Activos</span>
+                </div>
+                <div class="card-body" id="iaCustomKbListContainer" style="max-height:260px; overflow-y:auto;"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===============================================================
+             10. SECCIÓN: ACTUALIDAD, REFORMAS Y LEYES CONTABLES EN COLOMBIA
+             =============================================================== -->
+        <section id="sec-reformas" class="section-view">
+          <!-- BARRA PARA ALIMENTAR REFORMAS DESDE LINKS WEB O DOCUMENTOS -->
+          <div class="card" style="margin-bottom:14px;">
+            <div class="card-header" style="padding:10px 16px;">
+              <div class="card-title" style="font-size:0.86rem;">🔗 Alimentar Reformas y Leyes con Páginas Web (Links) o Documentos (.PDF / .DOCX / .TXT)</div>
+              <span class="status-pill status-paid">Sincronizado con el Tutor IA</span>
+            </div>
+            <div class="card-body" style="padding:12px 16px;">
+              <div class="form-grid" style="margin-bottom:0; align-items:end;">
+                <div class="form-group" style="grid-column: span 2;">
+                  <label>🌐 Pegar Link / URL de Reforma, Decreto o Artículo Contable</label>
+                  <input type="url" id="reformaQuickUrlInput" class="form-control" placeholder="https://www.dian.gov.co/... o https://www.gerencie.com/..." />
+                </div>
+                <div class="form-group">
+                  <label>Categoría</label>
+                  <select id="reformaQuickCatSelect" class="form-control">
+                    <option value="TRIBUTARIA">⚖️ Reforma Tributaria & DIAN</option>
+                    <option value="LABORAL">👥 Reforma Laboral & Pensional</option>
+                    <option value="NIIF">📘 NIIF PYMES & Facturación</option>
+                  </select>
+                </div>
+                <div class="form-group" style="display:flex; gap:8px;">
+                  <button class="btn btn-gold btn-sm" style="width:100%; justify-content:center; padding:9px;" onclick="ingestUrlFromReformasBar()">
+                    🌐 Agregar desde Link
+                  </button>
+                  <button class="btn btn-primary btn-sm" style="width:100%; justify-content:center; padding:9px;" onclick="switchSection('ia'); setIaFeedMode('DOC');">
+                    📄 Subir PDF / Doc
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-bar">
+            <div class="filter-tabs" id="reformasFilterTabs">
+              <button class="filter-chip active" data-refcat="ALL" onclick="filterReformasCategory('ALL')">🇨🇴 Todas las Reformas y Normas</button>
+              <button class="filter-chip" data-refcat="TRIBUTARIA" onclick="filterReformasCategory('TRIBUTARIA')">⚖️ Reforma Tributaria & DIAN</button>
+              <button class="filter-chip" data-refcat="LABORAL" onclick="filterReformasCategory('LABORAL')">👥 Reforma Laboral & Pensional</button>
+              <button class="filter-chip" data-refcat="NIIF" onclick="filterReformasCategory('NIIF')">📘 NIIF PYMES & Facturación Electrónica</button>
+            </div>
+            <button class="btn btn-gold btn-sm" onclick="openNewReformaModal()">+ Publicar Nueva Reforma / Norma o Resumen</button>
+          </div>
+
+          <div id="reformasGridContainer" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(380px, 1fr)); gap:16px;"></div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTÓN FLOTANTE DE ACCESO RÁPIDO AL TUTOR IA CONTABLE -->
+  <button class="floating-ia-btn" onclick="switchSection('ia')" title="Abrir el Tutor de Inteligencia Artificial Contable">
+    <span>🤖</span> <span>Preguntar al Tutor IA Contable</span>
+  </button>
+
+  <!-- =====================================================================
+       MODAL: GESTOR MULTI-EMPRESA & MODO PRÁCTICA DE APRENDIZAJE
+       ===================================================================== -->
+  <div class="modal-backdrop" id="workspaceModal">
+    <div class="modal-card" style="max-width:780px;">
+      <div class="card-header">
+        <div class="card-title">🔑 Acceso a Empresa por NIT o Iniciar Nuevo Taller Práctico en $0</div>
+        <button class="btn btn-outline btn-sm" onclick="closeWorkspaceModal()">✕ Cerrar</button>
+      </div>
+      <div class="card-body">
+        <!-- 1. CONECTAR A UNA EMPRESA EXISTENTE DIGITANDO SU NIT -->
+        <div style="background:var(--brand-gold-soft); border:1px solid var(--brand-gold); border-radius:8px; padding:14px 16px; margin-bottom:18px;">
+          <div style="font-size:0.82rem; font-weight:800; color:var(--brand-primary); margin-bottom:6px;">
+            1. 🔑 CONECTAR / ACCEDER A UNA EMPRESA EXISTENTE MEDIANTE SU NIT:
+          </div>
+          <p style="font-size:0.76rem; color:var(--text-secondary); margin-bottom:10px;">
+            Si deseas consultar la información contable de <strong>ELECTROVIVIENDA S.A.S</strong> (o cualquier empresa registrada) desde tu perfil personal, debes ingresar aquí su NIT exacto:
+          </p>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <input type="text" id="unlockCompanyNitInput" class="form-control" style="max-width:280px;" placeholder="Escribe el NIT de la empresa..." onkeydown="if(event.key==='Enter') unlockCompanyByNit()" />
+            <button class="btn btn-primary" onclick="unlockCompanyByNit()">🔓 Acceder a Empresa por NIT</button>
+            <button class="btn btn-outline" onclick="switchToMyOwnPracticeWorkspace()">🎓 Ir a Mi Taller Práctico Propio (en $0)</button>
+          </div>
+        </div>
+
+        <div style="font-size:0.82rem; font-weight:800; color:var(--brand-primary); margin-bottom:8px;">
+          2. TUS TALLERES Y EMPRESAS AUTORIZADAS EN ESTA SESIÓN:
+        </div>
+        <div id="workspacesListBox" style="display:flex; flex-direction:column; gap:8px; margin-bottom:20px;"></div>
+
+        <div style="border-top:2px solid var(--border-light); padding-top:16px;">
+          <div style="font-size:0.85rem; font-weight:800; color:var(--brand-primary); margin-bottom:10px;">
+            3. ➕ CREAR NUEVA EMPRESA O TALLER DE APRENDIZAJE DESDE CERO (12 MESES EN $0)
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Modalidad del Espacio</label>
+              <select id="newWsTipo" class="form-control">
+                <option value="PRÁCTICA DE APRENDIZAJE (EN $0)">🎓 Taller Práctico Estudiantil (Inicia todo en $0)</option>
+                <option value="EMPRESA CONTABLE">🏢 Contabilidad de Nueva Empresa (Inicia en $0)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Razón Social / Nombre del Taller</label>
+              <input type="text" id="newWsRazon" class="form-control" placeholder="Ej: TALLER CONTABLE S.A.S" />
+            </div>
+            <div class="form-group">
+              <label>NIT y Dígito de Verificación</label>
+              <input type="text" id="newWsNit" class="form-control" placeholder="Ej: 901.888.554-2" />
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group" style="grid-column: span 2;">
+              <label>Régimen Tributario de la Nueva Empresa</label>
+              <select id="newWsRegimen" class="form-control">
+                <option value="Régimen Responsable de IVA (RRI) - Agente de Retención y Autorretenedor en Renta">RRI — Responsable de IVA, Agente de Retención y Autorretenedor Renta</option>
+                <option value="Régimen Responsable de IVA (RRI) - Agente de Retención Ordinario">RRI — Responsable de IVA Ordinario (No Autorretenedor)</option>
+                <option value="Gran Contribuyente y Autorretenedor DIAN">Gran Contribuyente y Autorretenedor</option>
+                <option value="Régimen Simple de Tributación (RST)">Régimen Simple de Tributación (RST)</option>
+                <option value="No Responsable de IVA (Persona Natural Comerciante)">No Responsable de IVA</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Ciudad / Municipio (Para ICA)</label>
+              <input type="text" id="newWsCiudad" class="form-control" value="Bucaramanga, Santander" />
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Aporte Inicial ($0 por defecto para iniciar totalmente en blanco)</label>
+              <input type="number" id="newWsAporte" class="form-control" value="0" min="0" step="1000000" />
+            </div>
+            <div class="form-group">
+              <label>Contador / Estudiante Responsable</label>
+              <input type="text" id="newWsAutor" class="form-control" value="" placeholder="Tu nombre..." />
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
+            <button class="btn btn-gold" onclick="createNewWorkspace()">
+              🚀 Crear Empresa / Iniciar Aprendizaje y Generar Libro Excel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: PERSONALIZAR LOGO Y ESTILO DE STUDENTCONT.IA -->
+  <div class="modal-backdrop" id="brandModal">
+    <div class="modal-card">
+      <div class="card-header">
+        <div class="card-title">✨ Personalizar Logo y Tema Corporativo de STUDENTCONT.IA</div>
+        <button class="btn btn-outline btn-sm" onclick="closeBrandModal()">✕ Cerrar</button>
+      </div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Emblema del Logo</label>
+            <select id="brandLogoStyle" class="form-control" onchange="updateCustomLogoPreview()">
+              <option value="shield">Escudo Hexagonal NIIF + Barras IA (Recomendado)</option>
+              <option value="monogram">Monograma Ejecutivo SC.IA en Oro</option>
+              <option value="ledger">Libro Mayor Digital & Nodo Contable</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Paleta de Colores</label>
+            <select id="brandThemeSelect" class="form-control" onchange="applyThemeSelection(this.value)">
+              <option value="default">Azul Marino & Oro Imperial (Corporativo)</option>
+              <option value="emerald">Verde Esmeralda & Oro</option>
+              <option value="onyx">Ónix Ejecutivo & Champagne</option>
+              <option value="dark">Modo Oscuro Ejecutivo</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nombre de la Marca</label>
+            <input type="text" id="brandCustomTitle" class="form-control" value="STUDENTCONT.IA" oninput="updateCustomLogoPreview()" />
+          </div>
+          <div class="form-group">
+            <label>Subtítulo Corporativo</label>
+            <input type="text" id="brandCustomSub" class="form-control" value="SISTEMA CONTABLE & FISCAL NIIF • ELECTROVIVIENDA S.A.S" oninput="updateCustomLogoPreview()" />
+          </div>
+        </div>
+        <div style="background:var(--bg-subtle); border:1px solid var(--border-strong); border-radius:var(--radius-md); padding:18px; text-align:center; margin:12px 0;">
+          <div id="customLogoPreviewBox" style="display:flex; justify-content:center;"></div>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button class="btn btn-outline" onclick="downloadCustomLogoSvg()">📥 Descargar Logo (.SVG)</button>
+          <button class="btn btn-gold" onclick="applyCustomLogoToHeader()">✅ Aplicar Cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CENTRO DE ALERTAS TRIBUTARIAS -->
+  <div class="modal-backdrop" id="alertsModal">
+    <div class="modal-card">
+      <div class="card-header">
+        <div class="card-title">🔔 Alertas y Recordatorios Tributarios</div>
+        <button class="btn btn-outline btn-sm" onclick="closeAlertsModal()">✕ Cerrar</button>
+      </div>
+      <div class="card-body" id="alertsModalBody"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: PERFILES INDEPENDIENTES DE ESTUDIANTES Y ACCESO COMPARTIDO -->
+  <div class="modal-backdrop" id="studentProfileModal">
+    <div class="modal-card" style="max-width:760px;">
+      <div class="card-header">
+        <div class="card-title">🎓 Perfiles de Estudiantes Independientes & Enlace Compartido</div>
+        <button class="btn btn-outline btn-sm" onclick="closeStudentProfileModal()">✕ Cerrar</button>
+      </div>
+      <div class="card-body">
+        <div style="background:var(--brand-gold-soft); border:1px solid var(--brand-gold); border-radius:var(--radius-sm); padding:12px 14px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+          <div>
+            <div style="font-size:0.78rem; font-weight:800; color:var(--brand-primary);">🌐 ENLACE WEB COMPARTIBLE DE STUDENTCONT.IA</div>
+            <div style="font-size:0.76rem; color:var(--text-secondary);" id="shareWebUrlLabel">Comparte este enlace con tus compañeros para que creen su propio perfil independiente:</div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="copyShareableWebLink()">🔗 Copiar Enlace Web</button>
+        </div>
+
+        <div style="font-size:0.82rem; font-weight:800; color:var(--brand-primary); margin-bottom:8px;">
+          1. PERFILES DE ESTUDIANTES REGISTRADOS (CADA ESTUDIANTE TIENE ACCESO INDEPENDIENTE):
+        </div>
+        <div id="studentProfilesListBox" style="display:flex; flex-direction:column; gap:8px; margin-bottom:18px;"></div>
+
+        <div style="border-top:2px solid var(--border-light); padding-top:16px;">
+          <div style="font-size:0.85rem; font-weight:800; color:var(--brand-primary); margin-bottom:10px;">
+            2. ➕ CREAR NUEVO PERFIL DE ESTUDIANTE INDEPENDIENTE
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Nombre Completo del Estudiante</label>
+              <input type="text" id="newStuNombre" class="form-control" placeholder="Ej: Camilo Andrés Pérez" />
+            </div>
+            <div class="form-group">
+              <label>Correo Institucional o Usuario</label>
+              <input type="text" id="newStuCorreo" class="form-control" placeholder="Ej: camilo.perez@correo.edu.co" />
+            </div>
+            <div class="form-group">
+              <label>Programa / Ficha / Semestre</label>
+              <input type="text" id="newStuPrograma" class="form-control" placeholder="Ej: Contaduría Pública - Semestre V" />
+            </div>
+            <div class="form-group">
+              <label>PIN o Contraseña de Acceso (Opcional)</label>
+              <input type="password" id="newStuPin" class="form-control" placeholder="Ej: 1234" />
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group" style="grid-column: span 2;">
+              <label>Modo Inicial al Crear el Perfil</label>
+              <select id="newStuInitialMode" class="form-control">
+                <option value="NEW_PRACTICE">🎓 Iniciar con mi propia Empresa / Registro de Aprendizaje en blanco + Acceso de consulta a ELECTROVIVIENDA</option>
+                <option value="CLONE_ELECTRO">🏢 Iniciar explorando el caso maestro de ELECTROVIVIENDA S.A.S</option>
+              </select>
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+              <label>Nombre de su Primera Empresa o Taller Contable (Si inicia práctica propia)</label>
+              <input type="text" id="newStuEmpresaNombre" class="form-control" placeholder="Ej: DISTRIBUIDORA DEL ORIENTE S.A.S" />
+            </div>
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px;">
+            <button class="btn btn-gold" onclick="registerNewStudentProfile()">
+              🎓 Crear Mi Perfil Independiente e Ingresar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       MODAL: VISOR OFICIAL DE IMPRESIÓN Y DESCARGA PDF (VISIBLE EN LA LAPTOP)
+       ===================================================================== -->
+  <div class="modal-backdrop" id="pdfViewerModal">
+    <div class="modal-card pdf-viewer-modal-card">
+      <div class="pdf-modal-toolbar">
+        <div class="pdf-modal-title">
+          <span class="pdf-icon-badge">📄</span>
+          <div>
+            <h4 id="pdfModalDocTitle">Documento Contable Oficial NIIF / DIAN</h4>
+            <span class="pdf-modal-subtitle" id="pdfModalDocSubtitle">Listo para visualización en laptop, descarga en PDF e impresión</span>
+          </div>
+        </div>
+        <div class="pdf-modal-actions">
+          <button class="btn btn-gold btn-sm" id="btnPdfModalDownload" onclick="triggerActivePdfDownload()">
+            📥 Descargar Archivo PDF (.pdf)
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="triggerActivePdfPrint()">
+            🖨️ Imprimir / Guardar como PDF
+          </button>
+          <button class="btn btn-outline btn-sm" onclick="closePdfViewerModal()">
+            ✕ Cerrar
+          </button>
+        </div>
+      </div>
+      <div class="pdf-modal-paper-stage">
+        <div class="pdf-modal-paper-sheet" id="pdfModalSheetBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="app.js?v=20261110_22"></script>
+</body>
+</html>

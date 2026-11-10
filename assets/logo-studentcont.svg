@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 100" fill="none">
+  <defs>
+    <linearGradient id="navyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A192F" />
+      <stop offset="55%" stop-color="#0F2942" />
+      <stop offset="100%" stop-color="#1E4976" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F3E5AB" />
+      <stop offset="45%" stop-color="#D4AF37" />
+      <stop offset="100%" stop-color="#AA7C11" />
+    </linearGradient>
+    <linearGradient id="emeraldGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#34D399" />
+    </linearGradient>
+    <filter id="softGlow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0A192F" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Escudo Corporativo Hexagonal -->
+  <g filter="url(#softGlow)" transform="translate(10, 8)">
+    <polygon points="42,2 78,22 78,62 42,82 6,62 6,22" fill="url(#navyGrad)" stroke="url(#goldGrad)" stroke-width="2.5"/>
+    <polygon points="42,9 72,26 72,58 42,75 12,58 12,26" fill="none" stroke="#D4AF37" stroke-opacity="0.35" stroke-width="1"/>
+
+    <!-- Barras Financieras Ascendentes -->
+    <rect x="23" y="46" width="7" height="16" rx="1.5" fill="url(#goldGrad)" />
+    <rect x="34" y="36" width="7" height="26" rx="1.5" fill="url(#goldGrad)" />
+    <rect x="45" y="25" width="7" height="37" rx="1.5" fill="url(#emeraldGrad)" />
+
+    <!-- Nodo de Inteligencia Contable (.IA) y Birrete Estudiantil Estilizado -->
+    <path d="M20 42 L37 31 L48 21 L62 17" stroke="#F3E5AB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="62" cy="17" r="3.5" fill="#34D399" stroke="#FFFFFF" stroke-width="1.2"/>
+    <circle cx="37" cy="31" r="2.2" fill="#F3E5AB"/>
+    <circle cx="20" cy="42" r="2.2" fill="#F3E5AB"/>
+  </g>
+
+  <!-- Tipografía Corporativa STUDENTCONT.IA -->
+  <text x="104" y="48" font-family="'Plus Jakarta Sans', 'Inter', 'Segoe UI', sans-serif" font-size="28" font-weight="800" letter-spacing="0.8" fill="#0F2942">
+    STUDENT<tspan fill="#1E4976">CONT</tspan><tspan fill="url(#goldGrad)">.IA</tspan>
+  </text>
+
+  <!-- Línea divisoria dorada -->
+  <line x1="104" y1="58" x2="395" y2="58" stroke="url(#goldGrad)" stroke-width="1.5" stroke-opacity="0.8"/>
+
+  <!-- Subtítulo Corporativo -->
+  <text x="104" y="74" font-family="'Plus Jakarta Sans', 'Inter', 'Segoe UI', sans-serif" font-size="11" font-weight="700" letter-spacing="2.2" fill="#475569">
+    SISTEMA CONTABLE &amp; FISCAL NIIF • ELECTROVIVIENDA S.A.S
+  </text>
+</svg>

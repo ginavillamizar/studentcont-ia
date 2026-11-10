@@ -1,0 +1,4690 @@
+{
+  "meta": {
+    "plataforma": "STUDENTCONT.IA",
+    "version": "2.3.0",
+    "actualizado": "2026-11-10 08:26:54"
+  },
+  "empresa": {
+    "razon_social": "gina",
+    "nit": "12324687585",
+    "nit_sin_dv": "12324687585",
+    "dv": "1",
+    "ultimo_digito_nit": "5",
+    "regimen": "Régimen Responsable de IVA (RRI) - Agente de Retención Ordinario",
+    "grupo_niif": "Grupo 2 - NIIF para las PYMES (Decreto 2420 de 2015)",
+    "sistema_inventario": "Sistema de Inventario Permanente - Método Promedio Ponderado",
+    "direccion": "Sede Principal",
+    "ciudad": "Bucaramanga, Santander",
+    "telefono": "",
+    "correo": "",
+    "elaborado_por": "gina",
+    "socios": [],
+    "parametros_2026": {
+      "uvt": 52374,
+      "smlmv": 1750905,
+      "auxilio_transporte": 249095,
+      "iva_general": 0.19,
+      "retefuente_compras_declarante": 0.025,
+      "retefuente_compras_no_declarante": 0.035,
+      "retefuente_servicios_declarante": 0.04,
+      "autorretencion_renta_normal": 0.025,
+      "autorretencion_renta_no_declarante": 0.035,
+      "autorretencion_especial": 0.0055,
+      "reteiva": 0.15,
+      "reteica_bucaramanga_x_mil": 9.6,
+      "avisos_y_tableros": 0.15,
+      "sobretasa_bomberil": 0.1
+    }
+  },
+  "puc": [
+    {
+      "codigo": "1",
+      "nombre": "ACTIVOS",
+      "nivel": "Clase",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "11",
+      "nombre": "Efectivos y equivalentes al efectivo",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1105",
+      "nombre": "CAJA",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "110505",
+      "nombre": "Caja general",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "11050501",
+      "nombre": "Carlos Eduardo 83.540.201",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "11050502",
+      "nombre": "Marco Aurelo 83.630.202",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "11050503",
+      "nombre": "Industrias super Nit. 950.240.208",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "110510",
+      "nombre": "Caja Menor",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "11051001",
+      "nombre": "Andrea Rojas Jiménez 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1110",
+      "nombre": "BANCOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "111005",
+      "nombre": "Moneda Nacional",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "11100501",
+      "nombre": "Bancolombia 890.903.938-8",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "111010",
+      "nombre": "Moneda Extranjera",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1115",
+      "nombre": "REMESAS EN TRANSITO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1120",
+      "nombre": "CUENTAS DE AHORRO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "112005",
+      "nombre": "Bancos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "112010",
+      "nombre": "Corporaciones de ahorro y vivienda",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1130",
+      "nombre": "EQUIVALENTES AL EFECTIVO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "113005",
+      "nombre": "Inversiones a corto plazo (90 días)",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "113010",
+      "nombre": "Inversiones por redimir",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "12",
+      "nombre": "Instrumentos Financieros",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1205",
+      "nombre": "ACCIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "120505",
+      "nombre": "Inversiones en subsidiarias",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "120530",
+      "nombre": "Inversiones en asociadas",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "120535",
+      "nombre": "Inversiones en negocios conjuntos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1210",
+      "nombre": "CUOTAS O PARTES DE INTERES SOCIAL",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "121005",
+      "nombre": "Inversiones en subsidiarias",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "121030",
+      "nombre": "Inversiones en asociadas",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "121035",
+      "nombre": "Inversiones en negocios conjuntos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1215",
+      "nombre": "BONOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "121515",
+      "nombre": "Bonos ordinarios",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "121525",
+      "nombre": "Bonos convertibles en acciones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1220",
+      "nombre": "CEDULAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1225",
+      "nombre": "CERTIFICADOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1230",
+      "nombre": "PAPELES COMERCIALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1240",
+      "nombre": "ACEPTACIONES BANCARIAS O FINANCIERAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1245",
+      "nombre": "DERECHOS FIDUCIARIOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1250",
+      "nombre": "DERECHOS DE RECOMPRA DE INVERSIONES NEGOCIADAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1255",
+      "nombre": "OBLIGATORIAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1260",
+      "nombre": "CUENTAS EN PARTICIPACIÓN",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1295",
+      "nombre": "OTRAS INVERSIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1299",
+      "nombre": "DETERIORO DEL VR EN INVERSIONES (CR)",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13",
+      "nombre": "Deudores comerciales y otra CXC",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1305",
+      "nombre": "CLIENTES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "130505",
+      "nombre": "Nacionales",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13050501",
+      "nombre": "Industrias super Nit. 950.240.208",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13050502",
+      "nombre": "El Marquez de la 9 NIT 880.472.209",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13050503",
+      "nombre": "Jaime Salas Mora CC. 35.258.211",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13050504",
+      "nombre": "Horacio Diaz Paez CC. 12.080.357",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1310",
+      "nombre": "CUENTAS CORRIENTES COMERCIALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1315",
+      "nombre": "CXC A CASA MATRIZ",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1320",
+      "nombre": "CXC A VINCULADOS ECONOMICOS O PARTES RELACIONADAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1323",
+      "nombre": "CXC A DIRECTORES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1325",
+      "nombre": "CXC A SOCIOS Y ACCIONISTAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1328",
+      "nombre": "APORTES POR COBRAR",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1330",
+      "nombre": "ANTICIPOS (CXC NO FINANCIERAS)",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "133005",
+      "nombre": "A proveedores",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13300501",
+      "nombre": "Electrodomesticos Cra 13 nit 850.251.207",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13300502",
+      "nombre": "La Casa Orange & Cia Nit. 890.905.290",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "133010",
+      "nombre": "A contratistas",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "133015",
+      "nombre": "A trabajadores",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "133017",
+      "nombre": "A conseciones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "133030",
+      "nombre": "Por intereses",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "133035",
+      "nombre": "Por comisiones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "133040",
+      "nombre": "Por arrendamientos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "133045",
+      "nombre": "Por servicios",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "133050",
+      "nombre": "Por seguros",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "133055",
+      "nombre": "Por honorarios",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "133060",
+      "nombre": "Por mantenimientos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "133065",
+      "nombre": "Por suscripciones y afiliaciones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "133070",
+      "nombre": "Publicidad, propaganda y promoción",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1332",
+      "nombre": "CUENTAS EN NEGOCIOS CONJUNTOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1335",
+      "nombre": "DEPÓSITOS REALIZADOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1340",
+      "nombre": "PROMESAS DE COMPRAVENTA",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1345",
+      "nombre": "INGRESOS POR COBRAR",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1350",
+      "nombre": "RETENCIÓN SOBRE CONTRATOS POR TERCEROS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1355",
+      "nombre": "ANTICIPO DE IMPUESTOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "135505",
+      "nombre": "Anticipo de impuestos de renta",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "135510",
+      "nombre": "Anticipo de impuesto de industria y comercio",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "135515",
+      "nombre": "Retención en la fuente",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13551501",
+      "nombre": "Industrias super Nit. 950.240.208",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "135517",
+      "nombre": "Anticipo por impuesto a las ventas retenido (Reteiva)",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13551701",
+      "nombre": "Industrias super Nit. 950.240.208",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "135518",
+      "nombre": "Impuesto de industrica y comercio",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13551801",
+      "nombre": "Industrias super Nit. 950.240.208",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13551802",
+      "nombre": "El Marquez de la 9 NIT 880.472.209",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "135519",
+      "nombre": "IVA a favor del periodo",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "135520",
+      "nombre": "Avisos y tableros",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13552001",
+      "nombre": "Industrias super Nit. 950.240.208",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13552002",
+      "nombre": "El Marquez de la 9 NIT 880.472.209",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "135525",
+      "nombre": "Sobretasa bomberil",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13552501",
+      "nombre": "Industrias super Nit. 950.240.208",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13552502",
+      "nombre": "El Marquez de la 9 NIT 880.472.209",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "135530",
+      "nombre": "Autorretención Especial",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "135575",
+      "nombre": "Autorretención normal",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13557501",
+      "nombre": "Industrias super Nit. 950.240.208",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13557502",
+      "nombre": "El Marquez de la 9 NIT 880.472.209",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13557503",
+      "nombre": "Jaime Salas Mora CC. 35.258.211",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13557504",
+      "nombre": "Horacio Diaz Paez CC. 12.080.357",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1360",
+      "nombre": "RECLAMACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1365",
+      "nombre": "CUENTAS POR COBRAR A TRABAJADORES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "136510",
+      "nombre": "Vivienda",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "136530",
+      "nombre": "Responsabilidades",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "136540",
+      "nombre": "Otros Conceptos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1370",
+      "nombre": "PRESTAMOS A PARTICULARES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1380",
+      "nombre": "DEUDORES VARIOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1385",
+      "nombre": "DERECHOS DE COMPRA DE CARTERA",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1390",
+      "nombre": "DEUDAS DE DIFICIL COBRO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1399",
+      "nombre": "DETERIORO DEUDORES COMERCIALES Y OTRAS CXC",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "139905",
+      "nombre": "Deudores comerciales (clientes)",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "13990501",
+      "nombre": "Jaime Salas Mora CC.35.258.211",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "14",
+      "nombre": "Inventarios",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1405",
+      "nombre": "MATERIAS PRIMAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1410",
+      "nombre": "PRODUCTOS EN PROCESO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1415",
+      "nombre": "OBRAS DE CONSTRUCCIÓN EN CURSO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1417",
+      "nombre": "OBRAS DE URBANISMO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1420",
+      "nombre": "CONTRATOS EN EJECUCIÓN",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1425",
+      "nombre": "INVENTARIOS BIOLÓGICOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1430",
+      "nombre": "PRODUCTOS TERMINADOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1435",
+      "nombre": "MERCANCÍA NO FABRICADA POR LA EMPRESA",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "143505",
+      "nombre": "Electrodomesticos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "14350501",
+      "nombre": "Kardex ref 01 Nevera Samsung 12 pies",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "14350502",
+      "nombre": "Kardex TV LG 70\"smart 3D",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "14350503",
+      "nombre": "Kardex Lavadora Sec AIWA",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "14350504",
+      "nombre": "Kardex Microondas LG",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1440",
+      "nombre": "BIENES RAÍCES PARA LA VENTA",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1450",
+      "nombre": "TERRENOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1455",
+      "nombre": "MATERIALES REPUESTOS Y ACCESORIOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1460",
+      "nombre": "INVENTARIOS PARA CONSUMO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1465",
+      "nombre": "INVENTARIOS EN TRÁNSITO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1470",
+      "nombre": "CRIPTOACTIVOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1475",
+      "nombre": "ACTIVOS NO CORRIENTES PARA LA VENTA",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1495",
+      "nombre": "OTROS INVENTARIOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1499",
+      "nombre": "DETERIORO DE INVENTARIOS (CR)",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "15",
+      "nombre": "Propiedad, planta y equipo",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1504",
+      "nombre": "TERRENOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "150405",
+      "nombre": "Urbano",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "15040501",
+      "nombre": "Calle 45 N° 12-50",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "15040502",
+      "nombre": "Calle 85 N° 15-80",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1506",
+      "nombre": "MATERIALES PROYECTOS PETROLEROS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1508",
+      "nombre": "CONSTRUCCIONES EN CURSO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1512",
+      "nombre": "MAQUINARIA Y EQUIPO EN MONTAJE",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1516",
+      "nombre": "CONSTRUCCIONES Y EDIFICACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "151605",
+      "nombre": "Edificios",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "15160501",
+      "nombre": "Local- calle 85 No 15-80",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1520",
+      "nombre": "MÁQUINARIA Y EQUIPO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1524",
+      "nombre": "EQUIPO DE OFICINA",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1528",
+      "nombre": "EQUIPO DE COMUNICACIÓN Y COMPUTACIÓN",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1532",
+      "nombre": "EQUIPO MÉDICO CIENTÍFICO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1536",
+      "nombre": "EQUIPO DE HOTELES Y RESTAURANTES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1540",
+      "nombre": "FLOTA Y EQUIPO DE TRANSPORTE",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "154005",
+      "nombre": "Autos, camionetas y camperos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "15400501",
+      "nombre": "Camioneta chevrolet DIMAX  HBA005",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1544",
+      "nombre": "FLOTA Y EQUIPO FLUVIAL Y O MARITIMO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1548",
+      "nombre": "FLOTA Y EQUIPO AEREO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1556",
+      "nombre": "ACUEDUCTO PLANTA Y REDES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1560",
+      "nombre": "ARMAMENTO Y VIGILANCIA",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1562",
+      "nombre": "EMVASES Y EMPAQUES (RETORNABLES)",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1564",
+      "nombre": "PLANTAS PRODUCTORAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1568",
+      "nombre": "VÍAS DE COMUNICACIÓN",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1570",
+      "nombre": "PROPIEDADES DE INVERSIÓN",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1572",
+      "nombre": "ACTIVOS TANGILES CON EXPLORACIÓN Y EVALUACIÓN",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1577",
+      "nombre": "ACTIVOS POR DERECHO DE USO (NIIF 16)",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1578",
+      "nombre": "ACTIVOS EN ARRENDAMIENTOS (NIIF 16)",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1582",
+      "nombre": "ACTIVOS BIOLÓGICOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1584",
+      "nombre": "SEMOVIENTES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1588",
+      "nombre": "PROPIEDAD PLANTA Y EQUIPO EN PROCESO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1592",
+      "nombre": "DEPRECIÓN ACUMULADA ACTIVOS (CR)",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "159205",
+      "nombre": "Construcciones y edificaciones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "15920501",
+      "nombre": "Local- calle 85 No 15-80",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "159210",
+      "nombre": "Maquinaria y equipo",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "159215",
+      "nombre": "Equipo de oficina",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "159220",
+      "nombre": "Equipo de computación y comunicación",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "159235",
+      "nombre": "Flota y equipo de transporte",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "15923501",
+      "nombre": "HBA005",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1597",
+      "nombre": "AMORTIZACIÓN Y/O AGOTAMIENTO ACUMULADO (CR)",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1598",
+      "nombre": "REEVALUACIÓN",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1599",
+      "nombre": "DETERIORO DE PP Y EQUIPO (CR)",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "16",
+      "nombre": "Intangibles y Plusvalía",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1603",
+      "nombre": "CRIPTOAPTIVOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1605",
+      "nombre": "PLUSVALIA",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1615",
+      "nombre": "PATENTES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1620",
+      "nombre": "CONCESIONES Y FRANQUISIAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1625",
+      "nombre": "DERECHOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1635",
+      "nombre": "LICENCIAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1640",
+      "nombre": "INTANGIBLES POR DERECHO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1697",
+      "nombre": "AMORTIZACIÓN ACUMULADA",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1698",
+      "nombre": "REVALUACIÓN",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1699",
+      "nombre": "DETERIORO DE INTANGIBLES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "17",
+      "nombre": "Activos Diferidos",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1705",
+      "nombre": "ANTICIPOS DIFERIDOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1710",
+      "nombre": "ACTIVOS POR IMPUESTOS DIFERIDOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "18",
+      "nombre": "Activos diversos",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1805",
+      "nombre": "BIENES DE ARTE Y CULTURA",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1825",
+      "nombre": "FONDOS ESPECIALES (EFECTIVO RESTRINGIDO)",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1840",
+      "nombre": "COSTOS DE EXPLORACIÓN Y EVALUACIÓN",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1895",
+      "nombre": "OTROS ACTIVOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1898",
+      "nombre": "AMORTIZACIÓN ACUMULADA",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "1899",
+      "nombre": "PÉRDIDAS POR DETERIOROS DE ACTIVOS DIVERSOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "2",
+      "nombre": "PASIVOS",
+      "nivel": "Clase",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "21",
+      "nombre": "Pasivos Financieros",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2105",
+      "nombre": "BANCOS NACIONALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "210505",
+      "nombre": "Sobregiros",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "21050501",
+      "nombre": "Bancolombia 890.903.938-8",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "210510",
+      "nombre": "Pagaré",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "21051001",
+      "nombre": "Bancolombia 890.903.938-8",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "210515",
+      "nombre": "Cartas de crédito",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "210520",
+      "nombre": "Aceptaciones bancarias",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2110",
+      "nombre": "BANCO DEL EXTERIOR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2115",
+      "nombre": "CORPORACIONES FINANCIERAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2120",
+      "nombre": "COMPAÑIAS DE FINANCIAMIENTO COMERCIAL",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2125",
+      "nombre": "CORPORACIONES DE AHORRO Y VIVIENDA",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2130",
+      "nombre": "ENTIDADES FINANCIERAS DEL EXTERIOR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2135",
+      "nombre": "COMPROMISOS DE COMPRA DE INVRSIONES NEGOCIADAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2140",
+      "nombre": "COMPROMISOS DE COMPRA DE CARTERA NEGOCIADA",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2145",
+      "nombre": "OBLIGACIONES GUBERNAMENTALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2150",
+      "nombre": "BONOS Y PAPELES COMERCIALES EMITIDOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2195",
+      "nombre": "OTRAS OBLIGACIONES FINANCIERAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "22",
+      "nombre": "Acreedores Comerciales (Proveedores)",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2205",
+      "nombre": "PROVEEDORES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "220505",
+      "nombre": "Nacionales",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "22050501",
+      "nombre": "Electrodomesticos cra 13 Nit. 850.251.207",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "22050502",
+      "nombre": "Electromenores NIT 75.260.210",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "22050503",
+      "nombre": "La Casa Orange & Cia Nit. 890.905.290",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "220510",
+      "nombre": "Extranjeros",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2210",
+      "nombre": "PROVEEDORES DE EXTERIOR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2215",
+      "nombre": "CUENTAS CORRIENTES COMERCIALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2220",
+      "nombre": "CASA MATRIZ",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2225",
+      "nombre": "COMPAÑÍA VINCULADAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "23",
+      "nombre": "Cuentas Por Pagar",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2305",
+      "nombre": "CUENTAS CORRIENTES COMERCIALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "230505",
+      "nombre": "Compras",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "23050501",
+      "nombre": "Supertiendas SAO Nit 880.114.206",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2310",
+      "nombre": "CASA MATRIZ",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2315",
+      "nombre": "A COMPAÑÍA VINCULADAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2320",
+      "nombre": "A CONTRATISTAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "232005",
+      "nombre": "Remodelación e instalaciones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "23200501",
+      "nombre": "Rafael Suarez CC 75.050.205",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2324",
+      "nombre": "DEPOSITOS RECIBIDOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "232405",
+      "nombre": "Para garantía de contratos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "232410",
+      "nombre": "En prestación de servicios",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "232415",
+      "nombre": "Anticipos por mercancías",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2325",
+      "nombre": "INGRESOS RECIBIDOS PARA TERCEROS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2326",
+      "nombre": "RETENCIONES A TERCEROS SOBRE CONTRATOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2327",
+      "nombre": "EMBARGOS JUDICIALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2328",
+      "nombre": "CUENTAS EN PARTICIPACION",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2330",
+      "nombre": "ORDENES DE COMPRA POR UTILIZAR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2335",
+      "nombre": "COSTOS Y GASTOS POR PAGAR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "233505",
+      "nombre": "Gastos financieros",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "233520",
+      "nombre": "Comisiones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "233525",
+      "nombre": "Honorarios",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "233530",
+      "nombre": "Servicios técnicos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "233535",
+      "nombre": "Serviios de mantenimiento",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "233540",
+      "nombre": "Arrendamientos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "233545",
+      "nombre": "Compras",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "23354501",
+      "nombre": "Supertiendas SAO Nit 880.114.206",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "233550",
+      "nombre": "Servicios públicos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "233555",
+      "nombre": "Remodelación e instalaciones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "233595",
+      "nombre": "Otros",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2340",
+      "nombre": "INTALAMENTOS POR PAGAR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2345",
+      "nombre": "ACREEDORES OFICIALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2350",
+      "nombre": "REGALIAS POR PAGAR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2355",
+      "nombre": "DEUDAS CON SOCIOS O ACCIONISTAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2357",
+      "nombre": "DEUDAS CON DIRECTORES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2360",
+      "nombre": "DIVIDENDO O PARTICIPACIONES POR PAGAR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2375",
+      "nombre": "CUOTAS POR DEVOLVER",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2380",
+      "nombre": "ACREEDORES VARIOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2395",
+      "nombre": "OTRAS CUENTAS POR PAGAR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24",
+      "nombre": "Impuestos, Gravámenes y Tasas",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2404",
+      "nombre": "PASIVOS POR IMPUESTOS CORRIENTES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2406",
+      "nombre": "IMPUESTOS A LA RIQUEZA",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2408",
+      "nombre": "IMPUESTOS A LAS VENTAS POR PAGAR - IVA",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "240805",
+      "nombre": "IVA generado en ventas y servicios",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "240808",
+      "nombre": "IVA por devoluciones en ventas(DB)",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "240810",
+      "nombre": "IVA descontable en compras (DB)",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "240812",
+      "nombre": "IVA por devolución en compras (CR)",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2412",
+      "nombre": "DE INDUSTRIA Y COMERCIO GENERADO - ICA",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2415",
+      "nombre": "IMPUESTOS NACIONAL AL CONSUMO",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2416",
+      "nombre": "IMPUESTO A LA PROPIEDAD RAIZ",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2424",
+      "nombre": "DE VALORIZACION",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2428",
+      "nombre": "DE TURISMO",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2432",
+      "nombre": "TASA POR UTILIZACION DE PUERTOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2436",
+      "nombre": "DE VEHICULOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2440",
+      "nombre": "DE ESPECTACULOS PUBLICOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2444",
+      "nombre": "DE HIDROCARBUROS Y MINAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2448",
+      "nombre": "A LA PEQUEÑA Y MEDIANA MINERIA",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2452",
+      "nombre": "A LAS EXPORTACIONES CAFETERAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2456",
+      "nombre": "A LA IMPORTACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2460",
+      "nombre": "CUOTAS DE FOMENTO",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2464",
+      "nombre": "DE LICORES, CERVEZAS Y CIGARRILLOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2465",
+      "nombre": "RETENCION EN LA FUENTE IMP.DE RENTA RETENIDO A TERCEROS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "246505",
+      "nombre": "Salarios y pagos laborales",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24650501",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "246515",
+      "nombre": "Honorarios",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "246520",
+      "nombre": "Comisiones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "246525",
+      "nombre": "Servicios",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24652501",
+      "nombre": "Rafael Suarez CC 75.050.205",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "246530",
+      "nombre": "Arrendamientos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "246540",
+      "nombre": "Compras",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24654001",
+      "nombre": "Electrodomesticos Cra 13 Nit. 850.251.207",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24654002",
+      "nombre": "Electromenores NIT 75.260.210",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24654003",
+      "nombre": "La Casa Orange & Cia Nit. 890.905.290",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "246575",
+      "nombre": "Autorretenciones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24657501",
+      "nombre": "Industrias super Nit. 950.240.208",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24657502",
+      "nombre": "El Marquez de la 9 NIT 880.472.209",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24657503",
+      "nombre": "Jaime Salas Mora CC. 35.258.211",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24657504",
+      "nombre": "Horacio Díaz Paez CC. 12.080.357",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "246580",
+      "nombre": "Autorretención Especial",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2467",
+      "nombre": "IMPUESTO DE IVA RETENIDO A TERCEROS. RETEIVA",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "246705",
+      "nombre": "Reteiva",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2468",
+      "nombre": "IMPUESTO DE ICA RETENIDO A TERCEROS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "246801",
+      "nombre": "Reteica",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24680101",
+      "nombre": "Rafael Suarez CC 75.050.205",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24680102",
+      "nombre": "Electrodomesticos Cra 13 Nit. 850.251.207",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24680103",
+      "nombre": "Electromenores NIT 75.260.210",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24680104",
+      "nombre": "La Casa Orange & Cia Nit. 890.905.290",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "246802",
+      "nombre": "Avisos y tableros",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24680201",
+      "nombre": "Rafael Suarez CC 75.050.205",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24680202",
+      "nombre": "Electrodomesticos Cra 13 Nit. 850.251.207",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24680203",
+      "nombre": "Electromenores NIT 75.260.210",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24680204",
+      "nombre": "La Casa Orange & Cia Nit. 890.905.290",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "246803",
+      "nombre": "Sobretasa bomberil",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24680301",
+      "nombre": "Rafael Suarez CC 75.050.205",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24680302",
+      "nombre": "Electrodomesticos Cra 13 Nit. 850.251.207",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24680303",
+      "nombre": "Electromenores NIT 75.260.210",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "24680304",
+      "nombre": "La Casa Orange & Cia Nit. 890.905.290",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2472",
+      "nombre": "AL AZAR Y JUEGOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2476",
+      "nombre": "POR UTILIZACION DEL SUELO",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2480",
+      "nombre": "IMPUESTO A LAS BEBIDAS ULTRAPROCESADAS AZUCARADAS (IBUA)",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2481",
+      "nombre": "IMPUESTOS A PRODUCTOS COMESTIBLES ULTRAPROCESADOS INDUSTRIALMENTE (ICUI)",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2482",
+      "nombre": "IMPUESTO AL PLASTICO DE UN SOLO USO",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2499",
+      "nombre": "PROVISIÓN PARA OBLIGACIONES FISCALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "249905",
+      "nombre": "Para Renta y complementarios",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "249910",
+      "nombre": "Para Industria y Comercio",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25",
+      "nombre": "Pasivos por beneficios empleados",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2505",
+      "nombre": "SALARIO POR PAGAR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "250505",
+      "nombre": "Sueldo o jornal",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25050501",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25050502",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25050503",
+      "nombre": "Andrea Rojas Jiménez 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "250510",
+      "nombre": "Horas extras y recargos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25051001",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25051002",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25051003",
+      "nombre": "Andrea Rojas Jiménez 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "250520",
+      "nombre": "Auxilio de transporte",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25052001",
+      "nombre": "Andrea Rojas Jiménez 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2510",
+      "nombre": "CESANTIAS POR PAGAR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "251005",
+      "nombre": "Cesantías",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25100501",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2515",
+      "nombre": "INTERESES SOBRE LAS CESANTIAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "251505",
+      "nombre": "Intereses",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25150501",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2520",
+      "nombre": "PRIMA DE SERVICIOS POR PAGAR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "252005",
+      "nombre": "Prima",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25200501",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2525",
+      "nombre": "VACACIONES POR PAGAR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "252505",
+      "nombre": "Vacaciones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25250501",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2530",
+      "nombre": "PRESTACIONES EXTRALEGALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2532",
+      "nombre": "PENSIONES POR PAGAR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2535",
+      "nombre": "CUOTAS PARTES PENSIONES DE JUBILICION",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2570",
+      "nombre": "RETENCIONES Y APORTES DE NOMINA",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "257005",
+      "nombre": "A entidades promotoras de salud, EPS",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25700501",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25700502",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25700503",
+      "nombre": "Andrea Rojas Jiménez CC.36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "257006",
+      "nombre": "A administradoras de riesgos lab. ARL",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25700601",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25700602",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25700603",
+      "nombre": "Andrea Rojas Jiménez CC. 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "257010",
+      "nombre": "Aportes a SENA, ICBF y CCF",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25701001",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25701002",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25701003",
+      "nombre": "Andrea Rojas Jiménez  CC.36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "257060",
+      "nombre": "A fondo de solidaridad pensional",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25706001",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2580",
+      "nombre": "FONDO DE PENSIONES Y CESANTIAS X PAGAR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "258005",
+      "nombre": "Aportes obligatorios a pensión",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25800501",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25800502",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25800503",
+      "nombre": "Andrea Rojas Jiménez CC. 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "258015",
+      "nombre": "A fondos de solidaridad",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "25801501",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2590",
+      "nombre": "PROVISIONES POR BENEFICIOS A EMPLEADOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "26",
+      "nombre": "Provisiones y Pasivos estimados",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2605",
+      "nombre": "PARA COSTOS Y GASTOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2610",
+      "nombre": "PROVISIÓN PARA OBLIGACIONES LABORALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "261005",
+      "nombre": "Cesantías",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "26100501",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "26100502",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "26100503",
+      "nombre": "Andrea Rojas Jiménez CC. 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "261010",
+      "nombre": "Intereses sobre cesantías",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "26101001",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "26101002",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "26101003",
+      "nombre": "Andrea Rojas Jiménez CC.36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "261015",
+      "nombre": "Prima",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "26101501",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "26101502",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "26101503",
+      "nombre": "Andrea Rojas Jiménez CC.36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "261020",
+      "nombre": "Vacaciones consolidadas",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "26102001",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "26102002",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "26102003",
+      "nombre": "Andrea Rojas Jiménez CC. 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2630",
+      "nombre": "PARA MANTENIMIENTO Y REPARACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2635",
+      "nombre": "PARA DEMANDAS Y PROCESOS POR RESOLVER",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2640",
+      "nombre": "PARA OBLIGACIONES DE GARANTIAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2695",
+      "nombre": "PROVISIONES DIVERSAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "27",
+      "nombre": "Pasivos Diferidos",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2705",
+      "nombre": "INGRESOS RECIBIDOS POR ANTICIPADO",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "270565",
+      "nombre": "De clientes",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "27056501",
+      "nombre": "Industrias Super Nit. 950.240.208",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "27056502",
+      "nombre": "Horacio Díaz Paez CC. 12.080.357",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2725",
+      "nombre": "IMPUESTOS DIFERIDOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "28",
+      "nombre": "PASIVOS DIVERSOS",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2805",
+      "nombre": "ANTICIPOS Y AVANCES  RECIBIDOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "280505",
+      "nombre": "De clientes",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "28050501",
+      "nombre": "Industrias Super Nit. 950.240.208",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "28050502",
+      "nombre": "Horacio Díaz Paez CC. 12.080.357",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2870",
+      "nombre": "2870 SUBVENCIONES ( AYUDAS) DEL GOBIERNO",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "2895",
+      "nombre": "2895 OTROS PASIVOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3",
+      "nombre": "PATRIMONIO",
+      "nivel": "Clase",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "31",
+      "nombre": "Capital Social",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3105",
+      "nombre": "CAPITAL SUSCRITO Y PAGADO",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "310505",
+      "nombre": "Capital Autorizado",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "310510",
+      "nombre": "Capital por suscribir (DB)",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "310515",
+      "nombre": "Capital suscrito por cobrar (DB)",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "31051501",
+      "nombre": "Carlos Eduardo 83.540.201",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "31051502",
+      "nombre": "Marco Aurelio 83.630.202",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3115",
+      "nombre": "APORTES SOCIALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3120",
+      "nombre": "CAPITAL ASIGNADO",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3125",
+      "nombre": "INVERSION SUPLEMENTARIA",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3130",
+      "nombre": "CAPITAL DE PERSONAS NATURALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3140",
+      "nombre": "FONDO SOCIAL",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "32",
+      "nombre": "SUPERAVIT DE CAPITAL",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3205",
+      "nombre": "PRIMA EN COLACION DE ACCIONES, CUOTA O PARTE DE INTERES SOCIAL",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3210",
+      "nombre": "DONACION",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3215",
+      "nombre": "PLUVALIA",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3220",
+      "nombre": "KNOW HOW",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3225",
+      "nombre": "SUPERAVOT METODO DE PARTICIPACION",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "33",
+      "nombre": "Reservas",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3305",
+      "nombre": "RESERVAS OBLIGATORIAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "330505",
+      "nombre": "Reserva Legal",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3310",
+      "nombre": "RESERVAS ESTATUTARIAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3315",
+      "nombre": "RESERVAS OCACIONALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "35",
+      "nombre": "DIVIDENDOS O PARTICIPACIONES DECRETADOS EN ACCIONES CUOTAS O PARTES DE INTERES SOCIAL",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3505",
+      "nombre": "DIVIDENDOS DECRETADOS EN ACCIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3510",
+      "nombre": "PARTICIPACIONES DECRETADAS EN CUOTAS O PARTES DEL INTERES SOCIAL",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "36",
+      "nombre": "Resultados del Ejercicio",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3605",
+      "nombre": "UTILIDAD DEL EJERCICIO",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "360505",
+      "nombre": "Del periodo",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3610",
+      "nombre": "PERDIDA DEL EJERCICIO",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "361005",
+      "nombre": "Del periodo",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "37",
+      "nombre": "Resultados de Ejercicios Anteriores",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3705",
+      "nombre": "UTILIDADES ACUMULADAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3710",
+      "nombre": "PERDIDAS ACUMULADAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "371005",
+      "nombre": "Periodos anteriores",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "37100501",
+      "nombre": "De enero",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "38",
+      "nombre": "Otro Resultado Integral (ORI)",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3805",
+      "nombre": "POR VARIACION EN VALOR RAZONABLE DE INVERSIONES CON CAMBIOS EN ORI",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3810",
+      "nombre": "SUPERÁVIT POR REVALUACION DE ACTIVOS FIJOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3820",
+      "nombre": "POR DIFERENCIA EN CAMBIO EN CONVERSIÓN DE ESTADOS FINANCIEROS DE NEGOCIOS EN EL EXTRANJERO",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "3825",
+      "nombre": "POR NUEVAS MEDICIONES ACTUARIALES EN PLANES DE BENEFICIOSPOR RETIRO",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4",
+      "nombre": "INGRESOS",
+      "nivel": "Clase",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "41",
+      "nombre": "Ingresos Ordinarios",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4105",
+      "nombre": "AGRICULTURA, GANADERIA , CASA, Y SILVICULTURA",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4110",
+      "nombre": "PESCA",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4115",
+      "nombre": "EXPLOTACION DE MINAS Y CANTERAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4120",
+      "nombre": "INDUSTRIAS MANUFACTURERA",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4130",
+      "nombre": "CONTRUCCIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4135",
+      "nombre": "COMERCIO AL POR MAYOR Y POR MENOR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "413505",
+      "nombre": "Venta electrodomesticos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4140",
+      "nombre": "HOTELES Y RESTAURANTE",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4145",
+      "nombre": "TRANSORTE Y ALMACENAMIENTO Y COMUNICACIÓN",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4150",
+      "nombre": "ACTIVIDAD Y FINANCIERA",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4155",
+      "nombre": "ACTIVIDADES INMOVILIARIAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4160",
+      "nombre": "ENSEÑANZA",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4165",
+      "nombre": "SERVICIOS SOCIALES Y DE SALUD",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4170",
+      "nombre": "OTRAS ACTIVIDADES COMUNITARIAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4171",
+      "nombre": "CONSULTORIA",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4175",
+      "nombre": "DEVOLUCIONES Y DESCUENTO EN VENTA (DB)",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "417505",
+      "nombre": "Descuentos comerciales condicionados",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "417510",
+      "nombre": "Por rebajas en ventas (DB)",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "417515",
+      "nombre": "Por devoluciones en ventas (DB)",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "41751501",
+      "nombre": "Industrias Super Nit. 950.240.208",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "41751502",
+      "nombre": "Horacio Díaz Paez CC.12.080.357",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4195",
+      "nombre": "DIVERSOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "42",
+      "nombre": "Ganancias (ingresos no ordinarios)",
+      "nivel": "Grupo",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4205",
+      "nombre": "OTRAS VENTAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4210",
+      "nombre": "FINANCIEROS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "421005",
+      "nombre": "Intereses",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "421010",
+      "nombre": "Diferencia en cambio",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "421040",
+      "nombre": "Descuentos condicionales pronto pago",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "42104001",
+      "nombre": "Electrodomesticos cra 13 Nit. 850.251.207",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "42104002",
+      "nombre": "La Casa Orange & Cia Nit. 890.905.290",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "421045",
+      "nombre": "Descuentos bancarios",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "421050",
+      "nombre": "Excedentes",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "421055",
+      "nombre": "Sobrantes de caja",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "421060",
+      "nombre": "Ajuste al peso",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4215",
+      "nombre": "DIVIDIDENDO Y PARTICIPACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4218",
+      "nombre": "INGRESOS Y METODOS DE PARTICIPACION",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4220",
+      "nombre": "ARRENTAMIENTO",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4225",
+      "nombre": "COMISIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4230",
+      "nombre": "HONORARIOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4235",
+      "nombre": "SERVICIOS SOCIALES Y DE SALUD",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4240",
+      "nombre": "GANANCIAS UTILIDADES EN VENTA DE INVERSIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4245",
+      "nombre": "GANANCIAS EN VENTA PROPIEDAD PLATA Y EQUIPO",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4248",
+      "nombre": "GANANCIAS EN VENTA DE OTROS BIENES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4250",
+      "nombre": "RECUPERACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4255",
+      "nombre": "INDEMNIZACION",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4260",
+      "nombre": "PARTICIPACIONES EN COCEMCIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4265",
+      "nombre": "INGRESOS DE EJERCICIOS ANTERIOR",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4275",
+      "nombre": "DEVOLUCIONES EN OTRA VENTAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4285",
+      "nombre": "INGRESOS POR DIFERENCIA EN VALOR RAZONABLE",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4290",
+      "nombre": "INGRESOS POR REVERSION DE DETERIORO DE ACTIVO",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "4295",
+      "nombre": "DIVERSOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "429581",
+      "nombre": "Ajuste al peso",
+      "nivel": "Subcuenta",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "42958101",
+      "nombre": "na",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "42958102",
+      "nombre": "na",
+      "nivel": "Auxiliar",
+      "naturaleza": "Crédito"
+    },
+    {
+      "codigo": "5",
+      "nombre": "GASTOS",
+      "nivel": "Clase",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51",
+      "nombre": "Gastos de administración Ordinarios",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5105",
+      "nombre": "BENEFICIOS A EMPLEADOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "510506",
+      "nombre": "Sueldos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51050601",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51050602",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51050603",
+      "nombre": "Andrea Rojas Jiménez 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "510515",
+      "nombre": "Horas extras y recargos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51051501",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51051502",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51051503",
+      "nombre": "Andrea Rojas Jiménez 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "510527",
+      "nombre": "Auxilio de transporte",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51052701",
+      "nombre": "Andrea Rojas Jiménez 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "510530",
+      "nombre": "Cesantías",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51053001",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51053002",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51053003",
+      "nombre": "Andrea Rojas Jiménez 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "510533",
+      "nombre": "Instereses sobre cesantías",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51053301",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51053302",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51053303",
+      "nombre": "Andrea Rojas Jiménez 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "510536",
+      "nombre": "Prima de servicios",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51053601",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51053602",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51053603",
+      "nombre": "Andrea Rojas Jiménez 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "510539",
+      "nombre": "Vacaciones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51053901",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51053902",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51053903",
+      "nombre": "Andrea Rojas Jiménez 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "510568",
+      "nombre": "Aportes a entidades de riesgos lab. ARL",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51056801",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51056802",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51056803",
+      "nombre": "Andrea Rojas Jiménez 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "510569",
+      "nombre": "A entidades promotoras de salud. EPS",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51056901",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "510570",
+      "nombre": "Aportes a fondos de pensión y/o cesantías",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51057001",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51057002",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51057003",
+      "nombre": "Andrea Rojas Jiménez 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "510572",
+      "nombre": "Aportes a Cajas de compensación familiar",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51057201",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51057202",
+      "nombre": "Maria Peña Suaza CC. 51.212.224",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51057203",
+      "nombre": "Andrea Rojas Jiménez 36.025.225",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "510575",
+      "nombre": "Aportes al ICBF",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51057501",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "510578",
+      "nombre": "Aportes al SENA",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51057801",
+      "nombre": "Esperanza Contreras CC.12.012.223",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5110",
+      "nombre": "HONORARIOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5113",
+      "nombre": "PERDIDAS POR METODO DE REPARACIÓN",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5115",
+      "nombre": "IMPUESTOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "511505",
+      "nombre": "Industria y Comercio",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "511515",
+      "nombre": "A la propiedad raíz",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "511525",
+      "nombre": "De valorización",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "511540",
+      "nombre": "De vehículos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "511565",
+      "nombre": "Gravamén Movimientos Financieros GMF",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51156501",
+      "nombre": "Bancolombia 890.903.938-8",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "511570",
+      "nombre": "IVA descontable",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "511595",
+      "nombre": "Otros impuestos identificados",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5120",
+      "nombre": "ARRENDAMIENTOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5125",
+      "nombre": "CONTRIBUCIONES Y AFILIACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5130",
+      "nombre": "SEGUROS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5135",
+      "nombre": "SERVICIOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "513505",
+      "nombre": "Aseo y vigilancia",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "513510",
+      "nombre": "Temporales",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "513515",
+      "nombre": "Asistencia técnica",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "513520",
+      "nombre": "Procesamiento electrónico de datos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "513525",
+      "nombre": "Acueducto y alcantarillado",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "513530",
+      "nombre": "Energía eléctrica",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "513535",
+      "nombre": "Teléfono e internet",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "513540",
+      "nombre": "Correo, portes y mensajería",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "513550",
+      "nombre": "Transportes, fletes y acarreos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "513595",
+      "nombre": "Otros servicios identificados",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5140",
+      "nombre": "GASTOS LEGALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5145",
+      "nombre": "MANTENIMIENTO Y REPARACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "514505",
+      "nombre": "Terrenos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "514510",
+      "nombre": "Maquinaria y equipo",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "514515",
+      "nombre": "Equipo de oficina",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "514520",
+      "nombre": "Equipo de computación y comunicación",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "514535",
+      "nombre": "Equipo de hoteles y restaurante",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "514540",
+      "nombre": "Flota y equipo de transporte",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "514550",
+      "nombre": "Flota y equipo aereo",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "514555",
+      "nombre": "Flota y equipo fluvial y/o marítimo",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "514560",
+      "nombre": "Acueducto planta y redes",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "514565",
+      "nombre": "Armamento de vigilancia",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "514570",
+      "nombre": "Vías de comunicación",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5150",
+      "nombre": "ADECUACIONES E INSTALACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "515005",
+      "nombre": "Instalacciones eléctricas",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "515010",
+      "nombre": "Arreglos ornamentales",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "515015",
+      "nombre": "Reparaciones locativas",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "515020",
+      "nombre": "Remodelaciones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51502001",
+      "nombre": "Rafael Suarez CC 75.050.205",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "515025",
+      "nombre": "Mejoras en propiedad ajena",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "515030",
+      "nombre": "Gastos de organización y preoperativas",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5155",
+      "nombre": "GASTOS DE VIAJE",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5160",
+      "nombre": "DEPRECIACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "516005",
+      "nombre": "Construcciones y edificaciones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "516010",
+      "nombre": "Maquinaría y equipo",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "516015",
+      "nombre": "Equipo de oficina",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "516020",
+      "nombre": "Equipo de computación y comunicación",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "516025",
+      "nombre": "Equipo médico científico",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "516035",
+      "nombre": "Flota y equipo de transporte",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51603501",
+      "nombre": "HBA005",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5165",
+      "nombre": "AMORTIZACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5195",
+      "nombre": "DIVERSOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "519503",
+      "nombre": "Gastos bancarios ordinarios",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51950301",
+      "nombre": "Cuenta corriente bancolombia",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "519505",
+      "nombre": "Comisiones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "519510",
+      "nombre": "Libros, suscripciones, periódicos y revistas",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "519520",
+      "nombre": "Gastos de representación",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "519525",
+      "nombre": "Elementos de aseo y cafetería",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51952501",
+      "nombre": "SUPERTIENDAS SAO Nit 880.114.206",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "519530",
+      "nombre": "Útiles, papeleria y fotocopias",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51953001",
+      "nombre": "SUPERTIENDAS SAO Nit 880.114.206",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "519535",
+      "nombre": "Combustibles y lubricantes",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "519540",
+      "nombre": "Envases y empaques",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51954001",
+      "nombre": "SUPERTIENDAS SAO Nit 880.114.206",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "519545",
+      "nombre": "Taxis y buses",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "519560",
+      "nombre": "Casino y restaurante",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "519565",
+      "nombre": "Parqueaderos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5199",
+      "nombre": "PROVISIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "519910",
+      "nombre": "Deudores",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "51991001",
+      "nombre": "Jaime Salas Mora CC.35.258.211",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "52",
+      "nombre": "Gastos de distribución y ventas ordinarias",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5205",
+      "nombre": "BENEFICOS A EMPLEADOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5210",
+      "nombre": "HONORARIOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5215",
+      "nombre": "IMPUESTOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5220",
+      "nombre": "ARRENDAMIENTOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5225",
+      "nombre": "CONTRIBUCIONES Y AFILIACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5230",
+      "nombre": "SEGUROS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5235",
+      "nombre": "SERVICIOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "523505",
+      "nombre": "Aseo y vigilancia",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "523510",
+      "nombre": "Temporales",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "523515",
+      "nombre": "Asistencia técnica",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "523520",
+      "nombre": "Procesamiento electrónico de datos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "523525",
+      "nombre": "Acueducto y alcantarillado",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "523530",
+      "nombre": "Energía eléctrica",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "523535",
+      "nombre": "Teléfono e internet",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "523540",
+      "nombre": "Correo, portes y mensajería",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "523550",
+      "nombre": "Transportes, fletes y acarreos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "523595",
+      "nombre": "Otros servicios identificados",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5240",
+      "nombre": "GATOS LEGALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5245",
+      "nombre": "MANTENIMIENTO Y REPARACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "524505",
+      "nombre": "Terrenos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "524510",
+      "nombre": "Construcciones yedificaciones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "52451001",
+      "nombre": "Local- calle 85 No 15-80",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "524515",
+      "nombre": "Maquinaria y equipo",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "524520",
+      "nombre": "Equipo de oficina",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "524525",
+      "nombre": "Equipo de computación y comunicación",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "524530",
+      "nombre": "Equipo médico científico",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "524535",
+      "nombre": "Equipo de hoteles y restaurante",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "524540",
+      "nombre": "Flota y equipo de transporte",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "524550",
+      "nombre": "Flota y equipo aéreo",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "524555",
+      "nombre": "Flota y equipo fluvial y/o marítimo",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "524560",
+      "nombre": "Armamento de vigilancia",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "524565",
+      "nombre": "Acueducto planta y redes",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "524570",
+      "nombre": "Armamento de vigilancia",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5255",
+      "nombre": "Vías de comunicación",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5260",
+      "nombre": "DEPRECIACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "526005",
+      "nombre": "Construcciones y edificaciones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "52600501",
+      "nombre": "Local- calle 85 No 15-80",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "526010",
+      "nombre": "Maquinaría y equipo",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "526015",
+      "nombre": "Equipo de oficina",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "526020",
+      "nombre": "Equipo de computación y comunicación",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "526025",
+      "nombre": "Equipo médico científico",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "526035",
+      "nombre": "Flota y equipo de transporte",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5265",
+      "nombre": "AMORTIZACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5295",
+      "nombre": "DIVERSOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "529503",
+      "nombre": "Gastos bancarios ordinarios",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "529505",
+      "nombre": "Comisiones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "529520",
+      "nombre": "Gastos de representación",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "529525",
+      "nombre": "Elementos de aseo y cafetería",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "529530",
+      "nombre": "Útiles, papeleria y fotocopias",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "529535",
+      "nombre": "Combustibles y lubricantes",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "53",
+      "nombre": "Perdidas",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5305",
+      "nombre": "FINANCIEROS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "530503",
+      "nombre": "Gastos bancarios",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "53050301",
+      "nombre": "Bancolombia 890.903.938-8",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "530510",
+      "nombre": "Reajuste monetario",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "530515",
+      "nombre": "Comisiones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "53051501",
+      "nombre": "Bancolombia Crédito #103289",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "530520",
+      "nombre": "Intereses",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "53052001",
+      "nombre": "Bancolombia Crédito #103289",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "530525",
+      "nombre": "Diferencia en cambio",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "530535",
+      "nombre": "Descuentos comerciales condicionados",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "53053501",
+      "nombre": "El Marquez de la 9 NIT 880.472.209",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "53053502",
+      "nombre": "Horacio Díz Paez CC.12.080.357",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "530540",
+      "nombre": "Gastos de manejo y emisión de bonos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "530570",
+      "nombre": "Diferencias en compra de inversiones",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "530595",
+      "nombre": "Otros",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5310",
+      "nombre": "PERDIDA EN VENTAS Y RETIRO DE BIENES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5315",
+      "nombre": "CONTINGENCIAS E IMPREVISTOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5355",
+      "nombre": "COSTOS POR PRÉSTAMOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5395",
+      "nombre": "PERDIDAS DIVERSAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "539550",
+      "nombre": "Por ajuste en peso, obligaciones fiscales",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "53955001",
+      "nombre": "DIAN-350",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "53955002",
+      "nombre": "DIAN-300",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "53955003",
+      "nombre": "DIAN-210",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "53955004",
+      "nombre": "ALCALDÍA-RETEICA",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "53955005",
+      "nombre": "Jaime Salas Mora CC. 35.258.211",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "53955098",
+      "nombre": "RETEICA",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "53955099",
+      "nombre": "IVA",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5396",
+      "nombre": "PERDIDAS POR DETERIORO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "54",
+      "nombre": "IMPUESTO A LAS GANANCIAS",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5405",
+      "nombre": "IMPUESTO DE RENTA Y COMPLEMENTARIOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5410",
+      "nombre": "POR IMPUESTO DIFERIDO IMPONIBLE",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "59",
+      "nombre": "Ganancias y perdidas",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "5905",
+      "nombre": "GANANCIAS Y PERDIDAS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "590505",
+      "nombre": "Ganancias y perdidas del ejercicio",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "6",
+      "nombre": "GANANCIAS Y PERDIDAS",
+      "nivel": "Clase",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "61",
+      "nombre": "GANANCIAS Y PERDIDAS",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "6135",
+      "nombre": "COMERCIO AL POR MAYOR Y MENOR",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "613505",
+      "nombre": "Electrodomesticos",
+      "nivel": "Subcuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "61350501",
+      "nombre": "Industrias super Nit. 950.240.208",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "61350502",
+      "nombre": "El Marquez de la 9 Nit. 880.472.209",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "61350503",
+      "nombre": "Jaime Salas Mora CC.35.258.211",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "61350504",
+      "nombre": "Horacio Diaz Paez CC. 12.080.357",
+      "nivel": "Auxiliar",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "62",
+      "nombre": "COMPRAS",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "6205",
+      "nombre": "DE MERCADERIAS (COMPRA)",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "6210",
+      "nombre": "DE MATERIA PRIMA (COMPRA)",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "6215",
+      "nombre": "DE MATERIALES INDIRECTOS (COMPRA)",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "6225",
+      "nombre": "DEVOLUCIONES EN COMPRAS (CR)",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "7",
+      "nombre": "COSTOS DE PRODUCCIÓN",
+      "nivel": "Clase",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "72",
+      "nombre": "Mano de obra directa",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "7205",
+      "nombre": "BENEFICIOS A EMPLEADOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "73",
+      "nombre": "Costos indirectos de fabricación",
+      "nivel": "Grupo",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "7305",
+      "nombre": "HONORARIOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "7310",
+      "nombre": "HONORARIOS POR RENTAS DE TRABAJO",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "7315",
+      "nombre": "IMPUESTOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "7320",
+      "nombre": "ARRENDAMIENTOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "7325",
+      "nombre": "CONTRIBUCIONES Y AFILIACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "7330",
+      "nombre": "SEGUROS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "7335",
+      "nombre": "SERVICIOS",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "7340",
+      "nombre": "GASTOS LEGALES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "7345",
+      "nombre": "MANTENIMIENTO Y REPARACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "7350",
+      "nombre": "ADECUACIONES E INSTALACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "7355",
+      "nombre": "GASTOS DE VIAJE",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "7360",
+      "nombre": "DEPRECIACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    },
+    {
+      "codigo": "7365",
+      "nombre": "AMORTIZACIONES",
+      "nivel": "Cuenta",
+      "naturaleza": "Débito"
+    }
+  ],
+  "facturas": [],
+  "kardex": [],
+  "calendario_tributario": [],
+  "meses": {
+    "ENERO": {
+      "archivo": "GINA_3_ENERO.xlsx",
+      "hojas": [
+        "PUC"
+      ],
+      "total_transacciones": 0,
+      "transacciones": [],
+      "hojas_especiales": {}
+    },
+    "FEBRERO": {
+      "archivo": "GINA_3_FEBRERO.xlsx",
+      "hojas": [
+        "PUC"
+      ],
+      "total_transacciones": 0,
+      "transacciones": [],
+      "hojas_especiales": {}
+    },
+    "MARZO": {
+      "archivo": "GINA_3_MARZO.xlsx",
+      "hojas": [
+        "PUC"
+      ],
+      "total_transacciones": 0,
+      "transacciones": [],
+      "hojas_especiales": {}
+    },
+    "ABRIL": {
+      "archivo": "GINA_3_ABRIL.xlsx",
+      "hojas": [
+        "PUC"
+      ],
+      "total_transacciones": 0,
+      "transacciones": [],
+      "hojas_especiales": {}
+    },
+    "MAYO": {
+      "archivo": "GINA_3_MAYO.xlsx",
+      "hojas": [
+        "PUC"
+      ],
+      "total_transacciones": 0,
+      "transacciones": [],
+      "hojas_especiales": {}
+    },
+    "JUNIO": {
+      "archivo": "GINA_3_JUNIO.xlsx",
+      "hojas": [
+        "PUC"
+      ],
+      "total_transacciones": 0,
+      "transacciones": [],
+      "hojas_especiales": {}
+    },
+    "JULIO": {
+      "archivo": "GINA_3_JULIO.xlsx",
+      "hojas": [
+        "PUC"
+      ],
+      "total_transacciones": 0,
+      "transacciones": [],
+      "hojas_especiales": {}
+    },
+    "AGOSTO": {
+      "archivo": "GINA_3_AGOSTO.xlsx",
+      "hojas": [
+        "PUC"
+      ],
+      "total_transacciones": 0,
+      "transacciones": [],
+      "hojas_especiales": {}
+    },
+    "SEPTIEMBRE": {
+      "archivo": "GINA_3_SEPTIEMBRE.xlsx",
+      "hojas": [
+        "PUC"
+      ],
+      "total_transacciones": 0,
+      "transacciones": [],
+      "hojas_especiales": {}
+    },
+    "OCTUBRE": {
+      "archivo": "GINA_3_OCTUBRE.xlsx",
+      "hojas": [
+        "PUC"
+      ],
+      "total_transacciones": 0,
+      "transacciones": [],
+      "hojas_especiales": {}
+    },
+    "NOVIEMBRE": {
+      "archivo": "GINA_3_NOVIEMBRE.xlsx",
+      "hojas": [
+        "PUC"
+      ],
+      "total_transacciones": 0,
+      "transacciones": [],
+      "hojas_especiales": {}
+    },
+    "DICIEMBRE": {
+      "archivo": "GINA_3_DICIEMBRE.xlsx",
+      "hojas": [
+        "PUC"
+      ],
+      "total_transacciones": 0,
+      "transacciones": [],
+      "hojas_especiales": {}
+    }
+  }
+}

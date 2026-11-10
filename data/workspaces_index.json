@@ -1,0 +1,34 @@
+{
+  "active_id": "electrovivienda",
+  "workspaces": [
+    {
+      "id": "electrovivienda",
+      "tipo": "EMPRESA PRINCIPAL",
+      "razon_social": "ELECTROVIVIENDA S.A.S",
+      "nit": "901.765.438-3",
+      "regimen_corto": "RRI • Agente Retenedor y Autorretenedor Renta",
+      "ciudad": "Bucaramanga, Santander",
+      "datafile": "electrovivienda_db.json"
+    },
+    {
+      "id": "gina_2",
+      "owner_id": "",
+      "tipo": "PRÁCTICA DE APRENDIZAJE (EN $0)",
+      "razon_social": "gina",
+      "nit": "12324687585",
+      "regimen_corto": "Régimen Responsable de IVA (RRI) - Agente de Ret",
+      "ciudad": "Bucaramanga, Santander",
+      "datafile": "db_gina_2.json"
+    },
+    {
+      "id": "gina_3",
+      "owner_id": "",
+      "tipo": "PRÁCTICA DE APRENDIZAJE (EN $0)",
+      "razon_social": "gina",
+      "nit": "12324687585",
+      "regimen_corto": "Régimen Responsable de IVA (RRI) - Agente de Ret",
+      "ciudad": "Bucaramanga, Santander",
+      "datafile": "db_gina_3.json"
+    }
+  ]
+}
