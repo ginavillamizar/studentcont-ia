@@ -247,17 +247,29 @@ window.addEventListener("DOMContentLoaded", async () => {
 });
 
 function loadSavedStudentProfileFromStorage() {
+  const ginaProf = {
+    id: "gina_villamizar",
+    usuario: "gina",
+    nombre: "Gina Villamizar",
+    correo: "gina.villamizar@studentcont.ia",
+    programa: "Contadora Titular • Especialista NIIF",
+    rol: "Titular / Administradora",
+    workspace_id: "electrovivienda"
+  };
   const saved = localStorage.getItem("studentcont_active_profile");
   if (saved) {
     try {
       ACTIVE_STUDENT_PROFILE = JSON.parse(saved);
-      document.getElementById("welcomeAuthOverlay")?.classList.add("hidden");
-      updateStudentProfileUI();
-      return;
-    } catch (e) {}
+    } catch (e) {
+      ACTIVE_STUDENT_PROFILE = ginaProf;
+    }
+  } else {
+    ACTIVE_STUDENT_PROFILE = ginaProf;
+    try { localStorage.setItem("studentcont_active_profile", JSON.stringify(ginaProf)); } catch (e) {}
   }
-  // Si es la primera vez que se entra (ej. desde el enlace web publicado), mostrar la pantalla de bienvenida y login
-  openWelcomeLoginOverlay();
+  // Permitir navegación inmediata sin bloqueos
+  document.getElementById("welcomeAuthOverlay")?.classList.add("hidden");
+  updateStudentProfileUI();
 }
 
 async function loginAsGinaDirect() {

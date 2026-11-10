@@ -11,15 +11,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <link rel="stylesheet" href="styles.css?v=20261110_32" />
+  <link rel="stylesheet" href="styles.css?v=20261110_33" />
 </head>
 <body>
 
   <!-- =====================================================================
        PANTALLA DE BIENVENIDA E INICIO DE SESIÓN AL ABRIR EL ENLACE
        ===================================================================== -->
-  <div class="welcome-auth-overlay hidden" id="welcomeAuthOverlay">
-    <div class="welcome-auth-container">
+  <div class="welcome-auth-overlay hidden" id="welcomeAuthOverlay" onclick="if(event.target===this) closeWelcomeLoginOverlay()">
+    <div class="welcome-auth-container" style="position:relative;">
+      <button onclick="closeWelcomeLoginOverlay()" style="position:absolute; top:12px; right:12px; background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.3); color:#fff; font-size:1.1rem; font-weight:800; border-radius:50%; width:34px; height:34px; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:10000;" title="Cerrar y continuar a la plataforma">✕</button>
       <!-- Lado Izquierdo: Bienvenida Didáctica -->
       <div class="welcome-hero-side">
         <div>
@@ -1329,6 +1330,6 @@
   </div>
 
   <div class="toast-container" id="toastContainer"></div>
-  <script src="app.js?v=20261110_32"></script>
+  <script src="app.js?v=20261110_33"></script>
 </body>
 </html>
