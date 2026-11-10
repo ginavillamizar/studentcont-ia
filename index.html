@@ -11,7 +11,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <link rel="stylesheet" href="styles.css?v=20261110_33" />
+  <link rel="stylesheet" href="styles.css?v=20261110_34" />
 </head>
 <body>
 
@@ -132,22 +132,34 @@
             </div>
           </div>
 
-          <div class="form-grid" style="margin-bottom:12px;">
-            <div class="form-group">
-              <label>Nombre de tu Taller Práctico Propio (Inicia en $0)</label>
-              <input type="text" id="welcomeStuEmpresa" class="form-control" placeholder="Ej: MI TALLER CONTABLE S.A.S (En $0)" />
+          <div style="background:#F8FAFC; border:1.5px solid var(--brand-gold); border-radius:10px; padding:12px 14px; margin-bottom:14px;">
+            <label style="font-size:0.79rem; font-weight:800; color:var(--brand-primary); display:block; margin-bottom:6px;">
+              🏢 Selecciona la Empresa para Trabajar:
+            </label>
+            <div style="display:flex; flex-direction:column; gap:8px; font-size:0.8rem; font-weight:700; color:#334155;">
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:#ffffff; padding:8px 12px; border-radius:6px; border:1px solid #CBD5E1;">
+                <input type="radio" name="welcomeEmpresaOpt" value="ELECTROVIVIENDA" checked onchange="toggleEmpresaRadio(this.value)" />
+                <span>⚡ <strong>ELECTROVIVIENDA S.A.S</strong> — Empresa oficial completa (Facturas, Nómina, Declaraciones DIAN)</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:#ffffff; padding:8px 12px; border-radius:6px; border:1px solid #CBD5E1;">
+                <input type="radio" name="welcomeEmpresaOpt" value="TALLER_CERO" onchange="toggleEmpresaRadio(this.value)" />
+                <span>🎓 <strong>Mi Taller Práctico Propio</strong> (Iniciar desde cero en $0)</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:#ffffff; padding:8px 12px; border-radius:6px; border:1px solid #CBD5E1;">
+                <input type="radio" name="welcomeEmpresaOpt" value="OTRA" onchange="toggleEmpresaRadio(this.value)" />
+                <span>✏️ Otra Empresa Personalizada</span>
+              </label>
             </div>
-            <div class="form-group">
-              <label>🏢 NIT de Empresa a Consultar (Opcional)</label>
-              <input type="text" id="welcomeStuNitEmpresa" class="form-control" placeholder="Déjalo vacío para iniciar en $0, o pon el NIT..." />
+            <div id="welcomeCustomEmpresaGroup" style="display:none; margin-top:10px;">
+              <input type="text" id="welcomeStuNitEmpresa" class="form-control" placeholder="Escribe ELECTROVIVIENDA o el nombre de tu empresa..." value="ELECTROVIVIENDA" />
             </div>
-          </div>
-          <div style="font-size:0.73rem; color:var(--text-secondary); margin-bottom:10px;">
-            💡 <strong>Nota:</strong> Si dejas el NIT vacío, tu perfil iniciará como <strong>Taller Práctico 100% en $0</strong> (los 12 meses de Enero a Diciembre en $0 sin datos de otra empresa). Si deseas acceder a una empresa específica como ELECTROVIVIENDA, escribe su NIT (o conéctala luego desde el panel).
+            <div style="font-size:0.73rem; color:#047857; font-weight:700; margin-top:8px;">
+              ✅ Ya no necesitas escribir el NIT de memoria. Solo seleccionas <strong>ELECTROVIVIENDA</strong> y accedes directamente.
+            </div>
           </div>
 
-          <button class="btn btn-gold" style="width:100%; justify-content:center; padding:11px; font-size:0.86rem;" onclick="registerFromWelcomeScreen()">
-            🚀 Crear Mi Perfil Privado e Ingresar
+          <button class="btn btn-gold" style="width:100%; justify-content:center; padding:12px; font-size:0.9rem; font-weight:800;" onclick="registerFromWelcomeScreen()">
+            🚀 Registrar Mi Perfil e Ingresar
           </button>
         </div>
       </div>
@@ -1089,22 +1101,29 @@
   <div class="modal-backdrop" id="workspaceModal">
     <div class="modal-card" style="max-width:780px;">
       <div class="card-header">
-        <div class="card-title">🔑 Acceso a Empresa por NIT o Iniciar Nuevo Taller Práctico en $0</div>
+        <div class="card-title">🏢 Acceso a ELECTROVIVIENDA S.A.S o Taller Práctico Propio</div>
         <button class="btn btn-outline btn-sm" onclick="closeWorkspaceModal()">✕ Cerrar</button>
       </div>
       <div class="card-body">
-        <!-- 1. CONECTAR A UNA EMPRESA EXISTENTE DIGITANDO SU NIT -->
-        <div style="background:var(--brand-gold-soft); border:1px solid var(--brand-gold); border-radius:8px; padding:14px 16px; margin-bottom:18px;">
-          <div style="font-size:0.82rem; font-weight:800; color:var(--brand-primary); margin-bottom:6px;">
-            1. 🔑 CONECTAR / ACCEDER A UNA EMPRESA EXISTENTE MEDIANTE SU NIT:
+        <!-- 1. CONECTAR A ELECTROVIVIENDA DIRECTAMENTE SIN EXIGIR EL NIT -->
+        <div style="background:var(--brand-gold-soft); border:1.5px solid var(--brand-gold); border-radius:10px; padding:14px 16px; margin-bottom:18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+            <div style="font-size:0.86rem; font-weight:800; color:var(--brand-primary);">
+              1. 🏢 ACCESO DIRECTO A ELECTROVIVIENDA S.A.S:
+            </div>
+            <span class="status-pill status-paid" style="font-size:0.68rem; font-weight:800;">Oficial Didáctica</span>
           </div>
-          <p style="font-size:0.76rem; color:var(--text-secondary); margin-bottom:10px;">
-            Si deseas consultar la información contable de <strong>ELECTROVIVIENDA S.A.S</strong> (o cualquier empresa registrada) desde tu perfil personal, debes ingresar aquí su NIT exacto:
+          <p style="font-size:0.77rem; color:var(--text-secondary); margin-bottom:12px; line-height:1.45;">
+            No necesitas memorizar ni digitar ningún NIT complejo. Con un solo clic o escribiendo <strong>ELECTROVIVIENDA</strong> accedes a las 19 facturas, comprobantes diarios 1 al 47, nómina completa y declaraciones DIAN.
           </p>
-          <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <input type="text" id="unlockCompanyNitInput" class="form-control" style="max-width:280px;" placeholder="Escribe el NIT de la empresa..." onkeydown="if(event.key==='Enter') unlockCompanyByNit()" />
-            <button class="btn btn-primary" onclick="unlockCompanyByNit()">🔓 Acceder a Empresa por NIT</button>
-            <button class="btn btn-outline" onclick="switchToMyOwnPracticeWorkspace()">🎓 Ir a Mi Taller Práctico Propio (en $0)</button>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+            <button class="btn btn-gold" onclick="unlockCompanyByNit('ELECTROVIVIENDA')" style="font-weight:800; padding:8px 18px;">
+              ⚡ Conectar y Cargar ELECTROVIVIENDA
+            </button>
+            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">o escribe el nombre:</span>
+            <input type="text" id="unlockCompanyNitInput" class="form-control" style="max-width:240px; padding:7px 12px; font-size:0.82rem;" placeholder="Escribe ELECTROVIVIENDA..." onkeydown="if(event.key==='Enter') unlockCompanyByNit()" />
+            <button class="btn btn-primary btn-sm" onclick="unlockCompanyByNit()">Entrar</button>
+            <button class="btn btn-outline btn-sm" onclick="switchToMyOwnPracticeWorkspace()">🎓 Mi Taller Propio ($0)</button>
           </div>
         </div>
 
@@ -1330,6 +1349,6 @@
   </div>
 
   <div class="toast-container" id="toastContainer"></div>
-  <script src="app.js?v=20261110_33"></script>
+  <script src="app.js?v=20261110_34"></script>
 </body>
 </html>

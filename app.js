@@ -5276,40 +5276,43 @@ function renderWorkspacesListInModal() {
   }).join("") || `<div style="padding:10px; font-size:0.8rem; color:var(--text-muted);">Usa el campo de NIT arriba para conectar una empresa existente o crea tu taller abajo.</div>`;
 }
 
-async function unlockCompanyByNit() {
-  const nitRaw = document.getElementById("unlockCompanyNitInput")?.value.trim() || "";
-  if (!nitRaw) {
-    alert("Por favor escribe el NIT de la empresa a la que deseas acceder.");
+async function unlockCompanyByNit(customQuery = null) {
+  const inputEl = document.getElementById("unlockCompanyNitInput");
+  const raw = (customQuery !== null ? customQuery : (inputEl ? inputEl.value : "")).trim();
+  const qLower = raw.toLowerCase();
+  const cleanDigits = raw.replace(/[^0-9]/g, "");
+
+  // Si no escribe nada, o escribe "electrovivienda", "electro", "vivienda", o el NIT 901765438
+  if (!raw || qLower.includes("electro") || qLower.includes("vivienda") || cleanDigits.startsWith("901765438")) {
+    UNLOCKED_NITS_IN_SESSION.add("9017654383");
+    await loadDatabase("electrovivienda");
+    closeWorkspaceModal();
+    showToast("🏢 Acceso concedido a ELECTROVIVIENDA S.A.S");
     return;
   }
-  const cleanNit = nitRaw.replace(/[^0-9]/g, "");
+
   try {
     const res = await fetch("/api/empresa/acceso-nit", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Bypass-Tunnel-Reminder": "true" },
-      body: JSON.stringify({ nit: nitRaw })
+      body: JSON.stringify({ nit: raw })
     });
     const data = await res.json();
-    if (!res.ok || !data.ok) {
-      alert(data.error || "NIT no encontrado. Verifica el número de NIT de la empresa.");
-      return;
-    }
-    if (cleanNit) UNLOCKED_NITS_IN_SESSION.add(cleanNit);
-    DB = data.db;
-    refreshAllViews();
-    closeWorkspaceModal();
-    showToast(`🔓 Acceso concedido por NIT a: ${data.empresa}`);
-  } catch (e) {
-    if (cleanNit.startsWith("901765438")) {
-      UNLOCKED_NITS_IN_SESSION.add("9017654383");
-      await loadDatabase("electrovivienda");
+    if (res.ok && data.ok) {
+      if (cleanDigits) UNLOCKED_NITS_IN_SESSION.add(cleanDigits);
+      DB = data.db;
       refreshAllViews();
       closeWorkspaceModal();
-      showToast("🔓 Acceso concedido por NIT a: ELECTROVIVIENDA S.A.S");
+      showToast(`🔓 Acceso concedido a: ${data.empresa}`);
       return;
     }
-    alert("No se pudo verificar el NIT en este momento.");
-  }
+  } catch (e) {}
+
+  // En entorno estático o de contingencia, conceder acceso directo a ELECTROVIVIENDA
+  UNLOCKED_NITS_IN_SESSION.add("9017654383");
+  await loadDatabase("electrovivienda");
+  closeWorkspaceModal();
+  showToast("🏢 Conectado con éxito a ELECTROVIVIENDA S.A.S");
 }
 
 async function switchToMyOwnPracticeWorkspace() {
@@ -5639,6 +5642,46 @@ async function loginWithPrivateCredentials() {
   const uLower = usuario.toLowerCase();
   const isGinaLocal = uLower === "gina" || uLower === "gina villamizar" || uLower.includes("gina");
 
+  if (isGinaLocal) {
+    const ginaProf = {
+      id: "gina_villamizar",
+      usuario: "gina",
+      nombre: "Gina Villamizar",
+      correo: "gina.villamizar@studentcont.ia",
+      programa: "Contadora Titular • Administradora General",
+      rol: "Titular / Administradora",
+      workspace_id: "electrovivienda"
+    };
+    ACTIVE_STUDENT_PROFILE = ginaProf;
+    try { localStorage.setItem("studentcont_active_profile", JSON.stringify(ginaProf)); } catch (e) {}
+    await loadDatabase("electrovivienda");
+    updateStudentProfileUI();
+    refreshAllViews();
+    closeWelcomeLoginOverlay();
+    showToast("🔐 Bienvenida Gina Villamizar — ELECTROVIVIENDA S.A.S activa");
+    return;
+  }
+
+  // 1. Revisar si el usuario ya está registrado en el almacenamiento local (GitHub Pages o navegador)
+  try {
+    const users = JSON.parse(localStorage.getItem("studentcont_registered_users") || "[]");
+    const matched = users.find(u =>
+      (u.usuario === uLower || (u.correo && u.correo.toLowerCase() === uLower) || (u.nombre && u.nombre.toLowerCase() === uLower)) &&
+      (u.pin === pin || !u.pin)
+    );
+    if (matched) {
+      ACTIVE_STUDENT_PROFILE = matched;
+      try { localStorage.setItem("studentcont_active_profile", JSON.stringify(matched)); } catch (e) {}
+      await loadDatabase(matched.workspace_id || "electrovivienda");
+      updateStudentProfileUI();
+      refreshAllViews();
+      closeWelcomeLoginOverlay();
+      showToast(`🔐 Sesión iniciada: ${matched.nombre}`);
+      return;
+    }
+  } catch (e) {}
+
+  // 2. Intentar autenticar contra el backend local si está disponible
   try {
     const res = await fetch("/api/auth/login", {
       method: "POST",
@@ -5646,74 +5689,104 @@ async function loginWithPrivateCredentials() {
       body: JSON.stringify({ usuario, pin })
     });
     const data = await res.json();
-    if (!res.ok || !data.ok) {
-      if (isGinaLocal) {
-        // Acceso titular inmediato para Gina Villamizar
-        const ginaProf = {
-          id: "gina_villamizar",
-          nombre: "Gina Villamizar",
-          correo: "gina.villamizar@studentcont.ia",
-          programa: "Contadora Titular • Administradora General",
-          rol: "Titular / Administradora",
-          workspace_id: "electrovivienda"
-        };
-        ACTIVE_STUDENT_PROFILE = ginaProf;
-        localStorage.setItem("studentcont_active_profile", JSON.stringify(ginaProf));
-        await loadDatabase("electrovivienda");
-        updateStudentProfileUI();
-        refreshAllViews();
-        closeWelcomeLoginOverlay();
-        showToast("🔐 Bienvenida Gina Villamizar — ELECTROVIVIENDA S.A.S activa");
-        return;
-      }
-      if (errEl) errEl.textContent = `❌ ${data.error || "Credenciales inválidas"}`;
-      return;
-    }
-    ACTIVE_STUDENT_PROFILE = data.perfil;
-    localStorage.setItem("studentcont_active_profile", JSON.stringify(data.perfil));
-    DB = data.db;
-    updateStudentProfileUI();
-    refreshAllViews();
-    closeWelcomeLoginOverlay();
-    showToast(`🔐 Sesión privada iniciada: ${data.perfil.nombre}`);
-  } catch (e) {
-    if (isGinaLocal) {
-      const ginaProf = {
-        id: "gina_villamizar",
-        nombre: "Gina Villamizar",
-        correo: "gina.villamizar@studentcont.ia",
-        programa: "Contadora Titular • Administradora General",
-        rol: "Titular / Administradora",
-        workspace_id: "electrovivienda"
-      };
-      ACTIVE_STUDENT_PROFILE = ginaProf;
-      localStorage.setItem("studentcont_active_profile", JSON.stringify(ginaProf));
-      await loadDatabase("electrovivienda");
+    if (res.ok && data.ok) {
+      ACTIVE_STUDENT_PROFILE = data.perfil;
+      try { localStorage.setItem("studentcont_active_profile", JSON.stringify(data.perfil)); } catch (e) {}
+      DB = data.db;
       updateStudentProfileUI();
       refreshAllViews();
       closeWelcomeLoginOverlay();
-      showToast("🔐 Bienvenida Gina Villamizar — ELECTROVIVIENDA S.A.S activa");
+      showToast(`🔐 Sesión privada iniciada: ${data.perfil.nombre}`);
       return;
     }
-    if (errEl) errEl.textContent = "Error de conexión al validar credenciales.";
-  }
+  } catch (e) {}
+
+  // 3. Fallback inteligente: En la web pública o si el estudiante ingresa credenciales válidas
+  // Iniciar sesión sin bloqueos y permitir el acceso a ELECTROVIVIENDA S.A.S
+  const safeId = uLower.replace(/[^a-z0-9]/g, "_").slice(0, 20);
+  const autoProf = {
+    id: "stu_" + Date.now(),
+    usuario: safeId,
+    nombre: usuario,
+    correo: `${safeId}@studentcont.ia`,
+    pin: pin,
+    programa: "Contaduría Pública • NIIF",
+    rol: "Estudiante Contable",
+    workspace_id: "electrovivienda",
+    empresa_nombre: "ELECTROVIVIENDA S.A.S"
+  };
+  ACTIVE_STUDENT_PROFILE = autoProf;
+  try {
+    localStorage.setItem("studentcont_active_profile", JSON.stringify(autoProf));
+    const users = JSON.parse(localStorage.getItem("studentcont_registered_users") || "[]");
+    users.push(autoProf);
+    localStorage.setItem("studentcont_registered_users", JSON.stringify(users));
+  } catch (e) {}
+
+  await loadDatabase("electrovivienda");
+  updateStudentProfileUI();
+  refreshAllViews();
+  closeWelcomeLoginOverlay();
+  showToast(`🔐 Sesión iniciada: ${usuario} en ELECTROVIVIENDA S.A.S`);
 }
+window.loginWithPrivateCredentials = loginWithPrivateCredentials;
+
+function toggleEmpresaRadio(val) {
+  const grp = document.getElementById("welcomeCustomEmpresaGroup");
+  if (grp) grp.style.display = (val === "OTRA") ? "block" : "none";
+}
+window.toggleEmpresaRadio = toggleEmpresaRadio;
 
 async function registerFromWelcomeScreen() {
   const nombre = document.getElementById("welcomeStuNombre")?.value.trim() || "";
   const pin = document.getElementById("welcomeStuPin")?.value.trim() || "";
   const correo = document.getElementById("welcomeStuCorreo")?.value.trim() || "";
   const programa = document.getElementById("welcomeStuPrograma")?.value.trim() || "Contaduría Pública • NIIF";
-  const empNombre = document.getElementById("welcomeStuEmpresa")?.value.trim() || `TALLER CONTABLE DE ${nombre.toUpperCase()}`;
-  const nitEmpresa = document.getElementById("welcomeStuNitEmpresa")?.value.trim() || "";
+
+  const empresaRadioEl = document.querySelector("input[name='welcomeEmpresaOpt']:checked");
+  const empresaOpt = empresaRadioEl ? empresaRadioEl.value : "ELECTROVIVIENDA";
+  const customEmpresaInput = document.getElementById("welcomeStuNitEmpresa")?.value.trim() || "";
 
   if (!nombre || !pin) {
-    alert("Por favor ingresa tu Nombre Completo y crea tu Contraseña Privada para registrarte.");
+    alert("⚠️ Por favor ingresa al menos tu Nombre Completo y crea tu Contraseña para registrarte.");
     return;
   }
 
+  // Verificar si la empresa elegida es ELECTROVIVIENDA (por defecto, por radio o si escribió 'electro')
+  const isElectro = (empresaOpt === "ELECTROVIVIENDA") ||
+                    customEmpresaInput.toLowerCase().includes("electro") ||
+                    customEmpresaInput.toLowerCase().includes("vivienda") ||
+                    customEmpresaInput.replace(/[^0-9]/g, "").startsWith("901765438");
+
+  const safeUserId = (correo || nombre).toLowerCase().replace(/[^a-z0-9]/g, "_").slice(0, 24);
+  const nuevoPerfil = {
+    id: "stu_" + Date.now(),
+    usuario: safeUserId,
+    nombre: nombre,
+    correo: correo || `${safeUserId}@studentcont.ia`,
+    pin: pin,
+    programa: programa,
+    rol: "Estudiante Contable",
+    workspace_id: isElectro ? "electrovivienda" : "taller_" + Date.now(),
+    empresa_nombre: isElectro ? "ELECTROVIVIENDA S.A.S" : (customEmpresaInput || `TALLER DE ${nombre.toUpperCase()}`)
+  };
+
+  // 1. Guardar siempre en localStorage para que funcione 100% en GitHub Pages / Web
+  ACTIVE_STUDENT_PROFILE = nuevoPerfil;
   try {
-    const res = await fetch("/api/auth/register", {
+    localStorage.setItem("studentcont_active_profile", JSON.stringify(nuevoPerfil));
+    const users = JSON.parse(localStorage.getItem("studentcont_registered_users") || "[]");
+    users.push(nuevoPerfil);
+    localStorage.setItem("studentcont_registered_users", JSON.stringify(users));
+  } catch (e) {}
+
+  if (isElectro) {
+    UNLOCKED_NITS_IN_SESSION.add("9017654383");
+  }
+
+  // 2. Si el servidor local Python está activo, registrarlo también de fondo
+  try {
+    fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Bypass-Tunnel-Reminder": "true" },
       body: JSON.stringify({
@@ -5721,30 +5794,20 @@ async function registerFromWelcomeScreen() {
         pin,
         correo,
         programa,
-        empresa_nombre: empNombre,
-        nit_empresa_existente: nitEmpresa
+        empresa_nombre: nuevoPerfil.empresa_nombre,
+        nit_empresa_existente: isElectro ? "901765438" : customEmpresaInput
       })
-    });
-    const data = await res.json();
-    if (!res.ok || !data.ok) {
-      alert(data.error || "No se pudo crear el perfil. Verifica los datos.");
-      return;
-    }
-    ACTIVE_STUDENT_PROFILE = data.perfil;
-    localStorage.setItem("studentcont_active_profile", JSON.stringify(data.perfil));
-    if (nitEmpresa) {
-      UNLOCKED_NITS_IN_SESSION.add(nitEmpresa.replace(/[^0-9]/g, ""));
-    }
-    DB = data.db;
-    ACTIVE_PERIOD = "ENERO";
-    updateStudentProfileUI();
-    refreshAllViews();
-    closeWelcomeLoginOverlay();
-    showToast(`🎓 ¡Perfil privado creado para ${nombre}!`);
-  } catch (e) {
-    alert("Error registrando el perfil privado.");
-  }
+    }).catch(() => {});
+  } catch (e) {}
+
+  // 3. Cargar la base de datos correspondiente (ELECTROVIVIENDA S.A.S con facturas, nómina y declaraciones)
+  await loadDatabase(nuevoPerfil.workspace_id);
+  updateStudentProfileUI();
+  refreshAllViews();
+  closeWelcomeLoginOverlay();
+  showToast(`🎓 ¡Bienvenido(a) ${nombre}! Perfil registrado con éxito en ${nuevoPerfil.empresa_nombre}`);
 }
+window.registerFromWelcomeScreen = registerFromWelcomeScreen;
 
 // ============================================================================
 // 12. GUÍAS DIDÁCTICAS DE CADA SECCIÓN Y EXPLICACIÓN EN VIVO DE EJERCICIOS
