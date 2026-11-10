@@ -345,6 +345,7 @@ function refreshAllViews() {
   onChangeTipoOperacion();
   renderAuxiliaresSection();
   renderKardexSection();
+  renderNominaSection();
   renderEstadosFinancieros();
   renderTaxSection();
   renderAiTutorSection();
@@ -388,6 +389,10 @@ function switchSection(targetId) {
     return;
   }
   ACTIVE_SECTION = targetId;
+
+  // Cerrar sidebar en celular si está abierto
+  toggleMobileSidebar(false);
+
   document.querySelectorAll(".nav-item").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.target === targetId);
   });
@@ -403,8 +408,9 @@ function switchSection(targetId) {
     facturacion: ["Emitir Factura / Registro Contable por Régimen", "Selecciona el régimen del comprador o vendedor y genera automáticamente liquidación, PUC, Kardex y Auxiliares"],
     auxiliares: [`Libros Auxiliares en Vivo — ${ACTIVE_PERIOD} 2026`, "Subcuentas (6 dígitos), Auxiliares por Tercero (8 dígitos) y Libro Auxiliar de Bancos actualizados en vivo"],
     kardex: ["Kardex de Productos — Promedio Ponderado", "Control permanente de existencias, entradas, salidas, devoluciones y costo promedio en vivo"],
+    nomina: ["Nómina & Liquidación Laboral NIIF", "Gran planilla de sueldos, horas extras, auxilio de transporte, deducciones, aportes de seguridad social y provisiones"],
     estados: [`Estados Financieros NIIF & Libros Oficiales — ${ACTIVE_PERIOD} 2026`, "Situación Financiera (ESF), Resultados (ER), Consolidados, Flujo de Efectivo, Hoja de Trabajo y Mayor"],
-    tributaria: ["Declaraciones Tributarias & Calendario Fiscal 2026", "Formularios 350, 300, ReteICA Bucaramanga, Anexo 1 y alertas de vencimientos"],
+    tributaria: ["Declaraciones Tributarias & Calendario Fiscal 2026", "Formularios Oficiales DIAN 350, 300, ReteICA Bucaramanga y alertas de vencimientos"],
     ia: ["Tutor de Inteligencia Artificial Contable (Entrenable)", "Pregunta cualquier tema de PUC, NIIF, impuestos o ejercicios y enseña nuevos conceptos a la IA"],
     reformas: ["Actualidad, Reformas y Leyes Contables en Colombia 2025-2026", "Reforma Tributaria, Reforma Pensional, Reducción Jornada Laboral, Facturación Electrónica DIAN y NIIF PYMES"]
   };
@@ -413,6 +419,12 @@ function switchSection(targetId) {
     document.getElementById("topbarSectionSubtitle").textContent = titles[targetId][1];
   }
   renderSectionDidacticBanner(targetId);
+
+  if (targetId === "nomina") {
+    renderNominaSection();
+  } else if (targetId === "tributaria") {
+    renderTaxSection();
+  }
 }
 
 function navGlobalPeriod(delta) {
@@ -800,15 +812,20 @@ function renderInvoicesSection() {
   `;
 
   const filtered = monthScoped.filter(f => {
-    return ACTIVE_INVOICE_CAT === "ALL" || f.categoria === ACTIVE_INVOICE_CAT;
+    const matchCat = ACTIVE_INVOICE_CAT === "ALL" || f.categoria === ACTIVE_INVOICE_CAT;
+    if (!matchCat) return false;
+    if (!ACTIVE_INVOICE_SEARCH) return true;
+    const txt = `${f.numero} ${f.tercero} ${f.nit_tercero || ""} ${f.enunciado || ""} ${f.mes}`.toLowerCase();
+    return txt.includes(ACTIVE_INVOICE_SEARCH);
   });
 
-  document.getElementById("invoiceListCountLabel").textContent = `${filtered.length} documentos`;
+  const countEl = document.getElementById("invoiceListCountLabel");
+  if (countEl) countEl.textContent = `${filtered.length} documentos`;
   const listEl = document.getElementById("invoicesListContainer");
 
   if (!filtered.length) {
-    listEl.innerHTML = `<div style="padding:20px; text-align:center; color:var(--text-muted);">No hay facturas en ${monthFilter} para esta categoría. Haz clic en "Todas las Facturas y Documentos" o en "Todos los Meses".</div>`;
-    document.getElementById("invoicePreviewContainer").innerHTML = `<div class="card"><div class="card-body">Selecciona otra categoría o mes arriba para visualizar las facturas.</div></div>`;
+    listEl.innerHTML = `<div style="padding:24px; text-align:center; color:var(--text-muted); background:var(--bg-surface); border-radius:10px;">No se encontraron facturas con este criterio de búsqueda o categoría en ${monthFilter}.</div>`;
+    document.getElementById("invoicePreviewContainer").innerHTML = `<div class="card"><div class="card-body">Selecciona otra categoría o borra el texto del buscador arriba para visualizar las facturas.</div></div>`;
     return;
   }
 
@@ -820,15 +837,15 @@ function renderInvoicesSection() {
     const isAct = f.id === ACTIVE_INVOICE_ID;
     const badgeColor = f.categoria === "VENTA" ? "status-paid" : (f.categoria === "COMPRA" ? "status-alert" : "status-pending");
     return `
-      <div class="list-item-row ${isAct ? "active" : ""}" onclick="selectInvoicePreview('${f.id}')">
-        <div class="list-item-top">
-          <span class="list-item-code">${f.numero}</span>
-          <span class="status-pill ${badgeColor}">${f.mes} • ${f.categoria}</span>
+      <div class="list-item-row ${isAct ? "active" : ""}" onclick="selectInvoicePreview('${f.id}')" style="padding:12px 14px; margin-bottom:8px; border-radius:10px; border:1.5px solid ${isAct ? 'var(--brand-gold)' : 'var(--border-light)'}; background:${isAct ? 'rgba(212,175,55,0.08)' : 'var(--bg-surface)'}; box-shadow:${isAct ? '0 3px 10px rgba(0,0,0,0.06)' : 'none'}; cursor:pointer; transition:all 0.15s ease;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+          <span style="font-family:'JetBrains Mono',monospace; font-weight:800; color:var(--brand-primary); font-size:0.86rem;">${f.numero}</span>
+          <span class="status-pill ${badgeColor}" style="font-size:0.67rem; font-weight:800; padding:2px 8px;">${f.categoria}</span>
         </div>
-        <div class="list-item-title">${f.tercero}</div>
-        <div class="list-item-meta">
-          <span>${f.comprobante_diario || `Hoja ${f.hoja}`} (${f.fecha})</span>
-          <span class="list-item-amount">${fmtCOP(f.subtotal)}</span>
+        <div style="font-weight:700; font-size:0.82rem; color:var(--text-primary); margin-bottom:5px; line-height:1.25;">${f.tercero}</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.74rem; color:var(--text-muted);">
+          <span>📅 ${f.fecha} • <strong>${f.mes}</strong></span>
+          <strong style="color:var(--brand-gold); font-size:0.85rem;">${fmtCOP(f.subtotal)}</strong>
         </div>
       </div>
     `;
@@ -836,6 +853,12 @@ function renderInvoicesSection() {
 
   const activeInv = filtered.find(f => f.id === ACTIVE_INVOICE_ID) || filtered[0];
   renderCommercialInvoicePreview(activeInv);
+}
+
+let ACTIVE_INVOICE_SEARCH = "";
+function filterInvoicesBySearch(val) {
+  ACTIVE_INVOICE_SEARCH = String(val || "").trim().toLowerCase();
+  renderInvoicesSection();
 }
 
 function selectInvoicePreview(invId) {
@@ -1174,15 +1197,15 @@ function renderVouchersList() {
       ? `<span style="background:var(--brand-gold-soft); color:var(--brand-primary); border:1px solid var(--brand-gold); font-size:0.66rem; font-weight:800; padding:1px 6px; border-radius:4px;">Comp. Diario N° ${tx.num_comprobante_diario}</span>`
       : "";
     return `
-      <div class="list-item-row ${isAct ? "active" : ""}" onclick="selectVoucherSheet('${tx.mes}', '${tx.hoja}')">
-        <div class="list-item-top">
-          <span class="list-item-code">Hoja ${tx.hoja} (${tx.mes})</span>
+      <div class="list-item-row ${isAct ? "active" : ""}" onclick="selectVoucherSheet('${tx.mes}', '${tx.hoja}')" style="padding:12px 14px; margin-bottom:8px; border-radius:10px; border:1.5px solid ${isAct ? 'var(--brand-gold)' : 'var(--border-light)'}; background:${isAct ? 'rgba(212,175,55,0.08)' : 'var(--bg-surface)'}; box-shadow:${isAct ? '0 3px 10px rgba(0,0,0,0.06)' : 'none'}; cursor:pointer; transition:all 0.15s ease;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+          <span style="font-family:'JetBrains Mono',monospace; font-weight:800; color:var(--brand-primary); font-size:0.83rem;">Hoja ${tx.hoja} (${tx.mes})</span>
           ${numDiarioBadge}
         </div>
-        <div class="list-item-title">${tx.enunciado || tx.concepto_soporte || tx.tipo}</div>
-        <div class="list-item-meta">
-          <span>${(tx.tercero || tx.tipo || "Contabilidad").slice(0, 26)}</span>
-          <span class="list-item-amount">${fmtCOP(tx.total_debe)}</span>
+        <div style="font-weight:700; font-size:0.81rem; color:var(--text-primary); margin-bottom:5px; line-height:1.3;">${(tx.enunciado || tx.concepto_soporte || tx.tipo).slice(0, 80)}</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.73rem; color:var(--text-muted);">
+          <span>👤 ${(tx.tercero || tx.tipo || "Contabilidad").slice(0, 24)}</span>
+          <strong style="color:var(--brand-gold); font-size:0.84rem;">${fmtCOP(tx.total_debe)}</strong>
         </div>
       </div>
     `;
@@ -4333,7 +4356,399 @@ function renderEstadosFinancieros() {
 }
 
 // ============================================================================
-// 8. SECCIÓN: DECLARACIONES TRIBUTARIAS Y CALENDARIO 2026
+// CONTROL RESPONSIVO MULTI-DISPOSITIVO (MAC, PC, PORTÁTIL Y CELULAR)
+// ============================================================================
+function toggleMobileSidebar(force) {
+  const sidebar = document.querySelector(".app-sidebar");
+  const backdrop = document.getElementById("mobileSidebarBackdrop");
+  if (!sidebar) return;
+  const isOpen = sidebar.classList.contains("mobile-open");
+  const next = (typeof force === "boolean") ? force : !isOpen;
+  sidebar.classList.toggle("mobile-open", next);
+  if (backdrop) backdrop.classList.toggle("open", next);
+}
+
+// ============================================================================
+// 7.B SECCIÓN: NÓMINA & LIQUIDACIÓN LABORAL COLOMBIANA (PLANILLA COMPLETA NIIF)
+// ============================================================================
+let ACTIVE_NOMINA_MONTH = "FEBRERO";
+let ACTIVE_NOMINA_SUBTAB = "PLANILLA";
+
+function selectNominaMonth(m) {
+  ACTIVE_NOMINA_MONTH = m;
+  document.querySelectorAll("#nominaMonthTabs .filter-chip").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.nommonth === m);
+  });
+  renderNominaSection();
+}
+
+function selectNominaSubTab(sub) {
+  ACTIVE_NOMINA_SUBTAB = sub;
+  document.querySelectorAll("#nominaSubTabs .filter-chip").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.nomsub === sub);
+  });
+  renderNominaSection();
+}
+
+function renderNominaSection() {
+  const container = document.getElementById("nominaContentContainer");
+  const kpiRow = document.getElementById("nominaKpiRow");
+  if (!container || !DB) return;
+
+  const nomData = DB.nominas?.[ACTIVE_NOMINA_MONTH] || DB.nominas?.["FEBRERO"] || {};
+  const emps = nomData.empleados || [];
+  const tots = nomData.totales || {};
+  const prests = nomData.prestaciones || [];
+
+  const totalDev = tots.total_devengado || emps.reduce((a, b) => a + (Number(b.total_devengado) || 0), 0);
+  const totalDed = tots.total_deducciones || emps.reduce((a, b) => a + (Number(b.total_deducciones) || 0), 0);
+  const netoPagar = tots.neto_pagar || emps.reduce((a, b) => a + (Number(b.neto_pagar) || 0), 0);
+  const totalPrest = prests.reduce((a, b) => a + (Number(b.total_prestaciones) || 0), 0);
+  const totalSegSocialEmp = prests.reduce((a, b) => {
+    return a + (Number(b.salud_empleador) || 0) + (Number(b.pension_empleador) || 0) + (Number(b.arl) || 0);
+  }, 0);
+  const totalParafiscales = prests.reduce((a, b) => {
+    return a + (Number(b.sena) || 0) + (Number(b.icbf) || 0) + (Number(b.caja_compensacion) || 0);
+  }, 0);
+  const costoTotalEmpresa = totalDev + totalPrest + totalSegSocialEmp + totalParafiscales;
+
+  if (kpiRow) {
+    kpiRow.innerHTML = `
+      <div class="kpi-card">
+        <div class="kpi-label">Total Devengado (${emps.length} Empleados)</div>
+        <div class="kpi-value" style="color:#059669;">${fmtCOP(totalDev)}</div>
+        <div class="kpi-sub">Sueldos, horas extras y auxilio de transporte</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Deducciones Empleados</div>
+        <div class="kpi-value" style="color:#DC2626;">${fmtCOP(totalDed)}</div>
+        <div class="kpi-sub">Salud 4%, Pensión 4%, Retefuente y Solidaridad</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Neto Pagado en Bancos</div>
+        <div class="kpi-value" style="color:var(--brand-gold);">${fmtCOP(netoPagar)}</div>
+        <div class="kpi-sub">Transferencias nómina (Cta 250505)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Provisiones Prestaciones</div>
+        <div class="kpi-value" style="color:#7C3AED;">${fmtCOP(totalPrest)}</div>
+        <div class="kpi-sub">Cesantías, Intereses, Prima y Vacaciones</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Aportes Empresa (SS &amp; Parafiscales)</div>
+        <div class="kpi-value" style="color:#2563EB;">${fmtCOP(totalSegSocialEmp + totalParafiscales)}</div>
+        <div class="kpi-sub">Pensión 12%, ARL, Salud y Caja de Compensación</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Costo Total Nómina Empresa</div>
+        <div class="kpi-value" style="color:var(--brand-primary);">${fmtCOP(costoTotalEmpresa)}</div>
+        <div class="kpi-sub">Gasto real del período (${ACTIVE_NOMINA_MONTH} 2026)</div>
+      </div>
+    `;
+  }
+
+  if (ACTIVE_NOMINA_SUBTAB === "PLANILLA") {
+    const rowsHtml = emps.map((e, idx) => `
+      <tr>
+        <td style="font-weight:800; color:var(--brand-primary);">${idx + 1}</td>
+        <td><strong>${e.nombre}</strong></td>
+        <td class="num-col">${e.horas || 240} hrs</td>
+        <td class="num-col">${fmtCOP(e.sueldo_basico)}</td>
+        <td class="num-col">${fmtCOP(e.basico)}</td>
+        <td class="num-col">${fmtCOP(e.auxilios || 0)}</td>
+        <td class="num-col">${fmtCOP((e.horas_extras || 0) + (e.recargos || 0))}</td>
+        <td class="num-col" style="color:#059669; font-weight:700;">${fmtCOP(e.aux_transporte || 0)}</td>
+        <td class="num-col" style="font-weight:800; background:rgba(16,185,129,0.08); color:#047857;">${fmtCOP(e.total_devengado)}</td>
+        <td class="num-col">${fmtCOP(e.ibc || e.basico)}</td>
+        <td class="num-col" style="color:#DC2626;">${fmtCOP(e.salud_empleado)}</td>
+        <td class="num-col" style="color:#DC2626;">${fmtCOP(e.pension_empleado)}</td>
+        <td class="num-col">${fmtCOP(e.solidaridad || 0)}</td>
+        <td class="num-col" style="color:#B45309; font-weight:700;">${fmtCOP(e.retefuente || 0)}</td>
+        <td class="num-col" style="font-weight:800; background:rgba(239,68,68,0.08); color:#B91C1C;">${fmtCOP(e.total_deducciones)}</td>
+        <td class="num-col" style="font-weight:900; background:rgba(212,175,55,0.15); color:var(--brand-primary); font-size:0.86rem;">${fmtCOP(e.neto_pagar)}</td>
+      </tr>
+    `).join("");
+
+    container.innerHTML = `
+      <div class="nomina-sheet-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px; border-bottom:1.5px solid var(--border-light); padding-bottom:10px;">
+          <div>
+            <h3 style="color:var(--brand-primary); font-size:1.1rem; font-weight:900;">📋 GRAN PLANILLA DE LIQUIDACIÓN DE NÓMINA INDIVIDUAL — ${ACTIVE_NOMINA_MONTH} 2026</h3>
+            <span style="font-size:0.75rem; color:var(--text-muted);">ELECTROVIVIENDA S.A.S • NIT 901.765.438-3 • Hoja Excel Original: <strong>${nomData.hoja || "NÓMINA"}</strong></span>
+          </div>
+          <span class="status-pill status-paid" style="font-size:0.75rem; font-weight:800;">✓ Liquidación Cuadrada y Auditada</span>
+        </div>
+
+        <div class="table-wrap">
+          <table class="nomina-table">
+            <thead>
+              <tr>
+                <th colspan="2" class="nomina-group-th" style="background:#0B192C;">DATOS DEL TRABAJADOR</th>
+                <th colspan="7" class="nomina-group-th nomina-th-devengado">1. DEVENGADO (INGRESOS LABORALES)</th>
+                <th class="nomina-group-th" style="background:#475569;">COTIZACIÓN</th>
+                <th colspan="5" class="nomina-group-th nomina-th-deducciones">2. DEDUCCIONES DEL EMPLEADO</th>
+                <th class="nomina-group-th nomina-th-neto">3. NETO</th>
+              </tr>
+              <tr>
+                <th style="width:30px;">#</th>
+                <th>Nombre del Empleado</th>
+                <th class="num-col">Horas</th>
+                <th class="num-col">Salario Básico</th>
+                <th class="num-col">Básico Liq.</th>
+                <th class="num-col">Auxilios</th>
+                <th class="num-col">Extras/Rec.</th>
+                <th class="num-col">Aux. Transp.</th>
+                <th class="num-col" style="background:#047857; color:#fff;">Total Devengado</th>
+                <th class="num-col">IBC Seguridad</th>
+                <th class="num-col">Salud (4%)</th>
+                <th class="num-col">Pensión (4%)</th>
+                <th class="num-col">Fondo Solid. (1%)</th>
+                <th class="num-col">Retefuente Art 383</th>
+                <th class="num-col" style="background:#DC2626; color:#fff;">Total Deducido</th>
+                <th class="num-col" style="background:#D4AF37; color:#0B192C; font-weight:900;">Neto a Pagar</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml}
+              <tr class="nomina-total-row">
+                <td colspan="3" style="text-align:right; font-weight:900;">TOTALES CONSOLIDADOS (${ACTIVE_NOMINA_MONTH}):</td>
+                <td class="num-col">${fmtCOP(tots.sueldo_basico || 0)}</td>
+                <td class="num-col">${fmtCOP(tots.basico || 0)}</td>
+                <td class="num-col">$ 0</td>
+                <td class="num-col">$ 0</td>
+                <td class="num-col">${fmtCOP(tots.aux_transporte || 0)}</td>
+                <td class="num-col" style="color:#34D399; font-size:0.88rem;">${fmtCOP(totalDev)}</td>
+                <td class="num-col">${fmtCOP(tots.ibc || 0)}</td>
+                <td class="num-col">${fmtCOP(tots.salud_empleado || 0)}</td>
+                <td class="num-col">${fmtCOP(tots.pension_empleado || 0)}</td>
+                <td class="num-col">${fmtCOP(tots.solidaridad || 0)}</td>
+                <td class="num-col">${fmtCOP(tots.retefuente || 0)}</td>
+                <td class="num-col" style="color:#FCA5A5; font-size:0.88rem;">${fmtCOP(totalDed)}</td>
+                <td class="num-col" style="color:#FDE047; font-size:0.92rem;">${fmtCOP(netoPagar)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:0.75rem; color:var(--text-muted);">
+          <div>
+            <strong>Parámetros Legales 2026:</strong> SMLMV: $1.750.905 • Auxilio Transporte: $249.095 • Jornada Máxima: 240 hrs/mes
+          </div>
+          <div>
+            Firmas: <strong>Gina Villamizar</strong> (Contadora T.P. 248960-T) • <strong>Kevin Guerrero</strong> (Representante Legal)
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (ACTIVE_NOMINA_SUBTAB === "SEG_SOCIAL") {
+    const rowsHtml = prests.map((p, idx) => {
+      const totSegEmp = (Number(p.salud_empleador) || 0) + (Number(p.pension_empleador) || 0) + (Number(p.arl) || 0) + (Number(p.sena) || 0) + (Number(p.icbf) || 0) + (Number(p.caja_compensacion) || 0);
+      return `
+        <tr>
+          <td style="font-weight:800; color:var(--brand-primary);">${idx + 1}</td>
+          <td><strong>${p.nombre}</strong></td>
+          <td class="num-col">${fmtCOP(p.devengado)}</td>
+          <td class="num-col" style="color:${p.salud_empleador > 0 ? '#0B192C' : '#94A3B8'};">${p.salud_empleador > 0 ? fmtCOP(p.salud_empleador) : '<span style="font-size:0.7rem; color:#059669; font-weight:700;">Exonerado Art 114-1</span>'}</td>
+          <td class="num-col">${fmtCOP(p.pension_empleador)}</td>
+          <td class="num-col">${fmtCOP(p.arl)}</td>
+          <td class="num-col" style="color:${p.sena > 0 ? '#0B192C' : '#94A3B8'};">${p.sena > 0 ? fmtCOP(p.sena) : '<span style="font-size:0.7rem; color:#059669; font-weight:700;">Exonerado</span>'}</td>
+          <td class="num-col" style="color:${p.icbf > 0 ? '#0B192C' : '#94A3B8'};">${p.icbf > 0 ? fmtCOP(p.icbf) : '<span style="font-size:0.7rem; color:#059669; font-weight:700;">Exonerado</span>'}</td>
+          <td class="num-col">${fmtCOP(p.caja_compensacion)}</td>
+          <td class="num-col" style="font-weight:900; color:#2563EB; background:rgba(37,99,235,0.08);">${fmtCOP(totSegEmp)}</td>
+        </tr>
+      `;
+    }).join("");
+
+    container.innerHTML = `
+      <div class="nomina-sheet-card">
+        <div style="margin-bottom:14px; border-bottom:1.5px solid var(--border-light); padding-bottom:10px;">
+          <h3 style="color:var(--brand-primary); font-size:1.1rem; font-weight:900;">🏢 APORTES A SEGURIDAD SOCIAL Y PARAFISCALES A CARGO DE LA EMPRESA — ${ACTIVE_NOMINA_MONTH} 2026</h3>
+          <span style="font-size:0.75rem; color:var(--text-muted);">Aplicación Estatuto Tributario Art. 114-1 (Exoneración SENA, ICBF y Salud para empleados con sueldo inferior a 10 SMLMV)</span>
+        </div>
+
+        <div class="table-wrap">
+          <table class="nomina-table">
+            <thead>
+              <tr>
+                <th style="width:30px;">#</th>
+                <th>Empleado</th>
+                <th class="num-col">IBC Salarial</th>
+                <th class="num-col">Salud Empleador (8.5%)</th>
+                <th class="num-col">Pensión Empleador (12%)</th>
+                <th class="num-col">ARL Riesgo I (0.522%)</th>
+                <th class="num-col">SENA (2%)</th>
+                <th class="num-col">ICBF (3%)</th>
+                <th class="num-col">Caja Comp. (4%)</th>
+                <th class="num-col" style="background:#2563EB; color:#fff;">Total Aportes Empresa</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml}
+              <tr class="nomina-total-row">
+                <td colspan="3" style="text-align:right; font-weight:900;">TOTALES APORTES EMPRESA:</td>
+                <td class="num-col">${fmtCOP(prests.reduce((a, b) => a + (Number(b.salud_empleador) || 0), 0))}</td>
+                <td class="num-col">${fmtCOP(prests.reduce((a, b) => a + (Number(b.pension_empleador) || 0), 0))}</td>
+                <td class="num-col">${fmtCOP(prests.reduce((a, b) => a + (Number(b.arl) || 0), 0))}</td>
+                <td class="num-col">${fmtCOP(prests.reduce((a, b) => a + (Number(b.sena) || 0), 0))}</td>
+                <td class="num-col">${fmtCOP(prests.reduce((a, b) => a + (Number(b.icbf) || 0), 0))}</td>
+                <td class="num-col">${fmtCOP(prests.reduce((a, b) => a + (Number(b.caja_compensacion) || 0), 0))}</td>
+                <td class="num-col" style="color:#60A5FA; font-size:0.92rem;">${fmtCOP(totalSegSocialEmp + totalParafiscales)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  } else if (ACTIVE_NOMINA_SUBTAB === "PRESTACIONES") {
+    const rowsHtml = prests.map((p, idx) => `
+      <tr>
+        <td style="font-weight:800; color:var(--brand-primary);">${idx + 1}</td>
+        <td><strong>${p.nombre}</strong></td>
+        <td class="num-col">${fmtCOP(p.base_prestacional)}</td>
+        <td class="num-col">${fmtCOP(p.cesantias)}</td>
+        <td class="num-col">${fmtCOP(p.intereses_cesantias)}</td>
+        <td class="num-col">${fmtCOP(p.prima_servicios)}</td>
+        <td class="num-col">${fmtCOP(p.ibc_vacaciones)}</td>
+        <td class="num-col">${fmtCOP(p.vacaciones)}</td>
+        <td class="num-col" style="font-weight:900; color:#7C3AED; background:rgba(124,58,237,0.08);">${fmtCOP(p.total_prestaciones)}</td>
+      </tr>
+    `).join("");
+
+    container.innerHTML = `
+      <div class="nomina-sheet-card">
+        <div style="margin-bottom:14px; border-bottom:1.5px solid var(--border-light); padding-bottom:10px;">
+          <h3 style="color:var(--brand-primary); font-size:1.1rem; font-weight:900;">💰 PROVISIÓN MENSUAL DE PRESTACIONES SOCIALES (LEY LABORAL COLOMBIANA) — ${ACTIVE_NOMINA_MONTH} 2026</h3>
+          <span style="font-size:0.75rem; color:var(--text-muted);">Cesantías (8.33%) • Intereses Cesantías (1% mensual / 12% anual) • Prima de Servicios (8.33%) • Vacaciones (4.17%)</span>
+        </div>
+
+        <div class="table-wrap">
+          <table class="nomina-table">
+            <thead>
+              <tr>
+                <th style="width:30px;">#</th>
+                <th>Empleado</th>
+                <th class="num-col">Base Prestacional</th>
+                <th class="num-col">Cesantías (8.33%)</th>
+                <th class="num-col">Int. Cesantías (1%)</th>
+                <th class="num-col">Prima Servicios (8.33%)</th>
+                <th class="num-col">IBC Vacaciones</th>
+                <th class="num-col">Vacaciones (4.17%)</th>
+                <th class="num-col" style="background:#7C3AED; color:#fff;">Total Provisiones</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml}
+              <tr class="nomina-total-row">
+                <td colspan="3" style="text-align:right; font-weight:900;">TOTAL PROVISIONES MES:</td>
+                <td class="num-col">${fmtCOP(prests.reduce((a, b) => a + (Number(b.cesantias) || 0), 0))}</td>
+                <td class="num-col">${fmtCOP(prests.reduce((a, b) => a + (Number(b.intereses_cesantias) || 0), 0))}</td>
+                <td class="num-col">${fmtCOP(prests.reduce((a, b) => a + (Number(b.prima_servicios) || 0), 0))}</td>
+                <td class="num-col">${fmtCOP(prests.reduce((a, b) => a + (Number(b.ibc_vacaciones) || 0), 0))}</td>
+                <td class="num-col">${fmtCOP(prests.reduce((a, b) => a + (Number(b.vacaciones) || 0), 0))}</td>
+                <td class="num-col" style="color:#C4B5FD; font-size:0.92rem;">${fmtCOP(totalPrest)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  } else if (ACTIVE_NOMINA_SUBTAB === "ASIENTO") {
+    const totCes = prests.reduce((a, b) => a + (Number(b.cesantias) || 0), 0);
+    const totInt = prests.reduce((a, b) => a + (Number(b.intereses_cesantias) || 0), 0);
+    const totPri = prests.reduce((a, b) => a + (Number(b.prima_servicios) || 0), 0);
+    const totVac = prests.reduce((a, b) => a + (Number(b.vacaciones) || 0), 0);
+    const totArl = prests.reduce((a, b) => a + (Number(b.arl) || 0), 0);
+    const totSalEmp = prests.reduce((a, b) => a + (Number(b.salud_empleador) || 0), 0);
+    const totPenEmp = prests.reduce((a, b) => a + (Number(b.pension_empleador) || 0), 0);
+    const totCcf = prests.reduce((a, b) => a + (Number(b.caja_compensacion) || 0), 0);
+    const totSena = prests.reduce((a, b) => a + (Number(b.sena) || 0), 0);
+    const totIcbf = prests.reduce((a, b) => a + (Number(b.icbf) || 0), 0);
+
+    const salTrabajador = tots.salud_empleado || 0;
+    const penTrabajador = tots.pension_empleado || 0;
+    const solTrabajador = tots.solidaridad || 0;
+    const retTrabajador = tots.retefuente || 0;
+
+    const debeTotal = (tots.basico || 0) + (tots.aux_transporte || 0) + totCes + totInt + totPri + totVac + totArl + totSalEmp + totPenEmp + totCcf + totSena + totIcbf;
+    const haberTotal = (salTrabajador + totSalEmp) + (penTrabajador + totPenEmp + solTrabajador) + (totCcf + totSena + totIcbf) + totArl + retTrabajador + netoPagar + (totCes + totInt + totPri + totVac);
+
+    container.innerHTML = `
+      <div class="nomina-sheet-card">
+        <div style="margin-bottom:14px; border-bottom:1.5px solid var(--border-light); padding-bottom:10px;">
+          <h3 style="color:var(--brand-primary); font-size:1.1rem; font-weight:900;">📑 ASIENTO CONTABLE NIIF: CAUSACIÓN, PROVISIÓN Y PAGO DE NÓMINA — ${ACTIVE_NOMINA_MONTH} 2026</h3>
+          <span style="font-size:0.75rem; color:var(--text-muted);">Comprobante de Diario NIIF con sumas iguales exactas en Pesos Colombianos (COP)</span>
+        </div>
+
+        <div class="table-wrap">
+          <table class="niif-table">
+            <thead>
+              <tr>
+                <th style="width:100px;">Código PUC</th>
+                <th>Nombre de la Cuenta NIIF</th>
+                <th style="width:170px;" class="num-col">Débito (Debe)</th>
+                <th style="width:170px;" class="num-col">Crédito (Haber)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="code-col">510506</td><td>Sueldos y Salarios Básicos</td><td class="num-col">${fmtCOP(tots.basico || 0)}</td><td class="num-col">$ 0</td></tr>
+              <tr><td class="code-col">510527</td><td>Auxilio de Transporte Legal</td><td class="num-col">${fmtCOP(tots.aux_transporte || 0)}</td><td class="num-col">$ 0</td></tr>
+              <tr><td class="code-col">510530</td><td>Cesantías (Gasto del Período)</td><td class="num-col">${fmtCOP(totCes)}</td><td class="num-col">$ 0</td></tr>
+              <tr><td class="code-col">510533</td><td>Intereses sobre Cesantías</td><td class="num-col">${fmtCOP(totInt)}</td><td class="num-col">$ 0</td></tr>
+              <tr><td class="code-col">510536</td><td>Prima de Servicios</td><td class="num-col">${fmtCOP(totPri)}</td><td class="num-col">$ 0</td></tr>
+              <tr><td class="code-col">510539</td><td>Vacaciones</td><td class="num-col">${fmtCOP(totVac)}</td><td class="num-col">$ 0</td></tr>
+              <tr><td class="code-col">510568</td><td>Aportes Administradora de Riesgos (ARL)</td><td class="num-col">${fmtCOP(totArl)}</td><td class="num-col">$ 0</td></tr>
+              <tr><td class="code-col">510569</td><td>Aportes a Entidades de Salud (EPS Empleador)</td><td class="num-col">${fmtCOP(totSalEmp)}</td><td class="num-col">$ 0</td></tr>
+              <tr><td class="code-col">510570</td><td>Aportes a Fondos de Pensiones (Empleador)</td><td class="num-col">${fmtCOP(totPenEmp)}</td><td class="num-col">$ 0</td></tr>
+              <tr><td class="code-col">510572</td><td>Aportes Cajas de Compensación (4%)</td><td class="num-col">${fmtCOP(totCcf)}</td><td class="num-col">$ 0</td></tr>
+              <tr><td class="code-col">510575</td><td>Aportes ICBF (3%)</td><td class="num-col">${fmtCOP(totIcbf)}</td><td class="num-col">$ 0</td></tr>
+              <tr><td class="code-col">510578</td><td>Aportes SENA (2%)</td><td class="num-col">${fmtCOP(totSena)}</td><td class="num-col">$ 0</td></tr>
+              
+              <tr style="background:#F8FAFC;"><td class="code-col">237005</td><td>Aportes a Entidades Promotoras de Salud (EPS por pagar)</td><td class="num-col">$ 0</td><td class="num-col">${fmtCOP(salTrabajador + totSalEmp)}</td></tr>
+              <tr style="background:#F8FAFC;"><td class="code-col">237006</td><td>Aportes a Fondos de Pensiones (AFP por pagar)</td><td class="num-col">$ 0</td><td class="num-col">${fmtCOP(penTrabajador + totPenEmp + solTrabajador)}</td></tr>
+              <tr style="background:#F8FAFC;"><td class="code-col">237007</td><td>Aportes a Riesgos Laborales (ARL por pagar)</td><td class="num-col">$ 0</td><td class="num-col">${fmtCOP(totArl)}</td></tr>
+              <tr style="background:#F8FAFC;"><td class="code-col">237010</td><td>Aportes a Cajas, ICBF y SENA por pagar</td><td class="num-col">$ 0</td><td class="num-col">${fmtCOP(totCcf + totSena + totIcbf)}</td></tr>
+              <tr style="background:#F8FAFC;"><td class="code-col">236505</td><td>Retención en la Fuente Salarios (Art. 383 E.T.)</td><td class="num-col">$ 0</td><td class="num-col">${fmtCOP(retTrabajador)}</td></tr>
+              <tr style="background:#F8FAFC;"><td class="code-col">2610</td><td>Obligaciones Laborales y Provisiones Consolidadas</td><td class="num-col">$ 0</td><td class="num-col">${fmtCOP(totCes + totInt + totPri + totVac)}</td></tr>
+              <tr style="background:#F8FAFC;"><td class="code-col">250505</td><td>Salarios por Pagar (Neto a pagar a trabajadores)</td><td class="num-col">$ 0</td><td class="num-col">${fmtCOP(netoPagar)}</td></tr>
+
+              <tr class="nomina-total-row">
+                <td colspan="2" style="text-align:right; font-weight:900;">SUMAS IGUALES CUADRADAS AL CENTAVO:</td>
+                <td class="num-col" style="color:#34D399; font-size:0.92rem;">${fmtCOP(debeTotal)}</td>
+                <td class="num-col" style="color:#34D399; font-size:0.92rem;">${fmtCOP(haberTotal)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function exportNominaPdf() {
+  const container = document.getElementById("nominaContentContainer");
+  if (!container) return;
+  const emp = DB?.empresa || {};
+  const html = `
+    <div class="pdf-sheet-container" style="font-family:'Plus Jakarta Sans', sans-serif; color:#0f172a; background:#ffffff; padding:16px;">
+      <div style="border-bottom:2px solid #005E38; padding-bottom:10px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <div style="font-size:16px; font-weight:900; color:#0B192C;">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</div>
+          <div style="font-size:11px; color:#047857; font-weight:700;">NIT: ${emp.nit || "901.765.438-3"} • PLANILLA OFICIAL DE NÓMINA Y SEGURIDAD SOCIAL</div>
+        </div>
+        <div style="text-align:right; font-size:11px; color:#334155;">
+          <strong>Período: ${ACTIVE_NOMINA_MONTH} 2026</strong><br/>
+          Contadora: ${emp.contadora || "Gina Villamizar"} (T.P. 248960-T)
+        </div>
+      </div>
+      ${container.innerHTML}
+    </div>
+  `;
+  const filename = `Planilla_Nomina_${ACTIVE_NOMINA_MONTH}_2026.pdf`;
+  downloadOrPrintPdfDocument(html, filename, `Planilla Nómina ${ACTIVE_NOMINA_MONTH} 2026`, { orientation: "landscape" });
+}
+
+// ============================================================================
+// 8. SECCIÓN: DECLARACIONES TRIBUTARIAS OFICIALES (DIAN & ALCALDÍA)
 // ============================================================================
 function selectTaxTab(tab) {
   ACTIVE_TAX_TAB = tab;
@@ -4343,33 +4758,304 @@ function selectTaxTab(tab) {
   renderTaxSection();
 }
 
-function renderTaxSection() {
-  const cal = DB.calendario_tributario || [];
-  document.getElementById("taxCalendarTableBody").innerHTML = cal.map(item => {
-    const isPaid = item.estado.includes("PAGADO") || item.estado.includes("PRESENTADO");
-    const isAlert = item.estado.includes("ALERTA") || item.estado.includes("PENDIENTE");
-    const pillCls = isPaid ? "status-paid" : (isAlert ? "status-alert" : "status-pending");
+function renderDianForm350Html() {
+  const dec = DB?.declaraciones?.F350 || {};
+  const emp = DB?.empresa || {};
+  const rengs = dec.renglones || [];
+
+  const tableRows = rengs.map(r => {
+    const isTot = r.is_total;
+    const isHigh = r.is_highlight;
+    const rowStyle = isHigh ? "background:#FEF3C7; font-weight:900; border:2px solid #D4AF37;" : (isTot ? "background:#F1F5F9; font-weight:800;" : "");
     return `
-      <tr>
-        <td class="code-col">${item.id}</td>
-        <td><strong>${item.impuesto}</strong></td>
-        <td>${item.entidad}</td>
-        <td>${item.periodo}</td>
-        <td>${item.periodicidad}</td>
-        <td class="code-col">${item.fecha_vencimiento}</td>
-        <td><span class="status-pill ${pillCls}">${item.estado}</span></td>
-        <td class="num-col"><strong>${fmtCOP(item.valor_pagado)}</strong></td>
-        <td>
-          <button class="btn btn-outline btn-sm" onclick="toggleTaxItemStatus('${item.id}')">
-            ${isPaid ? "Reabrir" : "✓ Marcar Pagado"}
-          </button>
+      <tr style="${rowStyle}">
+        <td style="text-align:center; width:55px;">
+          <span class="dian-casilla-tag" style="${isHigh ? 'background:#D4AF37; color:#0B192C;' : ''}">${r.renglon}</span>
         </td>
+        <td><strong>${r.concepto}</strong></td>
+        <td class="num-col">${r.base > 0 ? fmtCOP(r.base) : "—"}</td>
+        <td class="num-col" style="${isHigh ? 'font-size:1.05rem; color:#B45309;' : (isTot ? 'color:#047857;' : '')}">${fmtCOP(r.retencion)}</td>
       </tr>
     `;
   }).join("");
 
+  return `
+    <div class="dian-form-paper">
+      <div class="dian-header-banner">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="background:#ffffff; color:#005E38; font-weight:900; font-size:1.25rem; padding:4px 10px; border-radius:6px; letter-spacing:1px;">DIAN</div>
+          <div>
+            <div class="dian-header-title">FORMULARIO 350 — DECLARACIÓN DE RETENCIÓN EN LA FUENTE</div>
+            <div style="font-size:0.75rem; color:#E8F5E9;">Dirección de Impuestos y Aduanas Nacionales • República de Colombia</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <span style="background:rgba(255,255,255,0.2); padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.8rem;">Año Gravable: 2026 • Período: 03 (Marzo)</span>
+        </div>
+      </div>
+
+      <div class="dian-sub-bar">
+        <div><strong>5. Número de Identificación Tributaria (NIT):</strong> <span class="code-col" style="font-size:0.88rem; font-weight:800;">901.765.438</span> <strong>DV:</strong> 3</div>
+        <div><strong>11. Razón Social:</strong> <strong style="color:var(--brand-primary);">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</strong></div>
+        <div><strong>12. Seccional:</strong> 04 Bucaramanga</div>
+      </div>
+
+      <div class="dian-section-header">LIQUIDACIÓN PRIVADA DE RETENCIONES EN LA FUENTE (MARZO 2026)</div>
+
+      <div class="table-wrap">
+        <table class="dian-table">
+          <thead>
+            <tr>
+              <th style="width:60px; text-align:center;">Renglón</th>
+              <th>Concepto Sujeto a Retención</th>
+              <th class="num-col" style="width:190px;">Base Sujeta a Retención (COP)</th>
+              <th class="num-col" style="width:190px;">Retención Practicada (COP)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRows}
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:18px; border-top:1.5px dashed #CBD5E1; padding-top:14px; display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px;">
+        <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
+          <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">981. REPRESENTANTE LEGAL</span>
+          <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.representante_legal || "Kevin Guerrero"}</strong>
+          <span style="font-size:0.74rem; color:#475569;">C.C. 1.098.765.432 • Firma Digital Autorizada</span>
+        </div>
+        <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
+          <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">982. CONTADORA PÚBLICA TITULAR</span>
+          <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.contadora || "Gina Villamizar"}</strong>
+          <span style="font-size:0.74rem; color:#475569;">Tarjeta Profesional: <strong>T.P. 248960-T</strong></span>
+        </div>
+        <div style="border:1.5px solid #005E38; border-radius:8px; padding:12px; background:#E8F5E9; display:flex; flex-direction:column; justify-content:center;">
+          <span style="font-size:0.7rem; font-weight:800; color:#005E38;">980. TOTAL PAGO EFECTIVO</span>
+          <span style="font-size:1.25rem; font-weight:900; color:#005E38;">${fmtCOP(dec.total_pago || 11037000)}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderDianForm300Html() {
+  const dec = DB?.declaraciones?.F300 || {};
+  const emp = DB?.empresa || {};
+
+  const ingRows = (dec.ingresos || []).map(r => `
+    <tr style="${r.is_total ? 'background:#F1F5F9; font-weight:800;' : ''}">
+      <td style="text-align:center; width:55px;"><span class="dian-casilla-tag">${r.renglon}</span></td>
+      <td>${r.concepto}</td>
+      <td class="num-col" style="${r.is_total ? 'color:#047857;' : ''}">${fmtCOP(r.valor)}</td>
+    </tr>
+  `).join("");
+
+  const compRows = (dec.compras || []).map(r => `
+    <tr style="${r.is_total ? 'background:#F1F5F9; font-weight:800;' : ''}">
+      <td style="text-align:center; width:55px;"><span class="dian-casilla-tag">${r.renglon}</span></td>
+      <td>${r.concepto}</td>
+      <td class="num-col" style="${r.is_total ? 'color:#2563EB;' : ''}">${fmtCOP(r.valor)}</td>
+    </tr>
+  `).join("");
+
+  const liqRows = (dec.liquidacion || []).map(r => {
+    const isHigh = r.is_highlight;
+    const isTot = r.is_total;
+    const rowStyle = isHigh ? "background:#FEF3C7; font-weight:900; border:2px solid #D4AF37;" : (isTot ? "background:#F1F5F9; font-weight:800;" : "");
+    return `
+      <tr style="${rowStyle}">
+        <td style="text-align:center; width:55px;"><span class="dian-casilla-tag" style="${isHigh ? 'background:#D4AF37; color:#0B192C;' : ''}">${r.renglon}</span></td>
+        <td>${r.concepto}</td>
+        <td class="num-col" style="${isHigh ? 'font-size:1.05rem; color:#B45309;' : (isTot ? 'color:#047857;' : '')}">${fmtCOP(r.valor)}</td>
+      </tr>
+    `;
+  }).join("");
+
+  return `
+    <div class="dian-form-paper">
+      <div class="dian-header-banner">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="background:#ffffff; color:#005E38; font-weight:900; font-size:1.25rem; padding:4px 10px; border-radius:6px; letter-spacing:1px;">DIAN</div>
+          <div>
+            <div class="dian-header-title">FORMULARIO 300 — DECLARACIÓN DEL IMPUESTO SOBRE LAS VENTAS (IVA)</div>
+            <div style="font-size:0.75rem; color:#E8F5E9;">Dirección de Impuestos y Aduanas Nacionales • República de Colombia</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <span style="background:rgba(255,255,255,0.2); padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.8rem;">Año: 2026 • Bimestre: 01 (Bimestral)</span>
+        </div>
+      </div>
+
+      <div class="dian-sub-bar">
+        <div><strong>5. NIT:</strong> <span class="code-col" style="font-size:0.88rem; font-weight:800;">901.765.438</span> <strong>DV:</strong> 3</div>
+        <div><strong>11. Razón Social:</strong> <strong style="color:var(--brand-primary);">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</strong></div>
+        <div><strong>24. Periodicidad:</strong> Bimestral (X)</div>
+      </div>
+
+      <div class="dian-section-header">1. SECCIÓN DE INGRESOS BRUTOS Y NETOS</div>
+      <div class="table-wrap">
+        <table class="dian-table">
+          <thead><tr><th style="width:60px; text-align:center;">Renglón</th><th>Concepto de Ingresos</th><th class="num-col" style="width:190px;">Valor (COP)</th></tr></thead>
+          <tbody>${ingRows}</tbody>
+        </table>
+      </div>
+
+      <div class="dian-section-header">2. SECCIÓN DE COMPRAS E IMPORTACIONES</div>
+      <div class="table-wrap">
+        <table class="dian-table">
+          <thead><tr><th style="width:60px; text-align:center;">Renglón</th><th>Concepto de Compras</th><th class="num-col" style="width:190px;">Valor (COP)</th></tr></thead>
+          <tbody>${compRows}</tbody>
+        </table>
+      </div>
+
+      <div class="dian-section-header">3. LIQUIDACIÓN PRIVADA DEL IMPUESTO SOBRE LAS VENTAS (IVA)</div>
+      <div class="table-wrap">
+        <table class="dian-table">
+          <thead><tr><th style="width:60px; text-align:center;">Renglón</th><th>Concepto de Impuesto Generado / Descontable</th><th class="num-col" style="width:190px;">Valor (COP)</th></tr></thead>
+          <tbody>${liqRows}</tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:18px; border-top:1.5px dashed #CBD5E1; padding-top:14px; display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px;">
+        <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
+          <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">981. REPRESENTANTE LEGAL</span>
+          <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.representante_legal || "Kevin Guerrero"}</strong>
+          <span style="font-size:0.74rem; color:#475569;">C.C. 1.098.765.432</span>
+        </div>
+        <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
+          <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">982. CONTADORA PÚBLICA</span>
+          <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.contadora || "Gina Villamizar"}</strong>
+          <span style="font-size:0.74rem; color:#475569;">Tarjeta Profesional: <strong>T.P. 248960-T</strong></span>
+        </div>
+        <div style="border:1.5px solid #005E38; border-radius:8px; padding:12px; background:#E8F5E9; display:flex; flex-direction:column; justify-content:center;">
+          <span style="font-size:0.7rem; font-weight:800; color:#005E38;">980. PAGO TOTAL IVA DEL BIMESTRE</span>
+          <span style="font-size:1.25rem; font-weight:900; color:#005E38;">${fmtCOP(dec.total_pago || 2613000)}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderReteicaFormHtml() {
+  const dec = DB?.declaraciones?.RETEICA || {};
+  const emp = DB?.empresa || {};
+  const rengs = dec.renglones || [];
+
+  const rows = rengs.map(r => {
+    const isHigh = r.is_highlight;
+    const isTot = r.is_total;
+    const rowStyle = isHigh ? "background:#FEF3C7; font-weight:900; border:2px solid #D4AF37;" : (isTot ? "background:#F1F5F9; font-weight:800;" : "");
+    return `
+      <tr style="${rowStyle}">
+        <td style="text-align:center; width:50px;"><span class="dian-casilla-tag" style="background:#1E3A8A;">${r.renglon}</span></td>
+        <td><strong>${r.concepto}</strong></td>
+        <td class="num-col">${fmtCOP(r.ind_cio)}</td>
+        <td class="num-col">${fmtCOP(r.avisos)}</td>
+        <td class="num-col">${fmtCOP(r.bomberos)}</td>
+        <td class="num-col" style="${isHigh ? 'font-size:1.05rem; color:#B45309;' : 'font-weight:800;'}">${fmtCOP(r.total)}</td>
+      </tr>
+    `;
+  }).join("");
+
+  return `
+    <div class="dian-form-paper" style="border-color:#1E3A8A;">
+      <div class="dian-header-banner" style="background:#1E3A8A;">
+        <div>
+          <div class="dian-header-title">DECLARACIÓN DE RETENCIÓN EN LA FUENTE DE INDUSTRIA Y COMERCIO (RETEICA)</div>
+          <div style="font-size:0.75rem; color:#DBEAFE;">Alcaldía de Bucaramanga • Secretaría de Hacienda Municipal • NIT 890.201.222-1</div>
+        </div>
+        <div style="text-align:right;">
+          <span style="background:rgba(255,255,255,0.2); padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.8rem;">Año: 2026 • Primer Trimestre (Ene-Mar)</span>
+        </div>
+      </div>
+
+      <div class="dian-sub-bar" style="background:#EFF6FF; border-bottom:2px solid #1E3A8A;">
+        <div><strong>Agente Retenedor:</strong> <strong style="color:#1E3A8A;">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</strong></div>
+        <div><strong>NIT:</strong> <span class="code-col">901.765.438-3</span></div>
+        <div><strong>Tarifa ICA:</strong> 9.6 x mil • <strong>Avisos:</strong> 15% • <strong>Bomberil:</strong> 10%</div>
+      </div>
+
+      <div class="dian-section-header" style="border-left-color:#1E3A8A;">LIQUIDACIÓN PRIVADA DE RETENCIONES Y SOBRETASAS</div>
+      <div class="table-wrap">
+        <table class="dian-table">
+          <thead>
+            <tr>
+              <th style="width:50px; text-align:center;">Renglón</th>
+              <th>Actividad Sujeta a Retención</th>
+              <th class="num-col">Industria y Cyo (9.6‰)</th>
+              <th class="num-col">Avisos y Tableros (15%)</th>
+              <th class="num-col">Sobretasa Bomberil (10%)</th>
+              <th class="num-col" style="background:#1E3A8A; color:#fff;">Total Retenido</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:18px; border-top:1.5px dashed #CBD5E1; padding-top:14px; display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px;">
+        <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
+          <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">REPRESENTANTE LEGAL</span>
+          <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.representante_legal || "Kevin Guerrero"}</strong>
+        </div>
+        <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
+          <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">CONTADORA PÚBLICA</span>
+          <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.contadora || "Gina Villamizar"}</strong>
+          <span style="font-size:0.74rem; color:#475569;">T.P. 248960-T</span>
+        </div>
+        <div style="border:1.5px solid #1E3A8A; border-radius:8px; padding:12px; background:#EFF6FF; display:flex; flex-direction:column; justify-content:center;">
+          <span style="font-size:0.7rem; font-weight:800; color:#1E3A8A;">15. TOTAL A PAGAR AL MUNICIPIO</span>
+          <span style="font-size:1.25rem; font-weight:900; color:#1E3A8A;">${fmtCOP(dec.total_pago || 1895000)}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderTaxSection() {
+  const cal = DB?.calendario_tributario || [];
+  const tbody = document.getElementById("taxCalendarTableBody");
+  if (tbody) {
+    tbody.innerHTML = cal.map(item => {
+      const isPaid = item.estado.includes("PAGADO") || item.estado.includes("PRESENTADO");
+      const isAlert = item.estado.includes("ALERTA") || item.estado.includes("PENDIENTE");
+      const pillCls = isPaid ? "status-paid" : (isAlert ? "status-alert" : "status-pending");
+      return `
+        <tr>
+          <td class="code-col">${item.id}</td>
+          <td><strong>${item.impuesto}</strong></td>
+          <td>${item.entidad}</td>
+          <td>${item.periodo}</td>
+          <td>${item.periodicidad}</td>
+          <td class="code-col">${item.fecha_vencimiento}</td>
+          <td><span class="status-pill ${pillCls}">${item.estado}</span></td>
+          <td class="num-col"><strong>${fmtCOP(item.valor_pagado)}</strong></td>
+          <td>
+            <button class="btn btn-outline btn-sm" onclick="toggleTaxItemStatus('${item.id}')">
+              ${isPaid ? "Reabrir" : "✓ Marcar Pagado"}
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join("");
+  }
+
   const container = document.getElementById("taxFormContentContainer");
   if (!container) return;
+
+  if (ACTIVE_TAX_TAB === "F350") {
+    container.innerHTML = renderDianForm350Html();
+    return;
+  }
+  if (ACTIVE_TAX_TAB === "F300") {
+    container.innerHTML = renderDianForm300Html();
+    return;
+  }
+  if (ACTIVE_TAX_TAB === "RETEICA") {
+    container.innerHTML = renderReteicaFormHtml();
+    return;
+  }
 
   if (ACTIVE_TAX_TAB === "AUTOLIQUIDADOR") {
     const txs = DB?.meses?.[ACTIVE_PERIOD]?.transacciones || [];
@@ -4420,7 +5106,7 @@ function renderTaxSection() {
     return;
   }
 
-  // Buscar hojas de declaraciones en todos los meses priorizando el mes activo
+  // Buscar hojas anexas en libros de Excel
   const allSheets = [];
   [ACTIVE_PERIOD, "MARZO", "ABRIL", "FEBRERO"].forEach(m => {
     const esp = DB?.meses?.[m]?.hojas_especiales || {};
@@ -4431,24 +5117,46 @@ function renderTaxSection() {
     });
   });
 
-  const matchFn = {
-    F350: k => k.includes("350"),
-    F300: k => k.includes("300"),
-    RETEICA: k => k.includes("RETEICA"),
-    ANEXO1: k => k.includes("ANEXO"),
-    RETFTE_NOM: k => k.includes("RET-FTE")
-  }[ACTIVE_TAX_TAB] || (() => true);
-
-  const found = allSheets.filter(s => matchFn(s.key));
+  const found = allSheets.filter(s => s.key.includes("ANEXO") || s.key.includes("RET-FTE"));
   container.innerHTML = found.map(s => `
     <div class="card">
       <div class="card-header">
-        <div class="card-title">📄 Declaración Oficial: ${s.key} (Libro ${s.mes}.xlsx)</div>
-        <span class="status-pill status-paid">Formulario Oficial Cargado</span>
+        <div class="card-title">📄 Hoja de Liquidación Tributaria: ${s.key} (Libro ${s.mes}.xlsx)</div>
+        <span class="status-pill status-paid">Sincronizado con Excel</span>
       </div>
       <div class="card-body">${renderExcelGridHtml(s.rows)}</div>
     </div>
-  `).join("") || `<div class="card"><div class="card-body">No se encontró hoja para esta pestaña.</div></div>`;
+  `).join("") || `<div class="card"><div class="card-body">No se encontraron hojas anexas para este filtro.</div></div>`;
+}
+
+function exportActiveTaxDeclarationPdf() {
+  const container = document.getElementById("taxFormContentContainer");
+  if (!container) return;
+  const emp = DB?.empresa || {};
+  const titles = {
+    F350: "Formulario_350_DIAN_Retencion_en_la_Fuente",
+    F300: "Formulario_300_DIAN_Impuesto_Ventas_IVA",
+    RETEICA: "Formulario_ReteICA_Bucaramanga",
+    AUTOLIQUIDADOR: `Autoliquidador_Tributario_${ACTIVE_PERIOD}`
+  };
+  const docName = titles[ACTIVE_TAX_TAB] || "Declaracion_Tributaria";
+  const filename = `${docName}_2026.pdf`;
+  const html = `
+    <div class="pdf-sheet-container" style="font-family:'Plus Jakarta Sans', sans-serif; color:#0f172a; background:#ffffff; padding:16px;">
+      <div style="border-bottom:2px solid #005E38; padding-bottom:10px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <div style="font-size:16px; font-weight:900; color:#0B192C;">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</div>
+          <div style="font-size:11px; color:#047857; font-weight:700;">NIT: ${emp.nit || "901.765.438-3"} • DECLARACIÓN TRIBUTARIA OFICIAL</div>
+        </div>
+        <div style="text-align:right; font-size:11px; color:#334155;">
+          <strong>Vigencia Fiscal: 2026</strong><br/>
+          Contadora: ${emp.contadora || "Gina Villamizar"} (T.P. 248960-T)
+        </div>
+      </div>
+      ${container.innerHTML}
+    </div>
+  `;
+  downloadOrPrintPdfDocument(html, filename, docName.replace(/_/g, " "), { orientation: "landscape" });
 }
 
 async function toggleTaxItemStatus(id) {
@@ -6500,10 +7208,7 @@ function downloadOrPrintPdfDocument(htmlContent, filename, docTitle, options = {
     modal.classList.add("open");
   }
 
-  showToast(`📄 Documento listo (${isLandscape ? 'Formato Horizontal sin cortes' : 'Formato Vertical'}) para descargar en PDF e imprimir.`);
-
-  // Iniciar descarga automática en la laptop con ancho exacto sin recortes
-  triggerActivePdfDownload(false);
+  showToast(`📄 Documento listo (${isLandscape ? 'Formato Horizontal' : 'Formato Vertical'}). Haz clic en "Descargar Archivo PDF" o "Imprimir / Guardar como PDF".`);
 }
 
 function triggerActivePdfDownload(notify = true) {
@@ -6513,29 +7218,31 @@ function triggerActivePdfDownload(notify = true) {
   if (!targetEl) return;
 
   const isLandscape = CURRENT_PDF_PAYLOAD.orientation === "landscape";
-  const canvasWidth = isLandscape ? 1040 : 750;
-  const windowWidth = isLandscape ? 1120 : 794;
+  const canvasWidth = isLandscape ? 1040 : 760;
 
   if (notify) {
-    showToast(`Descargando archivo PDF en tu equipo: ${filename}...`);
+    showToast(`Generando y descargando PDF visible: ${filename}...`);
   }
 
   if (typeof window.html2pdf === "function") {
-    // Clonar el contenido en un contenedor temporal invisible optimizado para ancho de página sin recortes laterales
+    // Clonar contenido en una capa visible al motor de render pero detrás del viewport (z-index negativo, origen 0,0)
     const printClone = targetEl.cloneNode(true);
     printClone.id = "tempPdfExportCanvas";
-    printClone.style.position = "fixed";
-    printClone.style.left = "-9999px";
-    printClone.style.top = "0";
+    printClone.style.position = "absolute";
+    printClone.style.left = "0px";
+    printClone.style.top = "0px";
     printClone.style.width = `${canvasWidth}px`;
     printClone.style.maxWidth = `${canvasWidth}px`;
-    printClone.style.padding = isLandscape ? "10px 16px" : "8px 12px";
+    printClone.style.zIndex = "-999999";
+    printClone.style.opacity = "1";
+    printClone.style.visibility = "visible";
+    printClone.style.pointerEvents = "none";
+    printClone.style.padding = isLandscape ? "14px 18px" : "12px 14px";
     printClone.style.background = "#FFFFFF";
     printClone.style.color = "#0F172A";
     printClone.style.boxSizing = "border-box";
     printClone.style.overflow = "visible";
 
-    // Asegurar que el texto se ajuste con retorno de carro y nada se desborde o se corte
     printClone.querySelectorAll("td, th, p, div, span").forEach(el => {
       if (!el.classList.contains("num-col") && !el.classList.contains("code-col")) {
         el.style.whiteSpace = "normal";
@@ -6556,29 +7263,32 @@ function triggerActivePdfDownload(notify = true) {
     document.body.appendChild(printClone);
 
     const opt = {
-      margin: isLandscape ? [6, 6, 6, 6] : [8, 8, 8, 8],
+      margin: isLandscape ? [5, 5, 5, 5] : [6, 6, 6, 6],
       filename: filename,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
         scale: 2,
         useCORS: true,
+        allowTaint: true,
+        backgroundColor: "#FFFFFF",
         logging: false,
         scrollY: 0,
-        scrollX: 0,
-        windowWidth: windowWidth
+        scrollX: 0
       },
       jsPDF: { unit: "mm", format: "a4", orientation: isLandscape ? "landscape" : "portrait" },
       pagebreak: { mode: ["avoid-all", "css", "legacy"] }
     };
 
-    window.html2pdf().set(opt).from(printClone).save().then(() => {
-      showToast(`✅ Archivo PDF guardado en tu laptop: ${filename}`);
-      printClone.remove();
-    }).catch(err => {
-      console.warn("Aviso html2pdf:", err);
-      printClone.remove();
-      if (notify) triggerActivePdfPrint();
-    });
+    setTimeout(() => {
+      window.html2pdf().set(opt).from(printClone).save().then(() => {
+        showToast(`✅ Archivo PDF descargado correctamente: ${filename}`);
+        if (printClone.parentNode) printClone.parentNode.removeChild(printClone);
+      }).catch(err => {
+        console.warn("Aviso html2pdf fallback:", err);
+        if (printClone.parentNode) printClone.parentNode.removeChild(printClone);
+        triggerActivePdfPrint();
+      });
+    }, 150);
   } else {
     triggerActivePdfPrint();
   }

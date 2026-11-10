@@ -11,7 +11,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <link rel="stylesheet" href="styles.css?v=20261110_30" />
+  <link rel="stylesheet" href="styles.css?v=20261110_32" />
 </head>
 <body>
 
@@ -217,6 +217,10 @@
         <span class="nav-item-left"><span>📦</span><span>Kardex de Productos</span></span>
         <span class="nav-badge" id="navBadgeKardex">4</span>
       </button>
+      <button class="nav-item" data-target="nomina" onclick="switchSection('nomina')">
+        <span class="nav-item-left"><span>👥</span><span>Nómina & Liquidación</span></span>
+        <span class="nav-badge" style="background:#10B981; color:#fff; font-weight:800;">3 Meses</span>
+      </button>
 
       <div class="nav-group-label">Informes & Fiscal</div>
       <button class="nav-item" data-target="estados" onclick="switchSection('estados')">
@@ -250,6 +254,7 @@
       <div style="margin-top:4px; color:var(--brand-gold);">✓ Base Local & Excel en Vivo</div>
     </div>
   </aside>
+  <div class="mobile-sidebar-backdrop" id="mobileSidebarBackdrop" onclick="toggleMobileSidebar(false)"></div>
 
   <!-- =====================================================================
        ÁREA PRINCIPAL DE TRABAJO
@@ -258,6 +263,10 @@
 
     <!-- BARRA SUPERIOR EJECUTIVA Y ORDENADA -->
     <header class="app-topbar">
+      <button class="mobile-menu-toggle-btn" onclick="toggleMobileSidebar()" aria-label="Abrir Menú de Navegación">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+
       <div class="topbar-title-area">
         <div class="topbar-company-badge">
           <span class="live-dot-pulse"></span>
@@ -399,54 +408,51 @@
         <section id="sec-facturas" class="section-view">
           <div class="kpi-row" id="invoicesKpiRow"></div>
 
-          <div class="filter-bar" style="flex-direction:column; align-items:stretch; gap:12px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-              <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                <span style="font-size:0.75rem; font-weight:800; color:var(--brand-primary);">📅 MES (12 MESES):</span>
-                <div class="filter-tabs" id="invoiceMonthPills">
-                  <button class="filter-chip active" data-invmonth="ALL" onclick="setInvoiceMonthFilter('ALL')">📚 Todos (Ene-Dic)</button>
-                  <button class="filter-chip" data-invmonth="ENERO" onclick="setInvoiceMonthFilter('ENERO')">ENE</button>
-                  <button class="filter-chip" data-invmonth="FEBRERO" onclick="setInvoiceMonthFilter('FEBRERO')">FEB</button>
-                  <button class="filter-chip" data-invmonth="MARZO" onclick="setInvoiceMonthFilter('MARZO')">MAR</button>
-                  <button class="filter-chip" data-invmonth="ABRIL" onclick="setInvoiceMonthFilter('ABRIL')">ABR</button>
-                  <button class="filter-chip" data-invmonth="MAYO" onclick="setInvoiceMonthFilter('MAYO')">MAY</button>
-                  <button class="filter-chip" data-invmonth="JUNIO" onclick="setInvoiceMonthFilter('JUNIO')">JUN</button>
-                  <button class="filter-chip" data-invmonth="JULIO" onclick="setInvoiceMonthFilter('JULIO')">JUL</button>
-                  <button class="filter-chip" data-invmonth="AGOSTO" onclick="setInvoiceMonthFilter('AGOSTO')">AGO</button>
-                  <button class="filter-chip" data-invmonth="SEPTIEMBRE" onclick="setInvoiceMonthFilter('SEPTIEMBRE')">SEP</button>
-                  <button class="filter-chip" data-invmonth="OCTUBRE" onclick="setInvoiceMonthFilter('OCTUBRE')">OCT</button>
-                  <button class="filter-chip" data-invmonth="NOVIEMBRE" onclick="setInvoiceMonthFilter('NOVIEMBRE')">NOV</button>
-                  <button class="filter-chip" data-invmonth="DICIEMBRE" onclick="setInvoiceMonthFilter('DICIEMBRE')">DIC</button>
+          <!-- PANEL DE CONTROL Y FILTROS ORDENADOS DE FACTURAS -->
+          <div class="filter-bar" style="background:var(--bg-surface); border:1px solid var(--border-light); border-radius:12px; padding:14px 18px; margin-bottom:18px; box-shadow:var(--shadow-xs);">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:12px; border-bottom:1px solid var(--border-light); padding-bottom:12px;">
+              <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span style="font-size:0.75rem; font-weight:800; color:var(--brand-primary); text-transform:uppercase;">📅 Período:</span>
+                  <select id="invoiceMonthFilter" class="form-control" style="padding:6px 12px; font-size:0.8rem; font-weight:800; min-width:180px; border-color:var(--brand-gold);" onchange="setInvoiceMonthFilter(this.value)">
+                    <option value="ALL">📚 Todos los Meses (Ene - Dic)</option>
+                    <option value="ENERO">Enero 2026</option>
+                    <option value="FEBRERO">Febrero 2026</option>
+                    <option value="MARZO">Marzo 2026</option>
+                    <option value="ABRIL">Abril 2026</option>
+                    <option value="MAYO">Mayo 2026</option>
+                    <option value="JUNIO">Junio 2026</option>
+                    <option value="JULIO">Julio 2026</option>
+                    <option value="AGOSTO">Agosto 2026</option>
+                    <option value="SEPTIEMBRE">Septiembre 2026</option>
+                    <option value="OCTUBRE">Octubre 2026</option>
+                    <option value="NOVIEMBRE">Noviembre 2026</option>
+                    <option value="DICIEMBRE">Diciembre 2026</option>
+                  </select>
+                </div>
+                <div class="filter-tabs" id="invoiceCategoryTabs">
+                  <button class="filter-chip active" data-invcat="ALL" onclick="setInvoiceCategoryFilter('ALL')">Todas</button>
+                  <button class="filter-chip" data-invcat="VENTA" onclick="setInvoiceCategoryFilter('VENTA')">🟢 Ventas Emitidas</button>
+                  <button class="filter-chip" data-invcat="COMPRA" onclick="setInvoiceCategoryFilter('COMPRA')">🔵 Compras / Soportes</button>
+                  <button class="filter-chip" data-invcat="DEVOLUCION" onclick="setInvoiceCategoryFilter('DEVOLUCION')">🟠 Notas / Ajustes</button>
                 </div>
               </div>
 
-              <div style="display:flex; gap:8px; align-items:center;">
-                <select id="invoiceMonthFilter" class="form-control" style="padding:5px 10px; font-size:0.78rem; font-weight:700;" onchange="setInvoiceMonthFilter(this.value)">
-                  <option value="ALL">Todos los 12 Meses (Enero - Diciembre)</option>
-                  <option value="ENERO">Enero 2026</option>
-                  <option value="FEBRERO">Febrero 2026</option>
-                  <option value="MARZO">Marzo 2026</option>
-                  <option value="ABRIL">Abril 2026</option>
-                  <option value="MAYO">Mayo 2026</option>
-                  <option value="JUNIO">Junio 2026</option>
-                  <option value="JULIO">Julio 2026</option>
-                  <option value="AGOSTO">Agosto 2026</option>
-                  <option value="SEPTIEMBRE">Septiembre 2026</option>
-                  <option value="OCTUBRE">Octubre 2026</option>
-                  <option value="NOVIEMBRE">Noviembre 2026</option>
-                  <option value="DICIEMBRE">Diciembre 2026</option>
-                </select>
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
                 <button class="btn btn-gold btn-sm" onclick="switchSection('facturacion')">+ Emitir Nueva Factura</button>
                 <button class="btn btn-primary btn-sm" onclick="exportProfessionalInvoicePDF(false)">📄 Descargar PDF Factura (DIAN)</button>
-                <button class="btn btn-outline btn-sm" onclick="exportProfessionalInvoicePDF(true)">📘 PDF Factura + Asiento</button>
+                <button class="btn btn-outline btn-sm" onclick="exportProfessionalInvoicePDF(true)">📘 PDF con Asiento</button>
               </div>
             </div>
 
-            <div class="filter-tabs" id="invoiceCategoryTabs" style="border-top:1px solid var(--border-light); padding-top:10px;">
-              <button class="filter-chip active" data-invcat="ALL" onclick="setInvoiceCategoryFilter('ALL')">Todas las Facturas y Documentos</button>
-              <button class="filter-chip" data-invcat="VENTA" onclick="setInvoiceCategoryFilter('VENTA')">🟢 Facturas de Venta Emitidas</button>
-              <button class="filter-chip" data-invcat="COMPRA" onclick="setInvoiceCategoryFilter('COMPRA')">🔵 Facturas de Compra / Soportes</button>
-              <button class="filter-chip" data-invcat="DEVOLUCION" onclick="setInvoiceCategoryFilter('DEVOLUCION')">🟠 Notas Crédito / Débito / Ajustes</button>
+            <!-- Buscador Rápido de Facturas -->
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+              <div style="position:relative; flex:1; max-width:480px;">
+                <input type="text" id="invoiceSearchInput" class="form-control" placeholder="🔍 Buscar factura por N° (ej: FAC-01), tercero, NIT o concepto..." oninput="filterInvoicesBySearch(this.value)" style="padding-left:14px; font-size:0.82rem;" />
+              </div>
+              <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">
+                Documentos encontrados: <span id="invoiceListCountLabel" style="color:var(--brand-primary); font-weight:800;">19 documentos</span>
+              </div>
             </div>
           </div>
 
@@ -774,6 +780,41 @@
         </section>
 
         <!-- ===============================================================
+             NÓMINA & LIQUIDACIÓN LABORAL COLOMBIANA (PLANILLA COMPLETA NIIF)
+             =============================================================== -->
+        <section id="sec-nomina" class="section-view">
+          <div class="kpi-row" id="nominaKpiRow"></div>
+
+          <div class="filter-bar" style="background:var(--bg-surface); border:1px solid var(--border-light); border-radius:12px; padding:14px 18px; margin-bottom:18px; box-shadow:var(--shadow-xs);">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+              <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                <span style="font-size:0.75rem; font-weight:800; color:var(--brand-primary); text-transform:uppercase;">📅 Mes de Liquidación:</span>
+                <div class="filter-tabs" id="nominaMonthTabs">
+                  <button class="filter-chip active" data-nommonth="FEBRERO" onclick="selectNominaMonth('FEBRERO')">Febrero 2026 (Hoja 29 NOM)</button>
+                  <button class="filter-chip" data-nommonth="MARZO" onclick="selectNominaMonth('MARZO')">Marzo 2026 (Hoja NOM-MARZ)</button>
+                  <button class="filter-chip" data-nommonth="ABRIL" onclick="selectNominaMonth('ABRIL')">Abril 2026 (Hoja NOM-ABRIL)</button>
+                </div>
+              </div>
+
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <button class="btn btn-primary btn-sm" onclick="exportNominaPdf()">📄 Descargar Planilla Nómina (PDF)</button>
+                <button class="btn btn-outline btn-sm" onclick="triggerActivePdfPrint()">🖨️ Imprimir Planilla</button>
+              </div>
+            </div>
+
+            <!-- Pestañas de Vistas de Nómina -->
+            <div class="filter-tabs" id="nominaSubTabs" style="margin-top:12px; border-top:1px solid var(--border-light); padding-top:12px;">
+              <button class="filter-chip active" data-nomsub="PLANILLA" onclick="selectNominaSubTab('PLANILLA')">📋 1. Gran Tabla de Liquidación por Empleado</button>
+              <button class="filter-chip" data-nomsub="SEG_SOCIAL" onclick="selectNominaSubTab('SEG_SOCIAL')">🏢 2. Seguridad Social &amp; Parafiscales Empresa</button>
+              <button class="filter-chip" data-nomsub="PRESTACIONES" onclick="selectNominaSubTab('PRESTACIONES')">💰 3. Provisiones Prestaciones Sociales</button>
+              <button class="filter-chip" data-nomsub="ASIENTO" onclick="selectNominaSubTab('ASIENTO')">📑 4. Asiento Contable NIIF (Cuentas 5105 / 2370 / 2505)</button>
+            </div>
+          </div>
+
+          <div id="nominaContentContainer"></div>
+        </section>
+
+        <!-- ===============================================================
              7. SECCIÓN: ESTADOS FINANCIEROS NIIF & LIBROS CONTABLES
              =============================================================== -->
         <section id="sec-estados" class="section-view">
@@ -836,14 +877,17 @@
             </div>
           </div>
 
-          <div class="filter-bar">
+          <div class="filter-bar" style="background:var(--bg-surface); border:1px solid var(--border-light); border-radius:12px; padding:12px 16px; margin-top:14px; margin-bottom:18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; box-shadow:var(--shadow-xs);">
             <div class="filter-tabs" id="taxFormTabs">
-              <button class="filter-chip active" data-taxtab="F350" onclick="selectTaxTab('F350')">📄 Formulario 350 (Retefuente)</button>
-              <button class="filter-chip" data-taxtab="F300" onclick="selectTaxTab('F300')">📄 Formulario 300 (IVA Bimestral)</button>
-              <button class="filter-chip" data-taxtab="RETEICA" onclick="selectTaxTab('RETEICA')">🏛️ Formulario ReteICA Bucaramanga</button>
-              <button class="filter-chip" data-taxtab="ANEXO1" onclick="selectTaxTab('ANEXO1')">📋 Anexo 1 Consolidado</button>
-              <button class="filter-chip" data-taxtab="RETFTE_NOM" onclick="selectTaxTab('RETFTE_NOM')">👩‍💼 Retefuente Salarios (UVT)</button>
-              <button class="filter-chip" data-taxtab="AUTOLIQUIDADOR" onclick="selectTaxTab('AUTOLIQUIDADOR')">🤖 Autoliquidador Automático por Mes</button>
+              <button class="filter-chip active" data-taxtab="F350" onclick="selectTaxTab('F350')">📄 Formulario 350 DIAN (Retefuente)</button>
+              <button class="filter-chip" data-taxtab="F300" onclick="selectTaxTab('F300')">📄 Formulario 300 DIAN (IVA)</button>
+              <button class="filter-chip" data-taxtab="RETEICA" onclick="selectTaxTab('RETEICA')">🏛️ Formulario ReteICA (Bucaramanga)</button>
+              <button class="filter-chip" data-taxtab="AUTOLIQUIDADOR" onclick="selectTaxTab('AUTOLIQUIDADOR')">🤖 Autoliquidador por Mes</button>
+              <button class="filter-chip" data-taxtab="ANEXO1" onclick="selectTaxTab('ANEXO1')">📋 Anexo Consolidado</button>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-primary btn-sm" onclick="exportActiveTaxDeclarationPdf()">📄 Descargar Formulario Oficial (PDF)</button>
+              <button class="btn btn-outline btn-sm" onclick="triggerActivePdfPrint()">🖨️ Imprimir Formulario</button>
             </div>
           </div>
 
@@ -1285,6 +1329,6 @@
   </div>
 
   <div class="toast-container" id="toastContainer"></div>
-  <script src="app.js?v=20261110_30"></script>
+  <script src="app.js?v=20261110_32"></script>
 </body>
 </html>

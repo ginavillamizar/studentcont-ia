@@ -143111,5 +143111,660 @@
         ]
       }
     }
+  },
+  "nominas": {
+    "FEBRERO": {
+      "mes": "FEBRERO",
+      "hoja": "29 NOM",
+      "empleados": [
+        {
+          "nombre": "ESPERANZA CONTRERAS",
+          "horas": 240.0,
+          "sueldo_basico": 20000000.0,
+          "basico": 20000000.0,
+          "auxilios": 0.0,
+          "horas_extras": 0.0,
+          "recargos": 0.0,
+          "aux_transporte": 0.0,
+          "total_devengado": 20000000.0,
+          "ibc": 20000000.0,
+          "salud_empleado": 800000.0,
+          "pension_empleado": 800000.0,
+          "solidaridad": 200000.0,
+          "otras_deducciones": 0.0,
+          "retefuente": 2466825.2,
+          "total_deducciones": 4266825.2,
+          "neto_pagar": 15733174.8
+        },
+        {
+          "nombre": "MARIA PEÑA SUAZA",
+          "horas": 240.0,
+          "sueldo_basico": 5400000.0,
+          "basico": 5400000.0,
+          "auxilios": 0.0,
+          "horas_extras": 0.0,
+          "recargos": 0.0,
+          "aux_transporte": 0.0,
+          "total_devengado": 5400000.0,
+          "ibc": 5400000.0,
+          "salud_empleado": 216000.0,
+          "pension_empleado": 216000.0,
+          "solidaridad": 0.0,
+          "otras_deducciones": 0.0,
+          "retefuente": 0.0,
+          "total_deducciones": 432000.0,
+          "neto_pagar": 4968000.0
+        },
+        {
+          "nombre": "ANDREA ROJAS JIMENEZ",
+          "horas": 240.0,
+          "sueldo_basico": 1750905.0,
+          "basico": 1750905.0,
+          "auxilios": 0.0,
+          "horas_extras": 0.0,
+          "recargos": 0.0,
+          "aux_transporte": 249095.0,
+          "total_devengado": 2000000.0,
+          "ibc": 1750905.0,
+          "salud_empleado": 70036.2,
+          "pension_empleado": 70036.2,
+          "solidaridad": 0.0,
+          "otras_deducciones": 0.0,
+          "retefuente": 0.0,
+          "total_deducciones": 140072.4,
+          "neto_pagar": 1859927.6
+        }
+      ],
+      "totales": {},
+      "prestaciones": [
+        {
+          "nombre": "ESPERANZA CONTRERAS",
+          "devengado": 20000000.0,
+          "base_prestacional": 20000000.0,
+          "cesantias": 1666000.0,
+          "intereses_cesantias": 199920.0,
+          "prima_servicios": 1666000.0,
+          "ibc_vacaciones": 20000000.0,
+          "vacaciones": 834000.0,
+          "total_prestaciones": 4365920.0,
+          "salud_empleador": 1700000.0000000002,
+          "pension_empleador": 2400000.0,
+          "arl": 104400.0,
+          "icbf": 600000.0,
+          "sena": 400000.0,
+          "caja_compensacion": 800000.0
+        },
+        {
+          "nombre": "MARIA PEÑA SUAZA",
+          "devengado": 5400000.0,
+          "base_prestacional": 5400000.0,
+          "cesantias": 449820.0,
+          "intereses_cesantias": 53978.4,
+          "prima_servicios": 449820.0,
+          "ibc_vacaciones": 5400000.0,
+          "vacaciones": 225180.0,
+          "total_prestaciones": 1178798.4,
+          "salud_empleador": 0.0,
+          "pension_empleador": 648000.0,
+          "arl": 28188.0,
+          "icbf": 0.0,
+          "sena": 0.0,
+          "caja_compensacion": 216000.0
+        },
+        {
+          "nombre": "CLAUDIA CASA BAHAMON",
+          "devengado": 2000000.0,
+          "base_prestacional": 2000000.0,
+          "cesantias": 166600.0,
+          "intereses_cesantias": 19992.0,
+          "prima_servicios": 166600.0,
+          "ibc_vacaciones": 1750905.0,
+          "vacaciones": 73012.7385,
+          "total_prestaciones": 426204.7385,
+          "salud_empleador": 0.0,
+          "pension_empleador": 210108.6,
+          "arl": 9139.7241,
+          "icbf": 0.0,
+          "sena": 0.0,
+          "caja_compensacion": 70036.2
+        }
+      ]
+    },
+    "MARZO": {
+      "mes": "MARZO",
+      "hoja": "NOM-MARZ",
+      "empleados": [
+        {
+          "nombre": "ESPERANZA CONTRERAS",
+          "horas": 40.0,
+          "sueldo_basico": 20000000.0,
+          "basico": 3333333.333333333,
+          "auxilios": 0.0,
+          "horas_extras": 0.0,
+          "recargos": 0.0,
+          "aux_transporte": 0.0,
+          "total_devengado": 3333333.333333333,
+          "ibc": 3333333.333333333,
+          "salud_empleado": 133333.3333333333,
+          "pension_empleado": 133333.3333333333,
+          "solidaridad": 33333.33333333333,
+          "otras_deducciones": 0.0,
+          "retefuente": 0.0,
+          "total_deducciones": 299999.99999999994,
+          "neto_pagar": 3033333.333333333
+        },
+        {
+          "nombre": "MARIA PEÑA SUAZA",
+          "horas": 240.0,
+          "sueldo_basico": 5400000.0,
+          "basico": 5400000.0,
+          "auxilios": 0.0,
+          "horas_extras": 0.0,
+          "recargos": 0.0,
+          "aux_transporte": 0.0,
+          "total_devengado": 5400000.0,
+          "ibc": 5400000.0,
+          "salud_empleado": 216000.0,
+          "pension_empleado": 216000.0,
+          "solidaridad": 0.0,
+          "otras_deducciones": 0.0,
+          "retefuente": 0.0,
+          "total_deducciones": 432000.0,
+          "neto_pagar": 4968000.0
+        },
+        {
+          "nombre": "ANDREA ROJAS JIMENEZ",
+          "horas": 240.0,
+          "sueldo_basico": 1750905.0,
+          "basico": 1750905.0,
+          "auxilios": 0.0,
+          "horas_extras": 0.0,
+          "recargos": 0.0,
+          "aux_transporte": 249095.0,
+          "total_devengado": 2000000.0,
+          "ibc": 1750905.0,
+          "salud_empleado": 70036.2,
+          "pension_empleado": 70036.2,
+          "solidaridad": 0.0,
+          "otras_deducciones": 0.0,
+          "retefuente": 0.0,
+          "total_deducciones": 140072.4,
+          "neto_pagar": 1859927.6
+        }
+      ],
+      "totales": {},
+      "prestaciones": [
+        {
+          "nombre": "ESPERANZA CONTRERAS",
+          "devengado": 3333333.333333333,
+          "base_prestacional": 3333333.333333333,
+          "cesantias": 277666.6666666666,
+          "intereses_cesantias": 33319.99999999999,
+          "prima_servicios": 277666.6666666666,
+          "ibc_vacaciones": 3333333.333333333,
+          "vacaciones": 139000.0,
+          "total_prestaciones": 727653.3333333333,
+          "salud_empleador": 283333.3333333333,
+          "pension_empleador": 399999.99999999994,
+          "arl": 17399.999999999996,
+          "icbf": 99999.99999999999,
+          "sena": 66666.66666666666,
+          "caja_compensacion": 133333.3333333333
+        },
+        {
+          "nombre": "MARIA PEÑA SUAZA",
+          "devengado": 5400000.0,
+          "base_prestacional": 5400000.0,
+          "cesantias": 449820.0,
+          "intereses_cesantias": 53978.4,
+          "prima_servicios": 449820.0,
+          "ibc_vacaciones": 5400000.0,
+          "vacaciones": 225180.0,
+          "total_prestaciones": 1178798.4,
+          "salud_empleador": 0.0,
+          "pension_empleador": 648000.0,
+          "arl": 28188.0,
+          "icbf": 0.0,
+          "sena": 0.0,
+          "caja_compensacion": 216000.0
+        },
+        {
+          "nombre": "ANDREA ROJAS JIMENEZ",
+          "devengado": 2000000.0,
+          "base_prestacional": 2000000.0,
+          "cesantias": 166600.0,
+          "intereses_cesantias": 19992.0,
+          "prima_servicios": 166600.0,
+          "ibc_vacaciones": 1750905.0,
+          "vacaciones": 73012.7385,
+          "total_prestaciones": 426204.7385,
+          "salud_empleador": 0.0,
+          "pension_empleador": 210108.6,
+          "arl": 9139.7241,
+          "icbf": 0.0,
+          "sena": 0.0,
+          "caja_compensacion": 70036.2
+        }
+      ]
+    },
+    "ABRIL": {
+      "mes": "ABRIL",
+      "hoja": "NOM-ABRIL",
+      "empleados": [
+        {
+          "nombre": "MARIA PEÑA SUAZA",
+          "horas": 240.0,
+          "sueldo_basico": 5400000.0,
+          "basico": 5400000.0,
+          "auxilios": 0.0,
+          "horas_extras": 0.0,
+          "recargos": 0.0,
+          "aux_transporte": 0.0,
+          "total_devengado": 5400000.0,
+          "ibc": 5400000.0,
+          "salud_empleado": 216000.0,
+          "pension_empleado": 216000.0,
+          "solidaridad": 0.0,
+          "otras_deducciones": 0.0,
+          "retefuente": 0.0,
+          "total_deducciones": 432000.0,
+          "neto_pagar": 4968000.0
+        },
+        {
+          "nombre": "ANDREA ROJAS JIMENEZ",
+          "horas": 240.0,
+          "sueldo_basico": 1750905.0,
+          "basico": 1750905.0,
+          "auxilios": 0.0,
+          "horas_extras": 0.0,
+          "recargos": 0.0,
+          "aux_transporte": 249095.0,
+          "total_devengado": 2000000.0,
+          "ibc": 1750905.0,
+          "salud_empleado": 70036.2,
+          "pension_empleado": 70036.2,
+          "solidaridad": 0.0,
+          "otras_deducciones": 0.0,
+          "retefuente": 0.0,
+          "total_deducciones": 140072.4,
+          "neto_pagar": 1859927.6
+        }
+      ],
+      "totales": {
+        "nombre": "TOTALES CONSOLIDADOS",
+        "sueldo_basico": 0.0,
+        "basico": 0.0,
+        "aux_transporte": 0.0,
+        "total_devengado": 7400000.0,
+        "ibc": 0.0,
+        "salud_empleado": 286036.2,
+        "pension_empleado": 286036.2,
+        "solidaridad": 0.0,
+        "otras_deducciones": 0.0,
+        "retefuente": 0.0,
+        "total_deducciones": 572072.4,
+        "neto_pagar": 6827927.6
+      },
+      "prestaciones": [
+        {
+          "nombre": "MARIA PEÑA SUAZA",
+          "devengado": 5400000.0,
+          "base_prestacional": 5400000.0,
+          "cesantias": 449820.0,
+          "intereses_cesantias": 53978.4,
+          "prima_servicios": 449820.0,
+          "ibc_vacaciones": 5400000.0,
+          "vacaciones": 225180.0,
+          "total_prestaciones": 1178798.4,
+          "salud_empleador": 0.0,
+          "pension_empleador": 648000.0,
+          "arl": 28188.0,
+          "icbf": 0.0,
+          "sena": 0.0,
+          "caja_compensacion": 216000.0
+        },
+        {
+          "nombre": "ANDREA ROJAS JIMENEZ",
+          "devengado": 2000000.0,
+          "base_prestacional": 2000000.0,
+          "cesantias": 166600.0,
+          "intereses_cesantias": 19992.0,
+          "prima_servicios": 166600.0,
+          "ibc_vacaciones": 1750905.0,
+          "vacaciones": 73012.7385,
+          "total_prestaciones": 426204.7385,
+          "salud_empleador": 0.0,
+          "pension_empleador": 210108.6,
+          "arl": 9139.7241,
+          "icbf": 0.0,
+          "sena": 0.0,
+          "caja_compensacion": 70036.2
+        },
+        {
+          "nombre": "TOTALES",
+          "devengado": 0.0,
+          "base_prestacional": 0.0,
+          "cesantias": 616420.0,
+          "intereses_cesantias": 73970.4,
+          "prima_servicios": 616420.0,
+          "ibc_vacaciones": 0.0,
+          "vacaciones": 298192.7385,
+          "total_prestaciones": 0.0,
+          "salud_empleador": 0.0,
+          "pension_empleador": 858108.6,
+          "arl": 37327.7241,
+          "icbf": 0.0,
+          "sena": 0.0,
+          "caja_compensacion": 286036.2
+        }
+      ]
+    }
+  },
+  "declaraciones": {
+    "F350": {
+      "formulario": "350",
+      "titulo": "Declaración de Retención en la Fuente",
+      "entidad": "DIAN — Dirección de Impuestos y Aduanas Nacionales",
+      "ano": 2026,
+      "periodo": "03 (Marzo 2026)",
+      "mes": "MARZO",
+      "periodicidad": "Mensual",
+      "declarante": {
+        "nit": "901765438",
+        "dv": "3",
+        "razon_social": "ELECTROVIVIENDA S.A.S",
+        "direccion": "Cra 21 N° 46-11 Barrio La Concordia",
+        "ciudad": "Bucaramanga, Santander",
+        "cod_seccional": "04 (Bucaramanga)"
+      },
+      "renglones": [
+        {
+          "renglon": 27,
+          "concepto": "Rentas de trabajo (Personal Vinculado)",
+          "base": 14796000,
+          "retencion": 2467000
+        },
+        {
+          "renglon": 31,
+          "concepto": "Servicios a Personas Jurídicas (4%)",
+          "base": 2400000,
+          "retencion": 96000
+        },
+        {
+          "renglon": 36,
+          "concepto": "Compras a Personas Jurídicas (2.5%)",
+          "base": 155470000,
+          "retencion": 3887000
+        },
+        {
+          "renglon": 60,
+          "concepto": "Autorretención en ventas RRI (2.5%)",
+          "base": 149470000,
+          "retencion": 3738000
+        },
+        {
+          "renglon": 113,
+          "concepto": "Autorretención especial CREE / Otros (0.55%)",
+          "base": 24250000,
+          "retencion": 849000
+        },
+        {
+          "renglon": 130,
+          "concepto": "Total retenciones renta y complementarios",
+          "base": 0,
+          "retencion": 11037000,
+          "is_total": true
+        },
+        {
+          "renglon": 136,
+          "concepto": "Total retenciones del período",
+          "base": 0,
+          "retencion": 11037000,
+          "is_total": true
+        },
+        {
+          "renglon": 138,
+          "concepto": "Total retenciones más sanciones",
+          "base": 0,
+          "retencion": 11037000,
+          "is_total": true
+        },
+        {
+          "renglon": 980,
+          "concepto": "TOTAL A PAGAR POR RETENCIÓN EN LA FUENTE",
+          "base": 0,
+          "retencion": 11037000,
+          "is_highlight": true
+        }
+      ],
+      "total_pago": 11037000,
+      "firmas": {
+        "representante_legal": "Kevin Guerrero",
+        "contadora": "Gina Villamizar",
+        "tp_contadora": "248960-T",
+        "revisora_fiscal": "Marcela Gonzales"
+      }
+    },
+    "F300": {
+      "formulario": "300",
+      "titulo": "Declaración del Impuesto sobre las Ventas - IVA",
+      "entidad": "DIAN — Dirección de Impuestos y Aduanas Nacionales",
+      "ano": 2026,
+      "periodo": "Bimestre 01 / 02 (2026)",
+      "mes": "MARZO",
+      "periodicidad": "Bimestral (X)",
+      "declarante": {
+        "nit": "901765438",
+        "dv": "3",
+        "razon_social": "ELECTROVIVIENDA S.A.S",
+        "direccion": "Cra 21 N° 46-11 Barrio La Concordia",
+        "ciudad": "Bucaramanga, Santander",
+        "cod_seccional": "04 (Bucaramanga)"
+      },
+      "ingresos": [
+        {
+          "renglon": 28,
+          "concepto": "Ingresos por operaciones gravadas a tarifa general (19%)",
+          "valor": 185950000
+        },
+        {
+          "renglon": 41,
+          "concepto": "Total Ingresos Brutos (sume 27 a 40)",
+          "valor": 185950000,
+          "is_total": true
+        },
+        {
+          "renglon": 42,
+          "concepto": "Menos Devoluciones en ventas anuladas o rescindidas",
+          "valor": 12230000
+        },
+        {
+          "renglon": 43,
+          "concepto": "Total Ingresos Netos del período (41 - 42)",
+          "valor": 173720000,
+          "is_total": true
+        }
+      ],
+      "compras": [
+        {
+          "renglon": 51,
+          "concepto": "Compras nacionales de bienes gravados a tarifa general (19%)",
+          "valor": 158405000
+        },
+        {
+          "renglon": 55,
+          "concepto": "Total compras e importaciones brutas (44 a 54)",
+          "valor": 158405000,
+          "is_total": true
+        },
+        {
+          "renglon": 56,
+          "concepto": "Menos Devoluciones en compras anuladas o rescindidas",
+          "valor": 8830000
+        },
+        {
+          "renglon": 57,
+          "concepto": "Total compras netas realizadas durante el período (55 - 56)",
+          "valor": 149575000,
+          "is_total": true
+        }
+      ],
+      "liquidacion": [
+        {
+          "renglon": 59,
+          "concepto": "Impuesto generado a la tarifa general (19%)",
+          "valor": 35331000
+        },
+        {
+          "renglon": 66,
+          "concepto": "IVA recuperado en compras anuladas o devueltas",
+          "valor": 1678000
+        },
+        {
+          "renglon": 67,
+          "concepto": "TOTAL IMPUESTO GENERADO POR OPERACIONES GRAVADAS",
+          "valor": 37009000,
+          "is_total": true
+        },
+        {
+          "renglon": 72,
+          "concepto": "Impuesto descontable por compras de bienes gravados (19%)",
+          "valor": 30096000
+        },
+        {
+          "renglon": 77,
+          "concepto": "Total impuesto pagado o facturado en compras",
+          "valor": 30096000
+        },
+        {
+          "renglon": 79,
+          "concepto": "IVA resultante por devoluciones en ventas",
+          "valor": 2323000
+        },
+        {
+          "renglon": 81,
+          "concepto": "TOTAL IMPUESTOS DESCONTABLES",
+          "valor": 32419000,
+          "is_total": true
+        },
+        {
+          "renglon": 82,
+          "concepto": "Saldo a pagar por el período fiscal (67 - 81)",
+          "valor": 4590000
+        },
+        {
+          "renglon": 85,
+          "concepto": "Retenciones por IVA que le practicaron (ReteIVA 15%)",
+          "valor": 1977000
+        },
+        {
+          "renglon": 86,
+          "concepto": "Saldo a pagar por impuesto (82 - 85)",
+          "valor": 2613000
+        },
+        {
+          "renglon": 88,
+          "concepto": "TOTAL SALDO A PAGAR DEL BIMESTRE",
+          "valor": 2613000,
+          "is_total": true
+        },
+        {
+          "renglon": 980,
+          "concepto": "TOTAL A PAGAR IMPUESTO SOBRE LAS VENTAS (IVA)",
+          "valor": 2613000,
+          "is_highlight": true
+        }
+      ],
+      "total_pago": 2613000,
+      "firmas": {
+        "representante_legal": "Kevin Guerrero",
+        "contadora": "Gina Villamizar",
+        "tp_contadora": "248960-T"
+      }
+    },
+    "RETEICA": {
+      "formulario": "F - RETEICA",
+      "titulo": "Declaración y Liquidación de Retención y Autorretención de Industria y Comercio",
+      "entidad": "Alcaldía de Bucaramanga — Secretaría de Hacienda Municipal",
+      "ano": 2026,
+      "periodo": "Primer Trimestre 2026",
+      "mes": "MARZO",
+      "declarante": {
+        "nit": "901765438",
+        "dv": "3",
+        "razon_social": "ELECTROVIVIENDA S.A.S",
+        "direccion": "Cra 21 N° 46-11 Barrio La Concordia",
+        "ciudad": "Bucaramanga",
+        "telefono": "3164562001",
+        "tarifa_ica_x_mil": 9.6
+      },
+      "renglones": [
+        {
+          "renglon": 1,
+          "concepto": "Retención por Compra de Bienes (9.6 x mil)",
+          "ind_cio": 1493000,
+          "avisos": 224000,
+          "bomberos": 149000,
+          "total": 1866000
+        },
+        {
+          "renglon": 2,
+          "concepto": "Retención por Servicios (9.6 x mil)",
+          "ind_cio": 23000,
+          "avisos": 4000,
+          "bomberos": 2000,
+          "total": 29000
+        },
+        {
+          "renglon": 3,
+          "concepto": "Otras retenciones practicadas",
+          "ind_cio": 0,
+          "avisos": 0,
+          "bomberos": 0,
+          "total": 0
+        },
+        {
+          "renglon": 4,
+          "concepto": "TOTAL RETENCIONES PRACTICADAS (1 a 3)",
+          "ind_cio": 1516000,
+          "avisos": 228000,
+          "bomberos": 151000,
+          "total": 1895000,
+          "is_total": true
+        },
+        {
+          "renglon": 9,
+          "concepto": "Total autorretenciones practicadas",
+          "ind_cio": 0,
+          "avisos": 0,
+          "bomberos": 0,
+          "total": 0
+        },
+        {
+          "renglon": 10,
+          "concepto": "TOTAL RETENCIONES Y AUTORRETENCIONES (4 + 9)",
+          "ind_cio": 1516000,
+          "avisos": 228000,
+          "bomberos": 151000,
+          "total": 1895000,
+          "is_total": true
+        },
+        {
+          "renglon": 15,
+          "concepto": "TOTAL A PAGAR AL MUNICIPIO DE BUCARAMANGA",
+          "ind_cio": 1516000,
+          "avisos": 228000,
+          "bomberos": 151000,
+          "total": 1895000,
+          "is_highlight": true
+        }
+      ],
+      "total_pago": 1895000,
+      "firmas": {
+        "representante_legal": "Kevin Guerrero",
+        "contadora": "Gina Villamizar",
+        "tp_contadora": "248960-T"
+      }
+    }
   }
 }
