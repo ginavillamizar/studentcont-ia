@@ -3787,6 +3787,69 @@ function renderFinancialAnalysisDashboardHtml(period) {
     <div class="niif-statement-paper">
 ${renderCorporateHeaderBoxHtml("📊 INFORME INTEGRAL DE ANÁLISIS FINANCIERO DE LOS 4 PERÍODOS CONSOLIDADOS", "Evaluación Detallada: ENERO, FEBRERO, MARZO Y ABRIL 2026", "Diagnóstico Didáctico NIIF para las PYMES • Explicación Paso a Paso para No Contadores")}
 
+      <!-- SECCIÓN 0: PRESENTACIÓN INSTITUCIONAL DE LA EMPRESA Y OBJETIVOS -->
+      <div style="background:#FFFFFF; border:1.5px solid var(--border-strong); border-radius:10px; padding:20px 24px; margin-bottom:24px; box-shadow:0 3px 12px rgba(0,0,0,0.04);">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--brand-gold); padding-bottom:14px; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+          <div style="display:flex; align-items:center; gap:14px;">
+            <img src="assets/logo-electrovivienda.png" alt="Logo ELECTROVIVIENDA" style="height:48px; width:auto; object-fit:contain;" />
+            <div>
+              <h2 style="margin:0; font-size:1.15rem; font-weight:900; color:var(--brand-primary); letter-spacing:0.3px;">ELECTROVIVIENDA S.A.S</h2>
+              <span style="font-size:0.75rem; color:var(--brand-gold); font-weight:800; font-family:'JetBrains Mono', monospace;">NIT 901.765.438-3 • Dígito de Verificación: 8</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <span class="status-pill status-paid" style="font-size:0.72rem; font-weight:800; padding:4px 12px;">Régimen Responsable de IVA (RRI)</span>
+            <div style="font-size:0.72rem; color:var(--text-muted); margin-top:4px;">Bucaramanga, Santander • Calidad y energía para tu hogar</div>
+          </div>
+        </div>
+
+        <!-- Misión, Visión y Objeto Social -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px; margin-bottom:16px;">
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-left:4px solid var(--brand-primary); border-radius:8px; padding:12px 14px;">
+            <strong style="color:var(--brand-primary); font-size:0.82rem; display:block; margin-bottom:4px;">🎯 MISIÓN ORGANIZACIONAL</strong>
+            <p style="margin:0; font-size:0.76rem; color:#334155; line-height:1.45;">
+              Brindar a los hogares colombianos soluciones integrales de tecnología y confort mediante electrodomésticos de la más alta calidad (LG, Mabe, Aiwa), garantizando respaldo técnico, precios competitivos y facilidades de financiamiento ético.
+            </p>
+          </div>
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-left:4px solid var(--brand-gold); border-radius:8px; padding:12px 14px;">
+            <strong style="color:var(--brand-gold); font-size:0.82rem; display:block; margin-bottom:4px;">🚀 VISIÓN ESTRATÉGICA 2028</strong>
+            <p style="margin:0; font-size:0.76rem; color:#334155; line-height:1.45;">
+              Consolidarse como la cadena líder en distribución y comercialización de electrodomésticos en el oriente colombiano, reconocida por su excelencia en el servicio, disciplina tributaria y adopción de estándares NIIF.
+            </p>
+          </div>
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-left:4px solid #10B981; border-radius:8px; padding:12px 14px;">
+            <strong style="color:#059669; font-size:0.82rem; display:block; margin-bottom:4px;">📦 OBJETO SOCIAL PRINCIPAL</strong>
+            <p style="margin:0; font-size:0.76rem; color:#334155; line-height:1.45;">
+              Comercialización mayorista y minorista de electrodomésticos, televisores Smart TV, refrigeradores, lavadoras, estufas, gasodomésticos y artículos para el hogar en Santander y Colombia.
+            </p>
+          </div>
+        </div>
+
+        <!-- Objetivos del Informe Financiero -->
+        <div style="background:#FFFDF5; border:1px solid #FDE68A; border-radius:8px; padding:14px 18px; margin-bottom:16px;">
+          <strong style="color:#92400E; font-size:0.85rem; display:block; margin-bottom:6px;">🎯 OBJETIVOS DEL DIAGNÓSTICO FINANCIERO (ENERO - ABRIL 2026):</strong>
+          <ul style="margin:0; padding-left:18px; font-size:0.78rem; color:#78350F; line-height:1.5;">
+            <li><strong>Objetivo General:</strong> Evaluar y dictaminar la situación financiera, solvencia, liquidez y desempeño económico consolidado de ELECTROVIVIENDA S.A.S en sus primeros 4 períodos contables, bajo el estándar NIIF para las PYMES.</li>
+            <li><strong>Objetivos Específicos:</strong> Analizar la evolución patrimonial desde la fundación ($247.3M) hasta el cierre de Abril ($331.2M); diagnosticar el exitoso proceso de desendeudamiento en Abril; medir la liquidez (2,25 veces); traducir en lenguaje sencillo cada una de las 4 gráficas; y definir el punto de equilibrio mensual ($22.000.000) para alcanzar ganancias sostenibles en Mayo.</li>
+          </ul>
+        </div>
+
+        <!-- Tabla de Contenido del Informe -->
+        <div style="background:#F1F5F9; border:1px solid #CBD5E1; border-radius:8px; padding:12px 16px;">
+          <strong style="color:var(--brand-primary); font-size:0.82rem; display:block; margin-bottom:8px;">📑 TABLA DE CONTENIDO DEL INFORME:</strong>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:6px; font-size:0.75rem; color:#334155;">
+            <div>1. Presentación de la Empresa y Objetivos</div>
+            <div>2. Guía para No Contadores (Conceptos Básicos)</div>
+            <div>3. Resumen Ejecutivo (Enero - Abril 2026)</div>
+            <div>4. Crónica de Hechos Económicos Mes a Mes</div>
+            <div>5. Explicación Detallada de las 4 Gráficas</div>
+            <div>6. Tabla de Indicadores Financieros NIIF</div>
+            <div>7. Punto de Equilibrio y Plan para Mayo</div>
+            <div>8. Certificación y Firmas Oficiales</div>
+          </div>
+        </div>
+      </div>
+
       <!-- INTRODUCCIÓN PEDAGÓGICA PARA PERSONAS QUE NO SABEN CONTABILIDAD -->
       <div style="background:#F0FDF4; border:1.5px solid #10B981; border-left:6px solid #059669; border-radius:10px; padding:18px 20px; margin-bottom:24px; line-height:1.6; font-size:0.84rem; color:#1E293B;">
         <div style="font-size:1.02rem; font-weight:900; color:#065F46; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
