@@ -247,15 +247,45 @@ window.addEventListener("DOMContentLoaded", async () => {
 });
 
 function loadSavedStudentProfileFromStorage() {
-  ACTIVE_STUDENT_PROFILE = {
-    id: "gina_villamizar",
-    nombre: "Gina Villamizar",
-    programa: "Contadora Titular • NIIF Grupo 2",
-    rol: "Titular"
-  };
-  document.getElementById("welcomeAuthOverlay")?.classList.add("hidden");
-  updateStudentProfileUI();
+  const saved = localStorage.getItem("studentcont_active_profile");
+  if (saved) {
+    try {
+      ACTIVE_STUDENT_PROFILE = JSON.parse(saved);
+      document.getElementById("welcomeAuthOverlay")?.classList.add("hidden");
+      updateStudentProfileUI();
+      return;
+    } catch (e) {}
+  }
+  // Si es la primera vez que se entra (ej. desde el enlace web publicado), mostrar la pantalla de bienvenida y login
+  openWelcomeLoginOverlay();
 }
+
+async function loginAsGinaDirect() {
+  const ginaProf = {
+    id: "gina_villamizar",
+    usuario: "gina",
+    nombre: "Gina Villamizar",
+    correo: "gina.villamizar@studentcont.ia",
+    programa: "Contadora Titular • Especialista NIIF",
+    rol: "Titular / Administradora",
+    workspace_id: "electrovivienda"
+  };
+  ACTIVE_STUDENT_PROFILE = ginaProf;
+  localStorage.setItem("studentcont_active_profile", JSON.stringify(ginaProf));
+  await loadDatabase("electrovivienda");
+  updateStudentProfileUI();
+  refreshAllViews();
+  closeWelcomeLoginOverlay();
+  showToast("🔐 Bienvenida Gina Villamizar — ELECTROVIVIENDA S.A.S activa");
+}
+window.loginAsGinaDirect = loginAsGinaDirect;
+
+function logoutToWelcomeScreen() {
+  localStorage.removeItem("studentcont_active_profile");
+  openWelcomeLoginOverlay();
+  showToast("🔒 Sesión finalizada. Ingresa tus credenciales.");
+}
+window.logoutToWelcomeScreen = logoutToWelcomeScreen;
 
 function updateStudentProfileUI() {
   const sName = document.getElementById("sidebarAuthorName");
@@ -2603,6 +2633,30 @@ function renderOfficialSignaturesBlock() {
   `;
 }
 
+
+function renderCorporateHeaderBoxHtml(title, periodTag, subTag) {
+  const emp = DB?.empresa || {};
+  return `
+    <div class="niif-header-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; margin-bottom:10px; border-bottom:1.5px solid rgba(212,175,55,0.35); padding-bottom:10px;">
+        <div style="background:#FFFFFF; padding:6px 14px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); border:1px solid #E2E8F0; display:inline-flex; align-items:center;">
+          <img src="assets/logo-electrovivienda.png" alt="ELECTROVIVIENDA S.A.S" style="height:44px; width:auto; max-width:220px; object-fit:contain;" />
+        </div>
+        <div style="text-align:right;">
+          <div class="niif-company-title" style="font-size:1.15rem; font-weight:900;">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</div>
+          <div class="niif-company-sub">NIT: ${emp.nit || "901.765.438-3"} • ${emp.regimen || "RRI — Agente Autorretenedor de Renta"}</div>
+          <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">${emp.direccion || "Cra 21 N° 46-11"} • ${emp.ciudad || "Bucaramanga, Santander"}</div>
+        </div>
+      </div>
+      <div class="niif-statement-badge">
+        <div class="niif-statement-name">${title}</div>
+        <span class="niif-period-tag">${periodTag}</span>
+        ${subTag ? `<span style="font-size:0.7rem; color:#94A3B8; display:block; margin-top:3px;">${subTag}</span>` : ""}
+      </div>
+    </div>
+  `;
+}
+
 function renderExecutiveNIIFStatementHtml(rowsIn, statementType, month, statementTitle) {
   const emp = DB?.empresa || {};
   const parsed = parseNIIFStatementRows(rowsIn);
@@ -2738,15 +2792,7 @@ function renderExecutiveNIIFStatementHtml(rowsIn, statementType, month, statemen
 
   return `
     <div class="niif-statement-paper">
-      <div class="niif-header-box">
-        <div class="niif-company-title">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</div>
-        <div class="niif-company-sub">NIT: ${emp.nit || "901.765.438-3"} • ${emp.regimen || "RRI — Agente Autorretenedor de Renta"}</div>
-        <div class="niif-statement-badge">
-          <div class="niif-statement-name">${statementTitle || "ESTADO FINANCIERO OFICIAL NIIF"}</div>
-          <span class="niif-period-tag">Al corte del período: ${month} 2026</span>
-          <span style="font-size:0.7rem; color:#94A3B8; display:block; margin-top:3px;">Cifras en Pesos Colombianos (COP) • NIIF para las PYMES (Grupo 2)</span>
-        </div>
-      </div>
+${renderCorporateHeaderBoxHtml(statementTitle || "ESTADO FINANCIERO OFICIAL NIIF", `Al corte del período: ${month} 2026`, "Cifras en Pesos Colombianos (COP) • NIIF para las PYMES (Grupo 2)")}
 
       ${kpiHtml}
 
@@ -2884,15 +2930,7 @@ function renderConsolidatedComparativeStatementHtml(rowsIn, statementType, month
 
   return `
     <div class="niif-statement-paper">
-      <div class="niif-header-box">
-        <div class="niif-company-title">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</div>
-        <div class="niif-company-sub">NIT: ${emp.nit || "901.765.438-3"} • ${emp.regimen || "RRI — Agente Autorretenedor de Renta"}</div>
-        <div class="niif-statement-badge">
-          <div class="niif-statement-name">${statementTitle || "ESTADO FINANCIERO CONSOLIDADO NIIF"}</div>
-          <span class="niif-period-tag">Corte Consolidado Comparativo — ${month} 2026</span>
-          <span style="font-size:0.7rem; color:#94A3B8; display:block; margin-top:3px;">Cifras en Pesos Colombianos (COP) • NIIF para las PYMES (Grupo 2) • Variaciones y Sumas Corridas</span>
-        </div>
-      </div>
+${renderCorporateHeaderBoxHtml(statementTitle || "ESTADO FINANCIERO CONSOLIDADO NIIF", `Corte Consolidado Comparativo — ${month} 2026`, "Cifras en Pesos Colombianos (COP) • NIIF para las PYMES (Grupo 2) • Variaciones y Sumas Corridas")}
 
       <div class="table-wrap">
         <table class="niif-table niif-table-consolidado">
@@ -3296,17 +3334,7 @@ function renderECPStatementHtml(rowsIn, month) {
 
   return `
     <div class="niif-statement-paper">
-      <div class="niif-header-box">
-        <div class="niif-company-title">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</div>
-        <div class="niif-company-sub">NIT: ${emp.nit || "901.765.438-3"} • ${emp.regimen || "RRI — Agente Autorretenedor de Renta"}</div>
-        <div class="niif-statement-badge">
-          <div class="niif-statement-name">ESTADO DE CAMBIOS EN EL PATRIMONIO (ECP)</div>
-          <span class="niif-period-tag">${periodText}</span>
-          <span style="font-size:0.7rem; color:#94A3B8; display:block; margin-top:3px;">
-            NIIF para las PYMES (Sección 6) • Cifras en Pesos Colombianos (COP) • Sumas Corridas
-          </span>
-        </div>
-      </div>
+${renderCorporateHeaderBoxHtml("ESTADO DE CAMBIOS EN EL PATRIMONIO (ECP)", periodText, "NIIF para las PYMES (Sección 6) • Cifras en Pesos Colombianos (COP) • Sumas Corridas")}
 
       ${kpiHtml}
 
@@ -3509,17 +3537,7 @@ function renderFlujoEfectivoStatementHtml(rowsIn, month) {
 
   return `
     <div class="niif-statement-paper">
-      <div class="niif-header-box">
-        <div class="niif-company-title">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</div>
-        <div class="niif-company-sub">NIT: ${emp.nit || "901.765.438-3"} • ${emp.regimen || "RRI — Agente Autorretenedor de Renta"}</div>
-        <div class="niif-statement-badge">
-          <div class="niif-statement-name">ESTADO DE FLUJOS DE EFECTIVO — MÉTODO INDIRECTO</div>
-          <span class="niif-period-tag">Período Contable: ${month} 2026</span>
-          <span style="font-size:0.7rem; color:#94A3B8; display:block; margin-top:3px;">
-            NIIF para las PYMES (Sección 7) • Cifras en Pesos Colombianos (COP) • Sumas Corridas
-          </span>
-        </div>
-      </div>
+${renderCorporateHeaderBoxHtml("ESTADO DE FLUJOS DE EFECTIVO — MÉTODO INDIRECTO", `Período Contable: ${month} 2026`, "NIIF para las PYMES (Sección 7) • Cifras en Pesos Colombianos (COP) • Sumas Corridas")}
 
       ${kpiFlujoHtml}
 
@@ -3725,18 +3743,7 @@ function renderFinancialAnalysisDashboardHtml(period) {
 
   return `
     <div class="niif-statement-paper">
-      <!-- Encabezado Corporativo Oficial -->
-      <div class="niif-header-box">
-        <div class="niif-company-title">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</div>
-        <div class="niif-company-sub">NIT: ${emp.nit || "901.765.438-3"} • ${emp.regimen || "RRI — Agente Autorretenedor de Renta"}</div>
-        <div class="niif-statement-badge">
-          <div class="niif-statement-name">📊 INFORME EJECUTIVO DE ANÁLISIS FINANCIERO & GRÁFICAS INTERACTIVAS</div>
-          <span class="niif-period-tag">Período Comparativo: MARZO 2026 vs ABRIL 2026</span>
-          <span style="font-size:0.7rem; color:#94A3B8; display:block; margin-top:3px;">
-            Diagnóstico Financiero Integral NIIF para las PYMES • Indicadores de Liquidez, Endeudamiento y Rentabilidad
-          </span>
-        </div>
-      </div>
+${renderCorporateHeaderBoxHtml("📊 INFORME EJECUTIVO DE ANÁLISIS FINANCIERO & GRÁFICAS INTERACTIVAS", "Período Comparativo: MARZO 2026 vs ABRIL 2026", "Diagnóstico Financiero Integral NIIF para las PYMES • Indicadores de Liquidez, Endeudamiento y Rentabilidad")}
 
       <!-- Tarjetas KPI de Alto Impacto -->
       <div class="niif-kpi-summary-strip" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px; margin-bottom:24px;">

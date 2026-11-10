@@ -11,7 +11,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <link rel="stylesheet" href="styles.css?v=20261110_22" />
+  <link rel="stylesheet" href="styles.css?v=20261110_26" />
 </head>
 <body>
 
@@ -23,15 +23,8 @@
       <!-- Lado Izquierdo: Bienvenida Didáctica -->
       <div class="welcome-hero-side">
         <div>
-          <div style="background:#fff; padding:10px 14px; border-radius:10px; display:inline-block; margin-bottom:20px;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 120" width="240" height="44">
-              <rect x="6" y="10" width="100" height="100" rx="22" fill="#0B192C" stroke="#D4AF37" stroke-width="4"/>
-              <rect x="26" y="64" width="12" height="26" rx="3" fill="#D4AF37"/>
-              <rect x="44" y="48" width="12" height="42" rx="3" fill="#F3E5AB"/>
-              <rect x="62" y="30" width="12" height="60" rx="3" fill="#10B981"/>
-              <text x="122" y="62" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="36" fill="#0B192C">STUDENTCONT.IA</text>
-              <text x="124" y="92" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="14" fill="#047857" letter-spacing="1.2">SISTEMA CONTABLE &amp; FISCAL NIIF</text>
-            </svg>
+          <div style="background:#ffffff; padding:12px 18px; border-radius:12px; display:inline-block; margin-bottom:18px; box-shadow:0 4px 14px rgba(0,0,0,0.18); border:1.5px solid var(--brand-gold);">
+            <img src="assets/logo-electrovivienda.png" alt="ELECTROVIVIENDA S.A.S" style="height:52px; width:auto; max-width:260px; object-fit:contain; display:block;" />
           </div>
           <h2 style="font-size:1.45rem; font-weight:800; color:#fff; margin-bottom:10px; line-height:1.25;">
             Aprende y Automatiza Contabilidad NIIF en Tiempo Real
@@ -85,12 +78,15 @@
               <input type="password" id="loginUserPin" class="form-control" placeholder="Escribe tu contraseña..." onkeydown="if(event.key==='Enter') loginWithPrivateCredentials()" />
             </div>
           </div>
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
             <span id="loginErrorMsg" style="font-size:0.75rem; color:var(--brand-danger); font-weight:700;"></span>
             <button class="btn btn-primary" onclick="loginWithPrivateCredentials()">
-              🔐 Iniciar Sesión en Mi Perfil Privado
+              🔐 Iniciar Sesión con Mi Usuario
             </button>
           </div>
+          <button class="btn btn-outline" onclick="loginAsGinaDirect()" style="width:100%; justify-content:center; border-color:var(--brand-gold); color:var(--brand-gold); font-weight:800; background:rgba(212,175,55,0.08); padding:9px;">
+            ⭐ Acceso Titular Directo: Gina Villamizar (ELECTROVIVIENDA S.A.S)
+          </button>
         </div>
 
         <!-- 2. CREAR NUEVO PERFIL PRIVADO DESDE CERO -->
@@ -144,15 +140,8 @@
        ===================================================================== -->
   <aside class="app-sidebar">
     <div class="sidebar-brand" onclick="openBrandModal()" title="Personalizar Logo y Marca de STUDENTCONT.IA">
-      <div class="sidebar-logo-box" id="sidebarLogoContainer">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 120" width="100%" height="44" id="brandLogoSvgInline">
-          <rect x="6" y="10" width="100" height="100" rx="22" fill="#0B192C" stroke="#D4AF37" stroke-width="4"/>
-          <rect x="26" y="64" width="12" height="26" rx="3" fill="#D4AF37"/>
-          <rect x="44" y="48" width="12" height="42" rx="3" fill="#F3E5AB"/>
-          <rect x="62" y="30" width="12" height="60" rx="3" fill="#10B981"/>
-          <text x="122" y="62" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="36" fill="#0B192C">STUDENTCONT.IA</text>
-          <text x="124" y="92" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="14" fill="#047857" letter-spacing="1.2">SISTEMA CONTABLE &amp; FISCAL NIIF</text>
-        </svg>
+      <div class="sidebar-logo-box" id="sidebarLogoContainer" style="background:#ffffff; padding:8px 12px; border-radius:10px; border:1.5px solid var(--border-light); margin-bottom:10px; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(0,0,0,0.06);">
+        <img src="assets/logo-electrovivienda.png" alt="ELECTROVIVIENDA S.A.S" style="max-height:42px; width:auto; max-width:100%; object-fit:contain;" />
       </div>
     </div>
 
@@ -167,6 +156,10 @@
       <h3 id="sidebarCompanyName">ELECTROVIVIENDA S.A.S</h3>
       <p id="sidebarCompanyNit">NIT: 901.765.438-3 • Dígito 8</p>
       <p id="sidebarCompanyRegimen">RRI • Agente Retenedor y Autorretenedor</p>
+      <div style="margin-top:8px; border-top:1px dashed rgba(255,255,255,0.18); padding-top:6px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:0.7rem; color:#CBD5E1;">Perfil: <strong id="sidebarUserProfileName" style="color:#F1F5F9;">Gina Villamizar</strong></span>
+        <button onclick="logoutToWelcomeScreen()" style="background:rgba(212,175,55,0.18); border:1px solid var(--brand-gold); color:var(--brand-gold); font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:4px; cursor:pointer;" title="Cerrar sesión o cambiar de estudiante">🔒 Salir</button>
+      </div>
     </div>
 
     <nav class="sidebar-nav">
@@ -1264,6 +1257,6 @@
   </div>
 
   <div class="toast-container" id="toastContainer"></div>
-  <script src="app.js?v=20261110_22"></script>
+  <script src="app.js?v=20261110_26"></script>
 </body>
 </html>
