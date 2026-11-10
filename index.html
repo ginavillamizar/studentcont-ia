@@ -11,7 +11,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <link rel="stylesheet" href="styles.css?v=20261110_26" />
+  <link rel="stylesheet" href="styles.css?v=20261110_30" />
 </head>
 <body>
 
@@ -23,8 +23,15 @@
       <!-- Lado Izquierdo: Bienvenida Didáctica -->
       <div class="welcome-hero-side">
         <div>
-          <div style="background:#ffffff; padding:12px 18px; border-radius:12px; display:inline-block; margin-bottom:18px; box-shadow:0 4px 14px rgba(0,0,0,0.18); border:1.5px solid var(--brand-gold);">
-            <img src="assets/logo-electrovivienda.png" alt="ELECTROVIVIENDA S.A.S" style="height:52px; width:auto; max-width:260px; object-fit:contain; display:block;" />
+          <div style="background:#ffffff; padding:10px 16px; border-radius:12px; display:inline-block; margin-bottom:18px; box-shadow:0 4px 14px rgba(0,0,0,0.18); border:1.5px solid var(--brand-gold);">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 120" width="230" height="42">
+              <rect x="6" y="10" width="100" height="100" rx="22" fill="#0B192C" stroke="#D4AF37" stroke-width="4"/>
+              <rect x="26" y="64" width="12" height="26" rx="3" fill="#D4AF37"/>
+              <rect x="44" y="48" width="12" height="42" rx="3" fill="#F3E5AB"/>
+              <rect x="62" y="30" width="12" height="60" rx="3" fill="#10B981"/>
+              <text x="122" y="62" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="36" fill="#0B192C">STUDENTCONT.IA</text>
+              <text x="124" y="92" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="14" fill="#047857" letter-spacing="1.2">SISTEMA CONTABLE &amp; FISCAL NIIF</text>
+            </svg>
           </div>
           <h2 style="font-size:1.45rem; font-weight:800; color:#fff; margin-bottom:10px; line-height:1.25;">
             Aprende y Automatiza Contabilidad NIIF en Tiempo Real
@@ -84,9 +91,20 @@
               🔐 Iniciar Sesión con Mi Usuario
             </button>
           </div>
-          <button class="btn btn-outline" onclick="loginAsGinaDirect()" style="width:100%; justify-content:center; border-color:var(--brand-gold); color:var(--brand-gold); font-weight:800; background:rgba(212,175,55,0.08); padding:9px;">
-            ⭐ Acceso Titular Directo: Gina Villamizar (ELECTROVIVIENDA S.A.S)
-          </button>
+          <div style="background:#f8fafc; border:1.5px solid var(--brand-gold); border-radius:10px; padding:10px 14px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div style="background:#ffffff; padding:4px 8px; border-radius:6px; border:1px solid #e2e8f0;">
+                <img src="assets/logo-electrovivienda.png" alt="ELECTROVIVIENDA S.A.S" style="height:30px; width:auto; object-fit:contain;" />
+              </div>
+              <div style="font-size:0.75rem; color:#334155;">
+                <strong style="color:var(--brand-primary); display:block;">ELECTROVIVIENDA S.A.S</strong>
+                <span>Empresa didáctica oficial cargada</span>
+              </div>
+            </div>
+            <button class="btn btn-gold btn-sm" onclick="loginAsGinaDirect()" style="font-weight:800;">
+              ⭐ Ingresar como Gina Villamizar
+            </button>
+          </div>
         </div>
 
         <!-- 2. CREAR NUEVO PERFIL PRIVADO DESDE CERO -->
@@ -140,13 +158,23 @@
        ===================================================================== -->
   <aside class="app-sidebar">
     <div class="sidebar-brand" onclick="openBrandModal()" title="Personalizar Logo y Marca de STUDENTCONT.IA">
-      <div class="sidebar-logo-box" id="sidebarLogoContainer" style="background:#ffffff; padding:8px 12px; border-radius:10px; border:1.5px solid var(--border-light); margin-bottom:10px; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(0,0,0,0.06);">
-        <img src="assets/logo-electrovivienda.png" alt="ELECTROVIVIENDA S.A.S" style="max-height:42px; width:auto; max-width:100%; object-fit:contain;" />
+      <div class="sidebar-logo-box" id="sidebarLogoContainer">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 120" width="100%" height="44" id="brandLogoSvgInline">
+          <rect x="6" y="10" width="100" height="100" rx="22" fill="#0B192C" stroke="#D4AF37" stroke-width="4"/>
+          <rect x="26" y="64" width="12" height="26" rx="3" fill="#D4AF37"/>
+          <rect x="44" y="48" width="12" height="42" rx="3" fill="#F3E5AB"/>
+          <rect x="62" y="30" width="12" height="60" rx="3" fill="#10B981"/>
+          <text x="122" y="62" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="36" fill="#0B192C">STUDENTCONT.IA</text>
+          <text x="124" y="92" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="14" fill="#047857" letter-spacing="1.2">SISTEMA CONTABLE &amp; FISCAL NIIF</text>
+        </svg>
       </div>
     </div>
 
     <!-- Tarjeta de Empresa Activa + Botón Cambiar / Modo Aprendizaje -->
     <div class="sidebar-company-card">
+      <div style="background:#ffffff; padding:6px 10px; border-radius:8px; margin-bottom:8px; display:flex; justify-content:center; align-items:center; box-shadow:0 2px 5px rgba(0,0,0,0.12);">
+        <img src="assets/logo-electrovivienda.png" alt="ELECTROVIVIENDA S.A.S" style="max-height:36px; width:auto; max-width:100%; object-fit:contain;" />
+      </div>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
         <span style="font-size:0.65rem; font-weight:800; color:#34D399; letter-spacing:0.6px;" id="sidebarWsTypeBadge">EMPRESA ACTIVA</span>
         <button onclick="openWorkspaceModal()" style="background:rgba(212,175,55,0.22); border:1px solid var(--brand-gold); color:var(--brand-gold); font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:4px; cursor:pointer;">
@@ -1257,6 +1285,6 @@
   </div>
 
   <div class="toast-container" id="toastContainer"></div>
-  <script src="app.js?v=20261110_26"></script>
+  <script src="app.js?v=20261110_30"></script>
 </body>
 </html>

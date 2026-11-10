@@ -893,11 +893,14 @@ function renderCommercialInvoicePreview(inv) {
       <!-- VISTA PREVIA COMERCIAL DE LA FACTURA -->
       <div class="invoice-paper">
         <div class="invoice-top">
-          <div class="invoice-brand">
-            <h2>${emisorNombre}</h2>
-            <p><strong>NIT:</strong> ${emisorNit} • <strong>Régimen:</strong> ${emisorRegimen}</p>
-            <p>${DB.empresa.direccion} — ${DB.empresa.ciudad}</p>
-            <p>Tel: ${DB.empresa.telefono} • ${DB.empresa.correo}</p>
+          <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+            ${isVenta ? `<div style="background:#ffffff; padding:6px 10px; border-radius:8px; border:1px solid #e2e8f0; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 5px rgba(0,0,0,0.06);"><img src="${DB.empresa.logo || 'assets/logo-electrovivienda.png'}" alt="${DB.empresa.razon_social}" style="height:44px; width:auto; max-width:180px; object-fit:contain;" /></div>` : ''}
+            <div class="invoice-brand">
+              <h2>${emisorNombre}</h2>
+              <p><strong>NIT:</strong> ${emisorNit} • <strong>Régimen:</strong> ${emisorRegimen}</p>
+              <p>${isVenta ? DB.empresa.direccion : 'Operación Comercial'} — ${isVenta ? DB.empresa.ciudad : ''}</p>
+              ${isVenta ? `<p>Tel: ${DB.empresa.telefono} • ${DB.empresa.correo}</p>` : ''}
+            </div>
           </div>
           <div class="invoice-badge-box">
             <div class="doc-type">${inv.tipo_operacion}</div>
@@ -1243,10 +1246,15 @@ function renderVoucherDetail() {
   panel.innerHTML = `
     <div class="invoice-paper">
       <div class="invoice-top">
-        <div class="invoice-brand">
-          <h2>${DB.empresa.razon_social}</h2>
-          <p><strong>NIT:</strong> ${DB.empresa.nit} • ${DB.empresa.regimen}</p>
-          <p>${DB.empresa.direccion} — ${DB.empresa.ciudad}</p>
+        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+          <div style="background:#ffffff; padding:6px 10px; border-radius:8px; border:1px solid #e2e8f0; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 5px rgba(0,0,0,0.06);">
+            <img src="${DB.empresa.logo || 'assets/logo-electrovivienda.png'}" alt="${DB.empresa.razon_social}" style="height:44px; width:auto; max-width:180px; object-fit:contain;" />
+          </div>
+          <div class="invoice-brand">
+            <h2>${DB.empresa.razon_social}</h2>
+            <p><strong>NIT:</strong> ${DB.empresa.nit} • ${DB.empresa.regimen}</p>
+            <p>${DB.empresa.direccion} — ${DB.empresa.ciudad}</p>
+          </div>
         </div>
         <div class="invoice-badge-box">
           <div class="doc-type">${compDiarioTitle}</div>

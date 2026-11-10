@@ -1357,6 +1357,10 @@ def main():
             "telefono": "3164562001",
             "correo": "electroviviendasas@gmail.com",
             "elaborado_por": "Gina Villamizar",
+            "contadora": "Gina Villamizar",
+            "representante_legal": "Kevin Guerrero",
+            "revisor_fiscal": "Marcela Gonzales",
+            "logo": "assets/logo-electrovivienda.png",
             "socios": [
                 {"nombre": "Carlos Eduardo Daza Gómez", "documento": "CC 83.540.201 de Bogotá", "aporte": 123000000},
                 {"nombre": "Marco Aurelio Pedraza Díaz", "documento": "CC 83.630.202 de Tunja", "aporte": 125600000}
