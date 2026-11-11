@@ -508,26 +508,101 @@ function logoutToWelcomeScreen() {
 }
 window.logoutToWelcomeScreen = logoutToWelcomeScreen;
 
+function getBlankElectroviviendaDb(studentName) {
+  return {
+    empresa: {
+      razon_social: "ELECTROVIVIENDA S.A.S",
+      nit: "901.765.438-3",
+      dv: "8",
+      regimen: "Responsable de IVA (RRI) - Agente Retenedor y Autorretenedor",
+      ciudad: "Bucaramanga, Santander",
+      direccion: "Carrera 27 # 36 - 14",
+      telefono: "607-6345678",
+      elaborado_por: studentName || "Estudiante",
+      creado_por_plataforma: "Gina Villamizar",
+      revisado_por: "Revisoría Fiscal SENA",
+      aprobado_por: "Gerencia General",
+      moneda: "COP",
+      anio: 2026
+    },
+    meses: {
+      "ENERO": { transacciones: [], total_transacciones: 0 },
+      "FEBRERO": { transacciones: [], total_transacciones: 0 },
+      "MARZO": { transacciones: [], total_transacciones: 0 },
+      "ABRIL": { transacciones: [], total_transacciones: 0 }
+    },
+    facturas: [],
+    consecutivos: { FV: 1, CC: 1, CE: 1, RC: 1, NC: 1, ND: 1 },
+    inventario: [
+      { codigo: "NEV-01", descripcion: "Nevera No Frost 400L", unidad: "UND", costo_unitario: 2200000, precio_venta: 3200000, saldo_inicial: 0, saldo_actual: 0 },
+      { codigo: "LAV-02", descripcion: "Lavadora Automática 18kg", unidad: "UND", costo_unitario: 1650000, precio_venta: 2450000, saldo_inicial: 0, saldo_actual: 0 },
+      { codigo: "TV-03", descripcion: "Smart TV 55 Pulgadas 4K", unidad: "UND", costo_unitario: 1850000, precio_venta: 2750000, saldo_inicial: 0, saldo_actual: 0 },
+      { codigo: "EST-04", descripcion: "Estufa a Gas 4 Puestos", unidad: "UND", costo_unitario: 850000, precio_venta: 1350000, saldo_inicial: 0, saldo_actual: 0 }
+    ]
+  };
+}
+
 function updateStudentProfileUI() {
-  const sName = document.getElementById("sidebarAuthorName");
+  const profileNameEl = document.getElementById("sidebarUserProfileName");
   const tName = document.getElementById("topbarStudentName");
+  const sAuthor = document.getElementById("sidebarAuthorName");
   const sRole = document.getElementById("sidebarProfileRole");
-  if (sName) sName.textContent = ACTIVE_STUDENT_PROFILE.nombre || "Gina Villamizar";
-  if (tName) tName.textContent = ACTIVE_STUDENT_PROFILE.nombre || "Gina Villamizar";
-  if (sRole) sRole.textContent = ACTIVE_STUDENT_PROFILE.programa || "Contadora Titular • NIIF Grupo 2";
+  
+  // 1. El perfil activo siempre es el usuario/estudiante que tiene la sesión abierta (ej: Marcela Gonzalez)
+  const currentStudent = ACTIVE_STUDENT_PROFILE?.nombre || "Gina Villamizar";
+  if (profileNameEl) profileNameEl.textContent = currentStudent;
+  if (tName) tName.textContent = currentStudent;
+  
+  // 2. La autoría del sistema y de la plataforma contable SIEMPRE es de Gina Villamizar
+  if (sAuthor) sAuthor.textContent = "Gina Villamizar";
+  if (sRole) sRole.textContent = "Contadora Titular • SENA CSET";
 }
 
 async function loadDatabase(wsId = null) {
+  const isGina = (ACTIVE_STUDENT_PROFILE?.usuario === "gina" || ACTIVE_STUDENT_PROFILE?.id === "gina_villamizar");
+  
+  // Si es un estudiante en su taller práctico personal (inicia en 0 para subir su información de ELECTROVIVIENDA)
+  if (!isGina && wsId !== "electrovivienda_oficial") {
+    const studentKey = "studentcont_cloud_db_" + (ACTIVE_STUDENT_PROFILE?.id || "default");
+    const savedStudentData = localStorage.getItem(studentKey);
+    if (savedStudentData) {
+      try {
+        DB = JSON.parse(savedStudentData);
+        refreshAllViews();
+        return;
+      } catch(e) {}
+    } else {
+      // Estudiante nuevo iniciando en 0
+      DB = getBlankElectroviviendaDb(ACTIVE_STUDENT_PROFILE?.nombre);
+      saveLocalCloudOverlay();
+      refreshAllViews();
+      return;
+    }
+  }
+
   try {
     const url = wsId ? `/api/db?ws=${encodeURIComponent(wsId)}` : `/api/db?t=${Date.now()}`;
     const res = await fetch(url);
     if (!res.ok) throw new Error("API local no disponible");
     DB = await res.json();
   } catch (e) {
-    const res = await fetch("data/electrovivienda_db.json");
-    DB = await res.json();
-    // Si estamos en modo nube estático (Vercel/GitHub Pages), cargar también transacciones guardadas en localStorage del estudiante
-    applyLocalCloudOverlay();
+    if (!isGina && wsId !== "electrovivienda_oficial") {
+      const studentKey = "studentcont_cloud_db_" + (ACTIVE_STUDENT_PROFILE?.id || "default");
+      const savedStudentData = localStorage.getItem(studentKey);
+      if (savedStudentData) {
+        try {
+          DB = JSON.parse(savedStudentData);
+        } catch(err) {
+          DB = getBlankElectroviviendaDb(ACTIVE_STUDENT_PROFILE?.nombre);
+        }
+      } else {
+        DB = getBlankElectroviviendaDb(ACTIVE_STUDENT_PROFILE?.nombre);
+        saveLocalCloudOverlay();
+      }
+    } else {
+      const res = await fetch("data/electrovivienda_db.json");
+      DB = await res.json();
+    }
   }
   refreshAllViews();
 }
@@ -6175,11 +6250,11 @@ async function loginWithPrivateCredentials() {
     if (matched) {
       ACTIVE_STUDENT_PROFILE = matched;
       try { localStorage.setItem("studentcont_active_profile", JSON.stringify(matched)); } catch (e) {}
-      await loadDatabase(matched.workspace_id || "electrovivienda");
+      await loadDatabase(matched.workspace_id || ("taller_" + matched.id));
       updateStudentProfileUI();
       refreshAllViews();
       closeWelcomeLoginOverlay();
-      showToast(`🔐 Sesión iniciada: ${matched.nombre}`);
+      showToast(`🎓 Bienvenida de nuevo: ${matched.nombre}`);
       return;
     }
   } catch (e) {}
@@ -6204,33 +6279,34 @@ async function loginWithPrivateCredentials() {
     }
   } catch (e) {}
 
-  // 3. Fallback inteligente: En la web pública o si el estudiante ingresa credenciales válidas
-  // Iniciar sesión sin bloqueos y permitir el acceso a ELECTROVIVIENDA S.A.S
-  const safeId = uLower.replace(/[^a-z0-9]/g, "_").slice(0, 20);
+  // 3. Registro e inicio para estudiantes en su propio taller en 0 para subir información
+  const safeId = uLower.replace(/[^a-z0-9]/g, "_").slice(0, 25);
   const autoProf = {
-    id: "stu_" + Date.now(),
+    id: "stu_" + safeId,
     usuario: safeId,
     nombre: usuario,
     correo: `${safeId}@studentcont.ia`,
     pin: pin,
-    programa: "Contaduría Pública • NIIF",
-    rol: "Estudiante Contable",
-    workspace_id: "electrovivienda",
+    programa: "Estudiante Contable • SENA CSET",
+    rol: "Estudiante en Práctica",
+    workspace_id: "taller_" + safeId,
     empresa_nombre: "ELECTROVIVIENDA S.A.S"
   };
   ACTIVE_STUDENT_PROFILE = autoProf;
   try {
     localStorage.setItem("studentcont_active_profile", JSON.stringify(autoProf));
     const users = JSON.parse(localStorage.getItem("studentcont_registered_users") || "[]");
-    users.push(autoProf);
+    const existingIdx = users.findIndex(u => u.usuario === safeId);
+    if (existingIdx >= 0) users[existingIdx] = autoProf;
+    else users.push(autoProf);
     localStorage.setItem("studentcont_registered_users", JSON.stringify(users));
   } catch (e) {}
 
-  await loadDatabase("electrovivienda");
+  await loadDatabase(autoProf.workspace_id);
   updateStudentProfileUI();
   refreshAllViews();
   closeWelcomeLoginOverlay();
-  showToast(`🔐 Sesión iniciada: ${usuario} en ELECTROVIVIENDA S.A.S`);
+  showToast(`🎓 Bienvenida ${usuario}: Taller en 0 iniciado para ELECTROVIVIENDA S.A.S`);
 }
 window.loginWithPrivateCredentials = loginWithPrivateCredentials;
 
@@ -6262,16 +6338,19 @@ async function registerFromWelcomeScreen() {
                     customEmpresaInput.replace(/[^0-9]/g, "").startsWith("901765438");
 
   const safeUserId = (correo || nombre).toLowerCase().replace(/[^a-z0-9]/g, "_").slice(0, 24);
+  const isGina = (safeUserId === "gina" || safeUserId === "gina_villamizar" || safeUserId.includes("gina"));
+  
   const nuevoPerfil = {
-    id: "stu_" + Date.now(),
+    id: isGina ? "gina_villamizar" : ("stu_" + safeUserId),
     usuario: safeUserId,
     nombre: nombre,
     correo: correo || `${safeUserId}@studentcont.ia`,
     pin: pin,
-    programa: programa,
-    rol: "Estudiante Contable",
-    workspace_id: isElectro ? "electrovivienda" : "taller_" + Date.now(),
-    empresa_nombre: isElectro ? "ELECTROVIVIENDA S.A.S" : (customEmpresaInput || `TALLER DE ${nombre.toUpperCase()}`)
+    programa: programa || "Estudiante Contable • SENA CSET",
+    rol: isGina ? "Titular / Administradora" : "Estudiante en Práctica",
+    // Estudiante nuevo inicia su propio taller en 0 para subir la información de ELECTROVIVIENDA
+    workspace_id: isGina ? "electrovivienda" : ("taller_electro_" + safeUserId),
+    empresa_nombre: "ELECTROVIVIENDA S.A.S"
   };
 
   // 1. Guardar siempre en localStorage para que funcione 100% en GitHub Pages / Web
@@ -8161,3 +8240,16 @@ function exportSmartContextualPDF() {
   downloadOrPrintPdfDocument(html, filename, `Informe ${ACTIVE_SECTION.toUpperCase()} — ${ACTIVE_PERIOD}`);
 }
 
+
+
+// Alternar entre el taller del estudiante y el modelo resuelto de Gina Villamizar
+function toggleTallerVsModeloOficial(modo) {
+  if (modo === "modelo") {
+    loadDatabase("electrovivienda_oficial");
+    showToast("📋 Visualizando Modelo Oficial Resuelto por Gina Villamizar");
+  } else {
+    loadDatabase(ACTIVE_STUDENT_PROFILE?.workspace_id || ("taller_" + ACTIVE_STUDENT_PROFILE?.id));
+    showToast("✏️ Visualizando Mi Taller Personal en Cero (ELECTROVIVIENDA S.A.S)");
+  }
+}
+window.toggleTallerVsModeloOficial = toggleTallerVsModeloOficial;
