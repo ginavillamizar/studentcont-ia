@@ -4205,76 +4205,141 @@ ${renderCorporateHeaderBoxHtml("📊 INFORME INTEGRAL DE ANÁLISIS FINANCIERO DE
       </div>
 
       <!-- SECCIÓN 3: MATRIZ INTEGRAL DE INDICADORES FINANCIEROS (LOS 4 PERIODOS) -->
-      <div style="background:var(--brand-primary); color:#FFFFFF; padding:10px 16px; border-radius:6px 6px 0 0; font-weight:800; font-size:0.88rem; letter-spacing:0.4px; margin-top:28px; margin-bottom:0;">
-        📑 TABLA COMPLETA: INDICADORES FINANCIEROS Y SU SIGNIFICADO EN PALABRAS SIMPLES
+      <div style="background:var(--brand-primary); color:#FFFFFF; padding:12px 18px; border-radius:6px 6px 0 0; font-weight:800; font-size:0.92rem; letter-spacing:0.5px; margin-top:28px; margin-bottom:0; display:flex; justify-content:space-between; align-items:center;">
+        <span>📑 TABLA COMPLETA: INDICADORES FINANCIEROS Y SU SIGNIFICADO EN PALABRAS SIMPLES</span>
+        <span style="font-size:0.75rem; background:rgba(255,255,255,0.18); padding:3px 10px; border-radius:12px; font-weight:600;">Fórmulas + Paso a Paso Oficial</span>
       </div>
 
       <div class="niif-table-responsive-box" style="margin-bottom:24px;">
-        <table class="niif-official-table">
+        <table class="niif-official-table" style="font-size:0.83rem;">
           <thead>
             <tr>
-              <th style="width:14%;">Grupo / Categoría</th>
-              <th style="width:16%;">Indicador Financiero</th>
-              <th style="width:20%;">¿Qué mide en la vida real?</th>
-              <th class="num-col" style="width:10%;">Enero</th>
-              <th class="num-col" style="width:10%;">Febrero</th>
-              <th class="num-col" style="width:10%;">Marzo</th>
-              <th class="num-col" style="width:10%;">Abril</th>
-              <th style="width:10%; text-align:center;">Diagnóstico</th>
+              <th style="width:14%;">Indicador</th>
+              <th style="width:16%;">Fórmula Matemática</th>
+              <th style="width:26%;">¿Cómo se calcula? (Paso a Paso & Explicación)</th>
+              <th class="num-col" style="width:8%;">Enero</th>
+              <th class="num-col" style="width:8%;">Febrero</th>
+              <th class="num-col" style="width:8%;">Marzo</th>
+              <th class="num-col" style="width:9%;">Abril</th>
+              <th style="width:11%; text-align:center;">Diagnóstico</th>
             </tr>
           </thead>
           <tbody>
+            <!-- GRUPO 1: LIQUIDEZ -->
             <tr class="niif-row-clase">
-              <td colspan="8">1. INDICADORES DE LIQUIDEZ (¿HAY PLATA SUFICIENTE EN EL BOLSILLO PARA PAGAR LAS CUENTAS?)</td>
+              <td colspan="8">1. INDICADORES DE LIQUIDEZ (¿HAY DINERO SUFICIENTE PARA PAGAR LAS CUENTAS URGENTES?)</td>
             </tr>
             <tr class="niif-row-cuenta">
-              <td><strong>Liquidez</strong></td>
-              <td><strong>Razón Corriente</strong></td>
-              <td>Pesos de respaldo por cada $1 que debemos ya</td>
+              <td><strong>Razón Corriente</strong><br><small style="color:#64748B;">Solvencia Inmediata</small></td>
+              <td><code style="background:#EEF2FF; color:#1E40AF; padding:3px 6px; border-radius:4px; font-weight:700;">Activo Corriente ÷ Pasivo Corriente</code></td>
+              <td>
+                <div style="font-size:0.8rem; line-height:1.4;">
+                  <strong>Paso a paso Abril:</strong> Se divide el dinero y mercancía a corto plazo ($121.342.532) entre las deudas que vencen en menos de 1 año ($53.927.428):<br>
+                  <span style="color:#059669; font-weight:700;">$121.342.532 ÷ $53.927.428 = 2,25 veces</span>.<br>
+                  <em>Significado: Por cada $1 que debemos pagar ya, tenemos $2,25 en caja y bodega para responder.</em>
+                </div>
+              </td>
               <td class="num-col">Sin deudas</td>
-              <td class="num-col">2,15 veces</td>
-              <td class="num-col">1,92 veces</td>
-              <td class="num-col" style="color:#059669; font-weight:900;">2,25 veces</td>
-              <td style="text-align:center;"><span class="ratio-badge-pill status-good">🟢 Excelente</span></td>
+              <td class="num-col">2,15 x</td>
+              <td class="num-col">1,92 x</td>
+              <td class="num-col" style="color:#059669; font-weight:900;">2,25 x</td>
+              <td style="text-align:center;"><span class="ratio-badge-pill status-good">🟢 Excelente (Óptimo)</span></td>
             </tr>
             <tr class="niif-row-cuenta">
-              <td><strong>Liquidez</strong></td>
-              <td><strong>Prueba Ácida</strong></td>
-              <td>Si no vendemos nada, cuánto respaldo líquido nos queda</td>
+              <td><strong>Prueba Ácida</strong><br><small style="color:#64748B;">Liquidez Severa</small></td>
+              <td><code style="background:#EEF2FF; color:#1E40AF; padding:3px 6px; border-radius:4px; font-weight:700;">(Activo Corriente - Inventarios) ÷ Pasivo Corriente</code></td>
+              <td>
+                <div style="font-size:0.8rem; line-height:1.4;">
+                  <strong>Paso a paso Abril:</strong> Al activo corriente ($121.342.532) se le resta el inventario ($43.200.000) dejando solo el disponible y cartera ($78.142.532), y se divide entre la deuda corriente ($53.927.428):<br>
+                  <span style="color:#059669; font-weight:700;">$78.142.532 ÷ $53.927.428 = 1,45 veces</span>.<br>
+                  <em>Significado: Sin vender un solo electrodoméstico, la empresa paga el 100% de sus pasivos de corto plazo y le sobra el 45%.</em>
+                </div>
+              </td>
               <td class="num-col">N/A</td>
-              <td class="num-col">1,38 veces</td>
-              <td class="num-col">1,14 veces</td>
-              <td class="num-col" style="font-weight:800;">1,45 veces</td>
+              <td class="num-col">1,38 x</td>
+              <td class="num-col">1,14 x</td>
+              <td class="num-col" style="color:#059669; font-weight:900;">1,45 x</td>
               <td style="text-align:center;"><span class="ratio-badge-pill status-good">🟢 Sobrado</span></td>
             </tr>
             <tr class="niif-row-cuenta">
-              <td><strong>Liquidez</strong></td>
-              <td><strong>Capital de Trabajo Neto</strong></td>
-              <td>Plata libre para trabajar tras restar deudas de corto plazo</td>
+              <td><strong>Capital de Trabajo Neto (KTN)</strong><br><small style="color:#64748B;">Fondo de Maniobra</small></td>
+              <td><code style="background:#EEF2FF; color:#1E40AF; padding:3px 6px; border-radius:4px; font-weight:700;">Activo Corriente - Pasivo Corriente</code></td>
+              <td>
+                <div style="font-size:0.8rem; line-height:1.4;">
+                  <strong>Paso a paso Abril:</strong> Se resta el pasivo corriente del activo corriente:<br>
+                  <span style="color:#059669; font-weight:700;">$121.342.532 - $53.927.428 = $67.415.104</span>.<br>
+                  <em>Significado: Es la plata limpia y libre que le queda a la empresa para seguir operando sin necesidad de préstamos de emergencia.</em>
+                </div>
+              </td>
               <td class="num-col">$ 36.000.000</td>
               <td class="num-col">$ 92.815.595</td>
               <td class="num-col">$ 75.489.713</td>
-              <td class="num-col" style="font-weight:800;">$ 67.415.103</td>
+              <td class="num-col" style="color:#059669; font-weight:900;">$ 67.415.104</td>
               <td style="text-align:center;"><span class="ratio-badge-pill status-good">🟢 Muy Solvente</span></td>
             </tr>
 
+            <!-- GRUPO 2: ENDEUDAMIENTO Y ESTRUCTURA -->
             <tr class="niif-row-clase">
-              <td colspan="8">2. INDICADORES DE DEUDA (¿QUÉ TANTO LE DEBEMOS A TERCEROS?)</td>
+              <td colspan="8">2. INDICADORES DE ENDEUDAMIENTO Y PLAZOS (REGLA NIIF: CORRIENTE &lt; 12 MESES, NO CORRIENTE &gt; 12 MESES)</td>
             </tr>
             <tr class="niif-row-cuenta">
-              <td><strong>Endeudamiento</strong></td>
-              <td><strong>Nivel de Deuda Total</strong></td>
-              <td>Porcentaje de la empresa que está comprometido en deudas</td>
+              <td><strong>Endeudamiento a Corto Plazo</strong><br><small style="color:#64748B;">Compromisos &lt; 12 meses</small></td>
+              <td><code style="background:#EEF2FF; color:#1E40AF; padding:3px 6px; border-radius:4px; font-weight:700;">Pasivo Corriente ÷ Activo Total</code></td>
+              <td>
+                <div style="font-size:0.8rem; line-height:1.4;">
+                  <strong>Paso a paso Abril:</strong> Se dividen las deudas que vencen en menos de 1 año ($53.927.428) entre el total de activos de la empresa ($331.232.683):<br>
+                  <span style="color:#2563EB; font-weight:700;">$53.927.428 ÷ $331.232.683 = 16,28%</span>.<br>
+                  <em>Significado: Solo el 16,28% de los bienes de la empresa está comprometido en deudas de vencimiento inmediato.</em>
+                </div>
+              </td>
               <td class="num-col">0,00 %</td>
-              <td class="num-col">31,17 %</td>
+              <td class="num-col">20,80 %</td>
+              <td class="num-col">22,13 %</td>
+              <td class="num-col" style="color:#2563EB; font-weight:900;">16,28 %</td>
+              <td style="text-align:center;"><span class="ratio-badge-pill status-good">🟢 Muy Cómodo</span></td>
+            </tr>
+            <tr class="niif-row-cuenta">
+              <td><strong>Endeudamiento a Largo Plazo</strong><br><small style="color:#64748B;">Obligaciones &gt; 12 meses</small></td>
+              <td><code style="background:#EEF2FF; color:#1E40AF; padding:3px 6px; border-radius:4px; font-weight:700;">Pasivo No Corriente ÷ Activo Total</code></td>
+              <td>
+                <div style="font-size:0.8rem; line-height:1.4;">
+                  <strong>Paso a paso Abril:</strong> Se divide la deuda con vencimiento superior a 1 año ($36.744.815) entre el activo total ($331.232.683):<br>
+                  <span style="color:#2563EB; font-weight:700;">$36.744.815 ÷ $331.232.683 = 11,09%</span>.<br>
+                  <em>Significado: Corresponde a créditos pactados a largo plazo que no presionan la caja en el presente ejercicio.</em>
+                </div>
+              </td>
+              <td class="num-col">0,00 %</td>
+              <td class="num-col">10,23 %</td>
+              <td class="num-col">10,54 %</td>
+              <td class="num-col" style="font-weight:800;">11,09 %</td>
+              <td style="text-align:center;"><span class="ratio-badge-pill status-good">🟢 Estable</span></td>
+            </tr>
+            <tr class="niif-row-cuenta">
+              <td><strong>Nivel de Endeudamiento Total</strong><br><small style="color:#64748B;">Acreedores vs Activos</small></td>
+              <td><code style="background:#EEF2FF; color:#1E40AF; padding:3px 6px; border-radius:4px; font-weight:700;">Pasivo Total ÷ Activo Total</code></td>
+              <td>
+                <div style="font-size:0.8rem; line-height:1.4;">
+                  <strong>Paso a paso Abril:</strong> Se suman todos los pasivos ($53.927.428 + $36.744.815 = $90.672.243) y se dividen entre el activo total ($331.232.683):<br>
+                  <span style="color:#2563EB; font-weight:700;">$90.672.243 ÷ $331.232.683 = 27,37%</span>.<br>
+                  <em>Significado: De cada $100 que la empresa posee, solo debe $27,37 a terceros; los restantes $72,63 son patrimonio neto de los dueños.</em>
+                </div>
+              </td>
+              <td class="num-col">0,00 %</td>
+              <td class="num-col">31,04 %</td>
               <td class="num-col">32,68 %</td>
               <td class="num-col" style="color:#2563EB; font-weight:900;">27,37 %</td>
               <td style="text-align:center;"><span class="ratio-badge-pill status-good">🟢 Saneado</span></td>
             </tr>
             <tr class="niif-row-cuenta">
-              <td><strong>Endeudamiento</strong></td>
-              <td><strong>Apalancamiento (Leverage)</strong></td>
-              <td>Proporción entre la plata prestada y la plata de los socios</td>
+              <td><strong>Apalancamiento Financiero (Leverage)</strong><br><small style="color:#64748B;">Pasivo vs Patrimonio</small></td>
+              <td><code style="background:#EEF2FF; color:#1E40AF; padding:3px 6px; border-radius:4px; font-weight:700;">Pasivo Total ÷ Patrimonio Neto</code></td>
+              <td>
+                <div style="font-size:0.8rem; line-height:1.4;">
+                  <strong>Paso a paso Abril:</strong> Se divide la deuda total ($90.672.243) entre el patrimonio de los socios ($240.560.440):<br>
+                  <span style="color:#2563EB; font-weight:700;">$90.672.243 ÷ $240.560.440 = 0,38 veces</span>.<br>
+                  <em>Significado: Por cada $1 aportado por los socios, los acreedores apenas han puesto 38 centavos. Riesgo mínimo.</em>
+                </div>
+              </td>
               <td class="num-col">0,00 x</td>
               <td class="num-col">0,45 x</td>
               <td class="num-col">0,49 x</td>
@@ -4282,9 +4347,15 @@ ${renderCorporateHeaderBoxHtml("📊 INFORME INTEGRAL DE ANÁLISIS FINANCIERO DE
               <td style="text-align:center;"><span class="ratio-badge-pill status-good">🟢 Muy Seguro</span></td>
             </tr>
             <tr class="niif-row-cuenta">
-              <td><strong>Endeudamiento</strong></td>
-              <td><strong>Concentración de Deuda Inmediata</strong></td>
-              <td>De lo que debemos, cuánto vence en menos de 1 año</td>
+              <td><strong>Concentración de Deuda a Corto Plazo</strong><br><small style="color:#64748B;">Perfil de Vencimiento</small></td>
+              <td><code style="background:#EEF2FF; color:#1E40AF; padding:3px 6px; border-radius:4px; font-weight:700;">Pasivo Corriente ÷ Pasivo Total</code></td>
+              <td>
+                <div style="font-size:0.8rem; line-height:1.4;">
+                  <strong>Paso a paso Abril:</strong> Se divide el pasivo corriente ($53.927.428) entre el pasivo total ($90.672.243):<br>
+                  <span style="color:#059669; font-weight:700;">$53.927.428 ÷ $90.672.243 = 59,48%</span>.<br>
+                  <em>Significado: La presión de pagos inmediatos disminuyó en 8,84 puntos porcentuales frente a marzo (68,32%), aliviando la tesorería.</em>
+                </div>
+              </td>
               <td class="num-col">0,00 %</td>
               <td class="num-col">67,03 %</td>
               <td class="num-col">68,32 %</td>
@@ -4292,13 +4363,20 @@ ${renderCorporateHeaderBoxHtml("📊 INFORME INTEGRAL DE ANÁLISIS FINANCIERO DE
               <td style="text-align:center;"><span class="ratio-badge-pill status-good">🟢 Mejoró 8.8%</span></td>
             </tr>
 
+            <!-- GRUPO 3: RENTABILIDAD Y VENTAS -->
             <tr class="niif-row-clase">
-              <td colspan="8">3. INDICADORES DE RENTABILIDAD Y VENTAS (¿ESTAMOS GANANDO DINERO?)</td>
+              <td colspan="8">3. INDICADORES DE RENTABILIDAD Y RENDIMIENTO (¿QUÉ TAN EFICIENTE ES EL NEGOCIO?)</td>
             </tr>
             <tr class="niif-row-cuenta">
-              <td><strong>Rentabilidad</strong></td>
-              <td><strong>Margen Bruto de Ganancia</strong></td>
-              <td>De cada $100 vendidos, cuánto nos queda antes de gastos fijos</td>
+              <td><strong>Margen Bruto de Ganancia</strong><br><small style="color:#64748B;">Margen Comercial</small></td>
+              <td><code style="background:#EEF2FF; color:#1E40AF; padding:3px 6px; border-radius:4px; font-weight:700;">Utilidad Bruta ÷ Ventas Netas</code></td>
+              <td>
+                <div style="font-size:0.8rem; line-height:1.4;">
+                  <strong>Paso a paso Abril:</strong> A las ventas ($8.156.500) se les resta el costo ($3.288.000) dando utilidad bruta ($4.868.500), y se divide entre las ventas:<br>
+                  <span style="color:var(--brand-gold); font-weight:700;">$4.868.500 ÷ $8.156.500 = 59,69%</span>.<br>
+                  <em>Significado: De cada $100 que vende ELECTROVIVIENDA, quedan $59,69 de ganancia bruta para cubrir los gastos fijos de la empresa.</em>
+                </div>
+              </td>
               <td class="num-col">N/A</td>
               <td class="num-col">32,07 %</td>
               <td class="num-col">N/A</td>
@@ -4306,9 +4384,15 @@ ${renderCorporateHeaderBoxHtml("📊 INFORME INTEGRAL DE ANÁLISIS FINANCIERO DE
               <td style="text-align:center;"><span class="ratio-badge-pill status-good">🟢 Margen Altísimo</span></td>
             </tr>
             <tr class="niif-row-cuenta">
-              <td><strong>Rentabilidad</strong></td>
-              <td><strong>Resultado Neto del Mes</strong></td>
-              <td>Ganancia (+) o Pérdida (-) final que entra al bolsillo</td>
+              <td><strong>Resultado Neto del Mes</strong><br><small style="color:#64748B;">Utilidad / Pérdida Final</small></td>
+              <td><code style="background:#EEF2FF; color:#1E40AF; padding:3px 6px; border-radius:4px; font-weight:700;">Utilidad Bruta - Gastos Operacionales</code></td>
+              <td>
+                <div style="font-size:0.8rem; line-height:1.4;">
+                  <strong>Paso a paso Abril:</strong> Se toma la utilidad bruta ($4.868.500) y se restan los gastos de nómina y administración ($12.755.658):<br>
+                  <span style="color:#DC2626; font-weight:700;">$4.868.500 - $12.755.658 = -$7.887.158</span>.<br>
+                  <em>Significado: La pérdida disminuyó un 54% respecto a marzo (-$17,15M). El negocio va camino a su punto de equilibrio ($22M/mes).</em>
+                </div>
+              </td>
               <td class="num-col">$ 0</td>
               <td class="num-col" style="color:#059669; font-weight:800;">+$ 16.446.082</td>
               <td class="num-col text-danger">-$ 17.154.577</td>
@@ -4316,14 +4400,36 @@ ${renderCorporateHeaderBoxHtml("📊 INFORME INTEGRAL DE ANÁLISIS FINANCIERO DE
               <td style="text-align:center;"><span class="ratio-badge-pill status-warn">🟡 Recuperándose</span></td>
             </tr>
             <tr class="niif-row-cuenta">
-              <td><strong>Rentabilidad</strong></td>
-              <td><strong>Rendimiento del Patrimonio (ROE)</strong></td>
-              <td>Qué porcentaje de ganancia genera el capital de los socios</td>
+              <td><strong>Rendimiento del Patrimonio (ROE)</strong><br><small style="color:#64748B;">Retorno sobre Capital Propio</small></td>
+              <td><code style="background:#EEF2FF; color:#1E40AF; padding:3px 6px; border-radius:4px; font-weight:700;">Resultado Neto ÷ Patrimonio Total</code></td>
+              <td>
+                <div style="font-size:0.8rem; line-height:1.4;">
+                  <strong>Paso a paso Abril:</strong> Se divide el resultado neto (-$7.887.158) entre el patrimonio de los socios ($240.560.440):<br>
+                  <span style="color:#DC2626; font-weight:700;">-$7.887.158 ÷ $240.560.440 = -3,28%</span>.<br>
+                  <em>Significado: La pérdida del mes solo consumió el 3,28% del patrimonio, protegiendo el 96,72% de la inversión de los socios.</em>
+                </div>
+              </td>
               <td class="num-col">0,00 %</td>
               <td class="num-col" style="color:#059669;">+ 6,19 %</td>
               <td class="num-col text-danger">- 6,90 %</td>
               <td class="num-col text-danger" style="font-weight:800;">- 3,28 %</td>
               <td style="text-align:center;"><span class="ratio-badge-pill status-good">🟢 Redujo Pérdida 52%</span></td>
+            </tr>
+            <tr class="niif-row-cuenta">
+              <td><strong>Rendimiento de los Activos (ROA)</strong><br><small style="color:#64748B;">Eficiencia de los Bienes</small></td>
+              <td><code style="background:#EEF2FF; color:#1E40AF; padding:3px 6px; border-radius:4px; font-weight:700;">Resultado Neto ÷ Activo Total</code></td>
+              <td>
+                <div style="font-size:0.8rem; line-height:1.4;">
+                  <strong>Paso a paso Abril:</strong> Se divide el resultado neto (-$7.887.158) entre el activo total ($331.232.683):<br>
+                  <span style="color:#DC2626; font-weight:700;">-$7.887.158 ÷ $331.232.683 = -2,38%</span>.<br>
+                  <em>Significado: Demuestra que los activos están intactos; rotando el inventario existente en mayo el ROA será positivo inmediatamente.</em>
+                </div>
+              </td>
+              <td class="num-col">0,00 %</td>
+              <td class="num-col" style="color:#059669;">+ 4,25 %</td>
+              <td class="num-col text-danger">- 4,64 %</td>
+              <td class="num-col text-danger" style="font-weight:800;">- 2,38 %</td>
+              <td style="text-align:center;"><span class="ratio-badge-pill status-good">🟢 Alta Resiliencia</span></td>
             </tr>
           </tbody>
         </table>
