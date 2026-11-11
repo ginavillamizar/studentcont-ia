@@ -547,21 +547,22 @@ def build_pdf(filename):
     
     esf_data = [
         [Paragraph("<b>Cuentas del Balance General (COP)</b>", styles['TableCellBold']), Paragraph("<b>Enero</b>", styles['TableCellRightBold']), Paragraph("<b>Febrero</b>", styles['TableCellRightBold']), Paragraph("<b>Marzo</b>", styles['TableCellRightBold']), Paragraph("<b>Abril</b>", styles['TableCellRightBold'])],
-        [Paragraph("<b>Activo Corriente</b> (Caja, Bancos, Clientes, Inventarios)", styles['TableCell']), Paragraph("$ 36.000.000", styles['TableCellRight']), Paragraph("$ 173.342.532", styles['TableCellRight']), Paragraph("$ 157.342.532", styles['TableCellRight']), Paragraph("<b>$ 121.342.532</b>", styles['TableCellRightBold'])],
-        [Paragraph("• Efectivo y Equivalentes (Caja y Bancos)", styles['TableCell']), Paragraph("$ 36.000.000", styles['TableCellRight']), Paragraph("$ 88.542.532", styles['TableCellRight']), Paragraph("$ 52.342.532", styles['TableCellRight']), Paragraph("$ 42.542.532", styles['TableCellRight'])],
-        [Paragraph("• Deudores Comerciales (Clientes por cobrar)", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 49.600.000", styles['TableCellRight']), Paragraph("$ 47.000.000", styles['TableCellRight']), Paragraph("$ 23.600.000", styles['TableCellRight'])],
-        [Paragraph("• Inventarios (Electrodomésticos en bodega)", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 35.200.000", styles['TableCellRight']), Paragraph("$ 58.000.000", styles['TableCellRight']), Paragraph("$ 43.200.000", styles['TableCellRight'])],
-        [Paragraph("• Otros Activos Corrientes (Anticipos)", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 12.000.000", styles['TableCellRight'])],
-        [Paragraph("<b>Activo No Corriente</b> (Propiedades, Planta y Equipos)", styles['TableCell']), Paragraph("$ 204.000.000", styles['TableCellRight']), Paragraph("$ 213.711.877", styles['TableCellRight']), Paragraph("$ 212.557.300", styles['TableCellRight']), Paragraph("<b>$ 209.890.151</b>", styles['TableCellRightBold'])],
-        [Paragraph("<b>TOTAL ACTIVO</b>", styles['TableCellBold']), Paragraph("<b>$ 240.000.000</b>", styles['TableCellRightBold']), Paragraph("<b>$ 387.054.409</b>", styles['TableCellRightBold']), Paragraph("<b>$ 369.899.832</b>", styles['TableCellRightBold']), Paragraph("<b>$ 331.232.683</b>", styles['TableCellRightBold'])],
+        [Paragraph("<b>Activo Corriente</b> (Caja, Bancos, Clientes, Inventarios)", styles['TableCellBold']), Paragraph("<b>$ 36.000.000</b>", styles['TableCellRight']), Paragraph("<b>$ 173.457.213</b>", styles['TableCellRight']), Paragraph("<b>$ 157.899.440</b>", styles['TableCellRight']), Paragraph("<b>$ 121.342.532</b>", styles['TableCellRightBold'])],
+        [Paragraph("  - Efectivo y Equivalentes (Caja y Bancos)", styles['TableCell']), Paragraph("$ 36.000.000", styles['TableCellRight']), Paragraph("$ 107.083.528", styles['TableCellRight']), Paragraph("$ 93.502.800", styles['TableCellRight']), Paragraph("$ 51.852.812", styles['TableCellRight'])],
+        [Paragraph("  - Deudores Comerciales (Clientes por cobrar)", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 28.857.500", styles['TableCellRight']), Paragraph("$ 28.857.500", styles['TableCellRight']), Paragraph("$ 28.857.500", styles['TableCellRight'])],
+        [Paragraph("  - Inventarios (Electrodomésticos en bodega)", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 29.160.000", styles['TableCellRight']), Paragraph("$ 29.160.000", styles['TableCellRight']), Paragraph("$ 33.822.000", styles['TableCellRight'])],
+        [Paragraph("  - Anticipos de Impuestos y Otros", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 8.356.185", styles['TableCellRight']), Paragraph("$ 6.379.140", styles['TableCellRight']), Paragraph("$ 6.810.220", styles['TableCellRight'])],
+        [Paragraph("<b>Activo No Corriente</b> (Propiedades, Planta y Equipos)", styles['TableCellBold']), Paragraph("<b>$ 211.328.750</b>", styles['TableCellRight']), Paragraph("<b>$ 212.449.217</b>", styles['TableCellRight']), Paragraph("<b>$ 211.169.684</b>", styles['TableCellRight']), Paragraph("<b>$ 209.890.152</b>", styles['TableCellRightBold'])],
+        [Paragraph("<b>TOTAL ACTIVO</b>", styles['TableCellBold']), Paragraph("<b>$ 247.328.750</b>", styles['TableCellRightBold']), Paragraph("<b>$ 385.906.430</b>", styles['TableCellRightBold']), Paragraph("<b>$ 369.069.124</b>", styles['TableCellRightBold']), Paragraph("<b>$ 331.232.683</b>", styles['TableCellRightBold'])],
         
-        [Paragraph("<b>Pasivo Corriente</b> (Vencimiento &lt; 12 meses)", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 80.526.937", styles['TableCellRight']), Paragraph("$ 81.852.819", styles['TableCellRight']), Paragraph("<b>$ 53.927.428</b>", styles['TableCellRightBold'])],
-        [Paragraph("<b>Pasivo No Corriente</b> (Vencimiento &gt; 12 meses)", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 39.600.000", styles['TableCellRight']), Paragraph("$ 39.000.000", styles['TableCellRight']), Paragraph("<b>$ 36.744.815</b>", styles['TableCellRightBold'])],
-        [Paragraph("<b>TOTAL PASIVO</b>", styles['TableCellBold']), Paragraph("<b>$ 0</b>", styles['TableCellRightBold']), Paragraph("<b>$ 120.126.937</b>", styles['TableCellRightBold']), Paragraph("<b>$ 120.852.819</b>", styles['TableCellRightBold']), Paragraph("<b>$ 90.672.243</b>", styles['TableCellRightBold'])],
+        [Paragraph("<b>Pasivo Corriente</b> (Vencimiento &lt; 12 meses)", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 80.641.618", styles['TableCellRight']), Paragraph("$ 82.409.727", styles['TableCellRight']), Paragraph("<b>$ 53.927.428</b>", styles['TableCellRightBold'])],
+        [Paragraph("<b>Pasivo No Corriente</b> (Bancos a Largo Plazo)", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 39.662.637", styles['TableCellRight']), Paragraph("$ 38.211.799", styles['TableCellRight']), Paragraph("<b>$ 36.744.815</b>", styles['TableCellRightBold'])],
+        [Paragraph("<b>TOTAL PASIVO</b>", styles['TableCellBold']), Paragraph("<b>$ 0</b>", styles['TableCellRightBold']), Paragraph("<b>$ 120.304.255</b>", styles['TableCellRightBold']), Paragraph("<b>$ 120.621.526</b>", styles['TableCellRightBold']), Paragraph("<b>$ 90.672.243</b>", styles['TableCellRightBold'])],
         
-        [Paragraph("<b>Patrimonio Neto</b> (Capital Social y Resultados)", styles['TableCellBold']), Paragraph("<b>$ 240.000.000</b>", styles['TableCellRightBold']), Paragraph("<b>$ 266.927.472</b>", styles['TableCellRightBold']), Paragraph("<b>$ 249.047.013</b>", styles['TableCellRightBold']), Paragraph("<b>$ 240.560.440</b>", styles['TableCellRightBold'])],
-        [Paragraph("• Capital Social Aportado", styles['TableCell']), Paragraph("$ 240.000.000", styles['TableCellRight']), Paragraph("$ 240.000.000", styles['TableCellRight']), Paragraph("$ 240.000.000", styles['TableCellRight']), Paragraph("$ 240.000.000", styles['TableCellRight'])],
-        [Paragraph("• Resultados Acumulados y del Ejercicio", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("+$ 26.927.472", styles['TableCellRight']), Paragraph("+$ 9.047.013", styles['TableCellRight']), Paragraph("+$ 560.440", styles['TableCellRight'])],
+        [Paragraph("<b>Patrimonio Neto</b> (Capital Social y Resultados)", styles['TableCellBold']), Paragraph("<b>$ 247.328.750</b>", styles['TableCellRightBold']), Paragraph("<b>$ 265.602.175</b>", styles['TableCellRightBold']), Paragraph("<b>$ 248.447.598</b>", styles['TableCellRightBold']), Paragraph("<b>$ 240.560.440</b>", styles['TableCellRightBold'])],
+        [Paragraph("  - Capital Suscrito y Pagado", styles['TableCell']), Paragraph("$ 248.600.000", styles['TableCellRight']), Paragraph("$ 248.600.000", styles['TableCellRight']), Paragraph("$ 248.600.000", styles['TableCellRight']), Paragraph("$ 248.600.000", styles['TableCellRight'])],
+        [Paragraph("  - Reservas Obligatorias", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 1.827.342", styles['TableCellRight']), Paragraph("$ 1.827.342", styles['TableCellRight']), Paragraph("$ 1.827.342", styles['TableCellRight'])],
+        [Paragraph("  - Resultados Acumulados y del Ejercicio", styles['TableCell']), Paragraph("-$ 1.271.250", styles['TableCellRight']), Paragraph("+$ 15.174.832", styles['TableCellRight']), Paragraph("-$ 1.979.744", styles['TableCellRight']), Paragraph("-$ 9.866.902", styles['TableCellRight'])],
     ]
     t_esf = Table(esf_data, colWidths=[204, 75, 75, 75, 75])
     t_esf.setStyle(TableStyle([
@@ -582,7 +583,7 @@ def build_pdf(filename):
 
     story.append(Spacer(1, 3))
     esf_note = Paragraph(
-        "<b>💡 Breve Explicación Didáctica del ESF (Balance):</b> Es la 'fotografía' de las posesiones de la empresa al cierre del mes. "
+        "<b> Breve Explicación Didáctica del ESF (Balance):</b> Es la 'fotografía' de las posesiones de la empresa al cierre del mes. "
         "Muestra que ELECTROVIVIENDA posee <b>$331,2 millones</b> en activos (caja, inventarios y locales), debe <b>$90,6 millones</b> "
         "a terceros (deuda controlada en descenso) y los restantes <b>$240,5 millones</b> pertenecen enteramente a los socios "
         "(el <b>72,63%</b> de la empresa es patrimonio propio totalmente libre de deudas).",
@@ -632,7 +633,7 @@ def build_pdf(filename):
 
     story.append(Spacer(1, 3))
     er_note = Paragraph(
-        "<b>💡 Breve Explicación Didáctica del ER (Resultados):</b> Es como una 'película' de ganancias y pérdidas en el período. "
+        "<b> Breve Explicación Didáctica del ER (Resultados):</b> Es como una 'película' de ganancias y pérdidas en el período. "
         "En febrero se logró utilidad récord de <b>+$16,4M</b>; en marzo se absorbieron los costos fijos mientras se llenaba la bodega (-$17,1M); "
         "y en abril se reactivaron ventas por <b>$8,15M</b> con un margen comercial récord del <b>59,69%</b>, reduciendo la pérdida a la mitad "
         "(<b>-$7,88M</b>) rumbo al punto de equilibrio ($22M/mes).",
@@ -753,7 +754,7 @@ def build_pdf(filename):
 
     story.append(Spacer(1, 3))
     ecp_note = Paragraph(
-        "<b>💡 Breve Explicación Didáctica del ECP (Patrimonio):</b> Muestra cómo evoluciona la riqueza neta de los socios. "
+        "<b> Breve Explicación Didáctica del ECP (Patrimonio):</b> Muestra cómo evoluciona la riqueza neta de los socios. "
         "Demuestra que el capital aportado (<b>$240.000.000</b>) ha permanecido <b>100% intacto y protegido</b>. "
         "Las utilidades retenidas absorbieron los gastos iniciales, cerrando abril con un patrimonio total de <b>$240.560.440 (100,23%)</b>, "
         "ratificando que la compañía está muy lejos de cualquier causal de disolución legal.",
@@ -804,7 +805,7 @@ def build_pdf(filename):
 
     story.append(Spacer(1, 3))
     efe_note = Paragraph(
-        "<b>💡 Breve Explicación Didáctica del EFE (Flujo de Efectivo):</b> Muestra el movimiento real del dinero en efectivo y cuentas bancarias. "
+        "<b> Breve Explicación Didáctica del EFE (Flujo de Efectivo):</b> Muestra el movimiento real del dinero en efectivo y cuentas bancarias. "
         "Evidencia que ELECTROVIVIENDA cuenta con <b>$42.542.532 en disponible inmediato</b>, libre de deudas bancarias urgentes. "
         "Esta liquidez garantiza pagar la nómina y arriendos durante <b>más de 4 meses</b> sin necesidad de ventas forzosas ni nuevos préstamos.",
         styles['CalloutText']
@@ -888,7 +889,7 @@ def build_pdf(filename):
 
     story.append(Spacer(1, 4))
     not_note = Paragraph(
-        "<b>💡 Breve Explicación Didáctica de las Notas Contables:</b> Son la explicación técnica y legal que da soporte a los números. "
+        "<b> Breve Explicación Didáctica de las Notas Contables:</b> Son la explicación técnica y legal que da soporte a los números. "
         "Certifican que ELECTROVIVIENDA aplica NIIF para PYMES en Colombia, que sus inventarios y locales están debidamente registrados, "
         "que la cartera de clientes es sana y recuperable, y que el 100% de los pasivos está separado claramente entre corto y largo plazo.",
         styles['CalloutText']
@@ -912,7 +913,7 @@ def build_pdf(filename):
     story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=5, spaceBefore=0))
     
     # Gráfica 1
-    story.append(Paragraph("<b>🏛️ Gráfica 1: Evolución de Activo, Pasivo y Patrimonio (4 Períodos)</b> &nbsp; <font color='#059669'>[🟢 Solvente]</font>", styles['SubSectionHeader']))
+    story.append(Paragraph("<b> Gráfica 1: Evolución de Activo, Pasivo y Patrimonio (4 Períodos)</b> &nbsp; <font color='#059669'>[<font color='#059669'><b>[Solvente]</b></font>]</font>", styles['SubSectionHeader']))
     story.append(create_chart_balance())
     
     g1_expl = Paragraph(
@@ -936,7 +937,7 @@ def build_pdf(filename):
     story.append(Spacer(1, 6))
     
     # Gráfica 2
-    story.append(Paragraph("<b>⚖️ Gráfica 2: Fuentes de Financiación (¿De quién es la plata al cierre de Abril?)</b> &nbsp; <font color='#059669'>[🟢 Bajo Riesgo]</font>", styles['SubSectionHeader']))
+    story.append(Paragraph("<b> Gráfica 2: Fuentes de Financiación (¿De quién es la plata al cierre de Abril?)</b> &nbsp; <font color='#059669'>[<font color='#059669'><b>[Bajo Riesgo]</b></font>]</font>", styles['SubSectionHeader']))
     story.append(create_chart_funding())
     
     g2_expl = Paragraph(
@@ -965,7 +966,7 @@ def build_pdf(filename):
     story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=5, spaceBefore=0))
     
     # Gráfica 3
-    story.append(Paragraph("<b>📊 Gráfica 3: Ventas Netas, Costos de Compra y Ganancias/Pérdidas (4 Meses)</b> &nbsp; <font color='#D97706'>[🟡 Comercial]</font>", styles['SubSectionHeader']))
+    story.append(Paragraph("<b> Gráfica 3: Ventas Netas, Costos de Compra y Ganancias/Pérdidas (4 Meses)</b> &nbsp; <font color='#D97706'>[[Alerta] Comercial]</font>", styles['SubSectionHeader']))
     story.append(create_chart_waterfall())
     
     g3_expl = Paragraph(
@@ -989,7 +990,7 @@ def build_pdf(filename):
     story.append(Spacer(1, 6))
     
     # Gráfica 4
-    story.append(Paragraph("<b>💧 Gráfica 4: Curva de Liquidez (Disponibilidad de Plata) vs Deuda (%)</b> &nbsp; <font color='#059669'>[🟢 2,25x]</font>", styles['SubSectionHeader']))
+    story.append(Paragraph("<b> Gráfica 4: Curva de Liquidez (Disponibilidad de Plata) vs Deuda (%)</b> &nbsp; <font color='#059669'>[[OK] 2,25x]</font>", styles['SubSectionHeader']))
     story.append(create_chart_solvency())
     
     g4_expl = Paragraph(
@@ -1037,25 +1038,25 @@ def build_pdf(filename):
         [Paragraph("<b>Escenario de Resistencia</b>", styles['TableCellBold']), Paragraph("<b>Recursos Disponibles</b>", styles['TableCellBold']), Paragraph("<b>Meses de Vida (Runway)</b>", styles['TableCellBold']), Paragraph("<b>Explicación Técnica</b>", styles['TableCellBold'])],
         [
             Paragraph("<b>Escenario 1: Solo con Dinero en Bancos</b>", styles['TableCellBold']),
-            Paragraph("$ 42.542.532 (Caja/Bancos)", styles['TableCell']),
+            Paragraph("$ 51.852.812 (Caja/Bancos)", styles['TableCell']),
             Paragraph("<b>4,17 Meses</b><br/>(125 días)", styles['TableCellBold']),
             Paragraph("Cubrimiento de nóminas, arriendos y servicios con el efectivo inmediato en cuenta corriente, sin pedir créditos.", styles['TableCell'])
         ],
         [
             Paragraph("<b>Escenario 2: Cobrando la Cartera de Clientes</b>", styles['TableCellBold']),
-            Paragraph("$ 66.142.532 (Caja + Clientes)", styles['TableCell']),
+            Paragraph("$ 80.710.312 (Caja + Clientes)", styles['TableCell']),
             Paragraph("<b>6,49 Meses</b><br/>(195 días)", styles['TableCellBold']),
             Paragraph("Cobrando los $23,6M que deben los clientes en cuotas comerciales, la empresa sobrevive más de medio año a costo cero de ventas.", styles['TableCell'])
         ],
         [
             Paragraph("<b>Escenario 3: Liquidando Mercancía al Costo</b>", styles['TableCellBold']),
-            Paragraph("$ 94.000.000 (Efectivo + Stock)", styles['TableCell']),
+            Paragraph("$ 85.674.812 (Efectivo + Stock)", styles['TableCell']),
             Paragraph("<b>9,22 Meses</b><br/>(276 días)", styles['TableCellBold']),
             Paragraph("Rematando los electrodomésticos en bodega sin ganar utilidad (al costo puro), la empresa opera sin problemas hasta 2027.", styles['TableCell'])
         ],
         [
             Paragraph("<b>Escenario 4: Límite Legal del 50% del Capital</b>", styles['TableCellBold']),
-            Paragraph("$ 120.560.440 (Colchón Patrimonial)", styles['TableCell']),
+            Paragraph("$ 116.260.440 (Colchón Patrimonial)", styles['TableCell']),
             Paragraph("<b>11,82 Meses</b><br/>(Casi 1 año)", styles['TableCellBold']),
             Paragraph("La empresa tendría que perder $10,2M todos los meses durante un año completo para llegar al límite de causal de disolución.", styles['TableCell'])
         ],
@@ -1102,122 +1103,122 @@ def build_pdf(filename):
         # 1. Razón Corriente
         [
             Paragraph("<b>1. Razón Corriente</b><br/><font color='#64748B'>Liquidez Inmediata</font>", styles['TableCellBold']),
-            Paragraph("<font face='Courier'>Activo Corriente<br/>───────────────<br/>Pasivo Corriente</font>", styles['TableCell']),
-            Paragraph("Se divide el activo corriente entre el pasivo a pagar en menos de 1 año:<br/><b>$121.342.532 ÷ $53.927.428 = 2,25 veces</b>.<br/><i>Por cada $1 que debemos ya, tenemos $2,25 para responder.</i>", styles['TableCell']),
+            Paragraph("<b>Activo Corriente</b><br/>/ Pasivo Corriente", styles['TableCell']),
+            Paragraph("Se divide el activo corriente entre el pasivo a pagar en menos de 1 año:<br/><b>$121.342.532 / $53.927.428 = 2,25 veces</b>.<br/><i>Por cada $1 que debemos ya, tenemos $2,25 para responder.</i>", styles['TableCell']),
             Paragraph("2,15x", styles['TableCellRight']),
             Paragraph("1,92x", styles['TableCellRight']),
             Paragraph("<b>2,25x</b>", styles['TableCellRightBold']),
-            Paragraph("🟢 Óptimo", styles['TableCellBold'])
+            Paragraph("<font color='#059669'><b>[Óptimo]</b></font>", styles['TableCellBold'])
         ],
         # 2. Prueba Ácida
         [
             Paragraph("<b>2. Prueba Ácida</b><br/><font color='#64748B'>Liquidez Severa</font>", styles['TableCellBold']),
-            Paragraph("<font face='Courier'>Act. Corr. - Inv.<br/>───────────────<br/>Pasivo Corriente</font>", styles['TableCell']),
-            Paragraph("Se resta el inventario ($43,2M) dejando el disponible y clientes ($78.142.532), y se divide entre la deuda corriente:<br/><b>$78.142.532 ÷ $53.927.428 = 1,45 veces</b>.<br/><i>Sin vender mercancía, se paga toda la deuda y sobra 45%.</i>", styles['TableCell']),
+            Paragraph("<b>Act. Corr. - Inv.</b><br/>/ Pasivo Corriente", styles['TableCell']),
+            Paragraph("Se resta el inventario ($43,2M) dejando el disponible y clientes ($78.142.532), y se divide entre la deuda corriente:<br/><b>$78.142.532 / $53.927.428 = 1,45 veces</b>.<br/><i>Sin vender mercancía, se paga toda la deuda y sobra 45%.</i>", styles['TableCell']),
             Paragraph("1,38x", styles['TableCellRight']),
             Paragraph("1,14x", styles['TableCellRight']),
             Paragraph("<b>1,45x</b>", styles['TableCellRightBold']),
-            Paragraph("🟢 Sobrado", styles['TableCellBold'])
+            Paragraph("<font color='#059669'><b>[Sobrado]</b></font>", styles['TableCellBold'])
         ],
         # 3. KTN
         [
             Paragraph("<b>3. Capital de Trabajo (KTN)</b><br/><font color='#64748B'>Fondo Operativo</font>", styles['TableCellBold']),
-            Paragraph("<font face='Courier'>Activo Corriente<br/>─ Pasivo Corriente</font>", styles['TableCell']),
+            Paragraph("<b>Activo Corriente</b><br/>- Pasivo Corriente", styles['TableCell']),
             Paragraph("Se restan las deudas de corto plazo de los activos de corto plazo:<br/><b>$121.342.532 - $53.927.428 = $67.415.104</b>.<br/><i>Plata libre y limpia para seguir trabajando sin apuros.</i>", styles['TableCell']),
             Paragraph("$92,8M", styles['TableCellRight']),
             Paragraph("$75,5M", styles['TableCellRight']),
             Paragraph("<b>$67,4M</b>", styles['TableCellRightBold']),
-            Paragraph("🟢 Solvente", styles['TableCellBold'])
+            Paragraph("<font color='#059669'><b>[Solvente]</b></font>", styles['TableCellBold'])
         ],
         # 4. Endeudamiento CP
         [
             Paragraph("<b>4. Endeudamiento Corto Plazo</b><br/><font color='#64748B'>Deuda &lt; 12 meses</font>", styles['TableCellBold']),
-            Paragraph("<font face='Courier'>Pasivo Corriente<br/>───────────────<br/>Activo Total</font>", styles['TableCell']),
-            Paragraph("Se divide la deuda corriente entre el activo total:<br/><b>$53.927.428 ÷ $331.232.683 = 16,28%</b>.<br/><i>Solo el 16,28% de los bienes está comprometido a corto plazo.</i>", styles['TableCell']),
+            Paragraph("<b>Pasivo Corriente</b><br/>/ Activo Total", styles['TableCell']),
+            Paragraph("Se divide la deuda corriente entre el activo total:<br/><b>$53.927.428 / $331.232.683 = 16,28%</b>.<br/><i>Solo el 16,28% de los bienes está comprometido a corto plazo.</i>", styles['TableCell']),
             Paragraph("20,80%", styles['TableCellRight']),
             Paragraph("22,13%", styles['TableCellRight']),
             Paragraph("<b>16,28%</b>", styles['TableCellRightBold']),
-            Paragraph("🟢 Muy Cómodo", styles['TableCellBold'])
+            Paragraph("<font color='#059669'><b>[Muy Cómodo]</b></font>", styles['TableCellBold'])
         ],
         # 5. Endeudamiento LP
         [
             Paragraph("<b>5. Endeudamiento Largo Plazo</b><br/><font color='#64748B'>Deuda &gt; 12 meses</font>", styles['TableCellBold']),
-            Paragraph("<font face='Courier'>Pasivo No Corriente<br/>───────────────<br/>Activo Total</font>", styles['TableCell']),
-            Paragraph("Se divide la deuda no corriente entre el activo total:<br/><b>$36.744.815 ÷ $331.232.683 = 11,09%</b>.<br/><i>Créditos diferidos que no presionan la caja inmediata.</i>", styles['TableCell']),
+            Paragraph("<b>Pasivo No Corriente</b><br/>/ Activo Total", styles['TableCell']),
+            Paragraph("Se divide la deuda no corriente entre el activo total:<br/><b>$36.744.815 / $331.232.683 = 11,09%</b>.<br/><i>Créditos diferidos que no presionan la caja inmediata.</i>", styles['TableCell']),
             Paragraph("10,23%", styles['TableCellRight']),
             Paragraph("10,54%", styles['TableCellRight']),
             Paragraph("<b>11,09%</b>", styles['TableCellRightBold']),
-            Paragraph("🟢 Estable", styles['TableCellBold'])
+            Paragraph("[OK] Estable", styles['TableCellBold'])
         ],
         # 6. Endeudamiento Total
         [
             Paragraph("<b>6. Nivel de Deuda Total</b><br/><font color='#64748B'>Acreedores vs Activo</font>", styles['TableCellBold']),
-            Paragraph("<font face='Courier'>Pasivo Total<br/>───────────────<br/>Activo Total</font>", styles['TableCell']),
-            Paragraph("Se divide el pasivo total entre el activo total:<br/><b>$90.672.243 ÷ $331.232.683 = 27,37%</b>.<br/><i>De cada $100 que la empresa tiene, solo debe $27,37.</i>", styles['TableCell']),
+            Paragraph("<b>Pasivo Total</b><br/>/ Activo Total", styles['TableCell']),
+            Paragraph("Se divide el pasivo total entre el activo total:<br/><b>$90.672.243 / $331.232.683 = 27,37%</b>.<br/><i>De cada $100 que la empresa tiene, solo debe $27,37.</i>", styles['TableCell']),
             Paragraph("31,04%", styles['TableCellRight']),
             Paragraph("32,68%", styles['TableCellRight']),
             Paragraph("<b>27,37%</b>", styles['TableCellRightBold']),
-            Paragraph("🟢 Saneado", styles['TableCellBold'])
+            Paragraph("<font color='#059669'><b>[Saneado]</b></font>", styles['TableCellBold'])
         ],
         # 7. Apalancamiento
         [
             Paragraph("<b>7. Apalancamiento (Leverage)</b><br/><font color='#64748B'>Deuda vs Patrimonio</font>", styles['TableCellBold']),
-            Paragraph("<font face='Courier'>Pasivo Total<br/>───────────────<br/>Patrimonio Neto</font>", styles['TableCell']),
-            Paragraph("Se divide la deuda total entre el patrimonio:<br/><b>$90.672.243 ÷ $240.560.440 = 0,38 veces</b>.<br/><i>Por cada $1 de los socios, los acreedores ponen 38 centavos.</i>", styles['TableCell']),
+            Paragraph("<b>Pasivo Total</b><br/>/ Patrimonio Neto", styles['TableCell']),
+            Paragraph("Se divide la deuda total entre el patrimonio:<br/><b>$90.672.243 / $240.560.440 = 0,38 veces</b>.<br/><i>Por cada $1 de los socios, los acreedores ponen 38 centavos.</i>", styles['TableCell']),
             Paragraph("0,45x", styles['TableCellRight']),
             Paragraph("0,49x", styles['TableCellRight']),
             Paragraph("<b>0,38x</b>", styles['TableCellRightBold']),
-            Paragraph("🟢 Seguro", styles['TableCellBold'])
+            Paragraph("<font color='#059669'><b>[Seguro]</b></font>", styles['TableCellBold'])
         ],
         # 8. Concentración CP
         [
             Paragraph("<b>8. Concentración Deuda CP</b><br/><font color='#64748B'>Perfil Vencimiento</font>", styles['TableCellBold']),
-            Paragraph("<font face='Courier'>Pasivo Corriente<br/>───────────────<br/>Pasivo Total</font>", styles['TableCell']),
-            Paragraph("Se divide el pasivo corriente entre el pasivo total:<br/><b>$53.927.428 ÷ $90.672.243 = 59,48%</b>.<br/><i>El 40,52% de la deuda está protegida a largo plazo.</i>", styles['TableCell']),
+            Paragraph("<b>Pasivo Corriente</b><br/>/ Pasivo Total", styles['TableCell']),
+            Paragraph("Se divide el pasivo corriente entre el pasivo total:<br/><b>$53.927.428 / $90.672.243 = 59,48%</b>.<br/><i>El 40,52% de la deuda está protegida a largo plazo.</i>", styles['TableCell']),
             Paragraph("67,03%", styles['TableCellRight']),
             Paragraph("68,32%", styles['TableCellRight']),
             Paragraph("<b>59,48%</b>", styles['TableCellRightBold']),
-            Paragraph("🟢 Mejoró 8.8%", styles['TableCellBold'])
+            Paragraph("<font color='#059669'><b>[Mejoró]</b></font>", styles['TableCellBold'])
         ],
         # 9. Margen Bruto
         [
             Paragraph("<b>9. Margen Bruto Comercial</b><br/><font color='#64748B'>Ganancia en Ventas</font>", styles['TableCellBold']),
-            Paragraph("<font face='Courier'>Utilidad Bruta<br/>───────────────<br/>Ventas Netas</font>", styles['TableCell']),
-            Paragraph("Se divide la ganancia bruta ($4,86M) entre ventas ($8,15M):<br/><b>$4.868.500 ÷ $8.156.500 = 59,69%</b>.<br/><i>De cada $100 vendidos, quedan $59,69 limpios antes de fijos.</i>", styles['TableCell']),
+            Paragraph("<b>Utilidad Bruta</b><br/>/ Ventas Netas", styles['TableCell']),
+            Paragraph("Se divide la ganancia bruta ($4,86M) entre ventas ($8,15M):<br/><b>$4.868.500 / $8.156.500 = 59,69%</b>.<br/><i>De cada $100 vendidos, quedan $59,69 limpios antes de fijos.</i>", styles['TableCell']),
             Paragraph("32,07%", styles['TableCellRight']),
             Paragraph("N/A", styles['TableCellRight']),
             Paragraph("<b>59,69%</b>", styles['TableCellRightBold']),
-            Paragraph("🟢 Altísimo", styles['TableCellBold'])
+            Paragraph("<font color='#059669'><b>[Altísimo]</b></font>", styles['TableCellBold'])
         ],
         # 10. Resultado Neto
         [
             Paragraph("<b>10. Resultado Neto del Mes</b><br/><font color='#64748B'>Utilidad / Pérdida</font>", styles['TableCellBold']),
-            Paragraph("<font face='Courier'>Utilidad Bruta<br/>─ Gastos Operativos</font>", styles['TableCell']),
+            Paragraph("<b>Utilidad Bruta</b><br/>- Gastos Operativos", styles['TableCell']),
             Paragraph("Utilidad bruta ($4,86M) menos nómina y arriendos ($12,75M):<br/><b>$4.868.500 - $12.755.658 = -$7.887.158</b>.<br/><i>La pérdida bajó un 54% frente a marzo; rumbo al equilibrio.</i>", styles['TableCell']),
             Paragraph("+$16,4M", styles['TableCellRight']),
             Paragraph("-$17,1M", styles['TableCellRight']),
             Paragraph("<b>-$7,89M</b>", styles['TableCellRightBold']),
-            Paragraph("🟡 Sanando", styles['TableCellBold'])
+            Paragraph("<font color='#D97706'><b>[En Mejora]</b></font>", styles['TableCellBold'])
         ],
         # 11. ROE
         [
             Paragraph("<b>11. Rendimiento Capital (ROE)</b><br/><font color='#64748B'>Retorno Socios</font>", styles['TableCellBold']),
-            Paragraph("<font face='Courier'>Resultado Neto<br/>───────────────<br/>Patrimonio Neto</font>", styles['TableCell']),
-            Paragraph("Se divide el resultado neto entre el patrimonio:<br/><b>-$7.887.158 ÷ $240.560.440 = -3,28%</b>.<br/><i>La pérdida solo rozó el 3,28% del capital de los socios.</i>", styles['TableCell']),
+            Paragraph("<b>Resultado Neto</b><br/>/ Patrimonio Neto", styles['TableCell']),
+            Paragraph("Se divide el resultado neto entre el patrimonio:<br/><b>-$7.887.158 / $240.560.440 = -3,28%</b>.<br/><i>La pérdida solo rozó el 3,28% del capital de los socios.</i>", styles['TableCell']),
             Paragraph("+6,19%", styles['TableCellRight']),
             Paragraph("-6,90%", styles['TableCellRight']),
             Paragraph("<b>-3,28%</b>", styles['TableCellRightBold']),
-            Paragraph("🟢 Redujo 52%", styles['TableCellBold'])
+            Paragraph("<font color='#059669'><b>[Favorable]</b></font>", styles['TableCellBold'])
         ],
         # 12. ROA
         [
             Paragraph("<b>12. Rendimiento Activo (ROA)</b><br/><font color='#64748B'>Eficiencia Activos</font>", styles['TableCellBold']),
-            Paragraph("<font face='Courier'>Resultado Neto<br/>───────────────<br/>Activo Total</font>", styles['TableCell']),
-            Paragraph("Se divide el resultado neto entre los activos totales:<br/><b>-$7.887.158 ÷ $331.232.683 = -2,38%</b>.<br/><i>Los activos están intactos; con ventas en mayo el ROA será positivo.</i>", styles['TableCell']),
+            Paragraph("<b>Resultado Neto</b><br/>/ Activo Total", styles['TableCell']),
+            Paragraph("Se divide el resultado neto entre los activos totales:<br/><b>-$7.887.158 / $331.232.683 = -2,38%</b>.<br/><i>Los activos están intactos; con ventas en mayo el ROA será positivo.</i>", styles['TableCell']),
             Paragraph("+4,25%", styles['TableCellRight']),
             Paragraph("-4,64%", styles['TableCellRight']),
             Paragraph("<b>-2,38%</b>", styles['TableCellRightBold']),
-            Paragraph("🟢 Resiliente", styles['TableCellBold'])
+            Paragraph("<font color='#059669'><b>[Resiliente]</b></font>", styles['TableCellBold'])
         ],
     ]
     t_ind = Table(ind_data, colWidths=[80, 80, 184, 38, 38, 42, 42])
