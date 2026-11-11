@@ -405,6 +405,25 @@ def build_pdf(filename):
     ]))
     story.append(t_esf)
 
+    story.append(Spacer(1, 4))
+    esf_note = Paragraph(
+        "<b>💡 Breve Explicación Didáctica del ESF (Balance):</b> Es la 'fotografía' de las posesiones de la empresa al cierre del mes. "
+        "Muestra que ELECTROVIVIENDA posee <b>$331,2 millones</b> en activos (caja, inventarios y locales), debe <b>$90,6 millones</b> "
+        "a terceros (deuda controlada en descenso) y los restantes <b>$240,5 millones</b> pertenecen enteramente a los socios "
+        "(el <b>72,63%</b> de la empresa es patrimonio propio totalmente libre de deudas).",
+        styles['CalloutText']
+    )
+    t_esf_note = Table([[esf_note]], colWidths=[504])
+    t_esf_note.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F1F5F9")),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.HexColor("#CBD5E1")),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('LEFTPADDING', (0,0), (-1,-1), 6),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+    ]))
+    story.append(t_esf_note)
+
     story.append(Spacer(1, 6))
     story.append(Paragraph("4.2. ESTADO DE RESULTADOS INTEGRAL (ERI / ER CONSOLIDADO)", styles['SectionHeader']))
     story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=5, spaceBefore=0))
@@ -435,6 +454,25 @@ def build_pdf(filename):
         ('BACKGROUND', (0,8), (-1,8), colors.HexColor("#F1F5F9")),
     ]))
     story.append(t_er)
+
+    story.append(Spacer(1, 4))
+    er_note = Paragraph(
+        "<b>💡 Breve Explicación Didáctica del ER (Resultados):</b> Es como una 'película' de ganancias y pérdidas en el período. "
+        "En febrero se logró utilidad récord de <b>+$16,4M</b>; en marzo se absorbieron los costos fijos mientras se llenaba la bodega (-$17,1M); "
+        "y en abril se reactivaron ventas por <b>$8,15M</b> con un margen comercial récord del <b>59,69%</b>, reduciendo la pérdida a la mitad "
+        "(<b>-$7,88M</b>) rumbo al punto de equilibrio ($22M/mes).",
+        styles['CalloutText']
+    )
+    t_er_note = Table([[er_note]], colWidths=[504])
+    t_er_note.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F1F5F9")),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.HexColor("#CBD5E1")),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('LEFTPADDING', (0,0), (-1,-1), 6),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+    ]))
+    story.append(t_er_note)
 
     story.append(PageBreak())
 
@@ -538,6 +576,25 @@ def build_pdf(filename):
     ]))
     story.append(t_ecp)
 
+    story.append(Spacer(1, 4))
+    ecp_note = Paragraph(
+        "<b>💡 Breve Explicación Didáctica del ECP (Patrimonio):</b> Muestra cómo evoluciona la riqueza neta de los socios. "
+        "Demuestra que el capital aportado (<b>$240.000.000</b>) ha permanecido <b>100% intacto y protegido</b>. "
+        "Las utilidades retenidas absorbieron los gastos iniciales, cerrando abril con un patrimonio total de <b>$240.560.440 (100,23%)</b>, "
+        "ratificando que la compañía está muy lejos de cualquier causal de disolución legal.",
+        styles['CalloutText']
+    )
+    t_ecp_note = Table([[ecp_note]], colWidths=[504])
+    t_ecp_note.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F1F5F9")),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.HexColor("#CBD5E1")),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('LEFTPADDING', (0,0), (-1,-1), 6),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+    ]))
+    story.append(t_ecp_note)
+
     story.append(Spacer(1, 6))
     story.append(Paragraph("4.5. ESTADO DE FLUJOS DE EFECTIVO (EFE CONSOLIDADO - MÉTODO DIRECTO/INDIRECTO)", styles['SectionHeader']))
     story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=5, spaceBefore=0))
@@ -569,6 +626,24 @@ def build_pdf(filename):
         ('BACKGROUND', (0,9), (-1,9), colors.HexColor("#ECFDF5")),
     ]))
     story.append(t_efe)
+
+    story.append(Spacer(1, 4))
+    efe_note = Paragraph(
+        "<b>💡 Breve Explicación Didáctica del EFE (Flujo de Efectivo):</b> Muestra el movimiento real del dinero en efectivo y cuentas bancarias. "
+        "Evidencia que ELECTROVIVIENDA cuenta con <b>$42.542.532 en disponible inmediato</b>, libre de deudas bancarias urgentes. "
+        "Esta liquidez garantiza pagar la nómina y arriendos durante <b>más de 4 meses</b> sin necesidad de ventas forzosas ni nuevos préstamos.",
+        styles['CalloutText']
+    )
+    t_efe_note = Table([[efe_note]], colWidths=[504])
+    t_efe_note.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F1F5F9")),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.HexColor("#CBD5E1")),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('LEFTPADDING', (0,0), (-1,-1), 6),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+    ]))
+    story.append(t_efe_note)
 
     story.append(PageBreak())
 
@@ -635,6 +710,24 @@ def build_pdf(filename):
         ('RIGHTPADDING', (0,0), (-1,-1), 5),
     ]))
     story.append(t_not)
+
+    story.append(Spacer(1, 4))
+    not_note = Paragraph(
+        "<b>💡 Breve Explicación Didáctica de las Notas Contables:</b> Son la explicación técnica y legal que da soporte a los números. "
+        "Certifican que ELECTROVIVIENDA aplica NIIF para PYMES en Colombia, que sus inventarios y locales están debidamente registrados, "
+        "que la cartera de clientes es sana y recuperable, y que el 100% de los pasivos está separado claramente entre corto y largo plazo.",
+        styles['CalloutText']
+    )
+    t_not_note = Table([[not_note]], colWidths=[504])
+    t_not_note.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F1F5F9")),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.HexColor("#CBD5E1")),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('LEFTPADDING', (0,0), (-1,-1), 6),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+    ]))
+    story.append(t_not_note)
 
     story.append(PageBreak())
 
