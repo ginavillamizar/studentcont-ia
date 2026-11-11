@@ -7,6 +7,9 @@ from reportlab.platypus import (
     SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, HRFlowable
 )
 from reportlab.pdfgen import canvas
+from reportlab.graphics.shapes import Drawing, Rect, String, Line, Circle
+from reportlab.graphics.charts.barcharts import VerticalBarChart
+from reportlab.graphics.charts.piecharts import Pie
 
 class NumberedCanvas(canvas.Canvas):
     def __init__(self, *args, **kwargs):
@@ -52,6 +55,154 @@ class NumberedCanvas(canvas.Canvas):
         self.setFillColor(colors.HexColor("#64748B"))
         self.drawRightString(612 - 54, 32, f"Página {self._pageNumber} de {page_count}")
         self.restoreState()
+
+# =========================================================================
+# FUNCIONES AUXILIARES PARA GENERAR GRÁFICAS VECTORIALES NATIVAS
+# =========================================================================
+def create_chart_balance():
+    d = Drawing(504, 115)
+    chart = VerticalBarChart()
+    chart.x = 45
+    chart.y = 15
+    chart.height = 75
+    chart.width = 445
+    chart.data = [
+        [240.0, 387.1, 369.9, 331.2], # Activos (Millones COP)
+        [0.0, 120.1, 120.9, 90.7],   # Pasivos (Millones COP)
+        [240.0, 266.9, 249.0, 240.6]  # Patrimonio (Millones COP)
+    ]
+    chart.categoryAxis.categoryNames = ['Enero', 'Febrero', 'Marzo', 'Abril']
+    chart.categoryAxis.labels.fontSize = 7.5
+    chart.categoryAxis.labels.fontName = 'Helvetica-Bold'
+    chart.categoryAxis.labels.fillColor = colors.HexColor('#0A2540')
+    chart.valueAxis.valueMin = 0
+    chart.valueAxis.valueMax = 420
+    chart.valueAxis.valueStep = 100
+    chart.valueAxis.labels.fontSize = 7
+    chart.valueAxis.labels.fontName = 'Helvetica'
+    chart.bars[0].fillColor = colors.HexColor('#0A2540') # Activo: Azul
+    chart.bars[1].fillColor = colors.HexColor('#DC2626') # Pasivo: Rojo
+    chart.bars[2].fillColor = colors.HexColor('#D97706') # Patrimonio: Oro
+    d.add(chart)
+    
+    # Legend
+    leg_x = 110
+    leg_y = 102
+    d.add(Rect(leg_x, leg_y, 10, 8, fillColor=colors.HexColor('#0A2540'), strokeColor=None))
+    d.add(String(leg_x + 14, leg_y + 1, "Activos Totales", fontName="Helvetica-Bold", fontSize=7.5, fillColor=colors.HexColor('#0A2540')))
+    d.add(Rect(leg_x + 110, leg_y, 10, 8, fillColor=colors.HexColor('#DC2626'), strokeColor=None))
+    d.add(String(leg_x + 124, leg_y + 1, "Pasivos (Deudas)", fontName="Helvetica-Bold", fontSize=7.5, fillColor=colors.HexColor('#DC2626')))
+    d.add(Rect(leg_x + 230, leg_y, 10, 8, fillColor=colors.HexColor('#D97706'), strokeColor=None))
+    d.add(String(leg_x + 244, leg_y + 1, "Patrimonio Neto", fontName="Helvetica-Bold", fontSize=7.5, fillColor=colors.HexColor('#D97706')))
+    return d
+
+def create_chart_funding():
+    d = Drawing(504, 110)
+    pie = Pie()
+    pie.x = 45
+    pie.y = 8
+    pie.width = 94
+    pie.height = 94
+    pie.data = [72.63, 16.28, 11.09]
+    pie.slices[0].fillColor = colors.HexColor('#0A2540') # Patrimonio
+    pie.slices[1].fillColor = colors.HexColor('#DC2626') # Pasivo CP
+    pie.slices[2].fillColor = colors.HexColor('#2563EB') # Pasivo LP
+    d.add(pie)
+    
+    lx = 170
+    ly = 78
+    d.add(Rect(lx, ly, 10, 8, fillColor=colors.HexColor('#0A2540'), strokeColor=None))
+    d.add(String(lx + 15, ly + 1, "Patrimonio Propio de los Socios: 72,63% ($ 240.560.440)", fontName="Helvetica-Bold", fontSize=7.5, fillColor=colors.HexColor('#0A2540')))
+    d.add(String(lx + 15, ly - 8, "Capital social aportado e intacto. Independencia financiera plena.", fontName="Helvetica", fontSize=6.8, fillColor=colors.HexColor('#64748B')))
+    
+    ly -= 26
+    d.add(Rect(lx, ly, 10, 8, fillColor=colors.HexColor('#DC2626'), strokeColor=None))
+    d.add(String(lx + 15, ly + 1, "Pasivo a Corto Plazo (< 12 meses): 16,28% ($ 53.927.428)", fontName="Helvetica-Bold", fontSize=7.5, fillColor=colors.HexColor('#DC2626')))
+    d.add(String(lx + 15, ly - 8, "Proveedores comerciales y nómina corriente. Cubierto 2,25 veces con activos líquidos.", fontName="Helvetica", fontSize=6.8, fillColor=colors.HexColor('#64748B')))
+
+    ly -= 26
+    d.add(Rect(lx, ly, 10, 8, fillColor=colors.HexColor('#2563EB'), strokeColor=None))
+    d.add(String(lx + 15, ly + 1, "Pasivo a Largo Plazo (> 12 meses): 11,09% ($ 36.744.815)", fontName="Helvetica-Bold", fontSize=7.5, fillColor=colors.HexColor('#2563EB')))
+    d.add(String(lx + 15, ly - 8, "Crédito bancario pactado a largo plazo. No asfixia la tesorería del mes.", fontName="Helvetica", fontSize=6.8, fillColor=colors.HexColor('#64748B')))
+    return d
+
+def create_chart_waterfall():
+    d = Drawing(504, 110)
+    chart = VerticalBarChart()
+    chart.x = 45
+    chart.y = 15
+    chart.height = 75
+    chart.width = 445
+    chart.data = [
+        [8.16, 3.29, 4.87, 12.76, 7.89] # Millones COP
+    ]
+    chart.categoryAxis.categoryNames = ['Ventas Netas', 'Costo Venta', 'Ganancia Bruta', 'Gastos Fijos', 'Pérdida Mes']
+    chart.categoryAxis.labels.fontSize = 7.5
+    chart.categoryAxis.labels.fontName = 'Helvetica-Bold'
+    chart.valueAxis.valueMin = 0
+    chart.valueAxis.valueMax = 15
+    chart.valueAxis.valueStep = 3
+    chart.valueAxis.labels.fontSize = 7
+    chart.bars[0].fillColor = colors.HexColor('#059669') # Ventas
+    chart.bars[1].fillColor = colors.HexColor('#64748B') # Costo
+    chart.bars[2].fillColor = colors.HexColor('#D97706') # Ganancia
+    chart.bars[3].fillColor = colors.HexColor('#DC2626') # Gastos
+    chart.bars[4].fillColor = colors.HexColor('#F59E0B') # Pérdida
+    d.add(chart)
+    return d
+
+def create_chart_solvency():
+    d = Drawing(504, 110)
+    d.add(Rect(30, 10, 460, 92, fillColor=colors.HexColor('#F8FAFC'), strokeColor=colors.HexColor('#CBD5E1'), strokeWidth=0.5))
+    
+    # Legend
+    d.add(Rect(45, 88, 10, 7, fillColor=colors.HexColor('#059669'), strokeColor=None))
+    d.add(String(60, 89, "Razón Corriente (Liquidez en Veces): 2,15x -> 1,92x -> 2,25x (Récord)", fontName="Helvetica-Bold", fontSize=7.2, fillColor=colors.HexColor('#059669')))
+    
+    d.add(Rect(290, 88, 10, 7, fillColor=colors.HexColor('#2563EB'), strokeColor=None))
+    d.add(String(305, 89, "Endeudamiento Total (%): 31,0% -> 32,7% -> 27,4% (Cayó 5,3%)", fontName="Helvetica-Bold", fontSize=7.2, fillColor=colors.HexColor('#2563EB')))
+    
+    for y in [28, 48, 68]:
+        d.add(Line(45, y, 475, y, strokeColor=colors.HexColor('#E2E8F0'), strokeWidth=0.5))
+        
+    x_feb = 95
+    x_mar = 260
+    x_abr = 425
+    
+    d.add(String(x_feb - 15, 14, "Febrero 2026", fontName="Helvetica-Bold", fontSize=7.5, fillColor=colors.HexColor('#64748B')))
+    d.add(String(x_mar - 15, 14, "Marzo 2026", fontName="Helvetica-Bold", fontSize=7.5, fillColor=colors.HexColor('#64748B')))
+    d.add(String(x_abr - 15, 14, "Abril 2026", fontName="Helvetica-Bold", fontSize=7.5, fillColor=colors.HexColor('#0A2540')))
+    
+    # Liquidity line (green)
+    y_liq_feb = 64
+    y_liq_mar = 54
+    y_liq_abr = 72
+    d.add(Line(x_feb, y_liq_feb, x_mar, y_liq_mar, strokeColor=colors.HexColor('#059669'), strokeWidth=2))
+    d.add(Line(x_mar, y_liq_mar, x_abr, y_liq_abr, strokeColor=colors.HexColor('#059669'), strokeWidth=2))
+    
+    d.add(Circle(x_feb, y_liq_feb, 3.5, fillColor=colors.HexColor('#059669'), strokeColor=colors.white))
+    d.add(Circle(x_mar, y_liq_mar, 3.5, fillColor=colors.HexColor('#059669'), strokeColor=colors.white))
+    d.add(Circle(x_abr, y_liq_abr, 4.5, fillColor=colors.HexColor('#059669'), strokeColor=colors.white))
+    
+    d.add(String(x_feb - 10, y_liq_feb + 5, "2,15x", fontName="Helvetica-Bold", fontSize=7.2, fillColor=colors.HexColor('#059669')))
+    d.add(String(x_mar - 10, y_liq_mar + 5, "1,92x", fontName="Helvetica-Bold", fontSize=7.2, fillColor=colors.HexColor('#059669')))
+    d.add(String(x_abr - 10, y_liq_abr + 6, "2,25x", fontName="Helvetica-Bold", fontSize=7.5, fillColor=colors.HexColor('#059669')))
+    
+    # Debt line (blue)
+    y_deb_feb = 50
+    y_deb_mar = 56
+    y_deb_abr = 36
+    d.add(Line(x_feb, y_deb_feb, x_mar, y_deb_mar, strokeColor=colors.HexColor('#2563EB'), strokeWidth=2))
+    d.add(Line(x_mar, y_deb_mar, x_abr, y_deb_abr, strokeColor=colors.HexColor('#2563EB'), strokeWidth=2))
+    
+    d.add(Circle(x_feb, y_deb_feb, 3.5, fillColor=colors.HexColor('#2563EB'), strokeColor=colors.white))
+    d.add(Circle(x_mar, y_deb_mar, 3.5, fillColor=colors.HexColor('#2563EB'), strokeColor=colors.white))
+    d.add(Circle(x_abr, y_deb_abr, 4.5, fillColor=colors.HexColor('#2563EB'), strokeColor=colors.white))
+    
+    d.add(String(x_feb - 10, y_deb_feb - 9, "31,0%", fontName="Helvetica-Bold", fontSize=7.2, fillColor=colors.HexColor('#2563EB')))
+    d.add(String(x_mar - 10, y_deb_mar - 9, "32,7%", fontName="Helvetica-Bold", fontSize=7.2, fillColor=colors.HexColor('#2563EB')))
+    d.add(String(x_abr - 10, y_deb_abr - 9, "27,4%", fontName="Helvetica-Bold", fontSize=7.5, fillColor=colors.HexColor('#2563EB')))
+    return d
 
 def build_pdf(filename):
     doc = SimpleDocTemplate(
@@ -120,8 +271,8 @@ def build_pdf(filename):
         fontSize=11.5,
         leading=15,
         textColor=primary,
-        spaceBefore=12,
-        spaceAfter=6,
+        spaceBefore=10,
+        spaceAfter=5,
         keepWithNext=True
     ))
 
@@ -151,8 +302,8 @@ def build_pdf(filename):
         'CalloutText',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=8,
-        leading=11.5,
+        fontSize=7.8,
+        leading=11,
         textColor=primary
     ))
 
@@ -206,7 +357,7 @@ def build_pdf(filename):
     story.append(Spacer(1, 20))
     story.append(HRFlowable(width="60%", thickness=2, color=gold, spaceAfter=25, spaceBefore=0))
     
-    story.append(Paragraph("INFORME EMPRESARIAL Y AUDITORÍA DE LOS 5 ESTADOS FINANCIEROS CONSOLIDADOS NIIF", styles['CoverTitle']))
+    story.append(Paragraph("INFORME EMPRESARIAL Y AUDITORÍA DE LOS 5 ESTADOS FINANCIEROS Y GRÁFICAS NIIF", styles['CoverTitle']))
     story.append(Paragraph("EVALUACIÓN PERICIAL INTEGRAL DE 4 PERÍODOS (ENERO - ABRIL 2026)", styles['CoverSubtitle']))
     
     story.append(Paragraph("ENTIDAD AUDITADA:<br/><b>ELECTROVIVIENDA S.A.S</b><br/>NIT: 901.765.438-3<br/><i>«Calidad y energía para tu hogar»</i>", styles['CoverCenterText']))
@@ -247,16 +398,21 @@ def build_pdf(filename):
         [Paragraph("<b>2</b>", styles['TableCellBold']), Paragraph("Objetivos del Análisis Financiero (General y Específicos)", styles['TableCell']), Paragraph("3", styles['TableCellRight'])],
         [Paragraph("<b>3</b>", styles['TableCellBold']), Paragraph("Guía Pedagógica: ¿Cómo interpretar la contabilidad sin tecnicismos?", styles['TableCell']), Paragraph("3", styles['TableCellRight'])],
         [Paragraph("<b>4</b>", styles['TableCellBold']), Paragraph("<b>Juego Completo de los 5 Estados Financieros NIIF Consolidados:</b>", styles['TableCellBold']), Paragraph("4-7", styles['TableCellRightBold'])],
-        [Paragraph("  4.1", styles['TableCell']), Paragraph("• Estado de Situación Financiera (ESF / Balance General Consolidado)", styles['TableCell']), Paragraph("4", styles['TableCellRight'])],
-        [Paragraph("  4.2", styles['TableCell']), Paragraph("• Estado de Resultados Integral (ERI / ER Consolidado)", styles['TableCell']), Paragraph("4", styles['TableCellRight'])],
+        [Paragraph("  4.1", styles['TableCell']), Paragraph("• Estado de Situación Financiera (ESF / Balance General) y Breve Explicación", styles['TableCell']), Paragraph("4", styles['TableCellRight'])],
+        [Paragraph("  4.2", styles['TableCell']), Paragraph("• Estado de Resultados Integral (ERI / ER) y Breve Explicación", styles['TableCell']), Paragraph("4", styles['TableCellRight'])],
         [Paragraph("  4.3", styles['TableCell']), Paragraph("• Explicación Detallada del ESF y ER (Crónica Económica y Regla 12 Meses)", styles['TableCell']), Paragraph("5", styles['TableCellRight'])],
-        [Paragraph("  4.4", styles['TableCell']), Paragraph("• Estado de Cambios en el Patrimonio (ECP Consolidado)", styles['TableCell']), Paragraph("6", styles['TableCellRight'])],
-        [Paragraph("  4.5", styles['TableCell']), Paragraph("• Estado de Flujos de Efectivo (EFE Consolidado)", styles['TableCell']), Paragraph("6", styles['TableCellRight'])],
+        [Paragraph("  4.4", styles['TableCell']), Paragraph("• Estado de Cambios en el Patrimonio (ECP) y Breve Explicación", styles['TableCell']), Paragraph("6", styles['TableCellRight'])],
+        [Paragraph("  4.5", styles['TableCell']), Paragraph("• Estado de Flujos de Efectivo (EFE) y Breve Explicación", styles['TableCell']), Paragraph("6", styles['TableCellRight'])],
         [Paragraph("  4.6", styles['TableCell']), Paragraph("• Estado de Notas y Revelaciones a los Estados Financieros (Notas 1 a 9)", styles['TableCell']), Paragraph("7", styles['TableCellRight'])],
-        [Paragraph("<b>5</b>", styles['TableCellBold']), Paragraph("Estudio Pericial de Negocio en Marcha y Proyección de Supervivencia (Runway)", styles['TableCell']), Paragraph("8", styles['TableCellRight'])],
-        [Paragraph("<b>6</b>", styles['TableCellBold']), Paragraph("Matriz Completa de Indicadores Financieros NIIF: Fórmulas y Paso a Paso", styles['TableCell']), Paragraph("9", styles['TableCellRight'])],
-        [Paragraph("<b>7</b>", styles['TableCellBold']), Paragraph("Diagnóstico Estratégico, Punto de Equilibrio y Hoja de Ruta para Mayo", styles['TableCell']), Paragraph("10", styles['TableCellRight'])],
-        [Paragraph("<b>8</b>", styles['TableCellBold']), Paragraph("Dictamen Pericial y Certificación Oficial de Firmas", styles['TableCell']), Paragraph("10", styles['TableCellRight'])],
+        [Paragraph("<b>5</b>", styles['TableCellBold']), Paragraph("<b>Diagnóstico Visual: Gráficas Financieras y Explicación Detallada:</b>", styles['TableCellBold']), Paragraph("8-9", styles['TableCellRightBold'])],
+        [Paragraph("  5.1", styles['TableCell']), Paragraph("• Gráfica 1: Estructura del Balance (Barras Comparativas Enero a Abril)", styles['TableCell']), Paragraph("8", styles['TableCellRight'])],
+        [Paragraph("  5.2", styles['TableCell']), Paragraph("• Gráfica 2: Fuentes de Financiación (Dona de Participación al Cierre)", styles['TableCell']), Paragraph("8", styles['TableCellRight'])],
+        [Paragraph("  5.3", styles['TableCell']), Paragraph("• Gráfica 3: Cascada Operativa: Ventas, Costos, Gastos y Resultados", styles['TableCell']), Paragraph("9", styles['TableCellRight'])],
+        [Paragraph("  5.4", styles['TableCell']), Paragraph("• Gráfica 4: Curva de Solvencia (Razón Corriente) vs. Desendeudamiento", styles['TableCell']), Paragraph("9", styles['TableCellRight'])],
+        [Paragraph("<b>6</b>", styles['TableCellBold']), Paragraph("Estudio Pericial de Negocio en Marcha y Proyección de Supervivencia (Runway)", styles['TableCell']), Paragraph("10", styles['TableCellRight'])],
+        [Paragraph("<b>7</b>", styles['TableCellBold']), Paragraph("Matriz Completa de Indicadores Financieros NIIF: Fórmulas y Paso a Paso", styles['TableCell']), Paragraph("11", styles['TableCellRight'])],
+        [Paragraph("<b>8</b>", styles['TableCellBold']), Paragraph("Diagnóstico Estratégico, Punto de Equilibrio y Hoja de Ruta para Mayo", styles['TableCell']), Paragraph("12", styles['TableCellRight'])],
+        [Paragraph("<b>9</b>", styles['TableCellBold']), Paragraph("Dictamen Pericial y Certificación Oficial de Firmas", styles['TableCell']), Paragraph("12", styles['TableCellRight'])],
     ]
     t_toc = Table(toc_data, colWidths=[35, 425, 44])
     t_toc.setStyle(TableStyle([
@@ -265,20 +421,20 @@ def build_pdf(filename):
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8FAFC")]),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
         ('LEFTPADDING', (0,0), (-1,-1), 8),
         ('RIGHTPADDING', (0,0), (-1,-1), 8),
     ]))
     story.append(t_toc)
     
-    story.append(Spacer(1, 20))
+    story.append(Spacer(1, 15))
     
     decl_p = Paragraph(
         "<b>DECLARACIÓN DE INTEGRIDAD TÉCNICA (NIC 1 / SECCIÓN 3 NIIF PYMES):</b> El presente informe consolida fidedignamente "
-        "el juego completo de los <b>cinco (5) estados financieros</b> exigidos por los marcos técnicos contables oficiales colombianos "
-        "(Decreto 2420/2015). Cumple cabalmente con las pautas del Centro de Servicios Empresariales y Turísticos del SENA Bucaramanga "
-        "bajo la tutoría del instructor <b>George Olago</b>.", styles['CalloutText']
+        "el juego completo de los <b>cinco (5) estados financieros</b> y sus <b>cuatro (4) gráficas maestras</b> exigidos por los marcos "
+        "técnicos contables colombianos (Decreto 2420/2015). Cumple con las pautas del Centro de Servicios Empresariales y "
+        "Turísticos del SENA Bucaramanga bajo la tutoría del instructor <b>George Olago</b>.", styles['CalloutText']
     )
     t_decl = Table([[decl_p]], colWidths=[504])
     t_decl.setStyle(TableStyle([
@@ -334,7 +490,7 @@ def build_pdf(filename):
     story.append(Paragraph(
         "<b>OBJETIVO GENERAL:</b> Evaluar de forma integral, pedagógica y rigurosa la salud patrimonial, la solvencia, "
         "el nivel de endeudamiento a corto y largo plazo, y la viabilidad del principio de negocio en marcha de ELECTROVIVIENDA S.A.S "
-        "a través de los cinco (5) estados financieros oficiales durante el primer cuatrimestre del año 2026 (Enero a Abril).",
+        "a través de los cinco (5) estados financieros y sus gráficas maestras durante el primer cuatrimestre del año 2026.",
         styles['BodyCustom']
     ))
     
@@ -368,7 +524,7 @@ def build_pdf(filename):
     # PÁGINA 4: ESTADOS 1 Y 2: ESF (BALANCE) Y ESTADO DE RESULTADOS CONSOLIDADOS
     # =========================================================================
     story.append(Paragraph("4.1. ESTADO DE SITUACIÓN FINANCIERA (ESF / BALANCE GENERAL CONSOLIDADO)", styles['SectionHeader']))
-    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=5, spaceBefore=0))
+    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=4, spaceBefore=0))
     
     esf_data = [
         [Paragraph("<b>Cuentas del Balance General (COP)</b>", styles['TableCellBold']), Paragraph("<b>Enero</b>", styles['TableCellRightBold']), Paragraph("<b>Febrero</b>", styles['TableCellRightBold']), Paragraph("<b>Marzo</b>", styles['TableCellRightBold']), Paragraph("<b>Abril</b>", styles['TableCellRightBold'])],
@@ -405,7 +561,7 @@ def build_pdf(filename):
     ]))
     story.append(t_esf)
 
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 3))
     esf_note = Paragraph(
         "<b>💡 Breve Explicación Didáctica del ESF (Balance):</b> Es la 'fotografía' de las posesiones de la empresa al cierre del mes. "
         "Muestra que ELECTROVIVIENDA posee <b>$331,2 millones</b> en activos (caja, inventarios y locales), debe <b>$90,6 millones</b> "
@@ -424,9 +580,9 @@ def build_pdf(filename):
     ]))
     story.append(t_esf_note)
 
-    story.append(Spacer(1, 6))
+    story.append(Spacer(1, 5))
     story.append(Paragraph("4.2. ESTADO DE RESULTADOS INTEGRAL (ERI / ER CONSOLIDADO)", styles['SectionHeader']))
-    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=5, spaceBefore=0))
+    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=4, spaceBefore=0))
     
     er_data = [
         [Paragraph("<b>Renglón del Estado de Resultados (COP)</b>", styles['TableCellBold']), Paragraph("<b>Enero</b>", styles['TableCellRightBold']), Paragraph("<b>Febrero</b>", styles['TableCellRightBold']), Paragraph("<b>Marzo</b>", styles['TableCellRightBold']), Paragraph("<b>Abril</b>", styles['TableCellRightBold'])],
@@ -455,7 +611,7 @@ def build_pdf(filename):
     ]))
     story.append(t_er)
 
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 3))
     er_note = Paragraph(
         "<b>💡 Breve Explicación Didáctica del ER (Resultados):</b> Es como una 'película' de ganancias y pérdidas en el período. "
         "En febrero se logró utilidad récord de <b>+$16,4M</b>; en marzo se absorbieron los costos fijos mientras se llenaba la bodega (-$17,1M); "
@@ -549,7 +705,7 @@ def build_pdf(filename):
     # PÁGINA 6: ESTADOS 3 Y 4: ECP (PATRIMONIO) Y EFE (FLUJO DE EFECTIVO)
     # =========================================================================
     story.append(Paragraph("4.4. ESTADO DE CAMBIOS EN EL PATRIMONIO (ECP CONSOLIDADO)", styles['SectionHeader']))
-    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=5, spaceBefore=0))
+    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=4, spaceBefore=0))
     
     ecp_data = [
         [Paragraph("<b>Concepto Patrimonial (COP)</b>", styles['TableCellBold']), Paragraph("<b>Capital Social</b>", styles['TableCellRightBold']), Paragraph("<b>Resultados Acumulados</b>", styles['TableCellRightBold']), Paragraph("<b>Resultado del Ejercicio</b>", styles['TableCellRightBold']), Paragraph("<b>TOTAL PATRIMONIO</b>", styles['TableCellRightBold'])],
@@ -576,7 +732,7 @@ def build_pdf(filename):
     ]))
     story.append(t_ecp)
 
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 3))
     ecp_note = Paragraph(
         "<b>💡 Breve Explicación Didáctica del ECP (Patrimonio):</b> Muestra cómo evoluciona la riqueza neta de los socios. "
         "Demuestra que el capital aportado (<b>$240.000.000</b>) ha permanecido <b>100% intacto y protegido</b>. "
@@ -595,9 +751,9 @@ def build_pdf(filename):
     ]))
     story.append(t_ecp_note)
 
-    story.append(Spacer(1, 6))
+    story.append(Spacer(1, 5))
     story.append(Paragraph("4.5. ESTADO DE FLUJOS DE EFECTIVO (EFE CONSOLIDADO - MÉTODO DIRECTO/INDIRECTO)", styles['SectionHeader']))
-    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=5, spaceBefore=0))
+    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=4, spaceBefore=0))
     
     efe_data = [
         [Paragraph("<b>Actividades de Flujo de Fondos (COP)</b>", styles['TableCellBold']), Paragraph("<b>Enero</b>", styles['TableCellRightBold']), Paragraph("<b>Febrero</b>", styles['TableCellRightBold']), Paragraph("<b>Marzo</b>", styles['TableCellRightBold']), Paragraph("<b>Abril</b>", styles['TableCellRightBold'])],
@@ -627,7 +783,7 @@ def build_pdf(filename):
     ]))
     story.append(t_efe)
 
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 3))
     efe_note = Paragraph(
         "<b>💡 Breve Explicación Didáctica del EFE (Flujo de Efectivo):</b> Muestra el movimiento real del dinero en efectivo y cuentas bancarias. "
         "Evidencia que ELECTROVIVIENDA cuenta con <b>$42.542.532 en disponible inmediato</b>, libre de deudas bancarias urgentes. "
@@ -651,7 +807,7 @@ def build_pdf(filename):
     # PÁGINA 7: ESTADO 5: NOTAS Y REVELACIONES A LOS ESTADOS FINANCIEROS (NIIF)
     # =========================================================================
     story.append(Paragraph("4.6. ESTADO DE NOTAS Y REVELACIONES A LOS ESTADOS FINANCIEROS (NIIF PARA PYMES)", styles['SectionHeader']))
-    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=6, spaceBefore=0))
+    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=5, spaceBefore=0))
     
     story.append(Paragraph(
         "Bajo la Sección 8 de NIIF para PYMES, las notas proporcionan descripciones narrativas o desagregaciones de partidas:",
@@ -704,8 +860,8 @@ def build_pdf(filename):
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8FAFC")]),
-        ('TOPPADDING', (0,0), (-1,-1), 2.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
+        ('TOPPADDING', (0,0), (-1,-1), 2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
         ('RIGHTPADDING', (0,0), (-1,-1), 5),
     ]))
@@ -732,9 +888,111 @@ def build_pdf(filename):
     story.append(PageBreak())
 
     # =========================================================================
-    # PÁGINA 8: NEGOCIO EN MARCHA Y SUPERVIVENCIA (RUNWAY)
+    # PÁGINA 8: GRÁFICAS FINANCIERAS (PARTE 1: BALANCE Y FUENTES DE FINANCIACIÓN)
     # =========================================================================
-    story.append(Paragraph("5. DICTAMEN DE NEGOCIO EN MARCHA Y RUNWAY DE SUPERVIVENCIA", styles['SectionHeader']))
+    story.append(Paragraph("5. DIAGNÓSTICO VISUAL Y GRÁFICAS FINANCIERAS NIIF (PARTE 1)", styles['SectionHeader']))
+    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=6, spaceBefore=0))
+    
+    story.append(Paragraph("<b>GRÁFICA 1: ESTRUCTURA COMPARATIVA DEL BALANCE GENERAL (ENERO A ABRIL 2026)</b>", styles['SubSectionHeader']))
+    story.append(create_chart_balance())
+    
+    g1_expl = Paragraph(
+        "<b>📊 Explicación Didáctica de la Gráfica 1:</b><br/>"
+        "• <b>Barra Azul (Activos):</b> Creció de \$240M a \$387M en febrero por la apertura comercial y se estabilizó en <b>\$331,2M</b> en abril.<br/>"
+        "• <b>Barra Roja (Pasivos/Deudas):</b> De \$0 en enero subió a \$120M para surtir vitrinas, pero en abril <b>cayó drásticamente a \$90,7M</b> tras pagar proveedores.<br/>"
+        "• <b>Barra Dorada (Patrimonio Propio):</b> Permanece firme en <b>\$240,6 millones</b>, blindando a la empresa como un escudo de acero frente a los acreedores.",
+        styles['CalloutText']
+    )
+    t_g1_expl = Table([[g1_expl]], colWidths=[504])
+    t_g1_expl.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F8FAFC")),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.HexColor("#CBD5E1")),
+        ('TOPPADDING', (0,0), (-1,-1), 4),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('LEFTPADDING', (0,0), (-1,-1), 6),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+    ]))
+    story.append(t_g1_expl)
+    
+    story.append(Spacer(1, 8))
+    story.append(Paragraph("<b>GRÁFICA 2: FUENTES DE FINANCIACIÓN AL CIERRE DE ABRIL 2026 (QUIÉN PUSO LA PLATA)</b>", styles['SubSectionHeader']))
+    story.append(create_chart_funding())
+    
+    g2_expl = Paragraph(
+        "<b>📊 Explicación Didáctica de la Gráfica 2:</b><br/>"
+        "• <b>72,63% Patrimonio Propio:</b> De cada \$100 que la compañía tiene en activos, \$72,63 pertenecen enteramente a los socios.<br/>"
+        "• <b>16,28% Deuda a Corto Plazo:</b> Solo \$16,28 de cada \$100 vencen en menos de 12 meses, plenamente cubiertos con la caja y la cartera.<br/>"
+        "• <b>11,09% Deuda a Largo Plazo:</b> Crédito bancario pactado a largo plazo que no asfixia la liquidez operativa mensual.",
+        styles['CalloutText']
+    )
+    t_g2_expl = Table([[g2_expl]], colWidths=[504])
+    t_g2_expl.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F8FAFC")),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.HexColor("#CBD5E1")),
+        ('TOPPADDING', (0,0), (-1,-1), 4),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('LEFTPADDING', (0,0), (-1,-1), 6),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+    ]))
+    story.append(t_g2_expl)
+
+    story.append(PageBreak())
+
+    # =========================================================================
+    # PÁGINA 9: GRÁFICAS FINANCIERAS (PARTE 2: CASCADA OPERATIVA Y CURVA SOLVENCIA)
+    # =========================================================================
+    story.append(Paragraph("5. DIAGNÓSTICO VISUAL Y GRÁFICAS FINANCIERAS NIIF (PARTE 2)", styles['SectionHeader']))
+    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=6, spaceBefore=0))
+    
+    story.append(Paragraph("<b>GRÁFICA 3: CASCADA OPERATIVA: VENTAS, COSTOS, GASTOS Y RESULTADOS (ABRIL 2026)</b>", styles['SubSectionHeader']))
+    story.append(create_chart_waterfall())
+    
+    g3_expl = Paragraph(
+        "<b>📊 Explicación Didáctica de la Gráfica 3:</b><br/>"
+        "• <b>Ventas Netas (\$8,16M) vs. Costo (\$3,29M):</b> Dejó una ganancia comercial bruta de <b>\$4,87M</b>, correspondiente a un margen altísimo del <b>59,69%</b>.<br/>"
+        "• <b>Gastos Fijos (\$12,76M):</b> Nómina y arriendos indispensables para operar. Al restar los gastos fijos de la ganancia bruta, el resultado del mes fue de <b>-\$7,89M</b>.<br/>"
+        "• <b>Conclusión:</b> El producto es sumamente rentable. Subiendo las ventas a <b>\$22.000.000 mensuales</b> (Punto de Equilibrio), la ganancia bruta absorberá todos los gastos fijos.",
+        styles['CalloutText']
+    )
+    t_g3_expl = Table([[g3_expl]], colWidths=[504])
+    t_g3_expl.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F8FAFC")),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.HexColor("#CBD5E1")),
+        ('TOPPADDING', (0,0), (-1,-1), 4),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('LEFTPADDING', (0,0), (-1,-1), 6),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+    ]))
+    story.append(t_g3_expl)
+    
+    story.append(Spacer(1, 8))
+    story.append(Paragraph("<b>GRÁFICA 4: CURVA DE SOLVENCIA (RAZÓN CORRIENTE) VS. DESENDEUDAMIENTO TOTAL</b>", styles['SubSectionHeader']))
+    story.append(create_chart_solvency())
+    
+    g4_expl = Paragraph(
+        "<b>📊 Explicación Didáctica de la Gráfica 4:</b><br/>"
+        "• <b>Línea Verde (Razón Corriente):</b> Subió de 1,92x en marzo a <b>2,25x en abril (Récord)</b>. Por cada \$1 que la empresa debe a corto plazo, tiene \$2,25 guardados en caja e inventario.<br/>"
+        "• <b>Línea Azul (Endeudamiento Total):</b> Cayó fuertemente de 32,7% a <b>27,4% en abril</b>. Menos deuda significa menos riesgo y mayor tranquilidad.<br/>"
+        "• <b>Efecto Tijera Positiva:</b> La liquidez sube mientras la deuda se derrumba. Es el comportamiento ideal de una empresa financieramente sana.",
+        styles['CalloutText']
+    )
+    t_g4_expl = Table([[g4_expl]], colWidths=[504])
+    t_g4_expl.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F8FAFC")),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.HexColor("#CBD5E1")),
+        ('TOPPADDING', (0,0), (-1,-1), 4),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('LEFTPADDING', (0,0), (-1,-1), 6),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+    ]))
+    story.append(t_g4_expl)
+
+    story.append(PageBreak())
+
+    # =========================================================================
+    # PÁGINA 10: NEGOCIO EN MARCHA Y SUPERVIVENCIA (RUNWAY)
+    # =========================================================================
+    story.append(Paragraph("6. DICTAMEN DE NEGOCIO EN MARCHA Y RUNWAY DE SUPERVIVENCIA", styles['SectionHeader']))
     story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=6, spaceBefore=0))
     
     story.append(Paragraph(
@@ -799,9 +1057,9 @@ def build_pdf(filename):
     story.append(PageBreak())
 
     # =========================================================================
-    # PÁGINA 9: MATRIZ COMPLETA DE INDICADORES FINANCIEROS (FÓRMULAS Y PASO A PASO)
+    # PÁGINA 11: MATRIZ COMPLETA DE INDICADORES FINANCIEROS (FÓRMULAS Y PASO A PASO)
     # =========================================================================
-    story.append(Paragraph("6. MATRIZ COMPLETA: INDICADORES FINANCIEROS Y SU SIGNIFICADO EN PALABRAS SIMPLES", styles['SectionHeader']))
+    story.append(Paragraph("7. MATRIZ COMPLETA: INDICADORES FINANCIEROS Y SU SIGNIFICADO EN PALABRAS SIMPLES", styles['SectionHeader']))
     story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=6, spaceBefore=0))
     
     story.append(Paragraph(
@@ -958,9 +1216,9 @@ def build_pdf(filename):
     story.append(PageBreak())
 
     # =========================================================================
-    # PÁGINA 10: CONCLUSIONES, PUNTO DE EQUILIBRIO Y FIRMAS OFICIALES
+    # PÁGINA 12: CONCLUSIONES, PUNTO DE EQUILIBRIO Y FIRMAS OFICIALES
     # =========================================================================
-    story.append(Paragraph("7. CONCLUSIONES ESTRATÉGICAS Y PLAN DE ACCIÓN PARA MAYO", styles['SectionHeader']))
+    story.append(Paragraph("8. CONCLUSIONES ESTRATÉGICAS Y PLAN DE ACCIÓN PARA MAYO", styles['SectionHeader']))
     story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=6, spaceBefore=0))
     
     concl_p = [
@@ -981,7 +1239,7 @@ def build_pdf(filename):
     story.append(t_concl)
     
     story.append(Spacer(1, 10))
-    story.append(Paragraph("8. CERTIFICACIÓN PERICIAL Y FIRMAS DE AUTORIDADES", styles['SectionHeader']))
+    story.append(Paragraph("9. CERTIFICACIÓN PERICIAL Y FIRMAS DE AUTORIDADES", styles['SectionHeader']))
     story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=10, spaceBefore=0))
     
     story.append(Paragraph(
