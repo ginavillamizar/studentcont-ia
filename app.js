@@ -1,3 +1,212 @@
+
+// ============================================================================
+// GENERADORES DE PORTADA ACADÉMICA OFICIAL Y TABLA DE CONTENIDO (SENA)
+// ============================================================================
+function buildAcademicCoverPageHtml(docTitle, docSubtitle) {
+  return `
+    <div class="academic-cover-page" style="page-break-after:always; min-height:980px; display:flex; flex-direction:column; justify-content:space-between; padding:45px 40px; background:#FFFFFF; color:#0F172A; font-family:'Plus Jakarta Sans', sans-serif; box-sizing:border-box; border:1px solid #CBD5E1; border-radius:8px; margin-bottom:24px;">
+      <!-- ENCABEZADO INSTITUCIONAL -->
+      <div style="text-align:center; border-bottom:3px solid #D4AF37; padding-bottom:20px;">
+        <div style="display:flex; justify-content:center; align-items:center; gap:16px; margin-bottom:12px;">
+          <img src="assets/logo-electrovivienda.png" alt="ELECTROVIVIENDA S.A.S" style="height:55px; width:auto; object-fit:contain;" />
+          <div style="width:2px; height:45px; background:#CBD5E1;"></div>
+          <div style="text-align:left;">
+            <div style="font-weight:900; font-size:1.1rem; color:#0B192C; letter-spacing:0.5px;">SERVICIO NACIONAL DE APRENDIZAJE - SENA</div>
+            <div style="font-size:0.8rem; font-weight:700; color:#047857;">CENTRO DE SERVICIOS EMPRESARIALES Y TURÍSTICOS</div>
+            <div style="font-size:0.74rem; color:#64748B;">REGIONAL SANTANDER • BUCARAMANGA</div>
+          </div>
+        </div>
+        <div style="font-size:0.76rem; font-weight:800; color:#D4AF37; letter-spacing:1px; text-transform:uppercase;">
+          PROGRAMA DE FORMACIÓN EN CONTABILIDAD Y FINANZAS • NIIF PARA LAS PYMES
+        </div>
+      </div>
+
+      <!-- TÍTULO CENTRAL DEL PROYECTO -->
+      <div style="text-align:center; margin:35px 0;">
+        <span style="display:inline-block; background:rgba(212,175,55,0.15); color:#0B192C; border:1.5px solid #D4AF37; padding:5px 16px; border-radius:999px; font-size:0.8rem; font-weight:800; margin-bottom:16px; text-transform:uppercase; letter-spacing:0.5px;">
+          PROYECTO FORMATIVO INTEGRAL • APLICACIÓN PRÁCTICA REAL
+        </span>
+        <h1 style="font-size:1.8rem; font-weight:900; color:#0B192C; line-height:1.25; margin:0 0 12px 0; text-transform:uppercase;">
+          ESTUDIO INTEGRAL DE ANÁLISIS FINANCIERO Y EVALUACIÓN DE NEGOCIO EN MARCHA
+        </h1>
+        <h2 style="font-size:1.1rem; font-weight:700; color:#D4AF37; margin:0 0 14px 0;">
+          ELECTROVIVIENDA S.A.S • NIT 901.765.438-3
+        </h2>
+        <p style="font-size:0.85rem; color:#475569; max-width:620px; margin:0 auto; line-height:1.5;">
+          Diagnóstico Financiero Consolidado Multiperíodo (Enero, Febrero, Marzo y Abril de 2026), Evaluación de Liquidez, Indicadores de Deuda a 12 Meses y Prueba de Resistencia Operativa
+        </p>
+      </div>
+
+      <!-- BLOQUE DE AUTORES Y CRÉDITOS ACADÉMICOS -->
+      <div style="background:#F8FAFC; border:1.5px solid #E2E8F0; border-left:5px solid #0B192C; border-radius:10px; padding:20px 24px; max-width:600px; margin:0 auto; width:100%; box-sizing:border-box;">
+        <table style="width:100%; font-size:0.84rem; border-collapse:collapse;">
+          <tbody>
+            <tr>
+              <td style="padding:5px 0; font-weight:800; color:#0B192C; width:40%;">Realizado por:</td>
+              <td style="padding:5px 0; color:#1E293B; font-weight:900; font-size:0.92rem;">Gina Villamizar</td>
+            </tr>
+            <tr>
+              <td style="padding:5px 0; font-weight:800; color:#0B192C;">Rol / Identificación:</td>
+              <td style="padding:5px 0; color:#475569;">Contadora Titular • Especialista NIIF (T.P. 248960-T)</td>
+            </tr>
+            <tr>
+              <td style="padding:5px 0; font-weight:800; color:#0B192C;">Instructor Titular:</td>
+              <td style="padding:5px 0; color:#1E293B; font-weight:800;">George Olago</td>
+            </tr>
+            <tr>
+              <td style="padding:5px 0; font-weight:800; color:#0B192C;">Institución:</td>
+              <td style="padding:5px 0; color:#047857; font-weight:800;">SENA — Centro de Servicios Empresariales y Turísticos</td>
+            </tr>
+            <tr>
+              <td style="padding:5px 0; font-weight:800; color:#0B192C;">Ubicación:</td>
+              <td style="padding:5px 0; color:#475569;">Bucaramanga, Santander, Colombia</td>
+            </tr>
+            <tr>
+              <td style="padding:5px 0; font-weight:800; color:#0B192C;">Año de Vigencia:</td>
+              <td style="padding:5px 0; color:#0B192C; font-weight:900;">2026</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- PIE DE PORTADA -->
+      <div style="text-align:center; border-top:1px solid #E2E8F0; padding-top:14px; font-size:0.74rem; color:#94A3B8;">
+        SISTEMA CONTABLE Y FISCAL NIIF — STUDENTCONT.IA • BUENAS PRÁCTICAS PEDAGÓGICAS SENA
+      </div>
+    </div>
+  `;
+}
+
+function buildTableOfContentsPageHtml() {
+  return `
+    <div class="academic-toc-page" style="page-break-after:always; min-height:980px; padding:45px 40px; background:#FFFFFF; color:#0F172A; font-family:'Plus Jakarta Sans', sans-serif; box-sizing:border-box; border:1px solid #CBD5E1; border-radius:8px; margin-bottom:24px;">
+      <!-- ENCABEZADO DE TABLA DE CONTENIDO -->
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2.5px solid #D4AF37; padding-bottom:14px; margin-bottom:24px;">
+        <div>
+          <h2 style="margin:0; font-size:1.4rem; font-weight:900; color:#0B192C; letter-spacing:0.4px;">TABLA DE CONTENIDO GENERAL</h2>
+          <span style="font-size:0.76rem; color:#64748B;">Estructura temática y metodológica del informe oficial</span>
+        </div>
+        <span class="status-pill status-paid" style="font-size:0.72rem; font-weight:800; padding:4px 12px;">Página 2</span>
+      </div>
+
+      <!-- LISTA ESTRUCTURADA DE CONTENIDO -->
+      <div style="display:flex; flex-direction:column; gap:12px; font-size:0.84rem; color:#1E293B; line-height:1.5;">
+        <div style="display:flex; justify-content:space-between; border-bottom:1px dotted #CBD5E1; padding-bottom:5px;">
+          <span><strong>1. PORTADA INSTITUCIONAL ACADÉMICA</strong> (Créditos SENA, Autores y Vigencia)</span>
+          <strong style="color:#D4AF37;">Pág. 1</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; border-bottom:1px dotted #CBD5E1; padding-bottom:5px;">
+          <span><strong>2. TABLA DE CONTENIDO GENERAL Y METODOLOGÍA</strong></span>
+          <strong style="color:#D4AF37;">Pág. 2</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; border-bottom:1px dotted #CBD5E1; padding-bottom:5px;">
+          <span><strong>3. PRESENTACIÓN CORPORATIVA DE ELECTROVIVIENDA S.A.S</strong></span>
+          <strong style="color:#D4AF37;">Pág. 3</strong>
+        </div>
+        <div style="padding-left:18px; font-size:0.78rem; color:#475569;">
+          • 3.1. Identidad, Razón Social y Domicilio en Bucaramanga<br>
+          • 3.2. Misión, Visión 2028 y Lema Institucional: "Calidad y energía para tu hogar"<br>
+          • 3.3. Ficha Técnica Tributaria (Régimen Responsable de IVA - RRI, ICA y Renta)
+        </div>
+
+        <div style="display:flex; justify-content:space-between; border-bottom:1px dotted #CBD5E1; padding-bottom:5px;">
+          <span><strong>4. OBJETIVOS DEL ANÁLISIS FINANCIERO</strong> (General y 6 Específicos)</span>
+          <strong style="color:#D4AF37;">Pág. 3</strong>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; border-bottom:1px dotted #CBD5E1; padding-bottom:5px;">
+          <span><strong>5. GUÍA DIDÁCTICA PARA NO CONTADORES</strong> (Los 3 Pilares y Analogía del Bolsillo)</span>
+          <strong style="color:#D4AF37;">Pág. 4</strong>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; border-bottom:1px dotted #CBD5E1; padding-bottom:5px;">
+          <span><strong>6. RESUMEN EJECUTIVO Y CIFRAS CLAVE CONSOLIDADAS</strong> (Enero a Abril 2026)</span>
+          <strong style="color:#D4AF37;">Pág. 4</strong>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; border-bottom:1px dotted #CBD5E1; padding-bottom:5px;">
+          <span><strong>7. CRÓNICA DE LOS HECHOS ECONÓMICOS MES A MES</strong></span>
+          <strong style="color:#D4AF37;">Pág. 5</strong>
+        </div>
+        <div style="padding-left:18px; font-size:0.78rem; color:#475569;">
+          • 7.1. Enero: Constitución en $247.3M sin deudas<br>
+          • 7.2. Febrero: Gran Apertura Comercial y récord de ventas ($185.9M)<br>
+          • 7.3. Marzo: Cumplimiento Tributario DIAN y costos fijos de nómina<br>
+          • 7.4. Abril: Saneamiento de pasivos, pago de $30M de deuda y liquidez máxima
+        </div>
+
+        <div style="display:flex; justify-content:space-between; border-bottom:1px dotted #CBD5E1; padding-bottom:5px;">
+          <span><strong>8. EXPLICACIÓN DETALLADA DE LAS 4 GRÁFICAS FINANCIERAS</strong></span>
+          <strong style="color:#D4AF37;">Pág. 6</strong>
+        </div>
+        <div style="padding-left:18px; font-size:0.78rem; color:#475569;">
+          • 8.1. Gráfica 1: Evolución de Activo, Pasivo y Patrimonio (Barras)<br>
+          • 8.2. Gráfica 2: Fuentes de Financiación (Dona 72.6% propio vs 27.4% deuda)<br>
+          • 8.3. Gráfica 3: Ventas Netas, Costos y Resultados Operativos<br>
+          • 8.4. Gráfica 4: Curva de Liquidez (Razón Corriente 2.25x) vs. Endeudamiento
+        </div>
+
+        <div style="display:flex; justify-content:space-between; border-bottom:1px dotted #CBD5E1; padding-bottom:5px;">
+          <span><strong>9. ACLARACIÓN CONTABLE DE PASIVOS: LA REGLA DE LOS 12 MESES</strong></span>
+          <strong style="color:#D4AF37;">Pág. 7</strong>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; border-bottom:1px dotted #CBD5E1; padding-bottom:5px;">
+          <span><strong>10. MATRIZ INTEGRAL DE INDICADORES NIIF EXPLICADOS CON MANZANAS</strong></span>
+          <strong style="color:#D4AF37;">Pág. 7</strong>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; border-bottom:1px dotted #CBD5E1; padding-bottom:5px;">
+          <span><strong>11. EVALUACIÓN DE NEGOCIO EN MARCHA Y ESTUDIO DE SUPERVIVENCIA</strong></span>
+          <strong style="color:#D4AF37;">Pág. 8</strong>
+        </div>
+        <div style="padding-left:18px; font-size:0.78rem; color:#475569;">
+          • 11.1. Prueba de Resistencia Extrema (Runway sin ventas: 4.2 a 9.2 meses)<br>
+          • 11.2. Punto de Equilibrio Operativo ($22.000.000/mes para Mayo 2026)
+        </div>
+
+        <div style="display:flex; justify-content:space-between; border-bottom:1px dotted #CBD5E1; padding-bottom:5px;">
+          <span><strong>12. DICTAMEN PERICIAL Y CERTIFICACIÓN CON FIRMAS OFICIALES</strong></span>
+          <strong style="color:#D4AF37;">Pág. 8</strong>
+        </div>
+      </div>
+
+      <div style="margin-top:24px; background:#FFFDF5; border:1px solid #FDE68A; border-radius:8px; padding:12px 16px; font-size:0.76rem; color:#78350F; line-height:1.45;">
+        💡 <strong>Nota Metodológica:</strong> El presente documento respeta la numeración oficial del Libro Diario Columnario, las hojas 1 a 60 y los anexos AD1 a AD23, garantizando total trazabilidad con los archivos contables de la empresa.
+      </div>
+    </div>
+  `;
+}
+
+function exportAnalisisFinancieroCompletoPdf() {
+  const efContainer = document.getElementById("efContentContainer");
+  if (!efContainer) return;
+
+  const docTitle = "INFORME INTEGRAL DE ANÁLISIS FINANCIERO Y EVALUACIÓN DE NEGOCIO EN MARCHA";
+  const docSubtitle = "ELECTROVIVIENDA S.A.S • Evaluación Consolidada de 4 Períodos (Enero - Abril 2026)";
+
+  const coverHtml = buildAcademicCoverPageHtml(docTitle, docSubtitle);
+  const tocHtml = buildTableOfContentsPageHtml();
+  
+  const paper = efContainer.querySelector(".niif-statement-paper");
+  const bodyHtml = paper ? paper.outerHTML : efContainer.innerHTML;
+
+  const fullReportHtml = `
+    <div class="full-academic-report-container" style="background:#FFFFFF; color:#0F172A; max-width:860px; margin:0 auto;">
+      ${coverHtml}
+      ${tocHtml}
+      <div class="academic-report-body" style="padding-top:10px;">
+        ${bodyHtml}
+      </div>
+    </div>
+  `;
+
+  const filename = "Informe_Analisis_Financiero_ELECTROVIVIENDA_Ene_Abr_2026_Gina_Villamizar.pdf";
+  downloadOrPrintPdfDocument(fullReportHtml, filename, docTitle, { orientation: "portrait" });
+}
+window.exportAnalisisFinancieroCompletoPdf = exportAnalisisFinancieroCompletoPdf;
+
+
 /**
  * STUDENTCONT.IA — Motor Frontend NIIF, Facturación por Régimen, Kardex, Libros Auxiliares en Vivo y Multi-Empresa
  * Desarrollado a la medida para ELECTROVIVIENDA S.A.S (NIT 901.765.438-3) y Estudiantes Independientes
@@ -7461,6 +7670,68 @@ function triggerActivePdfDownload(notify = true) {
   const filename = CURRENT_PDF_PAYLOAD.filename || "documento_contable.pdf";
   const targetEl = document.getElementById("pdfModalSheetBody");
   if (!targetEl) return;
+
+  const isLandscape = CURRENT_PDF_PAYLOAD.orientation === "landscape";
+  const canvasWidth = isLandscape ? 1040 : 800;
+
+  if (notify) {
+    showToast(`Generando y descargando PDF: ${filename}...`);
+  }
+
+  if (typeof window.html2pdf === "function") {
+    const printClone = targetEl.cloneNode(true);
+    printClone.id = "tempPdfRenderBox";
+    printClone.style.position = "fixed";
+    printClone.style.left = "0px";
+    printClone.style.top = "0px";
+    printClone.style.width = `${canvasWidth}px`;
+    printClone.style.maxWidth = `${canvasWidth}px`;
+    printClone.style.zIndex = "100000";
+    printClone.style.opacity = "1";
+    printClone.style.visibility = "visible";
+    printClone.style.background = "#FFFFFF";
+    printClone.style.color = "#0F172A";
+    printClone.style.padding = "24px";
+    printClone.style.boxSizing = "border-box";
+    printClone.style.overflow = "visible";
+
+    document.body.appendChild(printClone);
+
+    const opt = {
+      margin: isLandscape ? [6, 6, 6, 6] : [8, 8, 8, 8],
+      filename: filename,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: "#FFFFFF",
+        logging: false,
+        windowWidth: canvasWidth,
+        scrollY: 0,
+        scrollX: 0
+      },
+      jsPDF: { unit: "mm", format: "a4", orientation: isLandscape ? "landscape" : "portrait" },
+      pagebreak: { mode: ["css", "legacy"] }
+    };
+
+    setTimeout(() => {
+      window.html2pdf().set(opt).from(printClone).save().then(() => {
+        showToast(`✅ Archivo PDF descargado correctamente: ${filename}`);
+        if (printClone.parentNode) printClone.parentNode.removeChild(printClone);
+      }).catch(err => {
+        console.warn("Aviso html2pdf fallback a impresion nativa:", err);
+        if (printClone.parentNode) printClone.parentNode.removeChild(printClone);
+        triggerActivePdfPrint();
+      });
+    }, 250);
+  } else {
+    triggerActivePdfPrint();
+  }
+  return;
+}
+
+function old_trigger_disabled_backup() {
 
   const isLandscape = CURRENT_PDF_PAYLOAD.orientation === "landscape";
   const canvasWidth = isLandscape ? 1040 : 760;
