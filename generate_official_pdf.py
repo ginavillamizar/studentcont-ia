@@ -37,7 +37,7 @@ class NumberedCanvas(canvas.Canvas):
         self.drawString(54, 750, "ELECTROVIVIENDA S.A.S  |  NIT 901.765.438-3")
         self.setFont("Helvetica", 8)
         self.setFillColor(colors.HexColor("#64748B"))
-        self.drawRightString(612 - 54, 750, "INFORME EMPRESARIAL CONSOLIDADO 2026")
+        self.drawRightString(612 - 54, 750, "INFORME EMPRESARIAL CONSOLIDADO NIIF 2026")
         
         self.setStrokeColor(colors.HexColor("#CBD5E1"))
         self.setLineWidth(0.75)
@@ -95,8 +95,8 @@ def build_pdf(filename):
         'CoverTitle',
         parent=styles['Title'],
         fontName='Helvetica-Bold',
-        fontSize=20,
-        leading=25,
+        fontSize=19,
+        leading=24,
         textColor=primary,
         alignment=1,
         spaceAfter=12
@@ -117,10 +117,10 @@ def build_pdf(filename):
         'SectionHeader',
         parent=styles['Heading1'],
         fontName='Helvetica-Bold',
-        fontSize=12,
-        leading=16,
+        fontSize=11.5,
+        leading=15,
         textColor=primary,
-        spaceBefore=14,
+        spaceBefore=12,
         spaceAfter=6,
         keepWithNext=True
     ))
@@ -132,8 +132,8 @@ def build_pdf(filename):
         fontSize=9.5,
         leading=13,
         textColor=gold,
-        spaceBefore=8,
-        spaceAfter=4,
+        spaceBefore=7,
+        spaceAfter=3,
         keepWithNext=True
     ))
 
@@ -141,10 +141,10 @@ def build_pdf(filename):
         'BodyCustom',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=8.3,
-        leading=12,
+        fontSize=8.2,
+        leading=11.8,
         textColor=slate,
-        spaceAfter=6
+        spaceAfter=5
     ))
 
     styles.add(ParagraphStyle(
@@ -154,16 +154,6 @@ def build_pdf(filename):
         fontSize=8,
         leading=11.5,
         textColor=primary
-    ))
-
-    styles.add(ParagraphStyle(
-        'TableHead',
-        parent=styles['Normal'],
-        fontName='Helvetica-Bold',
-        fontSize=7.2,
-        leading=9.5,
-        textColor=colors.white,
-        alignment=1
     ))
 
     styles.add(ParagraphStyle(
@@ -207,7 +197,7 @@ def build_pdf(filename):
     story = []
 
     # =========================================================================
-    # PÁGINA 1: PORTADA OFICIAL
+    # PÁGINA 1: PORTADA OFICIAL ACADÉMICO - EMPRESARIAL
     # =========================================================================
     story.append(Spacer(1, 35))
     story.append(Paragraph("SERVICIO NACIONAL DE APRENDIZAJE — SENA", styles['CoverInstitution']))
@@ -216,18 +206,18 @@ def build_pdf(filename):
     story.append(Spacer(1, 20))
     story.append(HRFlowable(width="60%", thickness=2, color=gold, spaceAfter=25, spaceBefore=0))
     
-    story.append(Paragraph("INFORME EMPRESARIAL Y AUDITORÍA DE ESTADOS FINANCIEROS CONSOLIDADOS", styles['CoverTitle']))
+    story.append(Paragraph("INFORME EMPRESARIAL Y AUDITORÍA DE LOS 5 ESTADOS FINANCIEROS CONSOLIDADOS NIIF", styles['CoverTitle']))
     story.append(Paragraph("EVALUACIÓN PERICIAL INTEGRAL DE 4 PERÍODOS (ENERO - ABRIL 2026)", styles['CoverSubtitle']))
     
     story.append(Paragraph("ENTIDAD AUDITADA:<br/><b>ELECTROVIVIENDA S.A.S</b><br/>NIT: 901.765.438-3<br/><i>«Calidad y energía para tu hogar»</i>", styles['CoverCenterText']))
     
-    story.append(HRFlowable(width="60%", thickness=1, color=colors.HexColor("#CBD5E1"), spaceAfter=30, spaceBefore=10))
+    story.append(HRFlowable(width="60%", thickness=1, color=colors.HexColor("#CBD5E1"), spaceAfter=28, spaceBefore=10))
     
     meta_data = [
         [Paragraph("<b>Autora / Investigadora Principal:</b>", styles['TableCellBold']), Paragraph("<b>Gina Villamizar</b> — Contadora Titular (T.P. 248960-T)", styles['TableCell'])],
         [Paragraph("<b>Instructor Académico:</b>", styles['TableCellBold']), Paragraph("<b>George Olago</b>", styles['TableCell'])],
         [Paragraph("<b>Representante Legal:</b>", styles['TableCellBold']), Paragraph("<b>Kevin Guerrero</b> (C.C. 1.098.765.432)", styles['TableCell'])],
-        [Paragraph("<b>Revisor Fiscal Colegiado:</b>", styles['TableCellBold']), Paragraph("<b>Marcela Gonzales</b> (T.P. 194820-T)", styles['TableCell'])],
+        [Paragraph("<b>Revisora Fiscal Colegiada:</b>", styles['TableCellBold']), Paragraph("<b>Marcela Gonzales</b> (T.P. 194820-T)", styles['TableCell'])],
         [Paragraph("<b>Plataforma &amp; Ecosistema:</b>", styles['TableCellBold']), Paragraph("STUDENTCONT.IA — Entorno Tecnológico Contable", styles['TableCell'])],
         [Paragraph("<b>Lugar y Fecha:</b>", styles['TableCellBold']), Paragraph("Bucaramanga, Santander — Año 2026", styles['TableCell'])],
     ]
@@ -256,12 +246,17 @@ def build_pdf(filename):
         [Paragraph("<b>1</b>", styles['TableCellBold']), Paragraph("Presentación Institucional de ELECTROVIVIENDA S.A.S (Misión, Visión, Valores)", styles['TableCell']), Paragraph("3", styles['TableCellRight'])],
         [Paragraph("<b>2</b>", styles['TableCellBold']), Paragraph("Objetivos del Análisis Financiero (General y Específicos)", styles['TableCell']), Paragraph("3", styles['TableCellRight'])],
         [Paragraph("<b>3</b>", styles['TableCellBold']), Paragraph("Guía Pedagógica: ¿Cómo interpretar la contabilidad sin tecnicismos?", styles['TableCell']), Paragraph("3", styles['TableCellRight'])],
-        [Paragraph("<b>4</b>", styles['TableCellBold']), Paragraph("Estados Financieros Consolidados: Balance General, Estado de Resultados y su Explicación Detallada", styles['TableCell']), Paragraph("4", styles['TableCellRight'])],
-        [Paragraph("<b>5</b>", styles['TableCellBold']), Paragraph("La Regla NIIF de los 12 Meses en Pasivos: Pasivo Corriente vs. Pasivo No Corriente", styles['TableCell']), Paragraph("5", styles['TableCellRight'])],
-        [Paragraph("<b>6</b>", styles['TableCellBold']), Paragraph("Estudio Pericial de Negocio en Marcha y Proyección de Supervivencia (Runway)", styles['TableCell']), Paragraph("6", styles['TableCellRight'])],
-        [Paragraph("<b>7</b>", styles['TableCellBold']), Paragraph("Matriz Completa de Indicadores Financieros NIIF: Fórmulas y Paso a Paso", styles['TableCell']), Paragraph("7", styles['TableCellRight'])],
-        [Paragraph("<b>8</b>", styles['TableCellBold']), Paragraph("Diagnóstico Estratégico, Punto de Equilibrio y Hoja de Ruta para Mayo", styles['TableCell']), Paragraph("8", styles['TableCellRight'])],
-        [Paragraph("<b>9</b>", styles['TableCellBold']), Paragraph("Dictamen Pericial y Certificación Oficial de Firmas", styles['TableCell']), Paragraph("8", styles['TableCellRight'])],
+        [Paragraph("<b>4</b>", styles['TableCellBold']), Paragraph("<b>Juego Completo de los 5 Estados Financieros NIIF Consolidados:</b>", styles['TableCellBold']), Paragraph("4-7", styles['TableCellRightBold'])],
+        [Paragraph("  4.1", styles['TableCell']), Paragraph("• Estado de Situación Financiera (ESF / Balance General Consolidado)", styles['TableCell']), Paragraph("4", styles['TableCellRight'])],
+        [Paragraph("  4.2", styles['TableCell']), Paragraph("• Estado de Resultados Integral (ERI / ER Consolidado)", styles['TableCell']), Paragraph("4", styles['TableCellRight'])],
+        [Paragraph("  4.3", styles['TableCell']), Paragraph("• Explicación Detallada del ESF y ER (Crónica Económica y Regla 12 Meses)", styles['TableCell']), Paragraph("5", styles['TableCellRight'])],
+        [Paragraph("  4.4", styles['TableCell']), Paragraph("• Estado de Cambios en el Patrimonio (ECP Consolidado)", styles['TableCell']), Paragraph("6", styles['TableCellRight'])],
+        [Paragraph("  4.5", styles['TableCell']), Paragraph("• Estado de Flujos de Efectivo (EFE Consolidado)", styles['TableCell']), Paragraph("6", styles['TableCellRight'])],
+        [Paragraph("  4.6", styles['TableCell']), Paragraph("• Estado de Notas y Revelaciones a los Estados Financieros (Notas 1 a 9)", styles['TableCell']), Paragraph("7", styles['TableCellRight'])],
+        [Paragraph("<b>5</b>", styles['TableCellBold']), Paragraph("Estudio Pericial de Negocio en Marcha y Proyección de Supervivencia (Runway)", styles['TableCell']), Paragraph("8", styles['TableCellRight'])],
+        [Paragraph("<b>6</b>", styles['TableCellBold']), Paragraph("Matriz Completa de Indicadores Financieros NIIF: Fórmulas y Paso a Paso", styles['TableCell']), Paragraph("9", styles['TableCellRight'])],
+        [Paragraph("<b>7</b>", styles['TableCellBold']), Paragraph("Diagnóstico Estratégico, Punto de Equilibrio y Hoja de Ruta para Mayo", styles['TableCell']), Paragraph("10", styles['TableCellRight'])],
+        [Paragraph("<b>8</b>", styles['TableCellBold']), Paragraph("Dictamen Pericial y Certificación Oficial de Firmas", styles['TableCell']), Paragraph("10", styles['TableCellRight'])],
     ]
     t_toc = Table(toc_data, colWidths=[35, 425, 44])
     t_toc.setStyle(TableStyle([
@@ -270,27 +265,27 @@ def build_pdf(filename):
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8FAFC")]),
-        ('TOPPADDING', (0,0), (-1,-1), 5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+        ('TOPPADDING', (0,0), (-1,-1), 4),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
         ('LEFTPADDING', (0,0), (-1,-1), 8),
         ('RIGHTPADDING', (0,0), (-1,-1), 8),
     ]))
     story.append(t_toc)
     
-    story.append(Spacer(1, 25))
+    story.append(Spacer(1, 20))
     
     decl_p = Paragraph(
-        "<b>DECLARACIÓN DE INTEGRIDAD TÉCNICA:</b> El presente informe consolida fidedignamente la contabilidad bajo "
-        "marcos técnicos normativos NIIF para Pymes del software <b>STUDENTCONT.IA</b>. Cumple cabalmente con las pautas "
-        "académicas del Centro de Servicios Empresariales y Turísticos del SENA Bucaramanga bajo la orientación del "
-        "instructor <b>George Olago</b>.", styles['CalloutText']
+        "<b>DECLARACIÓN DE INTEGRIDAD TÉCNICA (NIC 1 / SECCIÓN 3 NIIF PYMES):</b> El presente informe consolida fidedignamente "
+        "el juego completo de los <b>cinco (5) estados financieros</b> exigidos por los marcos técnicos contables oficiales colombianos "
+        "(Decreto 2420/2015). Cumple cabalmente con las pautas del Centro de Servicios Empresariales y Turísticos del SENA Bucaramanga "
+        "bajo la tutoría del instructor <b>George Olago</b>.", styles['CalloutText']
     )
     t_decl = Table([[decl_p]], colWidths=[504])
     t_decl.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#FEF3C7")),
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#F59E0B")),
-        ('TOPPADDING', (0,0), (-1,-1), 10),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 10),
+        ('TOPPADDING', (0,0), (-1,-1), 8),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 8),
         ('LEFTPADDING', (0,0), (-1,-1), 12),
         ('RIGHTPADDING', (0,0), (-1,-1), 12),
     ]))
@@ -339,7 +334,7 @@ def build_pdf(filename):
     story.append(Paragraph(
         "<b>OBJETIVO GENERAL:</b> Evaluar de forma integral, pedagógica y rigurosa la salud patrimonial, la solvencia, "
         "el nivel de endeudamiento a corto y largo plazo, y la viabilidad del principio de negocio en marcha de ELECTROVIVIENDA S.A.S "
-        "durante el primer cuatrimestre del año 2026 (Enero a Abril), traduciendo los indicadores a un lenguaje comprensible para la toma de decisiones.",
+        "a través de los cinco (5) estados financieros oficiales durante el primer cuatrimestre del año 2026 (Enero a Abril).",
         styles['BodyCustom']
     ))
     
@@ -370,18 +365,13 @@ def build_pdf(filename):
     story.append(PageBreak())
 
     # =========================================================================
-    # PÁGINA 4: ESTADOS FINANCIEROS CONSOLIDADOS (TABLA COMPARATIVA Y CUENTAS)
+    # PÁGINA 4: ESTADOS 1 Y 2: ESF (BALANCE) Y ESTADO DE RESULTADOS CONSOLIDADOS
     # =========================================================================
-    story.append(Paragraph("4. ESTADOS FINANCIEROS CONSOLIDADOS (ENERO - ABRIL 2026)", styles['SectionHeader']))
-    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=6, spaceBefore=0))
+    story.append(Paragraph("4.1. ESTADO DE SITUACIÓN FINANCIERA (ESF / BALANCE GENERAL CONSOLIDADO)", styles['SectionHeader']))
+    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=5, spaceBefore=0))
     
-    story.append(Paragraph(
-        "A continuación se presenta el Estado de Situación Financiera (Balance General) y el Estado de Resultados Integral "
-        "con sus cifras comparativas consolidadas mes a mes:", styles['BodyCustom']
-    ))
-    
-    estados_data = [
-        [Paragraph("<b>Cuenta / Concepto Contable NIIF</b>", styles['TableCellBold']), Paragraph("<b>Enero 2026</b>", styles['TableCellRightBold']), Paragraph("<b>Febrero 2026</b>", styles['TableCellRightBold']), Paragraph("<b>Marzo 2026</b>", styles['TableCellRightBold']), Paragraph("<b>Abril 2026</b>", styles['TableCellRightBold'])],
+    esf_data = [
+        [Paragraph("<b>Cuentas del Balance General (COP)</b>", styles['TableCellBold']), Paragraph("<b>Enero</b>", styles['TableCellRightBold']), Paragraph("<b>Febrero</b>", styles['TableCellRightBold']), Paragraph("<b>Marzo</b>", styles['TableCellRightBold']), Paragraph("<b>Abril</b>", styles['TableCellRightBold'])],
         [Paragraph("<b>Activo Corriente</b> (Caja, Bancos, Clientes, Inventarios)", styles['TableCell']), Paragraph("$ 36.000.000", styles['TableCellRight']), Paragraph("$ 173.342.532", styles['TableCellRight']), Paragraph("$ 157.342.532", styles['TableCellRight']), Paragraph("<b>$ 121.342.532</b>", styles['TableCellRightBold'])],
         [Paragraph("• Efectivo y Equivalentes (Caja y Bancos)", styles['TableCell']), Paragraph("$ 36.000.000", styles['TableCellRight']), Paragraph("$ 88.542.532", styles['TableCellRight']), Paragraph("$ 52.342.532", styles['TableCellRight']), Paragraph("$ 42.542.532", styles['TableCellRight'])],
         [Paragraph("• Deudores Comerciales (Clientes por cobrar)", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 49.600.000", styles['TableCellRight']), Paragraph("$ 47.000.000", styles['TableCellRight']), Paragraph("$ 23.600.000", styles['TableCellRight'])],
@@ -397,41 +387,65 @@ def build_pdf(filename):
         [Paragraph("<b>Patrimonio Neto</b> (Capital Social y Resultados)", styles['TableCellBold']), Paragraph("<b>$ 240.000.000</b>", styles['TableCellRightBold']), Paragraph("<b>$ 266.927.472</b>", styles['TableCellRightBold']), Paragraph("<b>$ 249.047.013</b>", styles['TableCellRightBold']), Paragraph("<b>$ 240.560.440</b>", styles['TableCellRightBold'])],
         [Paragraph("• Capital Social Aportado", styles['TableCell']), Paragraph("$ 240.000.000", styles['TableCellRight']), Paragraph("$ 240.000.000", styles['TableCellRight']), Paragraph("$ 240.000.000", styles['TableCellRight']), Paragraph("$ 240.000.000", styles['TableCellRight'])],
         [Paragraph("• Resultados Acumulados y del Ejercicio", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("+$ 26.927.472", styles['TableCellRight']), Paragraph("+$ 9.047.013", styles['TableCellRight']), Paragraph("+$ 560.440", styles['TableCellRight'])],
-        
-        [Paragraph("<b>Ingresos Operacionales (Ventas Netas)</b>", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 61.300.000", styles['TableCellRight']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("<b>$ 8.156.500</b>", styles['TableCellRightBold'])],
-        [Paragraph("<b>Costo de Ventas</b>", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 41.640.000", styles['TableCellRight']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 3.288.000", styles['TableCellRight'])],
-        [Paragraph("<b>Utilidad Bruta</b>", styles['TableCellBold']), Paragraph("$ 0", styles['TableCellRightBold']), Paragraph("<b>$ 19.660.000</b>", styles['TableCellRightBold']), Paragraph("$ 0", styles['TableCellRightBold']), Paragraph("<b>$ 4.868.500</b>", styles['TableCellRightBold'])],
-        [Paragraph("<b>Gastos Operacionales (Administración y Ventas)</b>", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 3.213.918", styles['TableCellRight']), Paragraph("$ 17.154.577", styles['TableCellRight']), Paragraph("$ 12.755.658", styles['TableCellRight'])],
-        [Paragraph("<b>RESULTADO NETO DEL PERÍODO</b>", styles['TableCellBold']), Paragraph("<b>$ 0</b>", styles['TableCellRightBold']), Paragraph("<font color='#059669'><b>+$ 16.446.082</b></font>", styles['TableCellRightBold']), Paragraph("<font color='#DC2626'><b>-$ 17.154.577</b></font>", styles['TableCellRightBold']), Paragraph("<font color='#DC2626'><b>-$ 7.887.158</b></font>", styles['TableCellRightBold'])],
     ]
-    t_est = Table(estados_data, colWidths=[204, 75, 75, 75, 75])
-    t_est.setStyle(TableStyle([
+    t_esf = Table(esf_data, colWidths=[204, 75, 75, 75, 75])
+    t_esf.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#0A2540")),
         ('TEXTCOLOR', (0,0), (-1,0), colors.white),
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8FAFC")]),
-        ('TOPPADDING', (0,0), (-1,-1), 2.2),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 2.2),
+        ('TOPPADDING', (0,0), (-1,-1), 2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
         ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('BACKGROUND', (0,7), (-1,7), colors.HexColor("#EEF2FF")),
         ('BACKGROUND', (0,10), (-1,10), colors.HexColor("#EEF2FF")),
         ('BACKGROUND', (0,11), (-1,11), colors.HexColor("#FEF3C7")),
-        ('BACKGROUND', (0,18), (-1,18), colors.HexColor("#F1F5F9")),
     ]))
-    story.append(t_est)
+    story.append(t_esf)
+
+    story.append(Spacer(1, 6))
+    story.append(Paragraph("4.2. ESTADO DE RESULTADOS INTEGRAL (ERI / ER CONSOLIDADO)", styles['SectionHeader']))
+    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=5, spaceBefore=0))
+    
+    er_data = [
+        [Paragraph("<b>Renglón del Estado de Resultados (COP)</b>", styles['TableCellBold']), Paragraph("<b>Enero</b>", styles['TableCellRightBold']), Paragraph("<b>Febrero</b>", styles['TableCellRightBold']), Paragraph("<b>Marzo</b>", styles['TableCellRightBold']), Paragraph("<b>Abril</b>", styles['TableCellRightBold'])],
+        [Paragraph("<b>Ingresos Operacionales (Ventas Netas)</b>", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 61.300.000", styles['TableCellRight']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("<b>$ 8.156.500</b>", styles['TableCellRightBold'])],
+        [Paragraph("<b>Costo de Ventas (Mercancía)</b>", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 41.640.000", styles['TableCellRight']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 3.288.000", styles['TableCellRight'])],
+        [Paragraph("<b>Utilidad Bruta en Ventas</b>", styles['TableCellBold']), Paragraph("$ 0", styles['TableCellRightBold']), Paragraph("<b>$ 19.660.000</b>", styles['TableCellRightBold']), Paragraph("$ 0", styles['TableCellRightBold']), Paragraph("<b>$ 4.868.500</b>", styles['TableCellRightBold'])],
+        [Paragraph("• Margen Bruto Comercial (%)", styles['TableCell']), Paragraph("0,00 %", styles['TableCellRight']), Paragraph("32,07 %", styles['TableCellRight']), Paragraph("N/A", styles['TableCellRight']), Paragraph("<b>59,69 %</b>", styles['TableCellRightBold'])],
+        [Paragraph("<b>Gastos Operacionales (Administración y Ventas)</b>", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 3.213.918", styles['TableCellRight']), Paragraph("$ 17.154.577", styles['TableCellRight']), Paragraph("$ 12.755.658", styles['TableCellRight'])],
+        [Paragraph("• Gastos de Personal (Nómina)", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 2.450.000", styles['TableCellRight']), Paragraph("$ 10.450.000", styles['TableCellRight']), Paragraph("$ 9.250.000", styles['TableCellRight'])],
+        [Paragraph("• Arriendos, Servicios y Tributos", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 763.918", styles['TableCellRight']), Paragraph("$ 6.704.577", styles['TableCellRight']), Paragraph("$ 3.505.658", styles['TableCellRight'])],
+        [Paragraph("<b>RESULTADO NETO DEL EJERCICIO</b>", styles['TableCellBold']), Paragraph("<b>$ 0</b>", styles['TableCellRightBold']), Paragraph("<font color='#059669'><b>+$ 16.446.082</b></font>", styles['TableCellRightBold']), Paragraph("<font color='#DC2626'><b>-$ 17.154.577</b></font>", styles['TableCellRightBold']), Paragraph("<font color='#DC2626'><b>-$ 7.887.158</b></font>", styles['TableCellRightBold'])],
+    ]
+    t_er = Table(er_data, colWidths=[204, 75, 75, 75, 75])
+    t_er.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#0A2540")),
+        ('TEXTCOLOR', (0,0), (-1,0), colors.white),
+        ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
+        ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8FAFC")]),
+        ('TOPPADDING', (0,0), (-1,-1), 2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2),
+        ('LEFTPADDING', (0,0), (-1,-1), 5),
+        ('RIGHTPADDING', (0,0), (-1,-1), 5),
+        ('BACKGROUND', (0,3), (-1,3), colors.HexColor("#EEF2FF")),
+        ('BACKGROUND', (0,8), (-1,8), colors.HexColor("#F1F5F9")),
+    ]))
+    story.append(t_er)
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PÁGINA 5: EXPLICACIÓN DETALLADA DE LOS ESTADOS CONSOLIDADOS
+    # PÁGINA 5: EXPLICACIÓN DETALLADA DEL ESF Y ER (CRÓNICA Y REGLA 12 MESES)
     # =========================================================================
-    story.append(Paragraph("4.1. EXPLICACIÓN DETALLADA DE LOS ESTADOS CONSOLIDADOS Y SU EVOLUCIÓN", styles['SectionHeader']))
-    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=8, spaceBefore=0))
+    story.append(Paragraph("4.3. EXPLICACIÓN DETALLADA DEL BALANCE GENERAL Y ESTADO DE RESULTADOS", styles['SectionHeader']))
+    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=6, spaceBefore=0))
     
     story.append(Paragraph(
-        "Para comprender a fondo el comportamiento de ELECTROVIVIENDA S.A.S, desglosamos la lógica económica de cada mes:",
+        "A continuación se presenta el análisis económico mes a mes que explica cómo interactúan los ingresos, costos y deudas:",
         styles['BodyCustom']
     ))
     
@@ -474,50 +488,160 @@ def build_pdf(filename):
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8FAFC")]),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
-        ('LEFTPADDING', (0,0), (-1,-1), 6),
-        ('RIGHTPADDING', (0,0), (-1,-1), 6),
-        ('BACKGROUND', (0,4), (-1,4), colors.HexColor("#ECFDF5")),
-    ]))
-    story.append(t_expl)
-    
-    story.append(Spacer(1, 8))
-    story.append(Paragraph("5. LA REGLA NIIF DE LOS 12 MESES EN EL PASIVO", styles['SectionHeader']))
-    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=6, spaceBefore=0))
-    
-    story.append(Paragraph(
-        "<b>ACLARACIÓN TÉCNICA FUNDAMENTAL:</b> Bajo las Normas Internacionales de Información Financiera (NIIF), "
-        "el <b>Pasivo Corriente</b> comprende <i>única y exclusivamente</i> aquellas obligaciones que deben cancelarse en un plazo "
-        "<b>máximo de 12 meses</b>. Cualquier deuda pactada a un plazo superior a 12 meses se clasifica como <b>Pasivo No Corriente</b>.", styles['BodyCustom']
-    ))
-    
-    pasivo_obs = [
-        [Paragraph("<b>Componente de la Deuda</b>", styles['TableCellBold']), Paragraph("<b>Plazo Contractual</b>", styles['TableCellBold']), Paragraph("<b>Saldo en Abril 2026</b>", styles['TableCellBold']), Paragraph("<b>Porcentaje del Activo</b>", styles['TableCellBold']), Paragraph("<b>Impacto Financiero Real</b>", styles['TableCellBold'])],
-        [Paragraph("<b>Pasivo Corriente</b>", styles['TableCellBold']), Paragraph("Menor a 12 meses", styles['TableCell']), Paragraph("$ 53.927.428", styles['TableCellBold']), Paragraph("<b>16,28 %</b>", styles['TableCellBold']), Paragraph("Deuda exigible a corto plazo (proveedores y nómina). Cubierta 2,25 veces con activo corriente.", styles['TableCell'])],
-        [Paragraph("<b>Pasivo No Corriente</b>", styles['TableCellBold']), Paragraph("Mayor a 12 meses", styles['TableCell']), Paragraph("$ 36.744.815", styles['TableCellBold']), Paragraph("<b>11,09 %</b>", styles['TableCellBold']), Paragraph("Créditos pactados a mediano y largo plazo. No presionan la liquidez del mes en curso.", styles['TableCell'])],
-        [Paragraph("<b>Deuda Total</b>", styles['TableCellBold']), Paragraph("Consolidado", styles['TableCell']), Paragraph("$ 90.672.243", styles['TableCellBold']), Paragraph("<b>27,37 %</b>", styles['TableCellBold']), Paragraph("Saneada. Solo $27,37 de cada $100 están adeudados. El 72,63% está 100% libre de deudas.", styles['TableCell'])],
-    ]
-    t_pasi = Table(pasivo_obs, colWidths=[90, 80, 85, 75, 174])
-    t_pasi.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#0A2540")),
-        ('TEXTCOLOR', (0,0), (-1,0), colors.white),
-        ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
-        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
         ('TOPPADDING', (0,0), (-1,-1), 3),
         ('BOTTOMPADDING', (0,0), (-1,-1), 3),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
         ('RIGHTPADDING', (0,0), (-1,-1), 5),
-        ('BACKGROUND', (0,3), (-1,3), colors.HexColor("#E0F2FE")),
+        ('BACKGROUND', (0,4), (-1,4), colors.HexColor("#ECFDF5")),
     ]))
-    story.append(t_pasi)
+    story.append(t_expl)
+    
+    story.append(Spacer(1, 6))
+    story.append(Paragraph("<b>LA REGLA NIIF DE LOS 12 MESES EN EL PASIVO:</b>", styles['SubSectionHeader']))
+    story.append(Paragraph(
+        "Bajo NIIF para PYMES, el <b>Pasivo Corriente</b> agrupa únicamente obligaciones a pagar en <b>menos de 12 meses</b>. "
+        "Las deudas pactadas a más de 12 meses son <b>Pasivo No Corriente</b>. En ELECTROVIVIENDA, la deuda a corto plazo "
+        "en abril es de solo <b>$53.927.428 (16,28% del activo)</b> y está cubierta 2,25 veces con los activos corrientes.",
+        styles['BodyCustom']
+    ))
+    
+    story.append(PageBreak())
+
+    # =========================================================================
+    # PÁGINA 6: ESTADOS 3 Y 4: ECP (PATRIMONIO) Y EFE (FLUJO DE EFECTIVO)
+    # =========================================================================
+    story.append(Paragraph("4.4. ESTADO DE CAMBIOS EN EL PATRIMONIO (ECP CONSOLIDADO)", styles['SectionHeader']))
+    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=5, spaceBefore=0))
+    
+    ecp_data = [
+        [Paragraph("<b>Concepto Patrimonial (COP)</b>", styles['TableCellBold']), Paragraph("<b>Capital Social</b>", styles['TableCellRightBold']), Paragraph("<b>Resultados Acumulados</b>", styles['TableCellRightBold']), Paragraph("<b>Resultado del Ejercicio</b>", styles['TableCellRightBold']), Paragraph("<b>TOTAL PATRIMONIO</b>", styles['TableCellRightBold'])],
+        [Paragraph("<b>Saldo al 1 de Enero de 2026</b>", styles['TableCellBold']), Paragraph("$ 240.000.000", styles['TableCellRight']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("<b>$ 240.000.000</b>", styles['TableCellRightBold'])],
+        [Paragraph("Movimiento Neto Febrero (Utilidad del mes)", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("+$ 16.446.082", styles['TableCellRight']), Paragraph("+$ 16.446.082", styles['TableCellRight'])],
+        [Paragraph("<b>Saldo al 28 de Febrero de 2026</b>", styles['TableCellBold']), Paragraph("$ 240.000.000", styles['TableCellRight']), Paragraph("+$ 10.481.390", styles['TableCellRight']), Paragraph("+$ 16.446.082", styles['TableCellRight']), Paragraph("<b>$ 266.927.472</b>", styles['TableCellRightBold'])],
+        [Paragraph("Movimiento Neto Marzo (Pérdida del mes)", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("+$ 26.201.590", styles['TableCellRight']), Paragraph("-$ 17.154.577", styles['TableCellRight']), Paragraph("-$ 17.154.577", styles['TableCellRight'])],
+        [Paragraph("<b>Saldo al 31 de Marzo de 2026</b>", styles['TableCellBold']), Paragraph("$ 240.000.000", styles['TableCellRight']), Paragraph("+$ 26.201.590", styles['TableCellRight']), Paragraph("-$ 17.154.577", styles['TableCellRight']), Paragraph("<b>$ 249.047.013</b>", styles['TableCellRightBold'])],
+        [Paragraph("Movimiento Neto Abril (Pérdida reducida)", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("+$ 8.447.598", styles['TableCellRight']), Paragraph("-$ 7.887.158", styles['TableCellRight']), Paragraph("-$ 7.887.158", styles['TableCellRight'])],
+        [Paragraph("<b>SALDO FINAL AL 30 DE ABRIL DE 2026</b>", styles['TableCellBold']), Paragraph("<b>$ 240.000.000</b>", styles['TableCellRightBold']), Paragraph("<b>+$ 8.447.598</b>", styles['TableCellRightBold']), Paragraph("<b>-$ 7.887.158</b>", styles['TableCellRightBold']), Paragraph("<b>$ 240.560.440</b>", styles['TableCellRightBold'])],
+    ]
+    t_ecp = Table(ecp_data, colWidths=[164, 85, 85, 85, 85])
+    t_ecp.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#0A2540")),
+        ('TEXTCOLOR', (0,0), (-1,0), colors.white),
+        ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
+        ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8FAFC")]),
+        ('TOPPADDING', (0,0), (-1,-1), 2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2),
+        ('LEFTPADDING', (0,0), (-1,-1), 5),
+        ('RIGHTPADDING', (0,0), (-1,-1), 5),
+        ('BACKGROUND', (0,7), (-1,7), colors.HexColor("#FEF3C7")),
+    ]))
+    story.append(t_ecp)
+
+    story.append(Spacer(1, 6))
+    story.append(Paragraph("4.5. ESTADO DE FLUJOS DE EFECTIVO (EFE CONSOLIDADO - MÉTODO DIRECTO/INDIRECTO)", styles['SectionHeader']))
+    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=5, spaceBefore=0))
+    
+    efe_data = [
+        [Paragraph("<b>Actividades de Flujo de Fondos (COP)</b>", styles['TableCellBold']), Paragraph("<b>Enero</b>", styles['TableCellRightBold']), Paragraph("<b>Febrero</b>", styles['TableCellRightBold']), Paragraph("<b>Marzo</b>", styles['TableCellRightBold']), Paragraph("<b>Abril</b>", styles['TableCellRightBold'])],
+        [Paragraph("<b>Flujos Netos de Actividades de Operación</b>", styles['TableCellBold']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("+$ 12.942.532", styles['TableCellRight']), Paragraph("-$ 36.200.000", styles['TableCellRight']), Paragraph("-$ 9.800.000", styles['TableCellRight'])],
+        [Paragraph("• Recaudos por ventas y cobranza de clientes", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("+$ 28.140.000", styles['TableCellRight']), Paragraph("+$ 2.600.000", styles['TableCellRight']), Paragraph("+$ 31.756.500", styles['TableCellRight'])],
+        [Paragraph("• Pagos a proveedores de mercancías", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("-$ 12.000.000", styles['TableCellRight']), Paragraph("-$ 21.645.423", styles['TableCellRight']), Paragraph("-$ 28.800.842", styles['TableCellRight'])],
+        [Paragraph("• Pagos de nómina y gastos operativos", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("-$ 3.197.468", styles['TableCellRight']), Paragraph("-$ 17.154.577", styles['TableCellRight']), Paragraph("-$ 12.755.658", styles['TableCellRight'])],
+        [Paragraph("<b>Flujos Netos de Actividades de Inversión</b>", styles['TableCellBold']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("-$ 0", styles['TableCellRight']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 0", styles['TableCellRight'])],
+        [Paragraph("<b>Flujos Netos de Actividades de Financiación</b>", styles['TableCellBold']), Paragraph("+$ 36.000.000", styles['TableCellRight']), Paragraph("+$ 39.600.000", styles['TableCellRight']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 0", styles['TableCellRight'])],
+        [Paragraph("<b>VARIACIÓN NETA DE EFECTIVO DEL MES</b>", styles['TableCellBold']), Paragraph("<b>+$ 36.000.000</b>", styles['TableCellRightBold']), Paragraph("<b>+$ 52.542.532</b>", styles['TableCellRightBold']), Paragraph("<b>-$ 36.200.000</b>", styles['TableCellRightBold']), Paragraph("<b>-$ 9.800.000</b>", styles['TableCellRightBold'])],
+        [Paragraph("Saldo Inicial de Efectivo", styles['TableCell']), Paragraph("$ 0", styles['TableCellRight']), Paragraph("$ 36.000.000", styles['TableCellRight']), Paragraph("$ 88.542.532", styles['TableCellRight']), Paragraph("$ 52.342.532", styles['TableCellRight'])],
+        [Paragraph("<b>SALDO FINAL DE EFECTIVO Y EQUIVALENTES</b>", styles['TableCellBold']), Paragraph("<b>$ 36.000.000</b>", styles['TableCellRightBold']), Paragraph("<b>$ 88.542.532</b>", styles['TableCellRightBold']), Paragraph("<b>$ 52.342.532</b>", styles['TableCellRightBold']), Paragraph("<b>$ 42.542.532</b>", styles['TableCellRightBold'])],
+    ]
+    t_efe = Table(efe_data, colWidths=[204, 75, 75, 75, 75])
+    t_efe.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#0A2540")),
+        ('TEXTCOLOR', (0,0), (-1,0), colors.white),
+        ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
+        ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8FAFC")]),
+        ('TOPPADDING', (0,0), (-1,-1), 2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2),
+        ('LEFTPADDING', (0,0), (-1,-1), 5),
+        ('RIGHTPADDING', (0,0), (-1,-1), 5),
+        ('BACKGROUND', (0,7), (-1,7), colors.HexColor("#EEF2FF")),
+        ('BACKGROUND', (0,9), (-1,9), colors.HexColor("#ECFDF5")),
+    ]))
+    story.append(t_efe)
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PÁGINA 6: NEGOCIO EN MARCHA Y SUPERVIVENCIA (RUNWAY)
+    # PÁGINA 7: ESTADO 5: NOTAS Y REVELACIONES A LOS ESTADOS FINANCIEROS (NIIF)
     # =========================================================================
-    story.append(Paragraph("6. DICTAMEN DE NEGOCIO EN MARCHA Y RUNWAY DE SUPERVIVENCIA", styles['SectionHeader']))
+    story.append(Paragraph("4.6. ESTADO DE NOTAS Y REVELACIONES A LOS ESTADOS FINANCIEROS (NIIF PARA PYMES)", styles['SectionHeader']))
+    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=6, spaceBefore=0))
+    
+    story.append(Paragraph(
+        "Bajo la Sección 8 de NIIF para PYMES, las notas proporcionan descripciones narrativas o desagregaciones de partidas:",
+        styles['BodyCustom']
+    ))
+    
+    notas_data = [
+        [Paragraph("<b>Número &amp; Título de la Nota</b>", styles['TableCellBold']), Paragraph("<b>Políticas Contables y Revelación Específica en ELECTROVIVIENDA S.A.S</b>", styles['TableCellBold'])],
+        [
+            Paragraph("<b>NOTA 1: Entidad Reportante y Objeto</b>", styles['TableCellBold']),
+            Paragraph("ELECTROVIVIENDA S.A.S, sociedad por acciones simplificada con NIT 901.765.438-3, domiciliada en Bucaramanga. Dedicada a la comercialización de electrodomésticos y gasodomésticos con régimen responsable de IVA.", styles['TableCell'])
+        ],
+        [
+            Paragraph("<b>NOTA 2: Base de Preparación NIIF</b>", styles['TableCellBold']),
+            Paragraph("Estados financieros preparados bajo NIIF para PYMES (Decreto 2420/2015, Grupo 2). Se aplica la hipótesis fundamental de Negocio en Marcha y la base contable de acumulación o devengo en pesos colombianos (COP).", styles['TableCell'])
+        ],
+        [
+            Paragraph("<b>NOTA 3: Efectivo y Equivalentes</b>", styles['TableCellBold']),
+            Paragraph("Saldo al 30 de abril: <b>$42.542.532</b> en cuentas corrientes bancarias y caja menor. Recursos de disponibilidad inmediata sin embargos, pignorado o restricciones para su uso.", styles['TableCell'])
+        ],
+        [
+            Paragraph("<b>NOTA 4: Deudores Comerciales (Clientes)</b>", styles['TableCellBold']),
+            Paragraph("Saldo al 30 de abril: <b>$23.600.000</b> por ventas a cuotas. La cartera se redujo un 50% frente a marzo ($47M) gracias a la gestión de cobro. No se evidencian indicios de deterioro o cartera morosa material.", styles['TableCell'])
+        ],
+        [
+            Paragraph("<b>NOTA 5: Inventarios en Bodega</b>", styles['TableCellBold']),
+            Paragraph("Saldo al 30 de abril: <b>$43.200.000</b> valuados al costo de adquisición mediante sistema permanente en kardex. Comprende televisores, lavadoras y neveras en exhibición, sin deterioro físico ni obsolescencia.", styles['TableCell'])
+        ],
+        [
+            Paragraph("<b>NOTA 6: Propiedad, Planta y Equipo</b>", styles['TableCellBold']),
+            Paragraph("Saldo neto al 30 de abril: <b>$209.890.151</b>. Incluye inmueble propio, vitrinas y vehículos de transporte, medidos al costo histórico menos depreciación acumulada por método de línea recta.", styles['TableCell'])
+        ],
+        [
+            Paragraph("<b>NOTA 7: Pasivos Financieros y Proveedores</b>", styles['TableCellBold']),
+            Paragraph("Pasivo Corriente (< 12 meses): <b>$53.927.428</b> (proveedores y nómina). Pasivo No Corriente (> 12 meses): <b>$36.744.815</b> (crédito bancario pactado a largo plazo). Total deuda: $90.672.243.", styles['TableCell'])
+        ],
+        [
+            Paragraph("<b>NOTA 8: Capital Social y Patrimonio</b>", styles['TableCellBold']),
+            Paragraph("Capital suscrito y pagado: <b>$240.000.000</b>. Patrimonio total: <b>$240.560.440</b> (100,23% del capital). Se constata formalmente la NO ocurrencia de causal de disolución del Art. 457 del Código de Comercio.", styles['TableCell'])
+        ],
+        [
+            Paragraph("<b>NOTA 9: Hechos Posteriores al Cierre</b>", styles['TableCellBold']),
+            Paragraph("Entre el 30 de abril y la fecha de este informe, no se presentaron hechos materiales que alteren las cifras. Se ratifica la política de rotación de inventarios existentes en mayo sin adquirir deudas.", styles['TableCell'])
+        ],
+    ]
+    t_not = Table(notas_data, colWidths=[140, 364])
+    t_not.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#0A2540")),
+        ('TEXTCOLOR', (0,0), (-1,0), colors.white),
+        ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
+        ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8FAFC")]),
+        ('TOPPADDING', (0,0), (-1,-1), 2.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
+        ('LEFTPADDING', (0,0), (-1,-1), 5),
+        ('RIGHTPADDING', (0,0), (-1,-1), 5),
+    ]))
+    story.append(t_not)
+
+    story.append(PageBreak())
+
+    # =========================================================================
+    # PÁGINA 8: NEGOCIO EN MARCHA Y SUPERVIVENCIA (RUNWAY)
+    # =========================================================================
+    story.append(Paragraph("5. DICTAMEN DE NEGOCIO EN MARCHA Y RUNWAY DE SUPERVIVENCIA", styles['SectionHeader']))
     story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=6, spaceBefore=0))
     
     story.append(Paragraph(
@@ -582,9 +706,9 @@ def build_pdf(filename):
     story.append(PageBreak())
 
     # =========================================================================
-    # PÁGINA 7: MATRIZ COMPLETA DE INDICADORES FINANCIEROS (FÓRMULAS Y PASO A PASO)
+    # PÁGINA 9: MATRIZ COMPLETA DE INDICADORES FINANCIEROS (FÓRMULAS Y PASO A PASO)
     # =========================================================================
-    story.append(Paragraph("7. MATRIZ COMPLETA: INDICADORES FINANCIEROS Y SU SIGNIFICADO EN PALABRAS SIMPLES", styles['SectionHeader']))
+    story.append(Paragraph("6. MATRIZ COMPLETA: INDICADORES FINANCIEROS Y SU SIGNIFICADO EN PALABRAS SIMPLES", styles['SectionHeader']))
     story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=6, spaceBefore=0))
     
     story.append(Paragraph(
@@ -741,9 +865,9 @@ def build_pdf(filename):
     story.append(PageBreak())
 
     # =========================================================================
-    # PÁGINA 8: CONCLUSIONES, PUNTO DE EQUILIBRIO Y FIRMAS OFICIALES
+    # PÁGINA 10: CONCLUSIONES, PUNTO DE EQUILIBRIO Y FIRMAS OFICIALES
     # =========================================================================
-    story.append(Paragraph("8. CONCLUSIONES ESTRATÉGICAS Y PLAN DE ACCIÓN PARA MAYO", styles['SectionHeader']))
+    story.append(Paragraph("7. CONCLUSIONES ESTRATÉGICAS Y PLAN DE ACCIÓN PARA MAYO", styles['SectionHeader']))
     story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=6, spaceBefore=0))
     
     concl_p = [
@@ -756,15 +880,15 @@ def build_pdf(filename):
         ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F8FAFC")),
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
-        ('TOPPADDING', (0,0), (-1,-1), 5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+        ('TOPPADDING', (0,0), (-1,-1), 4),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
         ('LEFTPADDING', (0,0), (-1,-1), 8),
         ('RIGHTPADDING', (0,0), (-1,-1), 8),
     ]))
     story.append(t_concl)
     
     story.append(Spacer(1, 10))
-    story.append(Paragraph("9. CERTIFICACIÓN PERICIAL Y FIRMAS DE AUTORIDADES", styles['SectionHeader']))
+    story.append(Paragraph("8. CERTIFICACIÓN PERICIAL Y FIRMAS DE AUTORIDADES", styles['SectionHeader']))
     story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=10, spaceBefore=0))
     
     story.append(Paragraph(
@@ -773,7 +897,7 @@ def build_pdf(filename):
         styles['BodyCustom']
     ))
     
-    story.append(Spacer(1, 20))
+    story.append(Spacer(1, 25))
     
     firmas_data = [
         [
