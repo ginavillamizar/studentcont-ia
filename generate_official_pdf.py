@@ -104,9 +104,9 @@ def create_chart_funding():
     pie.width = 94
     pie.height = 94
     pie.data = [72.63, 16.28, 11.09]
-    pie.slices[0].fillColor = colors.HexColor('#0A2540') # Patrimonio
-    pie.slices[1].fillColor = colors.HexColor('#DC2626') # Pasivo CP
-    pie.slices[2].fillColor = colors.HexColor('#2563EB') # Pasivo LP
+    pie.slices[0].fillColor = colors.HexColor('#10B981') # Patrimonio Neto (Verde)
+    pie.slices[1].fillColor = colors.HexColor('#EF4444') # Pasivo CP (Rojo)
+    pie.slices[2].fillColor = colors.HexColor('#F59E0B') # Pasivo LP (Naranja)
     d.add(pie)
     
     lx = 170
@@ -134,21 +134,40 @@ def create_chart_waterfall():
     chart.height = 75
     chart.width = 445
     chart.data = [
-        [8.16, 3.29, 4.87, 12.76, 7.89] # Millones COP
+        [0.0, 185.95, 0.0, 8.16],   # Ventas Netas ($M)
+        [0.0, 126.31, 0.0, 3.29],   # Costo de Ventas ($M)
+        [0.0, 16.45, 0.0, 0.0],     # Ganancia Neta Febrero ($M)
+        [0.0, 0.0, 17.15, 7.89]     # Pérdida Neta Marzo y Abril ($M)
     ]
-    chart.categoryAxis.categoryNames = ['Ventas Netas', 'Costo Venta', 'Ganancia Bruta', 'Gastos Fijos', 'Pérdida Mes']
+    chart.categoryAxis.categoryNames = ['Enero', 'Febrero', 'Marzo', 'Abril']
     chart.categoryAxis.labels.fontSize = 7.5
     chart.categoryAxis.labels.fontName = 'Helvetica-Bold'
+    chart.categoryAxis.labels.fillColor = colors.HexColor('#0A2540')
     chart.valueAxis.valueMin = 0
-    chart.valueAxis.valueMax = 15
-    chart.valueAxis.valueStep = 3
+    chart.valueAxis.valueMax = 200
+    chart.valueAxis.valueStep = 50
     chart.valueAxis.labels.fontSize = 7
-    chart.bars[0].fillColor = colors.HexColor('#059669') # Ventas
-    chart.bars[1].fillColor = colors.HexColor('#64748B') # Costo
-    chart.bars[2].fillColor = colors.HexColor('#D97706') # Ganancia
-    chart.bars[3].fillColor = colors.HexColor('#DC2626') # Gastos
-    chart.bars[4].fillColor = colors.HexColor('#F59E0B') # Pérdida
+    chart.valueAxis.labels.fontName = 'Helvetica'
+    chart.bars[0].fillColor = colors.HexColor('#10B981') # Ventas: Verde
+    chart.bars[1].fillColor = colors.HexColor('#F59E0B') # Costo: Naranja
+    chart.bars[2].fillColor = colors.HexColor('#3B82F6') # Utilidad: Azul
+    chart.bars[3].fillColor = colors.HexColor('#EF4444') # Pérdida: Rojo
     d.add(chart)
+    
+    # Legend
+    leg_x = 75
+    leg_y = 98
+    d.add(Rect(leg_x, leg_y, 9, 7, fillColor=colors.HexColor('#10B981'), strokeColor=None))
+    d.add(String(leg_x + 12, leg_y + 1, "Ventas Netas", fontName="Helvetica-Bold", fontSize=7, fillColor=colors.HexColor('#10B981')))
+    
+    d.add(Rect(leg_x + 85, leg_y, 9, 7, fillColor=colors.HexColor('#F59E0B'), strokeColor=None))
+    d.add(String(leg_x + 97, leg_y + 1, "Costo Ventas", fontName="Helvetica-Bold", fontSize=7, fillColor=colors.HexColor('#F59E0B')))
+
+    d.add(Rect(leg_x + 175, leg_y, 9, 7, fillColor=colors.HexColor('#3B82F6'), strokeColor=None))
+    d.add(String(leg_x + 187, leg_y + 1, "Ganancia (+)", fontName="Helvetica-Bold", fontSize=7, fillColor=colors.HexColor('#3B82F6')))
+
+    d.add(Rect(leg_x + 265, leg_y, 9, 7, fillColor=colors.HexColor('#EF4444'), strokeColor=None))
+    d.add(String(leg_x + 277, leg_y + 1, "Pérdida (-)", fontName="Helvetica-Bold", fontSize=7, fillColor=colors.HexColor('#EF4444')))
     return d
 
 def create_chart_solvency():
@@ -888,49 +907,52 @@ def build_pdf(filename):
     story.append(PageBreak())
 
     # =========================================================================
-    # PÁGINA 8: GRÁFICAS FINANCIERAS (PARTE 1: BALANCE Y FUENTES DE FINANCIACIÓN)
-    # =========================================================================
-    story.append(Paragraph("5. DIAGNÓSTICO VISUAL Y GRÁFICAS FINANCIERAS NIIF (PARTE 1)", styles['SectionHeader']))
-    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=6, spaceBefore=0))
+    # PÁGINA 8: GRÁFICAS FINANCIERAS (PARTE 1)
+    story.append(Paragraph("5. DIAGNÓSTICO VISUAL: EXPLICACIÓN DETALLADA DE CADA GRÁFICA DEL SISTEMA (PARTE 1)", styles['SectionHeader']))
+    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=5, spaceBefore=0))
     
-    story.append(Paragraph("<b>GRÁFICA 1: ESTRUCTURA COMPARATIVA DEL BALANCE GENERAL (ENERO A ABRIL 2026)</b>", styles['SubSectionHeader']))
+    # Gráfica 1
+    story.append(Paragraph("<b>🏛️ Gráfica 1: Evolución de Activo, Pasivo y Patrimonio (4 Períodos)</b> &nbsp; <font color='#059669'>[🟢 Solvente]</font>", styles['SubSectionHeader']))
     story.append(create_chart_balance())
     
     g1_expl = Paragraph(
-        "<b>📊 Explicación Didáctica de la Gráfica 1:</b><br/>"
-        "• <b>Barra Azul (Activos):</b> Creció de \$240M a \$387M en febrero por la apertura comercial y se estabilizó en <b>\$331,2M</b> en abril.<br/>"
-        "• <b>Barra Roja (Pasivos/Deudas):</b> De \$0 en enero subió a \$120M para surtir vitrinas, pero en abril <b>cayó drásticamente a \$90,7M</b> tras pagar proveedores.<br/>"
-        "• <b>Barra Dorada (Patrimonio Propio):</b> Permanece firme en <b>\$240,6 millones</b>, blindando a la empresa como un escudo de acero frente a los acreedores.",
+        "<b>🔍 ¿Qué significa esta gráfica en la vida real? (Explicación idéntica a la plataforma web):</b><br/>"
+        "• <b>Barra Azul Oscura (Activo / Todo lo que tenemos):</b> En enero arrancó en \$247M (los aportes iniciales). En febrero creció a \$385M porque nos endeudamos con el banco y los proveedores para llenar el almacén de televisores y neveras. En abril baja a \$331M porque usamos plata para pagar esas deudas.<br/>"
+        "• <b>Barra Roja (Pasivo / Lo que debemos):</b> En enero no debíamos nada (\$0). En febrero y marzo subió a \$120M por el préstamo de Bancolombia y compras a crédito. <b>Fíjate en Abril:</b> la barra roja se encoge a \$90M porque pagamos casi \$30 millones en deudas.<br/>"
+        "• <b>Barra Dorada (Patrimonio / Plata de los socios):</b> Se ha mantenido súper fuerte y estable alrededor de los \$240 - \$265 millones en los 4 meses. Esto garantiza que la empresa no depende de bancos para sobrevivir.",
         styles['CalloutText']
     )
     t_g1_expl = Table([[g1_expl]], colWidths=[504])
     t_g1_expl.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F8FAFC")),
         ('BOX', (0,0), (-1,-1), 0.75, colors.HexColor("#CBD5E1")),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
         ('LEFTPADDING', (0,0), (-1,-1), 6),
         ('RIGHTPADDING', (0,0), (-1,-1), 6),
     ]))
     story.append(t_g1_expl)
     
-    story.append(Spacer(1, 8))
-    story.append(Paragraph("<b>GRÁFICA 2: FUENTES DE FINANCIACIÓN AL CIERRE DE ABRIL 2026 (QUIÉN PUSO LA PLATA)</b>", styles['SubSectionHeader']))
+    story.append(Spacer(1, 6))
+    
+    # Gráfica 2
+    story.append(Paragraph("<b>⚖️ Gráfica 2: Fuentes de Financiación (¿De quién es la plata al cierre de Abril?)</b> &nbsp; <font color='#059669'>[🟢 Bajo Riesgo]</font>", styles['SubSectionHeader']))
     story.append(create_chart_funding())
     
     g2_expl = Paragraph(
-        "<b>📊 Explicación Didáctica de la Gráfica 2:</b><br/>"
-        "• <b>72,63% Patrimonio Propio:</b> De cada \$100 que la compañía tiene en activos, \$72,63 pertenecen enteramente a los socios.<br/>"
-        "• <b>16,28% Deuda a Corto Plazo:</b> Solo \$16,28 de cada \$100 vencen en menos de 12 meses, plenamente cubiertos con la caja y la cartera.<br/>"
-        "• <b>11,09% Deuda a Largo Plazo:</b> Crédito bancario pactado a largo plazo que no asfixia la liquidez operativa mensual.",
+        "<b>🔍 ¿Qué significa esta gráfica en la vida real? (Explicación idéntica a la plataforma web):</b><br/>"
+        "Esta dona responde a una pregunta clave: <i>Si vendiéramos todos los bienes de la empresa hoy, ¿quién se quedaría con el dinero?</i><br/>"
+        "• <b>Porción Verde (72,6% - Patrimonio Neto):</b> Es la porción gigante. Casi tres cuartas partes del negocio le pertenecen a los socios. Nadie nos puede quitar la empresa porque no estamos hipotecados ni ahogados.<br/>"
+        "• <b>Porción Naranja (11,1% - Préstamo Bancolombia a Largo Plazo):</b> Son \$36,7M de deuda que se van pagando cómodamente mes a mes a varios años sin estrés de liquidez.<br/>"
+        "• <b>Porción Roja (16,3% - Deudas de Corto Plazo):</b> Son \$53,9M de facturas corrientes a proveedores y la nómina próxima, totalmente respaldadas por el dinero en bancos y el inventario.",
         styles['CalloutText']
     )
     t_g2_expl = Table([[g2_expl]], colWidths=[504])
     t_g2_expl.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F8FAFC")),
         ('BOX', (0,0), (-1,-1), 0.75, colors.HexColor("#CBD5E1")),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
         ('LEFTPADDING', (0,0), (-1,-1), 6),
         ('RIGHTPADDING', (0,0), (-1,-1), 6),
     ]))
@@ -938,50 +960,50 @@ def build_pdf(filename):
 
     story.append(PageBreak())
 
-    # =========================================================================
-    # PÁGINA 9: GRÁFICAS FINANCIERAS (PARTE 2: CASCADA OPERATIVA Y CURVA SOLVENCIA)
-    # =========================================================================
-    story.append(Paragraph("5. DIAGNÓSTICO VISUAL Y GRÁFICAS FINANCIERAS NIIF (PARTE 2)", styles['SectionHeader']))
-    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=6, spaceBefore=0))
+    # PÁGINA 9: GRÁFICAS FINANCIERAS (PARTE 2)
+    story.append(Paragraph("5. DIAGNÓSTICO VISUAL: EXPLICACIÓN DETALLADA DE CADA GRÁFICA DEL SISTEMA (PARTE 2)", styles['SectionHeader']))
+    story.append(HRFlowable(width="100%", thickness=1, color=gold, spaceAfter=5, spaceBefore=0))
     
-    story.append(Paragraph("<b>GRÁFICA 3: CASCADA OPERATIVA: VENTAS, COSTOS, GASTOS Y RESULTADOS (ABRIL 2026)</b>", styles['SubSectionHeader']))
+    # Gráfica 3
+    story.append(Paragraph("<b>📊 Gráfica 3: Ventas Netas, Costos de Compra y Ganancias/Pérdidas (4 Meses)</b> &nbsp; <font color='#D97706'>[🟡 Comercial]</font>", styles['SubSectionHeader']))
     story.append(create_chart_waterfall())
     
     g3_expl = Paragraph(
-        "<b>📊 Explicación Didáctica de la Gráfica 3:</b><br/>"
-        "• <b>Ventas Netas (\$8,16M) vs. Costo (\$3,29M):</b> Dejó una ganancia comercial bruta de <b>\$4,87M</b>, correspondiente a un margen altísimo del <b>59,69%</b>.<br/>"
-        "• <b>Gastos Fijos (\$12,76M):</b> Nómina y arriendos indispensables para operar. Al restar los gastos fijos de la ganancia bruta, el resultado del mes fue de <b>-\$7,89M</b>.<br/>"
-        "• <b>Conclusión:</b> El producto es sumamente rentable. Subiendo las ventas a <b>\$22.000.000 mensuales</b> (Punto de Equilibrio), la ganancia bruta absorberá todos los gastos fijos.",
+        "<b>🔍 ¿Qué significa esta gráfica en la vida real? (Explicación idéntica a la plataforma web):</b><br/>"
+        "• <b>Barra Verde (Ventas):</b> En Febrero rompimos el mercado vendiendo <b>\$185,9 millones</b>. En Marzo no se facturó porque fue mes de inventario y papeles. En Abril reactivamos con <b>\$8,15 millones</b>.<br/>"
+        "• <b>Barra Naranja (Costo de Mercancía):</b> Lo que nos costó comprarle esos productos a los mayoristas (\$126,3M en febrero y solo \$3,28M en abril).<br/>"
+        "• <b>Barra Azul / Roja (Ganancia o Pérdida):</b> En Febrero ganamos <b>+\$16,4 millones limpios</b> (barra azul). En Marzo y Abril hay números rojos (-\$17,1M y -\$7,8M) porque pagamos la nómina fija (\$10,4M) vendiéramos o no. <b>Fíjate en lo bueno:</b> la pérdida de Abril es la mitad de la de Marzo; estamos a un paso de volver a ganar dinero en Mayo.",
         styles['CalloutText']
     )
     t_g3_expl = Table([[g3_expl]], colWidths=[504])
     t_g3_expl.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F8FAFC")),
         ('BOX', (0,0), (-1,-1), 0.75, colors.HexColor("#CBD5E1")),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
         ('LEFTPADDING', (0,0), (-1,-1), 6),
         ('RIGHTPADDING', (0,0), (-1,-1), 6),
     ]))
     story.append(t_g3_expl)
     
-    story.append(Spacer(1, 8))
-    story.append(Paragraph("<b>GRÁFICA 4: CURVA DE SOLVENCIA (RAZÓN CORRIENTE) VS. DESENDEUDAMIENTO TOTAL</b>", styles['SubSectionHeader']))
+    story.append(Spacer(1, 6))
+    
+    # Gráfica 4
+    story.append(Paragraph("<b>💧 Gráfica 4: Curva de Liquidez (Disponibilidad de Plata) vs Deuda (%)</b> &nbsp; <font color='#059669'>[🟢 2,25x]</font>", styles['SubSectionHeader']))
     story.append(create_chart_solvency())
     
     g4_expl = Paragraph(
-        "<b>📊 Explicación Didáctica de la Gráfica 4:</b><br/>"
-        "• <b>Línea Verde (Razón Corriente):</b> Subió de 1,92x en marzo a <b>2,25x en abril (Récord)</b>. Por cada \$1 que la empresa debe a corto plazo, tiene \$2,25 guardados en caja e inventario.<br/>"
-        "• <b>Línea Azul (Endeudamiento Total):</b> Cayó fuertemente de 32,7% a <b>27,4% en abril</b>. Menos deuda significa menos riesgo y mayor tranquilidad.<br/>"
-        "• <b>Efecto Tijera Positiva:</b> La liquidez sube mientras la deuda se derrumba. Es el comportamiento ideal de una empresa financieramente sana.",
+        "<b>🔍 ¿Qué significa esta gráfica en la vida real? (Explicación idéntica a la plataforma web):</b><br/>"
+        "• <b>Línea Verde (Razón Corriente - Plata en Mano):</b> Mide cuántos pesos tiene la empresa por cada peso de deuda inmediata. Arrancó en 2,15x en febrero, bajó a 1,92x en marzo porque pagamos impuestos a la DIAN, y <b>en abril se disparó a 2,25 veces</b>. Es el mejor momento de liquidez de todo el año: tenemos más del doble del dinero necesario para responder.<br/>"
+        "• <b>Línea Azul (Endeudamiento Total):</b> Cayó en picada de 32,68% a <b>27,37%</b> en Abril. Menos deuda significa menos intereses y mayor tranquilidad para la gerencia.",
         styles['CalloutText']
     )
     t_g4_expl = Table([[g4_expl]], colWidths=[504])
     t_g4_expl.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F8FAFC")),
         ('BOX', (0,0), (-1,-1), 0.75, colors.HexColor("#CBD5E1")),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
         ('LEFTPADDING', (0,0), (-1,-1), 6),
         ('RIGHTPADDING', (0,0), (-1,-1), 6),
     ]))
@@ -989,7 +1011,6 @@ def build_pdf(filename):
 
     story.append(PageBreak())
 
-    # =========================================================================
     # PÁGINA 10: NEGOCIO EN MARCHA Y SUPERVIVENCIA (RUNWAY)
     # =========================================================================
     story.append(Paragraph("6. DICTAMEN DE NEGOCIO EN MARCHA Y RUNWAY DE SUPERVIVENCIA", styles['SectionHeader']))
