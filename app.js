@@ -4018,6 +4018,24 @@ function renderFinancialAnalysisDashboardHtml(period) {
     <div class="niif-statement-paper">
 ${renderCorporateHeaderBoxHtml("📊 INFORME INTEGRAL DE ANÁLISIS FINANCIERO DE LOS 4 PERÍODOS CONSOLIDADOS", "Evaluación Detallada: ENERO, FEBRERO, MARZO Y ABRIL 2026", "Diagnóstico Didáctico NIIF para las PYMES • Presentación Corporativa, Objetivos y Explicación Paso a Paso")}
 
+      <!-- BANNER DE DESCARGA DIRECTA DEL INFORME PDF COMPLETO -->
+      <div style="background: linear-gradient(135deg, #0A2540 0%, #1E40AF 100%); color: #FFFFFF; border-radius: 8px; padding: 14px 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; box-shadow: 0 4px 14px rgba(10,37,64,0.15);">
+        <div>
+          <div style="font-size: 0.95rem; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+            <span>📑 INFORME EMPRESARIAL OFICIAL COMPLETO (7 PÁGINAS)</span>
+            <span style="background: #F59E0B; color: #0A2540; font-size: 0.7rem; font-weight: 900; padding: 2px 8px; border-radius: 10px;">DESCARGA DIRECTA</span>
+          </div>
+          <div style="font-size: 0.78rem; color: #CBD5E1; margin-top: 3px;">
+            Incluye Portada SENA, Tabla de Contenido, Estados Consolidados, Regla 12 Meses, Negocio en Marcha, Fórmulas y Firmas.
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <a href="INFORME_FINANCIERO_ELECTROVIVIENDA_2026.pdf" download="INFORME_FINANCIERO_ELECTROVIVIENDA_2026.pdf" class="btn btn-gold btn-sm" style="font-weight: 800; font-size: 0.82rem; padding: 8px 16px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+            <span>📥 Descargar PDF Completo</span>
+          </a>
+        </div>
+      </div>
+
       <!-- SECCIÓN 1: PRESENTACIÓN INSTITUCIONAL DE LA EMPRESA Y OBJETIVOS -->
       <div style="background:#FFFFFF; border:1.5px solid var(--border-strong); border-radius:10px; padding:20px 24px; margin-bottom:24px; box-shadow:0 3px 12px rgba(0,0,0,0.04);">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--brand-gold); padding-bottom:14px; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
@@ -8070,6 +8088,18 @@ function exportSmartContextualPDF() {
     return exportLiveTransactionPDF("ASIENTO");
   }
   if (ACTIVE_SECTION === "estados") {
+    if (ACTIVE_EF_TAB === "ANALISIS") {
+      const a = document.createElement("a");
+      a.href = "INFORME_FINANCIERO_ELECTROVIVIENDA_2026.pdf";
+      a.download = "INFORME_FINANCIERO_ELECTROVIVIENDA_2026.pdf";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      if (typeof showToast === "function") {
+        showToast("Descargando Informe Financiero Oficial Completo de ELECTROVIVIENDA (PDF)...", "success");
+      }
+      return;
+    }
     const efContainer = document.getElementById("efContentContainer");
     if (!efContainer) return;
 
