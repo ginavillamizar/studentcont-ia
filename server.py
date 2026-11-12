@@ -914,6 +914,36 @@ class StudentContHandler(SimpleHTTPRequestHandler):
             new_db["student_profiles"] = sanitize_profiles_for_client(get_student_profiles())
             return self.send_json({"ok": True, "ws_id": ws_id, "db": new_db})
 
+        elif parsed.path == "/api/workspace/sync-student-db":
+            # Guardado exclusivo y aislado para el taller personal de un estudiante
+            ws_id = body.get("workspace_id") or "taller_estudiante"
+            student_id = body.get("student_id") or "default"
+            client_db = body.get("db")
+            if client_db and isinstance(client_db, dict) and "meses" in client_db:
+                safe_ws = re.sub(r"[^a-z0-9_]+", "", ws_id.lower())
+                if not safe_ws.startswith("taller_"):
+                    safe_ws = "taller_" + safe_ws
+                datafile = f"db_{safe_ws}.json"
+                fpath = os.path.join(DATA_DIR, datafile)
+                with open(fpath, "w", encoding="utf-8") as f:
+                    json.dump(client_db, f, ensure_ascii=False, indent=2)
+
+                idx = get_workspaces_index()
+                if not any(w.get("id") == safe_ws for w in idx.get("workspaces", [])):
+                    idx.setdefault("workspaces", []).append({
+                        "id": safe_ws,
+                        "owner_id": student_id,
+                        "tipo": "PRÁCTICA DE APRENDIZAJE",
+                        "razon_social": client_db.get("empresa", {}).get("razon_social", f"TALLER CONTABLE DE {student_id.upper()}"),
+                        "nit": client_db.get("empresa", {}).get("nit", "901.765.438-3"),
+                        "regimen_corto": "Régimen Responsable de IVA",
+                        "ciudad": "Bucaramanga, Santander",
+                        "datafile": datafile
+                    })
+                    save_workspaces_index(idx)
+                return self.send_json({"ok": True, "workspace_id": safe_ws, "message": "Taller sincronizado en archivo aislado"})
+            return self.send_json({"ok": False, "error": "Datos inválidos"}, status=400)
+
         elif parsed.path == "/api/auth/login":
             # Inicio de sesión privado con usuario/correo/nombre + contraseña
             ident = (body.get("usuario") or "").strip().lower()

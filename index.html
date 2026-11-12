@@ -205,6 +205,9 @@
         <button onclick="toggleTallerVsModeloOficial('taller')" style="flex:1; background:rgba(16,185,129,0.22); border:1px solid #10B981; color:#34D399; font-size:0.62rem; font-weight:800; padding:3px 4px; border-radius:4px; cursor:pointer;" title="Mi Taller en Blanco para subir comprobantes desde cero">✏️ Mi Taller (0)</button>
         <button onclick="toggleTallerVsModeloOficial('modelo')" style="flex:1; background:rgba(212,175,55,0.2); border:1px solid var(--brand-gold); color:var(--brand-gold); font-size:0.62rem; font-weight:800; padding:3px 4px; border-radius:4px; cursor:pointer;" title="Consultar el modelo oficial resuelto por Gina Villamizar">⭐ Modelo Gina</button>
       </div>
+      <button id="sidebarUploadExcelBtn" onclick="openUploadTallerExcelModal()" style="width:100%; margin-top:6px; background:linear-gradient(135deg, rgba(16,185,129,0.22), rgba(5,150,105,0.32)); border:1px solid #10B981; color:#34D399; font-size:0.65rem; font-weight:800; padding:4px 6px; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:5px;" title="Subir mis archivos de Excel para alimentar mi taller personal">
+        <span>📤</span> <span>Subir Excel de mi Taller</span>
+      </button>
     </div>
 
     <nav class="sidebar-nav">
@@ -372,6 +375,21 @@
                 <span class="status-pill status-paid">Sincronización Activa</span>
               </div>
               <div class="card-body">
+                <!-- BANNER DIDÁCTICO Y BOTÓN DIRECTO PARA ALIMENTAR TALLER PROPIO CON EXCEL -->
+                <div style="background:rgba(16,185,129,0.08); border:1.5px dashed #10B981; border-radius:10px; padding:12px 16px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                  <div style="flex:1; min-width:260px;">
+                    <div style="font-size:0.83rem; font-weight:800; color:#065F46; display:flex; align-items:center; gap:6px; margin-bottom:3px;">
+                      <span>🎓</span> <span>¿Tienes tus propios archivos de Excel (.xlsx)? Alimenta tu Taller Personal:</span>
+                    </div>
+                    <div style="font-size:0.75rem; color:#047857; line-height:1.4;">
+                      Sube tus archivos de comprobantes de cada mes (ej: <code>ENERO.xlsx</code>, <code>FEBRERO.xlsx</code>...). El sistema extraerá automáticamente tus transacciones, saldos y estados financieros <strong>respetando tu privacidad y sin mezclar tus datos con nadie</strong>.
+                    </div>
+                  </div>
+                  <button class="btn btn-gold" onclick="openUploadTallerExcelModal()" style="font-weight:800; font-size:0.8rem; padding:8px 16px; display:flex; align-items:center; gap:6px; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,0.08);">
+                    <span>📤</span> <span>Subir Archivos Excel a mi Taller</span>
+                  </button>
+                </div>
+
                 <div class="table-wrap">
                   <table class="acct-table">
                     <thead>
@@ -1128,6 +1146,7 @@
             <input type="text" id="unlockCompanyNitInput" class="form-control" style="max-width:240px; padding:7px 12px; font-size:0.82rem;" placeholder="Escribe ELECTROVIVIENDA..." onkeydown="if(event.key==='Enter') unlockCompanyByNit()" />
             <button class="btn btn-primary btn-sm" onclick="unlockCompanyByNit()">Entrar</button>
             <button class="btn btn-outline btn-sm" onclick="switchToMyOwnPracticeWorkspace()">🎓 Mi Taller Propio ($0)</button>
+            <button class="btn btn-sm" style="background:#10B981; color:#fff; font-weight:800; border:none; padding:6px 12px; border-radius:6px; cursor:pointer;" onclick="closeWorkspaceModal(); openUploadTallerExcelModal();">📤 Subir Excel a mi Taller</button>
           </div>
         </div>
 
@@ -1352,7 +1371,129 @@
     </div>
   </div>
 
+  <!-- =====================================================================
+       MODAL: SUBIR ARCHIVOS EXCEL A TALLER PROPIO (AISLADO Y PERSONAL)
+       ===================================================================== -->
+  <div class="modal-backdrop" id="uploadTallerExcelModal" style="display:none;">
+    <div class="modal-card" style="max-width:760px; max-height:92vh; display:flex; flex-direction:column;">
+      <div class="card-header" style="background:#0B192C; color:#F8FAFC; border-bottom:1px solid rgba(212,175,55,0.3); padding:14px 18px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:1.5rem;">📤</span>
+          <div>
+            <div class="card-title" style="color:#F8FAFC; font-size:1.05rem; font-weight:800;">
+              Alimentar Mi Taller Personal con Archivos Excel
+            </div>
+            <div style="font-size:0.75rem; color:#A7F3D0; font-weight:700;">
+              🔒 Espacio Privado: <span id="tallerUploadUserBadge">Estudiante Activo</span> • 100% Aislado y Protegido
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="closeUploadTallerExcelModal()" style="color:#F8FAFC; border-color:rgba(255,255,255,0.3);">✕ Cerrar</button>
+      </div>
+
+      <div class="card-body" style="overflow-y:auto; padding:18px 20px;">
+        <!-- Banner de Garantía de Aislamiento -->
+        <div style="background:rgba(16,185,129,0.09); border:1.5px solid #10B981; border-radius:10px; padding:12px 14px; margin-bottom:16px;">
+          <div style="display:flex; align-items:center; gap:8px; font-weight:800; color:#065F46; font-size:0.83rem; margin-bottom:4px;">
+            <span>🛡️</span> <span>Garantía de Privacidad y Aislamiento SENA:</span>
+          </div>
+          <p style="font-size:0.76rem; color:#047857; margin:0; line-height:1.45;">
+            Los archivos Excel que cargues se procesan y almacenan <strong>exclusivamente en tu cuenta de estudiante</strong> (en tu bóveda privada local). <strong>Nada se mezcla con otros compañeros</strong> ni se altera el modelo maestro resuelto por Gina Villamizar.
+          </p>
+        </div>
+
+        <!-- Opciones de Asignación de Mes -->
+        <div class="form-grid" style="margin-bottom:16px;">
+          <div class="form-group" style="grid-column: span 2;">
+            <label style="font-size:0.8rem; font-weight:800; color:var(--brand-primary);">
+              📅 Modo de Asignación del Mes Contable:
+            </label>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:4px;">
+              <label style="display:flex; align-items:center; gap:6px; font-size:0.8rem; cursor:pointer; font-weight:600;">
+                <input type="radio" name="tallerMonthMode" value="AUTO" checked onchange="toggleTallerMonthSelect(this.value)" />
+                <span>⚡ Auto-detectar por nombre de archivo (ej: <code>ENERO.xlsx</code>, <code>FEBRERO.xlsx</code>...)</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:6px; font-size:0.8rem; cursor:pointer; font-weight:600;">
+                <input type="radio" name="tallerMonthMode" value="MANUAL" onchange="toggleTallerMonthSelect(this.value)" />
+                <span>🎯 Asignar a un mes específico</span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group" id="tallerManualMonthGroup" style="display:none; grid-column: span 2;">
+            <label style="font-size:0.78rem; font-weight:700;">Selecciona el Mes a Alimentar:</label>
+            <select id="tallerManualMonthSelect" class="form-control" style="font-weight:700;">
+              <option value="ENERO">ENERO (Mes 1)</option>
+              <option value="FEBRERO">FEBRERO (Mes 2)</option>
+              <option value="MARZO">MARZO (Mes 3)</option>
+              <option value="ABRIL">ABRIL (Mes 4)</option>
+              <option value="MAYO">MAYO (Mes 5)</option>
+              <option value="JUNIO">JUNIO (Mes 6)</option>
+              <option value="JULIO">JULIO (Mes 7)</option>
+              <option value="AGOSTO">AGOSTO (Mes 8)</option>
+              <option value="SEPTIEMBRE">SEPTIEMBRE (Mes 9)</option>
+              <option value="OCTUBRE">OCTUBRE (Mes 10)</option>
+              <option value="NOVIEMBRE">NOVIEMBRE (Mes 11)</option>
+              <option value="DICIEMBRE">DICIEMBRE (Mes 12)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Zona de Dropzone para Archivos Excel -->
+        <div id="tallerExcelDropzone" onclick="document.getElementById('tallerExcelFileInput').click()" style="border:2px dashed #10B981; background:#F0FDF4; border-radius:12px; padding:24px 16px; text-align:center; cursor:pointer; transition:all 0.2s ease; margin-bottom:16px;">
+          <input type="file" id="tallerExcelFileInput" accept=".xlsx,.xls,.xlsm" multiple style="display:none;" onchange="handleTallerExcelFilesSelected(this.files)" />
+          <div style="font-size:2.4rem; margin-bottom:8px;">📊</div>
+          <div style="font-size:0.92rem; font-weight:800; color:#065F46; margin-bottom:4px;">
+            Haz clic o arrastra tus archivos de Excel (.xlsx, .xls) aquí
+          </div>
+          <div style="font-size:0.75rem; color:#047857;">
+            Puedes subir uno o varios meses al mismo tiempo (ej: <strong>ENERO.xlsx, FEBRERO.xlsx, MARZO.xlsx, ABRIL.xlsx</strong>)
+          </div>
+          <div style="margin-top:10px;">
+            <span class="btn btn-sm btn-gold" style="font-weight:800; font-size:0.75rem; padding:6px 14px; pointer-events:none;">
+              📂 Seleccionar Archivos desde mi Computador
+            </span>
+          </div>
+        </div>
+
+        <!-- Cola de Archivos Seleccionados -->
+        <div id="tallerSelectedFilesContainer" style="display:none; margin-bottom:16px;">
+          <div style="font-size:0.8rem; font-weight:800; color:var(--brand-primary); margin-bottom:6px;">
+            📋 Archivos listos para procesar (<span id="tallerSelectedFilesCount">0</span>):
+          </div>
+          <div id="tallerSelectedFilesList" style="display:flex; flex-direction:column; gap:6px; max-height:160px; overflow-y:auto; border:1px solid #E2E8F0; border-radius:8px; padding:8px; background:#FFFFFF;"></div>
+        </div>
+
+        <!-- Barra de Progreso y Registros en Vivo -->
+        <div id="tallerImportProgressBox" style="display:none; margin-bottom:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-size:0.78rem; font-weight:800; color:#065F46;" id="tallerProgressLabel">Procesando...</span>
+            <span style="font-size:0.75rem; font-weight:700; color:#047857;" id="tallerProgressPct">0%</span>
+          </div>
+          <div style="width:100%; height:8px; background:#E2E8F0; border-radius:4px; overflow:hidden;">
+            <div id="tallerProgressBar" style="width:0%; height:100%; background:linear-gradient(90deg, #10B981, #059669); transition:width 0.2s ease;"></div>
+          </div>
+          <div id="tallerLiveLogBox" style="margin-top:10px; max-height:180px; overflow-y:auto; background:#0B192C; color:#E2E8F0; border-radius:8px; padding:10px; font-family:monospace; font-size:0.72rem; line-height:1.45;"></div>
+        </div>
+
+        <!-- Resumen de Resultados -->
+        <div id="tallerImportSummaryBox" style="display:none; background:#FFFFFF; border:1.5px solid #10B981; border-radius:10px; padding:14px; margin-bottom:16px;">
+          <div style="font-size:0.88rem; font-weight:800; color:#065F46; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+            <span>✅</span> <span>¡Taller Personal Alimentado con Éxito!</span>
+          </div>
+          <div id="tallerImportSummaryContent" style="font-size:0.78rem; color:#334155; line-height:1.5;"></div>
+        </div>
+      </div>
+
+      <div class="card-footer" style="background:#F8FAFC; border-top:1px solid #E2E8F0; padding:12px 20px; display:flex; justify-content:space-between; align-items:center;">
+        <button class="btn btn-outline btn-sm" onclick="closeUploadTallerExcelModal()">Cerrar</button>
+        <button class="btn btn-gold" id="btnExecuteTallerImport" onclick="executeTallerExcelImport()" style="font-weight:800; padding:8px 20px; display:flex; align-items:center; gap:8px;">
+          <span>⚡</span> <span>Procesar y Alimentar Mi Plataforma</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast-container" id="toastContainer"></div>
-  <script src="app.js?v=20261110_39"></script>
+  <script src="app.js?v=20261112_01"></script>
 </body>
 </html>

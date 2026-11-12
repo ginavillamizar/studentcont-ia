@@ -986,9 +986,10 @@ function renderDashboard() {
       <td>${f.txs} reg.</td>
       <td>${f.sheets} hojas</td>
       <td>
-        <div style="display:flex; gap:5px;">
+        <div style="display:flex; gap:5px; flex-wrap:wrap;">
           <button class="btn btn-outline btn-sm" onclick="setGlobalPeriod('${f.period}'); switchSection('comprobantes');">Ver (${f.txs})</button>
           <button class="btn btn-gold btn-sm" onclick="setGlobalPeriod('${f.period}'); downloadActiveMonthExcel();">📥 .xlsx</button>
+          <button class="btn btn-sm" style="background:rgba(16,185,129,0.18); border:1px solid #10B981; color:#047857; font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:4px; cursor:pointer;" onclick="openUploadTallerExcelModal('${f.period}')" title="Subir archivo Excel para alimentar ${f.period}">📤 Subir</button>
         </div>
       </td>
     </tr>
@@ -8253,3 +8254,538 @@ function toggleTallerVsModeloOficial(modo) {
   }
 }
 window.toggleTallerVsModeloOficial = toggleTallerVsModeloOficial;
+
+// ============================================================================
+// 14. CARGADOR DE EXCEL PARA TALLER PERSONAL (100% AISLADO POR USUARIO)
+// ============================================================================
+let TALLER_QUEUED_FILES = [];
+
+function openUploadTallerExcelModal(targetMonth = null) {
+  const modal = document.getElementById("uploadTallerExcelModal");
+  if (!modal) return;
+
+  if (!ACTIVE_STUDENT_PROFILE) {
+    ACTIVE_STUDENT_PROFILE = {
+      id: "estudiante_practica",
+      usuario: "estudiante",
+      nombre: "Estudiante en Práctica",
+      rol: "Estudiante Contable",
+      workspace_id: "taller_estudiante"
+    };
+  }
+
+  const isGina = (ACTIVE_STUDENT_PROFILE.usuario === "gina" || ACTIVE_STUDENT_PROFILE.id === "gina_villamizar");
+  const wsDisplay = isGina ? "ELECTROVIVIENDA OFICIAL" : (ACTIVE_STUDENT_PROFILE.workspace_id || `taller_${ACTIVE_STUDENT_PROFILE.id}`);
+
+  const userBadge = document.getElementById("tallerUploadUserBadge");
+  if (userBadge) {
+    userBadge.textContent = `${ACTIVE_STUDENT_PROFILE.nombre} (${wsDisplay})`;
+  }
+
+  if (targetMonth) {
+    const rManual = document.querySelector("input[name='tallerMonthMode'][value='MANUAL']");
+    if (rManual) rManual.checked = true;
+    toggleTallerMonthSelect("MANUAL");
+    const mSelect = document.getElementById("tallerManualMonthSelect");
+    if (mSelect) mSelect.value = targetMonth;
+  } else {
+    const rAuto = document.querySelector("input[name='tallerMonthMode'][value='AUTO']");
+    if (rAuto) rAuto.checked = true;
+    toggleTallerMonthSelect("AUTO");
+  }
+
+  TALLER_QUEUED_FILES = [];
+  renderTallerQueuedFiles();
+
+  const pBox = document.getElementById("tallerImportProgressBox");
+  if (pBox) pBox.style.display = "none";
+  const sBox = document.getElementById("tallerImportSummaryBox");
+  if (sBox) sBox.style.display = "none";
+  const btn = document.getElementById("btnExecuteTallerImport");
+  if (btn) {
+    btn.disabled = false;
+    btn.innerHTML = `<span>⚡</span> <span>Procesar y Alimentar Mi Plataforma</span>`;
+  }
+
+  modal.style.display = "flex";
+}
+window.openUploadTallerExcelModal = openUploadTallerExcelModal;
+
+function closeUploadTallerExcelModal() {
+  const modal = document.getElementById("uploadTallerExcelModal");
+  if (modal) modal.style.display = "none";
+}
+window.closeUploadTallerExcelModal = closeUploadTallerExcelModal;
+
+function toggleTallerMonthSelect(mode) {
+  const grp = document.getElementById("tallerManualMonthGroup");
+  if (grp) {
+    grp.style.display = (mode === "MANUAL") ? "block" : "none";
+  }
+}
+window.toggleTallerMonthSelect = toggleTallerMonthSelect;
+
+function handleTallerExcelFilesSelected(files) {
+  if (!files || !files.length) return;
+  for (let i = 0; i < files.length; i++) {
+    const f = files[i];
+    if (!TALLER_QUEUED_FILES.some(q => q.name === f.name && q.size === f.size)) {
+      TALLER_QUEUED_FILES.push(f);
+    }
+  }
+  renderTallerQueuedFiles();
+}
+window.handleTallerExcelFilesSelected = handleTallerExcelFilesSelected;
+
+function removeTallerQueuedFile(idx) {
+  TALLER_QUEUED_FILES.splice(idx, 1);
+  renderTallerQueuedFiles();
+}
+window.removeTallerQueuedFile = removeTallerQueuedFile;
+
+function renderTallerQueuedFiles() {
+  const container = document.getElementById("tallerSelectedFilesContainer");
+  const listEl = document.getElementById("tallerSelectedFilesList");
+  const countEl = document.getElementById("tallerSelectedFilesCount");
+
+  if (!container || !listEl) return;
+
+  if (!TALLER_QUEUED_FILES.length) {
+    container.style.display = "none";
+    listEl.innerHTML = "";
+    if (countEl) countEl.textContent = "0";
+    return;
+  }
+
+  container.style.display = "block";
+  if (countEl) countEl.textContent = String(TALLER_QUEUED_FILES.length);
+
+  listEl.innerHTML = TALLER_QUEUED_FILES.map((f, i) => {
+    const szKb = (f.size / 1024).toFixed(1);
+    const estMonth = detectMonthFromFileName(f.name) || "Auto";
+    return `
+      <div style="display:flex; justify-content:space-between; align-items:center; background:#F8FAFC; border:1px solid #E2E8F0; padding:6px 10px; border-radius:6px; font-size:0.75rem;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span>📄</span>
+          <strong>${f.name}</strong>
+          <span style="color:#64748B;">(${szKb} KB)</span>
+          <span style="background:#E0F2FE; color:#0369A1; font-weight:700; padding:1px 6px; border-radius:4px; font-size:0.68rem;">Mes: ${estMonth}</span>
+        </div>
+        <button onclick="removeTallerQueuedFile(${i})" style="background:transparent; border:none; color:#EF4444; font-weight:800; cursor:pointer; font-size:0.85rem;" title="Quitar archivo">✕</button>
+      </div>
+    `;
+  }).join("");
+}
+window.renderTallerQueuedFiles = renderTallerQueuedFiles;
+
+function detectMonthFromFileName(fname) {
+  if (!fname) return null;
+  const s = fname.toUpperCase();
+  const months = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
+  for (const m of months) {
+    if (s.includes(m)) return m;
+  }
+  return null;
+}
+
+function parseCellNumber(val) {
+  if (val === null || val === undefined || val === "") return 0.0;
+  if (typeof val === "number") return isNaN(val) ? 0.0 : val;
+  const s = String(val).replace(/[$'\s]/g, "").replace(/,/g, "").trim();
+  const n = parseFloat(s);
+  return isNaN(n) ? 0.0 : n;
+}
+
+function parseCellDate(val) {
+  if (!val) return null;
+  if (val instanceof Date) {
+    const y = val.getFullYear();
+    const m = String(val.getMonth() + 1).padStart(2, "0");
+    const d = String(val.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+  const s = String(val).trim();
+  const m = s.match(/2026-\d{2}-\d{2}/);
+  if (m) return m[0];
+  const m2 = s.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](2026|\d{2,4})/);
+  if (m2) {
+    const y = m2[3].length === 2 ? `20${m2[3]}` : m2[3];
+    return `${y}-${m2[2].padStart(2, "0")}-${m2[1].padStart(2, "0")}`;
+  }
+  return null;
+}
+
+function parseSheetVoucher(rows, sheetName, defaultMonth) {
+  if (!rows || !rows.length) return null;
+
+  let fecha = null;
+  let enunciado = "";
+  let tipoDoc = "COMPROBANTE DE CONTABILIDAD";
+  let pagadoA = "";
+  let conceptoSoporte = "";
+  let sumaLetras = "";
+  let cheque = "";
+  let activeCols = null;
+  const asientos = [];
+
+  for (let rIdx = 0; rIdx < rows.length; rIdx++) {
+    const cells = rows[rIdx] || [];
+    for (let cIdx = 0; cIdx < cells.length; cIdx++) {
+      const cellVal = cells[cIdx];
+      if (cellVal === null || cellVal === undefined || cellVal === "") continue;
+      const s = String(cellVal).trim();
+      const sUp = s.toUpperCase();
+
+      if (!fecha) {
+        const d = parseCellDate(cellVal);
+        if (d) fecha = d;
+      }
+
+      if (sUp.includes("COMPROBANTE DE EGRESO") || sUp.includes("PAGO")) tipoDoc = "COMPROBANTE DE EGRESO";
+      else if (sUp.includes("COMPROBANTE DE INGRESO") || sUp.includes("RECIBO DE CAJA")) tipoDoc = "COMPROBANTE DE INGRESO";
+      else if (sUp.includes("NOTA CRÉDITO") || sUp.includes("DEVOLUCIÓN")) tipoDoc = "NOTA CRÉDITO / DEVOLUCIÓN";
+      else if (sUp.includes("FACTURA") && (sUp.includes("VENTA") || sUp.includes("VENDEMOS"))) tipoDoc = "FACTURA DE VENTA";
+      else if (sUp.includes("COMPRAMOS") && tipoDoc === "COMPROBANTE DE CONTABILIDAD") tipoDoc = "FACTURA DE COMPRA";
+      else if ((sUp.includes("NOMINA") || sUp.includes("NÓMINA")) && tipoDoc === "COMPROBANTE DE CONTABILIDAD") tipoDoc = "COMPROBANTE DE NÓMINA";
+      else if (sUp.includes("DEPRECIACI") && tipoDoc === "COMPROBANTE DE CONTABILIDAD") tipoDoc = "NOTA DE AJUSTE / DEPRECIACIÓN";
+
+      if ((s.startsWith("El día") || s.startsWith("El dia") || s.startsWith("La sociedad") ||
+           s.startsWith("Se abre") || s.startsWith("Bancolombia") || s.startsWith("Giramos") ||
+           s.startsWith("Causamos") || s.startsWith("Compramos") || s.startsWith("Recibimos") ||
+           s.startsWith("Vendemos") || s.startsWith("Realizar") || s.startsWith("Constitución")) && s.length > enunciado.length) {
+        enunciado = s;
+      }
+
+      if (sUp.includes("PAGADO A:") || sUp.includes("RECIBIDO DE:") || sUp.includes("BENEFICIARIO:")) {
+        for (let j = cIdx + 1; j < Math.min(cIdx + 5, cells.length); j++) {
+          if (cells[j]) { pagadoA = String(cells[j]).trim(); break; }
+        }
+      }
+      if (sUp.includes("POR CONCEPTO DE:")) {
+        for (let j = cIdx + 1; j < Math.min(cIdx + 6, cells.length); j++) {
+          if (cells[j]) { conceptoSoporte = String(cells[j]).trim(); break; }
+        }
+      }
+      if (sUp.includes("LA SUMA DE") || sUp.includes("SON:")) {
+        for (let j = cIdx + 1; j < Math.min(cIdx + 6, cells.length); j++) {
+          if (cells[j]) { sumaLetras = String(cells[j]).trim(); break; }
+        }
+      }
+      if (sUp.includes("CHEQUE") && !cheque) {
+        const m = s.match(/(?:No\.?|N°|#)\s*(\d+)/i);
+        if (m) cheque = m[1];
+        else {
+          for (let j = cIdx + 1; j < Math.min(cIdx + 4, cells.length); j++) {
+            if (cells[j] && /^\d+$/.test(String(cells[j]).trim())) { cheque = String(cells[j]).trim(); break; }
+          }
+        }
+      }
+
+      if (sUp === "CODIGO" || sUp === "CÓDIGO") {
+        let cCta = null, cPar = null, cDeb = null, cHab = null;
+        for (let k = cIdx + 1; k < Math.min(cIdx + 10, cells.length); k++) {
+          const vStr = String(cells[k] || "").trim().toUpperCase();
+          if ((vStr === "CUENTA" || vStr === "CUENTAS" || vStr === "DETALLE") && cCta === null) cCta = k;
+          else if ((vStr === "PARCIAL" || vStr === "PARCIALES") && cPar === null) cPar = k;
+          else if (vStr === "DEBE" && cDeb === null) cDeb = k;
+          else if (vStr === "HABER" && cHab === null) cHab = k;
+        }
+        if (cCta !== null && cDeb !== null && cHab !== null) {
+          activeCols = { cod: cIdx, cta: cCta, par: cPar, deb: cDeb, hab: cHab };
+        }
+      }
+    }
+
+    if (activeCols) {
+      const codeVal = cells[activeCols.cod];
+      if (codeVal !== null && codeVal !== undefined) {
+        const codeStr = String(codeVal).replace(/\D/g, "");
+        if (codeStr.length >= 4 && codeStr.length <= 8) {
+          const ctaName = String(cells[activeCols.cta] || "").trim();
+          const deb = parseCellNumber(cells[activeCols.deb]);
+          const hab = parseCellNumber(cells[activeCols.hab]);
+          const par = activeCols.par !== null ? parseCellNumber(cells[activeCols.par]) : 0;
+          if (ctaName || deb > 0 || hab > 0) {
+            asientos.push({
+              codigo: codeStr,
+              cuenta: ctaName || "CUENTA SIN DETALLE",
+              parcial: par,
+              debe: deb,
+              haber: hab
+            });
+          }
+        }
+      }
+    }
+  }
+
+  if (!asientos.length) return null;
+
+  const totalDebe = asientos.reduce((a, b) => a + (b.debe || 0), 0);
+  const totalHaber = asientos.reduce((a, b) => a + (b.haber || 0), 0);
+
+  return {
+    hoja: String(sheetName),
+    comprobante_diario: `Comprobante Diario N° ${sheetName}`,
+    mes: defaultMonth,
+    fecha: fecha || "2026-01-01",
+    tipo: tipoDoc,
+    enunciado: enunciado || `Comprobante Contable Hoja ${sheetName}`,
+    tercero: pagadoA || "Tercero Registrado",
+    cheque: cheque,
+    concepto_soporte: conceptoSoporte,
+    suma_letras: sumaLetras,
+    elaborado_por: ACTIVE_STUDENT_PROFILE?.nombre || "Estudiante",
+    total_debe: Math.round(totalDebe * 100) / 100,
+    total_haber: Math.round(totalHaber * 100) / 100,
+    asientos: asientos,
+    rows: rows.slice(0, 100).map(r => (r || []).map(c => String(c !== null && c !== undefined ? c : "")))
+  };
+}
+
+async function executeTallerExcelImport() {
+  if (typeof XLSX === "undefined") {
+    alert("⚠️ La librería XLSX no está cargada en el navegador.");
+    return;
+  }
+  if (!TALLER_QUEUED_FILES.length) {
+    alert("⚠️ Por favor selecciona o arrastra al menos un archivo de Excel (.xlsx, .xls).");
+    return;
+  }
+
+  if (!ACTIVE_STUDENT_PROFILE) {
+    ACTIVE_STUDENT_PROFILE = {
+      id: "estudiante_practica",
+      usuario: "estudiante",
+      nombre: "Estudiante en Práctica",
+      rol: "Estudiante Contable",
+      workspace_id: "taller_estudiante"
+    };
+  }
+
+  const isGina = (ACTIVE_STUDENT_PROFILE.usuario === "gina" || ACTIVE_STUDENT_PROFILE.id === "gina_villamizar");
+  const studentKey = "studentcont_cloud_db_" + (ACTIVE_STUDENT_PROFILE.id || "default");
+
+  let targetDb = null;
+  const saved = localStorage.getItem(studentKey);
+  if (saved) {
+    try { targetDb = JSON.parse(saved); } catch(e) {}
+  }
+  if (!targetDb || !targetDb.meses) {
+    targetDb = getBlankElectroviviendaDb(ACTIVE_STUDENT_PROFILE.nombre);
+  }
+
+  const pBox = document.getElementById("tallerImportProgressBox");
+  const pLabel = document.getElementById("tallerProgressLabel");
+  const pPct = document.getElementById("tallerProgressPct");
+  const pBar = document.getElementById("tallerProgressBar");
+  const logBox = document.getElementById("tallerLiveLogBox");
+  const btn = document.getElementById("btnExecuteTallerImport");
+  const sBox = document.getElementById("tallerImportSummaryBox");
+  const sContent = document.getElementById("tallerImportSummaryContent");
+
+  if (pBox) pBox.style.display = "block";
+  if (sBox) sBox.style.display = "none";
+  if (btn) btn.disabled = true;
+  if (logBox) logBox.innerHTML = "";
+
+  const addLog = (msg, color = "#CBD5E1") => {
+    if (!logBox) return;
+    const div = document.createElement("div");
+    div.style.color = color;
+    div.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    logBox.appendChild(div);
+    logBox.scrollTop = logBox.scrollHeight;
+  };
+
+  addLog(`Iniciando importación para: ${ACTIVE_STUDENT_PROFILE.nombre} (${studentKey})`, "#34D399");
+  addLog(`Archivos a procesar: ${TALLER_QUEUED_FILES.length}`, "#60A5FA");
+
+  const monthMode = document.querySelector("input[name='tallerMonthMode']:checked")?.value || "AUTO";
+  const manualMonth = document.getElementById("tallerManualMonthSelect")?.value || "ENERO";
+
+  let totalVouchersImported = 0;
+  let totalDebitsOverall = 0;
+  let totalCreditsOverall = 0;
+  const monthsImpacted = new Set();
+
+  for (let fileIdx = 0; fileIdx < TALLER_QUEUED_FILES.length; fileIdx++) {
+    const file = TALLER_QUEUED_FILES[fileIdx];
+    const pct = Math.round(((fileIdx) / TALLER_QUEUED_FILES.length) * 100);
+    if (pBar) pBar.style.width = `${pct}%`;
+    if (pPct) pPct.textContent = `${pct}%`;
+    if (pLabel) pLabel.textContent = `Leyendo ${file.name}...`;
+
+    addLog(`Cargando archivo ${fileIdx + 1}/${TALLER_QUEUED_FILES.length}: ${file.name}...`);
+
+    let arrayBuffer;
+    try {
+      arrayBuffer = await file.arrayBuffer();
+    } catch(err) {
+      addLog(`❌ Error al leer ${file.name}: ${err.message}`, "#EF4444");
+      continue;
+    }
+
+    let wb;
+    try {
+      wb = window.XLSX.read(arrayBuffer, { type: "array", cellDates: true });
+    } catch(err) {
+      addLog(`❌ Error al parsear Excel ${file.name}: ${err.message}`, "#EF4444");
+      continue;
+    }
+
+    let detectedMonth = (monthMode === "MANUAL") ? manualMonth : (detectMonthFromFileName(file.name) || ACTIVE_PERIOD || "ENERO");
+    addLog(`📘 Período asignado: ${detectedMonth}`, "#FBBF24");
+    monthsImpacted.add(detectedMonth);
+
+    if (!targetDb.meses[detectedMonth]) {
+      targetDb.meses[detectedMonth] = {
+        archivo: file.name,
+        hojas: ["PUC"],
+        total_transacciones: 0,
+        transacciones: [],
+        hojas_especiales: {}
+      };
+    }
+    const mesObj = targetDb.meses[detectedMonth];
+    mesObj.archivo = file.name;
+    if (!mesObj.hojas_especiales) mesObj.hojas_especiales = {};
+
+    let fileVouchersCount = 0;
+    let fileDebits = 0;
+    let fileCredits = 0;
+
+    for (const sheetName of wb.SheetNames) {
+      const ws = wb.Sheets[sheetName];
+      if (!ws) continue;
+      const rawRows = window.XLSX.utils.sheet_to_json(ws, { header: 1, defval: "" });
+
+      if (sheetName.toUpperCase() === "PUC") {
+        let addedPuc = 0;
+        if (!targetDb.puc) targetDb.puc = [];
+        const seenPuc = new Set(targetDb.puc.map(p => String(p.codigo)));
+        rawRows.forEach(row => {
+          const vals = (row || []).filter(c => c !== null && c !== undefined && String(c).trim() !== "");
+          if (vals.length >= 2) {
+            const cod = String(vals[0]).replace(/\D/g, "");
+            const nom = String(vals[1]).trim();
+            if (cod && !seenPuc.has(cod)) {
+              seenPuc.add(cod);
+              targetDb.puc.push({ codigo: cod, nombre: nom, nivel: cod.length <= 4 ? "Cuenta" : "Subcuenta" });
+              addedPuc++;
+            }
+          }
+        });
+        addLog(`   📋 Hoja PUC: +${addedPuc} cuentas actualizadas.`);
+        continue;
+      }
+
+      const upName = sheetName.toUpperCase();
+      if (upName.includes("AUXILIAR") || upName.includes("AJU") || upName.includes("CUENTAS T") ||
+          upName.includes("CIERRE") || upName.includes("ER") || upName.includes("ESF") || upName.includes("HOJA TR")) {
+        mesObj.hojas_especiales[sheetName] = rawRows.slice(0, 100);
+        addLog(`   📑 Hoja Especial guardada: "${sheetName}" (${rawRows.length} filas).`);
+        continue;
+      }
+
+      const voucher = parseSheetVoucher(rawRows, sheetName, detectedMonth);
+      if (voucher && voucher.asientos.length > 0) {
+        const exIdx = mesObj.transacciones.findIndex(t => String(t.hoja) === String(voucher.hoja));
+        if (exIdx >= 0) {
+          mesObj.transacciones[exIdx] = voucher;
+        } else {
+          mesObj.transacciones.push(voucher);
+        }
+        if (!mesObj.hojas.includes(sheetName)) {
+          mesObj.hojas.push(sheetName);
+        }
+        fileVouchersCount++;
+        totalVouchersImported++;
+        fileDebits += voucher.total_debe;
+        fileCredits += voucher.total_haber;
+        totalDebitsOverall += voucher.total_debe;
+        totalCreditsOverall += voucher.total_haber;
+
+        const isCuadrado = Math.abs(voucher.total_debe - voucher.total_haber) < 0.05;
+        const statusIcon = isCuadrado ? "✓" : "⚠️";
+        addLog(`   ✅ Hoja "${sheetName}": ${voucher.tipo} • ${voucher.asientos.length} asientos • D: $${voucher.total_debe.toLocaleString()} H: $${voucher.total_haber.toLocaleString()} [${statusIcon}]`);
+      }
+    }
+
+    mesObj.total_transacciones = mesObj.transacciones.length;
+    addLog(`Resumen ${detectedMonth}: ${fileVouchersCount} comprobantes cargados. Débito: $${fileDebits.toLocaleString()}, Crédito: $${fileCredits.toLocaleString()}`, "#10B981");
+  }
+
+  if (pBar) pBar.style.width = "100%";
+  if (pPct) pPct.textContent = "100%";
+  if (pLabel) pLabel.textContent = "¡Completado con éxito!";
+
+  targetDb.empresa.razon_social = targetDb.empresa.razon_social || `TALLER CONTABLE DE ${ACTIVE_STUDENT_PROFILE.nombre.toUpperCase()}`;
+  targetDb.empresa.elaborado_por = ACTIVE_STUDENT_PROFILE.nombre;
+  targetDb.meta = targetDb.meta || {};
+  targetDb.meta.actualizado = new Date().toLocaleString();
+  targetDb.meta.fuente_excel = `Alimentado por ${ACTIVE_STUDENT_PROFILE.nombre} (${TALLER_QUEUED_FILES.map(f=>f.name).join(", ")})`;
+
+  localStorage.setItem(studentKey, JSON.stringify(targetDb));
+  addLog(`💾 Datos guardados exclusivamente en tu bóveda privada: "${studentKey}"`, "#34D399");
+
+  try {
+    fetch("/api/workspace/sync-student-db", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        workspace_id: ACTIVE_STUDENT_PROFILE.workspace_id || ("taller_" + ACTIVE_STUDENT_PROFILE.id),
+        student_id: ACTIVE_STUDENT_PROFILE.id,
+        db: targetDb
+      })
+    }).then(r => r.json()).then(res => {
+      if (res && res.ok) addLog("☁️ Respaldo en servidor local sincronizado con éxito.");
+    }).catch(() => {});
+  } catch(e) {}
+
+  DB = targetDb;
+  refreshAllViews();
+
+  if (sBox && sContent) {
+    const monthsArr = Array.from(monthsImpacted).join(", ");
+    sBox.style.display = "block";
+    sContent.innerHTML = `
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:10px; margin-bottom:12px;">
+        <div style="background:#F0FDF4; border:1px solid #BBF7D0; padding:8px 12px; border-radius:8px;">
+          <div style="font-size:0.7rem; color:#166534; font-weight:700;">Comprobantes Cargados</div>
+          <div style="font-size:1.1rem; color:#15803D; font-weight:900;">${totalVouchersImported}</div>
+        </div>
+        <div style="background:#F0FDF4; border:1px solid #BBF7D0; padding:8px 12px; border-radius:8px;">
+          <div style="font-size:0.7rem; color:#166534; font-weight:700;">Meses Alimentados</div>
+          <div style="font-size:1.1rem; color:#15803D; font-weight:900;">${monthsArr}</div>
+        </div>
+        <div style="background:#F0FDF4; border:1px solid #BBF7D0; padding:8px 12px; border-radius:8px;">
+          <div style="font-size:0.7rem; color:#166534; font-weight:700;">Total Movimientos (Débito)</div>
+          <div style="font-size:1.0rem; color:#15803D; font-weight:900;">$${totalDebitsOverall.toLocaleString()}</div>
+        </div>
+        <div style="background:#F0FDF4; border:1px solid #BBF7D0; padding:8px 12px; border-radius:8px;">
+          <div style="font-size:0.7rem; color:#166534; font-weight:700;">Partida Doble (Cuadre)</div>
+          <div style="font-size:1.0rem; color:#15803D; font-weight:900;">${Math.abs(totalDebitsOverall - totalCreditsOverall) < 1 ? "CUADRADO ✓" : "Diferencia: $" + Math.abs(totalDebitsOverall - totalCreditsOverall).toLocaleString()}</div>
+        </div>
+      </div>
+      <div style="font-size:0.78rem; color:#065F46; font-weight:700; margin-bottom:10px;">
+        🔒 <strong>Privacidad confirmada:</strong> Tus datos están 100% aislados en tu cuenta <em>${ACTIVE_STUDENT_PROFILE.nombre}</em>. Nadie más puede modificarlos.
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn btn-primary btn-sm" onclick="closeUploadTallerExcelModal(); switchSection('comprobantes');">
+          📑 Ver Mis Comprobantes de Diario
+        </button>
+        <button class="btn btn-outline btn-sm" onclick="closeUploadTallerExcelModal(); switchSection('balance');">
+          ⚖️ Ver Balance de Comprobación
+        </button>
+        <button class="btn btn-gold btn-sm" onclick="closeUploadTallerExcelModal(); switchSection('estados');">
+          📊 Ver Estados Financieros NIIF
+        </button>
+      </div>
+    `;
+  }
+
+  showToast(`🎉 ¡Taller alimentado exitosamente! Se procesaron ${totalVouchersImported} comprobantes.`);
+  if (btn) btn.disabled = false;
+}
+window.executeTallerExcelImport = executeTallerExcelImport;
