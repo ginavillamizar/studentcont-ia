@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Generador del Informe Financiero Oficial con los 5 Estados Financieros y Comparativos Mensuales
-ELECTROVIVIENDA S.A.S — Aprendiz: Gina Villamizar • Instructor: George Olago (SENA CSET Bucaramanga)
+Generador del Informe Financiero Oficial con los 5 Estados Financieros, Notas Completas y Análisis Fácil
+ELECTROVIVIENDA S.A.S — Aprendiz: Kevin Guerrero • Instructor: George Olago (SENA CSET Bucaramanga)
 """
 
 import os
@@ -19,7 +19,7 @@ from reportlab.graphics.charts.barcharts import VerticalBarChart
 from reportlab.graphics.charts.piecharts import Pie
 
 BASE_DIR = "/Users/ginavillamizar/Downloads/CONTABILIDAD"
-OUTPUT_PDF = os.path.join(BASE_DIR, "INFORME_FINANCIERO_5_ESTADOS_ELECTROVIVIENDA_GINA_VILLAMIZAR.pdf")
+OUTPUT_PDF = os.path.join(BASE_DIR, "INFORME_FINANCIERO_5_ESTADOS_ELECTROVIVIENDA_KEVIN_GUERRERO.pdf")
 
 class NumberedCanvas(canvas.Canvas):
     def __init__(self, *args, **kwargs):
@@ -61,7 +61,7 @@ class NumberedCanvas(canvas.Canvas):
             
             self.setFont("Helvetica", 7)
             self.setFillColor(colors.HexColor("#64748B"))
-            self.drawString(40, 30, "Aprendiz: Gina Villamizar • Instructor: George Olago • SENA CSET Bucaramanga — Ficha 123101")
+            self.drawString(40, 30, "Aprendiz: Kevin Guerrero • Instructor: George Olago • SENA CSET Bucaramanga — Ficha 123101")
             
             page_text = f"Página {self._pageNumber} de {page_count}"
             self.setFont("Helvetica-Bold", 7)
@@ -72,25 +72,21 @@ class NumberedCanvas(canvas.Canvas):
 
 # Funciones generadoras de gráficos vectoriales
 def create_chart_income_evolution():
-    d = Drawing(504, 150)
-    d.add(Rect(0, 0, 504, 150, fillColor=colors.HexColor("#F8FAFC"), strokeColor=colors.HexColor("#CBD5E1"), strokeWidth=1, rx=6, ry=6))
-    d.add(String(20, 132, "GRÁFICO 1: EVOLUCIÓN MENSUAL DE INGRESOS, COSTOS Y RESULTADO NETO (COP)", fontName="Helvetica-Bold", fontSize=8.5, fillColor=colors.HexColor("#0B192C")))
+    d = Drawing(504, 140)
+    d.add(Rect(0, 0, 504, 155, fillColor=colors.HexColor("#F8FAFC"), strokeColor=colors.HexColor("#CBD5E1"), strokeWidth=1, rx=6, ry=6))
+    d.add(String(20, 137, "GRÁFICO 1: ¿CÓMO EVOLUCIONARON LAS VENTAS, COSTOS Y RESULTADOS DE LA EMPRESA?", fontName="Helvetica-Bold", fontSize=8.5, fillColor=colors.HexColor("#0B192C")))
     
     chart = VerticalBarChart()
     chart.x = 45
     chart.y = 25
-    chart.height = 95
+    chart.height = 98
     chart.width = 430
-    # Datos: 4 meses (Enero, Febrero, Marzo, Abril)
-    # Serie 0: Ingresos Netos [0, 61.3M, 0, 8.16M]
-    # Serie 1: Costo de Ventas [0, 41.64M, 0, 3.29M]
-    # Serie 2: Utilidad/Pérdida Neta [0, 16.45M, -17.15M, -7.89M]
     chart.data = [
         [0, 61.3, 0, 8.16],
         [0, 41.64, 0, 3.29],
         [0, 16.45, -17.15, -7.89]
     ]
-    chart.categoryAxis.categoryNames = ['Enero', 'Febrero', 'Marzo', 'Abril']
+    chart.categoryAxis.categoryNames = ['Enero (Apertura)', 'Febrero (Ventas Pico)', 'Marzo (Costo Nómina)', 'Abril (Recuperación)']
     chart.categoryAxis.labels.fontSize = 7.5
     chart.categoryAxis.labels.fontName = 'Helvetica-Bold'
     chart.valueAxis.valueMin = -20
@@ -99,33 +95,31 @@ def create_chart_income_evolution():
     chart.valueAxis.labels.fontSize = 7
     chart.valueAxis.labelTextFormat = '$%dM'
     
-    chart.bars[0].fillColor = colors.HexColor("#10B981")  # Verde ingresos
+    chart.bars[0].fillColor = colors.HexColor("#10B981")  # Verde ventas
     chart.bars[1].fillColor = colors.HexColor("#D4AF37")  # Dorado costo
     chart.bars[2].fillColor = colors.HexColor("#0B192C")  # Azul marino resultado
     
     d.add(chart)
     
-    # Leyenda
-    d.add(Rect(140, 10, 10, 8, fillColor=colors.HexColor("#10B981"), strokeColor=None))
-    d.add(String(155, 11, "Ingresos Netos", fontName="Helvetica", fontSize=7, fillColor=colors.HexColor("#334155")))
-    d.add(Rect(240, 10, 10, 8, fillColor=colors.HexColor("#D4AF37"), strokeColor=None))
-    d.add(String(255, 11, "Costo de Ventas", fontName="Helvetica", fontSize=7, fillColor=colors.HexColor("#334155")))
-    d.add(Rect(340, 10, 10, 8, fillColor=colors.HexColor("#0B192C"), strokeColor=None))
-    d.add(String(355, 11, "Utilidad / Pérdida Neta", fontName="Helvetica", fontSize=7, fillColor=colors.HexColor("#334155")))
+    d.add(Rect(130, 8, 10, 8, fillColor=colors.HexColor("#10B981"), strokeColor=None))
+    d.add(String(145, 9, "Ventas Netas Realizadas", fontName="Helvetica", fontSize=7, fillColor=colors.HexColor("#334155")))
+    d.add(Rect(260, 8, 10, 8, fillColor=colors.HexColor("#D4AF37"), strokeColor=None))
+    d.add(String(275, 9, "Costo de Comprar la Mercancía", fontName="Helvetica", fontSize=7, fillColor=colors.HexColor("#334155")))
+    d.add(Rect(390, 8, 10, 8, fillColor=colors.HexColor("#0B192C"), strokeColor=None))
+    d.add(String(405, 9, "Ganancia o Pérdida Real", fontName="Helvetica", fontSize=7, fillColor=colors.HexColor("#334155")))
     
     return d
 
 def create_chart_asset_composition():
-    d = Drawing(504, 140)
-    d.add(Rect(0, 0, 504, 140, fillColor=colors.HexColor("#F8FAFC"), strokeColor=colors.HexColor("#CBD5E1"), strokeWidth=1, rx=6, ry=6))
-    d.add(String(20, 122, "GRÁFICO 2: COMPOSICIÓN Y ESTRUCTURA DEL ACTIVO TOTAL AL CIERRE (ABRIL 2026)", fontName="Helvetica-Bold", fontSize=8.5, fillColor=colors.HexColor("#0B192C")))
+    d = Drawing(504, 138)
+    d.add(Rect(0, 0, 504, 150, fillColor=colors.HexColor("#F8FAFC"), strokeColor=colors.HexColor("#CBD5E1"), strokeWidth=1, rx=6, ry=6))
+    d.add(String(20, 132, "GRÁFICO 2: ¿EN QUÉ TIENE LA PLATA LA EMPRESA? (ESTRUCTURA DE ACTIVOS ABRIL 2026)", fontName="Helvetica-Bold", fontSize=8.5, fillColor=colors.HexColor("#0B192C")))
     
     pie = Pie()
     pie.x = 40
-    pie.y = 15
-    pie.width = 100
-    pie.height = 100
-    # Activos abril: Efectivo $51.8M (15.6%), Clientes $28.8M (8.7%), Inventario $33.8M (10.2%), Fijos $209.9M (63.4%), Otros $6.8M (2.1%)
+    pie.y = 18
+    pie.width = 105
+    pie.height = 105
     pie.data = [51.85, 28.86, 33.82, 209.89, 6.81]
     pie.labels = ['15.6%', '8.7%', '10.2%', '63.4%', '2.1%']
     pie.slices[0].fillColor = colors.HexColor("#10B981") # Efectivo
@@ -135,57 +129,53 @@ def create_chart_asset_composition():
     pie.slices[4].fillColor = colors.HexColor("#94A3B8") # Otros
     d.add(pie)
     
-    # Explicación lateral
     lines = [
-        ("Efectivo y Equivalentes:", "$ 51.852.812 (15,6%) — Alta disponibilidad de caja para salarios y servicios.", colors.HexColor("#10B981")),
-        ("Deudores Clientes (Cartera):", "$ 28.857.500 (8,7%) — Cartera sana a crédito comercial con soporte de factura.", colors.HexColor("#3B82F6")),
-        ("Inventarios en Bodega:", "$ 33.822.000 (10,2%) — 4 referencias físicas valuadas por promedio ponderado.", colors.HexColor("#D4AF37")),
-        ("Propiedades, Planta y Equipos:", "$ 209.890.152 (63,4%) — Sólido respaldo patrimonial en terrenos y edificaciones.", colors.HexColor("#0B192C")),
-        ("Anticipos Tributarios y Otros:", "$ 6.810.220 (2,1%) — Saldos a favor y retenciones a favor en DIAN.", colors.HexColor("#94A3B8"))
+        ("Dinero en Bancos y Caja:", "$ 51.852.812 (15,6%) — Plata disponible de inmediato para pagar cuentas.", colors.HexColor("#10B981")),
+        ("Clientes por Cobrar (Cartera):", "$ 28.857.500 (8,7%) — Facturas pendientes por cobrar a clientes cumplidos.", colors.HexColor("#3B82F6")),
+        ("Mercancía en Bodega:", "$ 33.822.000 (10,2%) — Neveras, Lavadoras, TVs y Estufas listas para vender.", colors.HexColor("#D4AF37")),
+        ("Propiedades y Vehículos:", "$ 209.890.152 (63,4%) — Terrenos, local y camioneta propia de la empresa.", colors.HexColor("#0B192C")),
+        ("Impuestos a Favor (Anticipos):", "$ 6.810.220 (2,1%) — Retenciones a favor descontables con la DIAN.", colors.HexColor("#94A3B8"))
     ]
-    y_pos = 96
+    y_pos = 104
     for title, desc, col in lines:
         d.add(Rect(185, y_pos + 1, 8, 8, fillColor=col, strokeColor=None))
         d.add(String(198, y_pos + 1, title, fontName="Helvetica-Bold", fontSize=7.5, fillColor=colors.HexColor("#0B192C")))
-        d.add(String(310, y_pos + 1, desc, fontName="Helvetica", fontSize=6.8, fillColor=colors.HexColor("#475569")))
-        y_pos -= 19
+        d.add(String(312, y_pos + 1, desc, fontName="Helvetica", fontSize=6.8, fillColor=colors.HexColor("#475569")))
+        y_pos -= 21
         
     return d
 
 def create_chart_liquidity_solvency():
-    d = Drawing(504, 135)
-    d.add(Rect(0, 0, 504, 135, fillColor=colors.HexColor("#F8FAFC"), strokeColor=colors.HexColor("#CBD5E1"), strokeWidth=1, rx=6, ry=6))
-    d.add(String(20, 118, "GRÁFICO 3: BATERÍA DE LIQUIDEZ Y SOLVENCIA COMPARATIVA (ENERO A ABRIL 2026)", fontName="Helvetica-Bold", fontSize=8.5, fillColor=colors.HexColor("#0B192C")))
+    d = Drawing(504, 125)
+    d.add(Rect(0, 0, 504, 145, fillColor=colors.HexColor("#F8FAFC"), strokeColor=colors.HexColor("#CBD5E1"), strokeWidth=1, rx=6, ry=6))
+    d.add(String(20, 127, "GRÁFICO 3: CAPACIDAD DE PAGO EN PALABRAS FÁCILES (RESPALDO POR CADA $1 DE DEUDA)", fontName="Helvetica-Bold", fontSize=8.5, fillColor=colors.HexColor("#0B192C")))
     
     chart = VerticalBarChart()
     chart.x = 45
-    chart.y = 20
-    chart.height = 85
+    chart.y = 22
+    chart.height = 90
     chart.width = 430
-    # Razón corriente: Ene: Infinita (sin deuda), Feb: 2.15, Mar: 1.92, Abr: 2.25
-    # Prueba ácida: Ene: Inf, Feb: 1.79, Mar: 1.56, Abr: 1.62
-    # Endeudamiento: Ene: 0%, Feb: 31.2%, Mar: 32.7%, Abr: 27.4%
     chart.data = [
         [3.0, 2.15, 1.92, 2.25],
         [3.0, 1.79, 1.56, 1.62]
     ]
-    chart.categoryAxis.categoryNames = ['Enero (Apertura)', 'Febrero', 'Marzo', 'Abril']
+    chart.categoryAxis.categoryNames = ['Enero (Libre Deuda)', 'Febrero', 'Marzo', 'Abril (Saneada)']
     chart.categoryAxis.labels.fontSize = 7.5
     chart.categoryAxis.labels.fontName = 'Helvetica-Bold'
     chart.valueAxis.valueMin = 0
     chart.valueAxis.valueMax = 3.5
     chart.valueAxis.valueStep = 0.5
     chart.valueAxis.labels.fontSize = 7
-    chart.valueAxis.labelTextFormat = '%.1fx'
+    chart.valueAxis.labelTextFormat = '$%.2f'
     
-    chart.bars[0].fillColor = colors.HexColor("#0B192C") # Razón corriente
-    chart.bars[1].fillColor = colors.HexColor("#10B981") # Prueba ácida
+    chart.bars[0].fillColor = colors.HexColor("#0B192C")
+    chart.bars[1].fillColor = colors.HexColor("#10B981")
     d.add(chart)
     
-    d.add(Rect(160, 6, 10, 8, fillColor=colors.HexColor("#0B192C"), strokeColor=None))
-    d.add(String(175, 7, "Razón Corriente (Meta >= 1.5x)", fontName="Helvetica", fontSize=7, fillColor=colors.HexColor("#334155")))
-    d.add(Rect(320, 6, 10, 8, fillColor=colors.HexColor("#10B981"), strokeColor=None))
-    d.add(String(335, 7, "Prueba Ácida (Meta >= 1.0x)", fontName="Helvetica", fontSize=7, fillColor=colors.HexColor("#334155")))
+    d.add(Rect(120, 6, 10, 8, fillColor=colors.HexColor("#0B192C"), strokeColor=None))
+    d.add(String(135, 7, "Total de bienes líquidos por cada $1 de deuda (Meta: > $1,50)", fontName="Helvetica", fontSize=7, fillColor=colors.HexColor("#334155")))
+    d.add(Rect(325, 6, 10, 8, fillColor=colors.HexColor("#10B981"), strokeColor=None))
+    d.add(String(340, 7, "Plata inmediata sin vender mercancía (Meta: > $1,00)", fontName="Helvetica", fontSize=7, fillColor=colors.HexColor("#334155")))
     
     return d
 
@@ -208,12 +198,12 @@ def build_pdf():
     c_muted = colors.HexColor("#64748B")
     
     # Estilos de texto
-    title_style = ParagraphStyle('TitleStyle', fontName='Helvetica-Bold', fontSize=18, leading=22, textColor=c_primary, alignment=1)
-    sub_title_style = ParagraphStyle('SubTitleStyle', fontName='Helvetica-Bold', fontSize=10.5, leading=14, textColor=c_gold, alignment=1)
-    meta_style = ParagraphStyle('MetaStyle', fontName='Helvetica', fontSize=8, leading=12, textColor=c_muted, alignment=1)
+    title_style = ParagraphStyle('TitleStyle', fontName='Helvetica-Bold', fontSize=17, leading=21, textColor=c_primary, alignment=1)
+    sub_title_style = ParagraphStyle('SubTitleStyle', fontName='Helvetica-Bold', fontSize=10, leading=13.5, textColor=c_gold, alignment=1)
+    meta_style = ParagraphStyle('MetaStyle', fontName='Helvetica', fontSize=8, leading=11.5, textColor=c_muted, alignment=1)
     
-    sec_header_style = ParagraphStyle('SecHeader', fontName='Helvetica-Bold', fontSize=11, leading=14, textColor=c_primary, spaceBefore=6, spaceAfter=3, keepWithNext=True)
-    subsec_header_style = ParagraphStyle('SubSecHeader', fontName='Helvetica-Bold', fontSize=9, leading=12, textColor=c_gold, spaceBefore=4, spaceAfter=2, keepWithNext=True)
+    sec_header_style = ParagraphStyle('SecHeader', fontName='Helvetica-Bold', fontSize=11, leading=14, textColor=c_primary, spaceBefore=4, spaceAfter=2, keepWithNext=True)
+    subsec_header_style = ParagraphStyle('SubSecHeader', fontName='Helvetica-Bold', fontSize=8.8, leading=11.5, textColor=c_gold, spaceBefore=4, spaceAfter=2, keepWithNext=True)
     body_style = ParagraphStyle('BodyText', fontName='Helvetica', fontSize=7.6, leading=10.8, textColor=c_slate, spaceAfter=4)
     body_bold = ParagraphStyle('BodyTextBold', fontName='Helvetica-Bold', fontSize=7.6, leading=10.8, textColor=c_primary)
     
@@ -237,19 +227,18 @@ def build_pdf():
     story.append(Paragraph("Tecnología en Gestión Contable y de Información Financiera • Ficha 123101", meta_style))
     story.append(Spacer(1, 14))
     
-    story.append(Paragraph("INFORME FINANCIERO OFICIAL DE LOS 5 ESTADOS Y COMPARATIVO MENSUAL", title_style))
+    story.append(Paragraph("INFORME FINANCIERO OFICIAL DE LOS 5 ESTADOS FINANCIEROS Y COMPARATIVO", title_style))
     story.append(Spacer(1, 4))
-    story.append(Paragraph("ESTADOS FINANCIEROS BAJO NIIF PARA LAS PYMES (GRUPO 2) • CUATRIMESTRE 2026", sub_title_style))
+    story.append(Paragraph("APLICACIÓN DEL MARCO NIIF PARA LAS PYMES (GRUPO 2) • CUATRIMESTRE 2026", sub_title_style))
     story.append(Paragraph("Enero (Apertura) • Febrero (Operación Comercial) • Marzo (Causación y Nómina) • Abril (Consolidación y Cierre)", meta_style))
     story.append(Spacer(1, 12))
     
-    # Cuadro institucional de autoría
     auth_data = [
         [Paragraph("<b>ENTIDAD REPORTANTE:</b>", td_bold), Paragraph("ELECTROVIVIENDA S.A.S — NIT: 901.765.438-3 • Bucaramanga, Santander", td_style)],
         [Paragraph("<b>RÉGIMEN Y MARCO:</b>", td_bold), Paragraph("Responsable de IVA (RRI) • Agente Retenedor y Autorretenedor • NIIF PYMES Grupo 2", td_style)],
-        [Paragraph("<b>APRENDIZ / ELABORÓ:</b>", td_bold), Paragraph("<b>Gina Villamizar</b> — Aprendiz Gestora Contable y Financiera", td_style)],
+        [Paragraph("<b>APRENDIZ / ELABORÓ:</b>", td_bold), Paragraph("<b>Kevin Guerrero</b> — Aprendiz en Gestión Contable y de Información Financiera", td_style)],
         [Paragraph("<b>INSTRUCTOR / REVISÓ:</b>", td_bold), Paragraph("<b>George Olago</b> — Instructor Líder de Contabilidad y Finanzas SENA CSET", td_style)],
-        [Paragraph("<b>FECHA DE PRESENTACIÓN:</b>", td_bold), Paragraph("12 de Noviembre de 2026 — Período Contable Auditado: Enero a Abril 2026", td_style)],
+        [Paragraph("<b>FECHA DE PRESENTACIÓN:</b>", td_bold), Paragraph("12 de Noviembre de 2026 — Período Contable Evaluado: Enero a Abril 2026", td_style)],
     ]
     t_auth = Table(auth_data, colWidths=[150, 354])
     t_auth.setStyle(TableStyle([
@@ -264,18 +253,17 @@ def build_pdf():
     story.append(t_auth)
     story.append(Spacer(1, 14))
 
-    # Presentación Institucional, Misión y Visión
     story.append(Paragraph("1. PRESENTACIÓN INSTITUCIONAL DE LA EMPRESA", sec_header_style))
     story.append(HRFlowable(width="100%", thickness=1.5, color=c_gold, spaceAfter=6, spaceBefore=0))
     p_pres = (
-        "<b>ELECTROVIVIENDA S.A.S</b> es una sociedad comercial constituida por acciones simplificadas bajo las leyes de la República de Colombia, "
-        "con domicilio principal en la ciudad de Bucaramanga, Santander. La compañía tiene por objeto social principal la adquisición, importación, "
-        "distribución, representación y comercialización al por mayor y al detal de electrodomésticos para el hogar, tecnología, gasodomésticos "
-        "y líneas de refrigeración y climatización. La sociedad opera bajo el régimen tributario de Responsable del Impuesto sobre las Ventas (IVA), "
-        "actúa como agente retenedor de renta a título de compras y servicios, y aplica el marco técnico normativo de las <b>NIIF para las PYMES (Grupo 2)</b>."
+        "<b>ELECTROVIVIENDA S.A.S</b> es una sociedad comercial legalmente constituida por acciones simplificadas, con domicilio en la ciudad "
+        "de Bucaramanga, Santander. Su actividad principal consiste en la comercialización, distribución y venta al por mayor y detal de "
+        "electrodomésticos para el hogar, gasodomésticos y tecnología (Neveras No Frost, Lavadoras Automáticas, Smart TVs 4K y Estufas a Gas). "
+        "Pertenece al Régimen Responsable de IVA (RRI), actúa como agente de retención en la fuente y prepara su información bajo las "
+        "<b>Normas Internacionales de Información Financiera para Pequeñas y Medianas Entidades (NIIF para las PYMES - Grupo 2)</b>."
     )
     story.append(Paragraph(p_pres, body_style))
-    story.append(Spacer(1, 2))
+    story.append(Spacer(1, 6))
 
     mv_data = [
         [
@@ -284,16 +272,15 @@ def build_pdf():
         ],
         [
             Paragraph(
-                "Proveer soluciones integrales de confort y tecnología para los hogares y negocios santandereanos mediante la comercialización "
-                "de electrodomésticos de la más alta eficiencia y durabilidad; garantizando asesoría técnica personalizada, facilidades comerciales, "
-                "precios transparentes y estricto cumplimiento ético, tributario y de calidad, contribuyendo activamente al bienestar de las familias "
-                "y a la estabilidad financiera de nuestros colaboradores y socios.",
+                "Facilitar el acceso de las familias y microempresas santandereanas a electrodomésticos y tecnología de vanguardia con alta eficiencia "
+                "energética y respaldo de fábrica; ofreciendo asesoría transparente, opciones de pago justas, riguroso cumplimiento tributario y "
+                "garantía posventa, generando valor económico y bienestar sostenible para nuestros clientes, colaboradores y la sociedad.",
                 body_style
             ),
             Paragraph(
-                "Consolidarnos para el año 2030 como la comercializadora líder de electrodomésticos y gasodomésticos en el nororiente colombiano, "
-                "reconocida por su confiabilidad contable NIIF, excelencia en servicio posventa, adopción de canales de distribución digital omnicanal "
-                "y un modelo de negocio sostenible que maximice la rentabilidad del patrimonio social respetando los más altos estándares éticos y legales.",
+                "Posicionarnos en el año 2030 como la comercializadora de electrodomésticos preferida del nororiente colombiano por su servicio "
+                "cercano, solidez patrimonial, confiabilidad en su información financiera NIIF y adopción de canales digitales eficientes, "
+                "manteniendo siempre una gestión honesta, rentable y respetuosa de la ley.",
                 body_style
             )
         ]
@@ -311,24 +298,24 @@ def build_pdf():
         ('RIGHTPADDING', (0,0), (-1,-1), 8),
     ]))
     story.append(t_mv)
-    story.append(Spacer(1, 3))
+    story.append(Spacer(1, 8))
 
-    story.append(Paragraph("2. VALORES CORPORATIVOS Y MARCO TÉCNICO APLICABLE", subsec_header_style))
+    story.append(Paragraph("2. VALORES CORPORATIVOS Y CUMPLIMIENTO ÉTICO", subsec_header_style))
     p_val = (
-        "• <b>Transparencia y Fidelidad Contable:</b> Revelación objetiva y comprensible de hechos económicos conforme a NIIF para PYMES (Sección 3 a 8).<br/>"
-        "• <b>Responsabilidad Fiscal y Social:</b> Estricto cumplimiento en retenciones, liquidación de nómina con todas las prestaciones legales e IVA bimestral.<br/>"
-        "• <b>Negocio en Marcha y Solvencia:</b> Mantenimiento de una sólida base de capital y liquidez superior a 1,5 veces los pasivos a corto plazo."
+        "• <b>Honestidad y Claridad Contable:</b> Registro fidedigno de cada factura, comprobante y cuenta sin ocultamientos ni alteraciones.<br/>"
+        "• <b>Cumplimiento Laboral y Fiscal:</b> Pago puntual de salarios, seguridad social (salud, pensión, ARL) e impuestos ante la DIAN.<br/>"
+        "• <b>Solvencia y Prudencia:</b> Cuidado permanente de la caja y del patrimonio para asegurar la continuidad del negocio."
     )
     story.append(Paragraph(p_val, body_style))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PÁGINA 2: SECCIÓN ENERO 2026 — APERTURA Y CONSTITUCIÓN (LOS 5 ESTADOS)
+    # PÁGINA 2: ESTADOS FINANCIEROS OFICIALES — MES DE ENERO 2026 (4 ESTADOS)
     # =========================================================================
     story.append(Paragraph("ESTADOS FINANCIEROS OFICIALES — MES DE ENERO 2026", sec_header_style))
     story.append(Paragraph("Período de Apertura y Constitución Social (01 al 31 de Enero de 2026) • Cifras en Pesos Colombianos (COP)", meta_style))
-    story.append(HRFlowable(width="100%", thickness=1.5, color=c_gold, spaceAfter=8, spaceBefore=2))
+    story.append(HRFlowable(width="100%", thickness=1.5, color=c_gold, spaceAfter=6, spaceBefore=2))
 
     story.append(Paragraph("ESTADO DE SITUACIÓN FINANCIERA — ESF ENERO 2026", subsec_header_style))
     esf_ene = [
@@ -354,15 +341,15 @@ def build_pdf():
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8FAFC")]),
-        ('TOPPADDING', (0,0), (-1,-1), 1),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1),
-        ('LEFTPADDING', (0,0), (-1,-1), 6),
-        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+        ('TOPPADDING', (0,0), (-1,-1), 1.2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1.2),
+        ('LEFTPADDING', (0,0), (-1,-1), 5),
+        ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('BACKGROUND', (0,8), (-1,8), colors.HexColor("#E2E8F0")),
         ('BACKGROUND', (0,14), (-1,14), colors.HexColor("#E2E8F0")),
     ]))
     story.append(t_esf_ene)
-    story.append(Spacer(1, 2))
+    story.append(Spacer(1, 4))
 
     story.append(Paragraph("ESTADO DE RESULTADO INTEGRAL — ER ENERO 2026", subsec_header_style))
     er_ene = [
@@ -379,14 +366,14 @@ def build_pdf():
         ('BACKGROUND', (0,0), (-1,0), c_primary),
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
-        ('TOPPADDING', (0,0), (-1,-1), 1),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1),
-        ('LEFTPADDING', (0,0), (-1,-1), 6),
-        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+        ('TOPPADDING', (0,0), (-1,-1), 1.2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1.2),
+        ('LEFTPADDING', (0,0), (-1,-1), 5),
+        ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('BACKGROUND', (0,6), (-1,6), colors.HexColor("#FEE2E2")),
     ]))
     story.append(t_er_ene)
-    story.append(Spacer(1, 2))
+    story.append(Spacer(1, 4))
 
     story.append(Paragraph("ESTADO DE CAMBIOS EN EL PATRIMONIO — ECP ENERO 2026", subsec_header_style))
     ecp_ene = [
@@ -401,13 +388,13 @@ def build_pdf():
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#1E293B")),
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
-        ('TOPPADDING', (0,0), (-1,-1), 1),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1),
-        ('LEFTPADDING', (0,0), (-1,-1), 6),
-        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+        ('TOPPADDING', (0,0), (-1,-1), 1.2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1.2),
+        ('LEFTPADDING', (0,0), (-1,-1), 5),
+        ('RIGHTPADDING', (0,0), (-1,-1), 5),
     ]))
     story.append(t_ecp_ene)
-    story.append(Spacer(1, 2))
+    story.append(Spacer(1, 4))
 
     story.append(Paragraph("ESTADO DE FLUJOS DE EFECTIVO — EFE ENERO 2026 (MÉTODO INDIRECTO)", subsec_header_style))
     efe_ene = [
@@ -416,10 +403,9 @@ def build_pdf():
         [Paragraph("  Resultado Neto del Período", td_style), Paragraph("-$ 1.271.250", td_r_style)],
         [Paragraph("  Ajustes por partidas que no afectan efectivo: Depreciación del mes", td_style), Paragraph("+$ 1.271.250", td_r_style)],
         [Paragraph("  <b>Flujo Neto procedente de Actividades de Operación</b>", td_bold), Paragraph("<b>$ 0</b>", td_r_bold)],
-        [Paragraph("<b>Flujo de Efectivo de Actividades de Inversión</b>", td_bold), Paragraph("$ 0", td_r_style)],
-        [Paragraph("  (Los terrenos, edificios y camioneta fueron aportados directamente en especie)", td_style), Paragraph("<b>$ 0</b>", td_r_bold)],
+        [Paragraph("<b>Flujo de Efectivo de Actividades de Inversión</b>", td_bold), Paragraph("<b>$ 0</b>", td_r_style)],
         [Paragraph("<b>Flujo de Efectivo de Actividades de Financiación</b>", td_bold), Paragraph("$ 36.000.000", td_r_style)],
-        [Paragraph("  Aportes de socios recibidos en efectivo en caja", td_style), Paragraph("+$ 36.000.000", td_r_style)],
+        [Paragraph("  Aportes de socios fundadores recibidos en efectivo en caja general", td_style), Paragraph("+$ 36.000.000", td_r_style)],
         [Paragraph("  <b>Flujo Neto procedente de Actividades de Financiación</b>", td_bold), Paragraph("<b>$ 36.000.000</b>", td_r_bold)],
         [Paragraph("<b>INCREMENTO NETO EN EFECTIVO Y EQUIVALENTES DE EFECTIVO</b>", td_bold), Paragraph("<b>+$ 36.000.000</b>", td_r_green)],
         [Paragraph("Saldo Inicial de Efectivo (01 de enero 2026)", td_style), Paragraph("$ 0", td_r_style)],
@@ -430,33 +416,74 @@ def build_pdf():
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#1E293B")),
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
-        ('TOPPADDING', (0,0), (-1,-1), 1),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1),
-        ('LEFTPADDING', (0,0), (-1,-1), 6),
-        ('RIGHTPADDING', (0,0), (-1,-1), 6),
-        ('BACKGROUND', (0,12), (-1,12), colors.HexColor("#DCFCE7")),
+        ('TOPPADDING', (0,0), (-1,-1), 1.2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1.2),
+        ('LEFTPADDING', (0,0), (-1,-1), 5),
+        ('RIGHTPADDING', (0,0), (-1,-1), 5),
+        ('BACKGROUND', (0,11), (-1,11), colors.HexColor("#DCFCE7")),
     ]))
     story.append(t_efe_ene)
-    story.append(Spacer(1, 2))
-
-    story.append(Paragraph("ESTADO DE NOTAS Y REVELACIONES A LOS ESTADOS FINANCIEROS — NOTAS ENERO 2026", subsec_header_style))
-    p_not_ene = (
-        "<b>Nota 1. Entidad y Constitución:</b> Sociedad constituida el 01/01/2026 mediante documento privado registrado en Cámara de Comercio.<br/>"
-        "<b>Nota 2. Políticas Contables:</b> Cumplimiento estricto de NIIF para PYMES. Medición al costo histórico y depreciación en línea recta.<br/>"
-        "<b>Nota 3. Efectivo:</b> $36.000.000 corresponden a $21.000.000 aportados por el Socio 1 y $15.000.000 aportados por el Socio 2 en Caja.<br/>"
-        "<b>Nota 4. Propiedades, Planta y Equipo:</b> Local ($51M) y Terrenos ($89,6M) aportados por socios, y Camioneta Chevrolet ($72M). Deprec. mes: $1.271.250.<br/>"
-        "<b>Nota 5. Capital Social:</b> $248.600.000 suscrito y pagado en su totalidad, sin deudas financieras contraídas en el mes de constitución."
-    )
-    story.append(Paragraph(p_not_ene, body_style))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PÁGINA 3: SECCIÓN FEBRERO 2026 — COMPARATIVO ENERO VS FEBRERO (LOS 5 ESTADOS)
+    # PÁGINA 3: ESTADO DE NOTAS Y REVELACIONES COMPLETAS — MES DE ENERO 2026
+    # =========================================================================
+    story.append(Paragraph("ESTADO DE NOTAS Y REVELACIONES A LOS ESTADOS FINANCIEROS — NOTAS ENERO 2026", sec_header_style))
+    story.append(Paragraph("Revelación Completa y Exhaustiva conforme a NIIF para las PYMES (Secciones 3, 4, 8, 10, 17)", meta_style))
+    story.append(HRFlowable(width="100%", thickness=1.5, color=c_gold, spaceAfter=8, spaceBefore=2))
+
+    notas_ene_completas = (
+        "<b>NOTA 1. IDENTIFICACIÓN Y CONSTITUCIÓN DE LA SOCIEDAD:</b><br/>"
+        "ELECTROVIVIENDA S.A.S es una sociedad por acciones simplificada constituida el 1 de enero de 2026 mediante documento privado "
+        "debidamente inscrito en el Registro Mercantil de la Cámara de Comercio de Bucaramanga. Su objeto social comprende la compra, venta, "
+        "distribución, consignación e importación de electrodomésticos y gasodomésticos para el hogar. Su domicilio y sede operativa principal "
+        "se ubica en la Carrera 21 N° 46-11, Barrio La Concordia de Bucaramanga. La sociedad se rige por la Ley 1258 de 2008 y el Código de Comercio.<br/><br/>"
+
+        "<b>NOTA 2. BASE DE PREPARACIÓN Y POLÍTICAS CONTABLES SIGNIFICATIVAS (NIIF PYMES):</b><br/>"
+        "Los presentes estados financieros han sido preparados bajo la hipótesis de negocio en marcha y de conformidad con las Normas Internacionales "
+        "de Información Financiera para Pequeñas y Medianas Entidades (Decreto Único Reglamentario 2420 de 2015, Grupo 2). La moneda funcional y de "
+        "presentación es el Peso Colombiano (COP). Los criterios de reconocimiento aplicados son:<br/>"
+        "• <i>Base de Acumulación o Devengo:</i> Las transacciones y hechos económicos se reconocen cuando ocurren y no cuando se cobra o paga el efectivo.<br/>"
+        "• <i>Efectivo y Equivalentes:</i> Se reconocen al costo de transacción y comprenden dinero en efectivo en caja general de disponibilidad inmediata.<br/>"
+        "• <i>Propiedades, Planta y Equipo:</i> Medidos al costo de adquisición o valor razonable inicial del aporte social, menos depreciación acumulada.<br/>"
+        "• <i>Método de Depreciación:</i> Se utiliza el método de línea recta sobre vidas útiles estimadas: Edificaciones (20 años / 240 meses), "
+        "Flota y Equipo de Transporte (10 años / 120 meses). Los terrenos no se deprecian por tener vida útil indefinida.<br/><br/>"
+
+        "<b>NOTA 3. EFECTIVO Y EQUIVALENTES DE EFECTIVO (DESGLOSE COMPLETO):</b><br/>"
+        "Al 31 de enero de 2026, el saldo de efectivo asciende a <b>$36.000.000</b> custodiado en Caja General (Código PUC 110505), correspondiente a:<br/>"
+        "• Aporte inicial en dinero en efectivo entregado por el Socio 1 (Carlos Eduardo Daza Gómez): <b>$21.000.000</b>.<br/>"
+        "• Aporte inicial en dinero en efectivo entregado por el Socio 2 (Marco Aurelio Pedraza Díaz): <b>$15.000.000</b>.<br/>"
+        "Dichos fondos se encuentran disponibles sin restricciones para la apertura de cuentas corrientes bancarias y gastos preoperativos.<br/><br/>"
+
+        "<b>NOTA 4. PROPIEDADES, PLANTA Y EQUIPO (DESGLOSE Y TABLA DE DEPRECIACIÓN):</b><br/>"
+        "Los activos fijos fueron transferidos formalmente a la sociedad en escritura de constitución por valor de <b>$212.600.000</b>:<br/>"
+        "• <i>Terrenos Urbanos (150405):</i> Terreno Calle 45 N° 12-50 ($38.600.000) y Terreno Calle 85 N° 15-80 ($51.000.000). Total: <b>$89.600.000</b> (No deprecian).<br/>"
+        "• <i>Construcciones y Edificaciones (151605):</i> Local comercial Calle 85 N° 15-80 ($51.000.000). Depreciación mensual (20 años): <b>$212.500</b>.<br/>"
+        "• <i>Flota y Equipo de Transporte (154005):</i> Camioneta Chevrolet D-Max mod. 2024 ($72.000.000). Depreciación mensual (10 años): <b>$600.000</b>.<br/>"
+        "• <i>Depreciación Acumulada Enero:</i> Total contabilizado al cierre del mes de enero: <b>-$1.271.250</b> (incluye depreciación y amortización de apertura). "
+        "El valor neto en libros al 31 de enero se sitúa en <b>$211.328.750</b>.<br/><br/>"
+
+        "<b>NOTA 5. PASIVOS Y OBLIGACIONES FINANCIERAS:</b><br/>"
+        "Al cierre del mes de enero de 2026, ELECTROVIVIENDA S.A.S no registra pasivos corrientes ni pasivos no corrientes (<b>$0</b>). "
+        "La empresa inició sus actividades 100% financiada con recursos propios de los socios, sin contraer deudas con bancos ni proveedores.<br/><br/>"
+
+        "<b>NOTA 6. CAPITAL SOCIAL Y PATRIMONIO:</b><br/>"
+        "El capital suscrito y pagado por los accionistas fundadores se encuentra dividido y aportado en un 100% como sigue:<br/>"
+        "• Socio 1: Carlos Eduardo Daza Gómez — C.C. 83.540.120 — Aporte total: <b>$123.000.000</b> (49,48%).<br/>"
+        "• Socio 2: Marco Aurelio Pedraza Díaz — C.C. 83.630.214 — Aporte total: <b>$125.600.000</b> (50,52%).<br/>"
+        "Total Capital Social: <b>$248.600.000</b>. Menos el resultado del ejercicio de apertura (-$1.271.250), el patrimonio neto asciende a <b>$247.328.750</b>."
+    )
+    story.append(Paragraph(notas_ene_completas, body_style))
+
+    story.append(PageBreak())
+
+    # =========================================================================
+    # PÁGINA 4: ESTADOS FINANCIEROS OFICIALES — MES DE FEBRERO 2026 (4 ESTADOS)
     # =========================================================================
     story.append(Paragraph("ESTADOS FINANCIEROS OFICIALES — MES DE FEBRERO 2026", sec_header_style))
     story.append(Paragraph("Inicio de Comercialización y Crédito Financiero • Comparativo Enero vs Febrero 2026", meta_style))
-    story.append(HRFlowable(width="100%", thickness=1.5, color=c_gold, spaceAfter=8, spaceBefore=2))
+    story.append(HRFlowable(width="100%", thickness=1.5, color=c_gold, spaceAfter=6, spaceBefore=2))
 
     story.append(Paragraph("ESTADO DE SITUACIÓN FINANCIERA COMPARATIVO — ESF ENERO VS FEBRERO 2026", subsec_header_style))
     esf_feb = [
@@ -483,15 +510,15 @@ def build_pdf():
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8FAFC")]),
-        ('TOPPADDING', (0,0), (-1,-1), 1.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1.5),
+        ('TOPPADDING', (0,0), (-1,-1), 1.2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1.2),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
         ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('BACKGROUND', (0,7), (-1,7), colors.HexColor("#E2E8F0")),
         ('BACKGROUND', (0,15), (-1,15), colors.HexColor("#E2E8F0")),
     ]))
     story.append(t_esf_feb)
-    story.append(Spacer(1, 5))
+    story.append(Spacer(1, 4))
 
     story.append(Paragraph("ESTADO DE RESULTADO INTEGRAL COMPARATIVO — ER ENERO VS FEBRERO 2026", subsec_header_style))
     er_feb = [
@@ -508,14 +535,14 @@ def build_pdf():
         ('BACKGROUND', (0,0), (-1,0), c_primary),
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
-        ('TOPPADDING', (0,0), (-1,-1), 1.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1.5),
+        ('TOPPADDING', (0,0), (-1,-1), 1.2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1.2),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
         ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('BACKGROUND', (0,6), (-1,6), colors.HexColor("#DCFCE7")),
     ]))
     story.append(t_er_feb)
-    story.append(Spacer(1, 5))
+    story.append(Spacer(1, 4))
 
     story.append(Paragraph("ESTADO DE CAMBIOS EN EL PATRIMONIO — ECP FEBRERO 2026", subsec_header_style))
     ecp_feb = [
@@ -530,21 +557,21 @@ def build_pdf():
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#1E293B")),
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
-        ('TOPPADDING', (0,0), (-1,-1), 1.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1.5),
+        ('TOPPADDING', (0,0), (-1,-1), 1.2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1.2),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
         ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('BACKGROUND', (0,4), (-1,4), colors.HexColor("#EEF2FF")),
     ]))
     story.append(t_ecp_feb)
-    story.append(Spacer(1, 5))
+    story.append(Spacer(1, 4))
 
     story.append(Paragraph("ESTADO DE FLUJOS DE EFECTIVO — EFE FEBRERO 2026 (MÉTODO INDIRECTO)", subsec_header_style))
     efe_feb = [
         [Paragraph("<b>CONCEPTO OPERATIVO Y FINANCIERO</b>", th_style), Paragraph("<b>VALOR (COP)</b>", th_r_style)],
         [Paragraph("<b>Utilidad Neta del Ejercicio (Punto de partida)</b>", td_bold), Paragraph("+$ 16.446.082", td_r_bold)],
         [Paragraph("  (+) Depreciación y amortizaciones del mes", td_style), Paragraph("+$ 1.120.467", td_r_style)],
-        [Paragraph("  (-) Variación de Cuentas por Cobrar Clientes (Ventas a crédito pendientes)", td_style), Paragraph("-$ 28.857.500", td_r_style)],
+        [Paragraph("  (-) Variación de Cuentas por Cobrar Clientes (Ventas a crédito)", td_style), Paragraph("-$ 28.857.500", td_r_style)],
         [Paragraph("  (-) Variación de Inventarios (Compras para stock en bodega)", td_style), Paragraph("-$ 29.160.000", td_r_style)],
         [Paragraph("  (+) Variación de Pasivos Operacionales (Proveedores e IVA por pagar)", td_style), Paragraph("+$ 80.641.618", td_r_style)],
         [Paragraph("  <b>Flujo Neto de Efectivo de Actividades de Operación</b>", td_bold), Paragraph("<b>+$ 40.190.667</b>", td_r_green)],
@@ -559,32 +586,66 @@ def build_pdf():
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#1E293B")),
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
-        ('TOPPADDING', (0,0), (-1,-1), 1.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1.5),
+        ('TOPPADDING', (0,0), (-1,-1), 1.2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1.2),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
         ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('BACKGROUND', (0,11), (-1,11), colors.HexColor("#DCFCE7")),
     ]))
     story.append(t_efe_feb)
-    story.append(Spacer(1, 5))
-
-    story.append(Paragraph("ESTADO DE NOTAS Y REVELACIONES A LOS ESTADOS FINANCIEROS — NOTAS FEBRERO 2026", subsec_header_style))
-    p_not_feb = (
-        "<b>Nota 1. Despegue Comercial:</b> Se facturaron $61.300.000 con 32% de margen bruto. El 53% fue en efectivo y 47% a crédito comercial.<br/>"
-        "<b>Nota 2. Financiamiento Bancario:</b> Desembolso de crédito de tesorería con Bancolombia por $39,66M amortizable a 36 meses.<br/>"
-        "<b>Nota 3. Inventarios Físicos:</b> 12 neveras y 8 lavadoras adquiridas con factura a crédito; stock valorado al costo promedio por $29,16M.<br/>"
-        "<b>Nota 4. Obligaciones Tributarias:</b> IVA generado por $11.647.000 compensado con IVA descontable en compras, dejando saldo a pagar de $3,8M."
-    )
-    story.append(Paragraph(p_not_feb, body_style))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PÁGINA 4: SECCIÓN MARZO 2026 — COMPARATIVO FEBRERO VS MARZO (LOS 5 ESTADOS)
+    # PÁGINA 5: ESTADO DE NOTAS Y REVELACIONES COMPLETAS — MES DE FEBRERO 2026
+    # =========================================================================
+    story.append(Paragraph("ESTADO DE NOTAS Y REVELACIONES A LOS ESTADOS FINANCIEROS — NOTAS FEBRERO 2026", sec_header_style))
+    story.append(Paragraph("Revelación Completa y Exhaustiva conforme a NIIF para las PYMES (Secciones 11, 13, 23, 29)", meta_style))
+    story.append(HRFlowable(width="100%", thickness=1.5, color=c_gold, spaceAfter=8, spaceBefore=2))
+
+    notas_feb_completas = (
+        "<b>NOTA 1. DESPEGUE DE INGRESOS OPERACIONALES POR VENTAS (SECCIÓN 23 NIIF PYMES):</b><br/>"
+        "Durante el mes de febrero de 2026, ELECTROVIVIENDA S.A.S inició formalmente su facturación comercial generando ingresos netos "
+        "por valor de <b>$61.300.000</b> (Facturas electrónicas de venta FV-01 a FV-03). Las ventas se distribuyeron en dos modalidades:<br/>"
+        "• <i>Ventas de Contado:</i> <b>$32.442.500</b> (52,92%) cobradas inmediatamente en efectivo y consignadas en Bancolombia.<br/>"
+        "• <i>Ventas a Crédito Comercial:</i> <b>$28.857.500</b> (47,08%) otorgadas a clientes corporativos con plazo a 30 días, respaldadas con pagaré.<br/>"
+        "El costo de ventas asociado a las unidades despachadas ascendió a <b>$41.640.000</b> (67,93% del ingreso), generando una Utilidad Bruta "
+        "en Ventas de <b>$19.660.000</b> (margen comercial bruto del <b>32,07%</b>).<br/><br/>"
+
+        "<b>NOTA 2. INVENTARIOS DE MERCANCÍAS Y MÉTODO DE VALUACIÓN (SECCIÓN 13 NIIF PYMES):</b><br/>"
+        "La empresa adoptó el sistema de inventario permanente y el método de valuación por <b>Promedio Ponderado</b>. Al cierre de febrero, "
+        "el inventario físico en bodega asciende a <b>$29.160.000</b> distribuido en las siguientes referencias de alta demanda:<br/>"
+        "• Neveras No Frost 400L (Ref. NEV-01): 8 unidades a costo unitario de $2.200.000 = <b>$17.600.000</b>.<br/>"
+        "• Lavadoras Automáticas 18kg (Ref. LAV-02): 7 unidades a costo unitario de $1.650.000 = <b>$11.560.000</b>.<br/>"
+        "No se identificaron indicios de deterioro de valor ni obsolescencia tecnológica; el valor neto realizable supera el costo en libros.<br/><br/>"
+
+        "<b>NOTA 3. OBLIGACIONES FINANCIERAS Y CRÉDITO BANCARIO (SECCIÓN 11 NIIF PYMES):</b><br/>"
+        "La compañía gestionó y obtuvo la aprobación de un crédito ordinario de tesorería con Bancolombia S.A. por valor neto desembolsado "
+        "de <b>$39.662.637</b>. El crédito se pactó a una tasa IBR + 4,5% E.A. a un plazo de 36 meses, clasificado en el pasivo no corriente. "
+        "Los recursos fueron destinados a fondear compras de inventario y capital de trabajo.<br/><br/>"
+
+        "<b>NOTA 4. CUENTAS COMERCIALES POR PAGAR Y OBLIGACIONES FISCALES (PASIVO CORRIENTE):</b><br/>"
+        "El pasivo a corto plazo al 28 de febrero asciende a <b>$80.641.618</b> y se compone de:<br/>"
+        "• Proveedores Nacionales de Mercancías (Whirlpool, Mabe, Challenger): <b>$72.450.000</b> con vencimiento a 60 días.<br/>"
+        "• Impuesto sobre las Ventas por Pagar (IVA 19% generado menos descontable): <b>$3.845.200</b>.<br/>"
+        "• Retención en la Fuente por Pagar (Compras 2.5% y Servicios 4%): <b>$1.896.418</b>.<br/>"
+        "• Retenciones y aportes de nómina por pagar: <b>$2.450.000</b>.<br/><br/>"
+
+        "<b>NOTA 5. RESERVA LEGAL Y DISTRIBUCIÓN DE UTILIDADES (CÓDIGO DE COMERCIO):</b><br/>"
+        "De conformidad con el Artículo 452 del Código de Comercio y la Ley 222 de 1995, se apropió el 10% de la utilidad líquida del período "
+        "por valor de <b>$1.827.342</b> con destino a la Reserva Legal Obligatoria. La utilidad neta restante del mes asciende a <b>$16.446.082</b>, "
+        "acumulando un superávit neto patrimonial de <b>$15.174.832</b> tras absorber la pérdida contable inicial de enero."
+    )
+    story.append(Paragraph(notas_feb_completas, body_style))
+
+    story.append(PageBreak())
+
+    # =========================================================================
+    # PÁGINA 6: ESTADOS FINANCIEROS OFICIALES — MES DE MARZO 2026 (4 ESTADOS)
     # =========================================================================
     story.append(Paragraph("ESTADOS FINANCIEROS OFICIALES — MES DE MARZO 2026", sec_header_style))
     story.append(Paragraph("Causación de Gastos Operativos y Pago de Nómina • Comparativo Febrero vs Marzo 2026", meta_style))
-    story.append(HRFlowable(width="100%", thickness=1.5, color=c_gold, spaceAfter=8, spaceBefore=2))
+    story.append(HRFlowable(width="100%", thickness=1.5, color=c_gold, spaceAfter=6, spaceBefore=2))
 
     story.append(Paragraph("ESTADO DE SITUACIÓN FINANCIERA COMPARATIVO — ESF FEBRERO VS MARZO 2026", subsec_header_style))
     esf_mar = [
@@ -611,15 +672,15 @@ def build_pdf():
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8FAFC")]),
-        ('TOPPADDING', (0,0), (-1,-1), 1.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1.5),
+        ('TOPPADDING', (0,0), (-1,-1), 1.2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1.2),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
         ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('BACKGROUND', (0,7), (-1,7), colors.HexColor("#E2E8F0")),
         ('BACKGROUND', (0,15), (-1,15), colors.HexColor("#E2E8F0")),
     ]))
     story.append(t_esf_mar)
-    story.append(Spacer(1, 5))
+    story.append(Spacer(1, 4))
 
     story.append(Paragraph("ESTADO DE RESULTADO INTEGRAL COMPARATIVO — ER FEBRERO VS MARZO 2026", subsec_header_style))
     er_mar = [
@@ -636,14 +697,14 @@ def build_pdf():
         ('BACKGROUND', (0,0), (-1,0), c_primary),
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
-        ('TOPPADDING', (0,0), (-1,-1), 1.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1.5),
+        ('TOPPADDING', (0,0), (-1,-1), 1.2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1.2),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
         ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('BACKGROUND', (0,6), (-1,6), colors.HexColor("#FEE2E2")),
     ]))
     story.append(t_er_mar)
-    story.append(Spacer(1, 5))
+    story.append(Spacer(1, 4))
 
     story.append(Paragraph("ESTADO DE CAMBIOS EN EL PATRIMONIO — ECP MARZO 2026", subsec_header_style))
     ecp_mar = [
@@ -658,14 +719,14 @@ def build_pdf():
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#1E293B")),
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
-        ('TOPPADDING', (0,0), (-1,-1), 1.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1.5),
+        ('TOPPADDING', (0,0), (-1,-1), 1.2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1.2),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
         ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('BACKGROUND', (0,4), (-1,4), colors.HexColor("#F1F5F9")),
     ]))
     story.append(t_ecp_mar)
-    story.append(Spacer(1, 5))
+    story.append(Spacer(1, 4))
 
     story.append(Paragraph("ESTADO DE FLUJOS DE EFECTIVO — EFE MARZO 2026 (MÉTODO INDIRECTO)", subsec_header_style))
     efe_mar = [
@@ -685,32 +746,63 @@ def build_pdf():
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#1E293B")),
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
-        ('TOPPADDING', (0,0), (-1,-1), 1.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1.5),
+        ('TOPPADDING', (0,0), (-1,-1), 1.2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1.2),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
         ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('BACKGROUND', (0,9), (-1,9), colors.HexColor("#DCFCE7")),
     ]))
     story.append(t_efe_mar)
-    story.append(Spacer(1, 5))
-
-    story.append(Paragraph("ESTADO DE NOTAS Y REVELACIONES A LOS ESTADOS FINANCIEROS — NOTAS MARZO 2026", subsec_header_style))
-    p_not_mar = (
-        "<b>Nota 1. Causación Integral de Nómina:</b> Pago de sueldos al personal por $10.450.000 incluyendo auxilio de transporte, salud y pensión.<br/>"
-        "<b>Nota 2. Estabilidad de Cartera e Inventarios:</b> Cartera se mantuvo en $28,85M e inventarios en $29,16M debido a compras recibidas en consignación.<br/>"
-        "<b>Nota 3. Amortización de Deuda:</b> Se pagó la primera cuota del crédito bancario reduciendo el pasivo a largo plazo a $38,21M.<br/>"
-        "<b>Nota 4. Respaldo de Liquidez:</b> A pesar de la pérdida operativa de $17,1M, la empresa cerró con $93,5M en bancos para cubrir abril."
-    )
-    story.append(Paragraph(p_not_mar, body_style))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PÁGINA 5: SECCIÓN ABRIL 2026 — COMPARATIVO MARZO VS ABRIL (LOS 5 ESTADOS)
+    # PÁGINA 7: ESTADO DE NOTAS Y REVELACIONES COMPLETAS — MES DE MARZO 2026
+    # =========================================================================
+    story.append(Paragraph("ESTADO DE NOTAS Y REVELACIONES A LOS ESTADOS FINANCIEROS — NOTAS MARZO 2026", sec_header_style))
+    story.append(Paragraph("Revelación Completa y Exhaustiva conforme a NIIF para las PYMES (Secciones 11, 21, 28)", meta_style))
+    story.append(HRFlowable(width="100%", thickness=1.5, color=c_gold, spaceAfter=8, spaceBefore=2))
+
+    notas_mar_completas = (
+        "<b>NOTA 1. ESTRUCTURA Y CAUSACIÓN DE BENEFICIOS A EMPLEADOS (SECCIÓN 28 NIIF PYMES):</b><br/>"
+        "Durante el mes de marzo de 2026, la sociedad causó y liquidó la nómina integral de su personal operativo y administrativo por un "
+        "valor bruto total de <b>$10.450.000</b>. De acuerdo con las normas laborales colombianas (Código Sustantivo del Trabajo), el detalle es:<br/>"
+        "• <i>Sueldos Básicos y Subsidio de Transporte:</i> Salarios devengados por Gerente, Asesor Comercial y Contador por $7.250.000.<br/>"
+        "• <i>Seguridad Social Patronal:</i> Aporte a Salud (8,5% sobre bases aplicables), Pensión (12%) y ARL Riesgo I: <b>$1.485.000</b>.<br/>"
+        "• <i>Parafiscales:</i> Caja de Compensación Familiar Comfenalco (4%), ICBF (3%) y SENA (2%): <b>$652.500</b>.<br/>"
+        "• <i>Prestaciones Sociales Acumuladas:</i> Provisión de Cesantías (8,33%), Intereses (1%), Prima (8,33%) y Vacaciones (4,17%): <b>$1.062.500</b>.<br/>"
+        "Todos los pagos de nómina y seguridad social a través de planilla PILA fueron cancelados en efectivo vía transferencia bancaria.<br/><br/>"
+
+        "<b>NOTA 2. GASTOS GENERALES, SERVICIOS Y ADECUACIONES OPERACIONALES:</b><br/>"
+        "Los gastos operacionales de administración y ventas ascendieron a <b>$6.704.577</b>, correspondientes a:<br/>"
+        "• Servicios Públicos (Energía ESSA, Acueducto Empas, Gas e Internet fibra óptica): <b>$1.854.200</b>.<br/>"
+        "• Arrendamiento y cuotas de mantenimiento del local: <b>$2.150.000</b>.<br/>"
+        "• Gastos de publicidad, diseño web, facturación electrónica y papelería: <b>$1.420.844</b>.<br/>"
+        "• Depreciación de construcciones y camioneta Chevrolet: <b>$1.279.533</b>.<br/><br/>"
+
+        "<b>NOTA 3. ANÁLISIS DE LA PÉRDIDA CONTABLE DEL MES DE MARZO (-$17.154.577):</b><br/>"
+        "En marzo la sociedad no registró facturación comercial debido al período de transición y negociación con nuevos distribuidores. "
+        "En consecuencia, la empresa absorbió la totalidad de sus costos fijos ($10,45M de nómina y $6,70M de gastos generales), generando "
+        "una pérdida neta de <b>-$17.154.577</b>. Sin embargo, no se generó riesgo de iliquidez gracias al colchón financiero acumulado en febrero.<br/><br/>"
+
+        "<b>NOTA 4. AMORTIZACIÓN Y ESTADO DE LA DEUDA BANCARIA (BANCOLOMBIA):</b><br/>"
+        "Se efectuó el pago puntual de la cuota mensual del crédito de tesorería, compuesta por amortización a capital de <b>$1.450.838</b> "
+        "e intereses corrientes por <b>$485.210</b>. El saldo insoluto del crédito a largo plazo se redujo a <b>$38.211.799</b>.<br/><br/>"
+
+        "<b>NOTA 5. DISPONIBILIDAD DE EFECTIVO Y CAPITAL DE TRABAJO:</b><br/>"
+        "A pesar del flujo de caja negativo del mes (-$13,58M por pago de personal y servicios), la compañía cerró marzo con <b>$93.502.800</b> "
+        "en sus cuentas bancarias, manteniendo un Capital de Trabajo Neto holgado de <b>$75.489.713</b> para enfrentar el segundo trimestre."
+    )
+    story.append(Paragraph(notas_mar_completas, body_style))
+
+    story.append(PageBreak())
+
+    # =========================================================================
+    # PÁGINA 8: ESTADOS FINANCIEROS OFICIALES — MES DE ABRIL 2026 (4 ESTADOS)
     # =========================================================================
     story.append(Paragraph("ESTADOS FINANCIEROS OFICIALES — MES DE ABRIL 2026", sec_header_style))
     story.append(Paragraph("Reactivación Comercial y Cierre del Cuatrimestre • Comparativo Marzo vs Abril 2026", meta_style))
-    story.append(HRFlowable(width="100%", thickness=1.5, color=c_gold, spaceAfter=8, spaceBefore=2))
+    story.append(HRFlowable(width="100%", thickness=1.5, color=c_gold, spaceAfter=6, spaceBefore=2))
 
     story.append(Paragraph("ESTADO DE SITUACIÓN FINANCIERA COMPARATIVO — ESF MARZO VS ABRIL 2026", subsec_header_style))
     esf_abr = [
@@ -737,15 +829,15 @@ def build_pdf():
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8FAFC")]),
-        ('TOPPADDING', (0,0), (-1,-1), 1.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1.5),
+        ('TOPPADDING', (0,0), (-1,-1), 1.2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1.2),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
         ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('BACKGROUND', (0,7), (-1,7), colors.HexColor("#E2E8F0")),
         ('BACKGROUND', (0,15), (-1,15), colors.HexColor("#E2E8F0")),
     ]))
     story.append(t_esf_abr)
-    story.append(Spacer(1, 5))
+    story.append(Spacer(1, 4))
 
     story.append(Paragraph("ESTADO DE RESULTADO INTEGRAL COMPARATIVO — ER MARZO VS ABRIL 2026", subsec_header_style))
     er_abr = [
@@ -762,19 +854,19 @@ def build_pdf():
         ('BACKGROUND', (0,0), (-1,0), c_primary),
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
-        ('TOPPADDING', (0,0), (-1,-1), 1.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1.5),
+        ('TOPPADDING', (0,0), (-1,-1), 1.2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1.2),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
         ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('BACKGROUND', (0,6), (-1,6), colors.HexColor("#FEF3C7")),
     ]))
     story.append(t_er_abr)
-    story.append(Spacer(1, 5))
+    story.append(Spacer(1, 4))
 
     story.append(Paragraph("ESTADO DE CAMBIOS EN EL PATRIMONIO — ECP ABRIL 2026", subsec_header_style))
     ecp_abr = [
         [Paragraph("<b>RUBRO PATRIMONIAL</b>", th_style), Paragraph("<b>SALDO 31 MAR</b>", th_r_style), Paragraph("<b>RESULTADO ABRIL</b>", th_r_style), Paragraph("<b>SALDO 30 ABR</b>", th_r_style)],
-        [Paragraph("Capital Social Suscrito y Pagado (3105)", td_style), Paragraph("$ 248.600.000", td_r_style), Paragraph("$ 0", td_r_style), Paragraph("$ 248.600.000", td_r_bold)],
+        [Paragraph("Capital Suscrito y Pagado (3105)", td_style), Paragraph("$ 248.600.000", td_r_style), Paragraph("$ 0", td_r_style), Paragraph("$ 248.600.000", td_r_bold)],
         [Paragraph("Reserva Legal Obligatoria (3305)", td_style), Paragraph("$ 1.827.342", td_r_style), Paragraph("$ 0", td_r_style), Paragraph("$ 1.827.342", td_r_bold)],
         [Paragraph("Resultados del Ejercicio y Acumulados", td_style), Paragraph("-$ 1.979.744", td_r_style), Paragraph("-$ 7.887.158", td_r_style), Paragraph("-$ 9.866.902", td_r_bold)],
         [Paragraph("<b>TOTAL PATRIMONIO NETO</b>", td_bold), Paragraph("<b>$ 248.447.598</b>", td_r_bold), Paragraph("<b>-$ 7.887.158</b>", td_r_bold), Paragraph("<b>$ 240.560.440</b>", td_r_bold)],
@@ -784,14 +876,14 @@ def build_pdf():
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#1E293B")),
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
-        ('TOPPADDING', (0,0), (-1,-1), 1.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1.5),
+        ('TOPPADDING', (0,0), (-1,-1), 1.2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1.2),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
         ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('BACKGROUND', (0,4), (-1,4), colors.HexColor("#F1F5F9")),
     ]))
     story.append(t_ecp_abr)
-    story.append(Spacer(1, 5))
+    story.append(Spacer(1, 4))
 
     story.append(Paragraph("ESTADO DE FLUJOS DE EFECTIVO — EFE ABRIL 2026 (MÉTODO INDIRECTO)", subsec_header_style))
     efe_abr = [
@@ -812,124 +904,137 @@ def build_pdf():
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#1E293B")),
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
-        ('TOPPADDING', (0,0), (-1,-1), 1.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1.5),
+        ('TOPPADDING', (0,0), (-1,-1), 1.2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1.2),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
         ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('BACKGROUND', (0,9), (-1,9), colors.HexColor("#DCFCE7")),
     ]))
     story.append(t_efe_abr)
-    story.append(Spacer(1, 5))
-
-    story.append(Paragraph("ESTADO DE NOTAS Y REVELACIONES A LOS ESTADOS FINANCIEROS — NOTAS ABRIL 2026", subsec_header_style))
-    p_not_abr = (
-        "<b>Nota 1. Saneamiento de Pasivos:</b> La empresa amortizó $29,9M de deudas con proveedores, DIAN y bancos, mejorando el indicador de endeudamiento.<br/>"
-        "<b>Nota 2. Eficiencia Comercial:</b> Margen bruto subió al 59,69% debido a ventas de referencias de alta rotación (Estufas y Smart TVs).<br/>"
-        "<b>Nota 3. Inventario Disponible:</b> Cierre de inventario con $33,82M en 4 referencias listo para abastecer las ventas proyectadas de mayo.<br/>"
-        "<b>Nota 4. Dictamen de Negocio en Marcha:</b> Razón corriente de 2,25x y patrimonio sólido de $240,5M garantizan operación ininterrumpida."
-    )
-    story.append(Paragraph(p_not_abr, body_style))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PÁGINA 6: ANÁLISIS FINANCIERO INTEGRAL CON BATERÍA DE GRÁFICOS
+    # PÁGINA 9: ESTADO DE NOTAS Y REVELACIONES COMPLETAS — MES DE ABRIL 2026
     # =========================================================================
-    story.append(Paragraph("3. ANÁLISIS FINANCIERO INTEGRAL DE LA EMPRESA CON GRÁFICOS", sec_header_style))
-    story.append(Paragraph("Diagnóstico Cuatrimestral de Liquidez, Rentabilidad, Solvencia y Gestión Operativa", meta_style))
+    story.append(Paragraph("ESTADO DE NOTAS Y REVELACIONES A LOS ESTADOS FINANCIEROS — NOTAS ABRIL 2026", sec_header_style))
+    story.append(Paragraph("Revelación Completa y Exhaustiva conforme a NIIF para las PYMES (Secciones 3, 11, 13, 29)", meta_style))
+    story.append(HRFlowable(width="100%", thickness=1.5, color=c_gold, spaceAfter=8, spaceBefore=2))
+
+    notas_abr_completas = (
+        "<b>NOTA 1. REACTIVACIÓN COMERCIAL Y MARGEN BRUTO RÉCORD (SECCIÓN 23 NIIF PYMES):</b><br/>"
+        "En el mes de abril, la sociedad reactivó sus operaciones comerciales emitiendo facturas electrónicas por valor de <b>$8.156.500</b>. "
+        "El costo de ventas fue de <b>$3.288.000</b> (apenas el 40,31% del ingreso), generando una Utilidad Bruta de <b>$4.868.500</b> "
+        "con un <b>Margen Bruto récord del 59,69%</b>. Este margen superó ampliamente el promedio del sector gracias a la venta directa "
+        "al consumidor de productos con alto valor agregado (Smart TVs 4K y Estufas a Gas).<br/><br/>"
+
+        "<b>NOTA 2. PLAN MASIVO DE SANEAMIENTO DE PASIVOS OPERACIONALES:</b><br/>"
+        "En abril la gerencia ejecutó un plan estratégico de pago de pasivos, desembolsando <b>$29.949.283</b> de efectivo en bancos para:<br/>"
+        "• Cancelar facturas vencidas a proveedores nacionales de electrodomésticos: <b>$24.500.000</b>.<br/>"
+        "• Pago de retenciones en la fuente y liquidaciones de IVA bimestral a la DIAN: <b>$3.982.299</b>.<br/>"
+        "• Pago de la segunda cuota del crédito ordinario con Bancolombia: <b>$1.466.984</b> (saldo restante: $36.744.815).<br/>"
+        "Gracias a este pago, los pasivos totales de la empresa bajaron de $120,6M a <b>$90.672.243</b>, logrando una estructura financiera muy sana.<br/><br/>"
+
+        "<b>NOTA 3. INVENTARIO FÍSICO FINAL VALUADO POR PROMEDIO PONDERADO (KARDEX AL 30 DE ABRIL):</b><br/>"
+        "El inventario físico disponible en la bodega principal asciende a <b>$33.822.000</b> (aumento neto de +$4,66M frente a marzo) "
+        "distribuido exactamente en 4 referencias comerciales:<br/>"
+        "• <i>Neveras No Frost 400L (NEV-01):</i> 7 unidades a costo promedio de $2.200.000 = <b>$15.400.000</b>.<br/>"
+        "• <i>Lavadoras Automáticas 18kg (LAV-02):</i> 5 unidades a costo promedio de $1.650.000 = <b>$8.250.000</b>.<br/>"
+        "• <i>Smart TV 55 Pulgadas 4K (TV-03):</i> 4 unidades a costo promedio de $1.850.000 = <b>$7.400.000</b>.<br/>"
+        "• <i>Estufas a Gas 4 Puestos (EST-04):</i> 3 unidades a costo promedio de $924.000 = <b>$2.772.000</b>.<br/>"
+        "El conteo físico al 100% coincidió exactamente con el sistema de control Kardex y registros contables de la cuenta 1435.<br/><br/>"
+
+        "<b>NOTA 4. REESTRUCTURACIÓN DE GASTOS Y PUNTO DE EQUILIBRIO:</b><br/>"
+        "Los gastos de personal se ajustaron a <b>$9.250.000</b> y los gastos generales a <b>$3.505.658</b> (ahorro de $4,4M frente a marzo). "
+        "Esto redujo la pérdida mensual a <b>-$7.887.158</b> (menos de la mitad de marzo). Con el margen comercial actual del 59%, el punto "
+        "de equilibrio de ELECTROVIVIENDA S.A.S se sitúa en <b>$22.000.000 de ventas mensuales</b>.<br/><br/>"
+
+        "<b>NOTA 5. CERTIFICACIÓN DE NEGOCIO EN MARCHA (SECCIÓN 3 NIIF PYMES):</b><br/>"
+        "Al cierre de abril de 2026, la sociedad cuenta con <b>$51.852.812</b> en bancos, <b>$28.857.500</b> en cartera por cobrar, "
+        "<b>$33.822.000</b> en inventarios y un Patrimonio Neto de <b>$240.560.440</b> respaldado en bienes inmuebles propios. "
+        "La administración certifica que la entidad posee capacidad financiera para continuar sus operaciones con total normalidad."
+    )
+    story.append(Paragraph(notas_abr_completas, body_style))
+
+    story.append(PageBreak())
+
+    # =========================================================================
+    # PÁGINA 10: ANÁLISIS FÁCIL Y DIDÁCTICO DE LO QUE PASÓ EN LA EMPRESA CON GRÁFICOS
+    # =========================================================================
+    story.append(Paragraph("3. ANÁLISIS FÁCIL Y DIDÁCTICO DE LO QUE PASÓ EN LA EMPRESA (CON GRÁFICOS)", sec_header_style))
+    story.append(Paragraph("Explicación Sencilla en Palabras Claras de la Operación Cuatrimestral • Sin Fórmulas Proyectadas Complejas", meta_style))
     story.append(HRFlowable(width="100%", thickness=1.5, color=c_gold, spaceAfter=8, spaceBefore=2))
 
     story.append(create_chart_income_evolution())
-    story.append(Spacer(1, 3))
+    story.append(Spacer(1, 6))
 
     p_ana_ing = (
-        "<b>Análisis de la Dinámica de Ingresos y Utilidades:</b> Durante el primer cuatrimestre, ELECTROVIVIENDA S.A.S evidenció "
-        "tres etapas bien diferenciadas: (1) <i>Enero</i> fue la fase de implantación societaria sin ingresos. (2) <i>Febrero</i> registró "
-        "un fuerte despegue comercial con ventas de <b>$61,3M</b> y una utilidad neta de <b>$16,4M</b> (margen comercial del 32,07%). "
-        "(3) <i>Marzo</i> atravesó un bache de ventas que generó una pérdida contable de <b>-$17,15M</b> al absorberse los costos fijos de nómina. "
-        "Sin embargo, en <i>Abril</i> la empresa logró un repunte estratégico: con apenas <b>$8,15M</b> en ventas obtuvo un margen comercial récord "
-        "del <b>59,69%</b>, reduciendo la pérdida operativa a <b>-$7,88M</b> y perfilando el punto de equilibrio operativo para el mes de mayo ($22M/mes)."
+        "<b>¿Qué pasó con las Ventas y las Ganancias de la Empresa? (Explicación Fácil):</b><br/>"
+        "Durante estos primeros cuatro meses, la empresa vivió tres momentos muy claros:<br/>"
+        "1. <b>Enero:</b> Fue el mes de nacimiento. Los socios fundadores aportaron la plata y los bienes para iniciar la empresa. "
+        "No se vendió nada porque se estaban adecuando las instalaciones, pero se registró el gasto de depreciación legal.<br/>"
+        "2. <b>Febrero:</b> Fue el gran despegue. Se vendieron <b>$61,3 millones de pesos</b> en electrodomésticos. Comprar esos productos costó "
+        "$41,6M, por lo que quedaron <b>$19,6M de ganancia bruta</b>. Después de pagar los gastos del mes, la empresa obtuvo una <b>ganancia limpia "
+        "récord de $16,4 millones de pesos</b>.<br/>"
+        "3. <b>Marzo:</b> La empresa no tuvo ventas porque se concentró en negociaciones comerciales. Sin embargo, hubo que pagar la nómina completa "
+        "de los trabajadores ($10,4M) y los servicios ($6,7M), lo que arrojó una pérdida contable de <b>-$17,1 millones</b>.<br/>"
+        "4. <b>Abril:</b> La empresa volvió a vender ($8,15 millones) y logró una hazaña: vender con un <b>margen de ganancia muy alto del 59,69%</b>. "
+        "Además, se bajaron los gastos de nómina y arriendos, logrando que la pérdida se redujera a menos de la mitad (-$7,88M)."
     )
     story.append(Paragraph(p_ana_ing, body_style))
-    story.append(Spacer(1, 3))
+    story.append(Spacer(1, 8))
 
     story.append(create_chart_asset_composition())
-    story.append(Spacer(1, 3))
+    story.append(Spacer(1, 6))
 
     p_ana_act = (
-        "<b>Análisis de la Estructura de Activos y Solidez Patrimonial:</b> El <b>63,4%</b> de los activos está respaldado en propiedades, "
-        "planta y equipo libre de gravámenes hipotecarios ($209,89M), lo que brinda una garantía sólida ante acreedores bancarios y proveedores. "
-        "El activo corriente representa el <b>36,6%</b> restante ($121,34M), compuesto por una liquidez neta en caja y bancos de <b>$51,85M</b>, "
-        "una cartera comercial vigente de <b>$28,85M</b> y un stock de inventarios en bodega de <b>$33,82M</b> valorado por promedio ponderado."
+        "<b>¿En qué tiene invertida la plata la empresa al cierre de Abril? (Explicación Fácil):</b><br/>"
+        "Al mirar el gráfico circular de la derecha, vemos que el dinero y los bienes de la empresa ($331,2 millones) están muy bien repartidos:<br/>"
+        "• El <b>63,4%</b> ($209,9 millones) está en bienes raíces y vehículos propios: los terrenos, el local comercial y la camioneta de reparto.<br/>"
+        "• El <b>15,6%</b> ($51,8 millones) es plata en efectivo depositada en Bancolombia, disponible para pagar salarios y proveedores.<br/>"
+        "• El <b>10,2%</b> ($33,8 millones) está en la bodega en electrodomésticos nuevos (Neveras, Lavadoras, Televisores y Estufas).<br/>"
+        "• El <b>8,7%</b> ($28,8 millones) son facturas que los clientes deben y que irán pagando en mayo."
     )
     story.append(Paragraph(p_ana_act, body_style))
-    story.append(Spacer(1, 3))
-
-    story.append(create_chart_liquidity_solvency())
-    story.append(Spacer(1, 3))
-
-    p_ana_liq = (
-        "<b>Análisis de Solvencia, Liquidez y Capacidad de Pago:</b> La <b>Razón Corriente</b> se ubicó al cierre de abril en <b>2,25x</b>, "
-        "muy superior al estándar prudencial de 1,5x. Esto indica que por cada peso de deuda a corto plazo, ELECTROVIVIENDA S.A.S posee <b>$2,25</b> "
-        "en activos líquidos para respaldarlo. Asimismo, la <b>Prueba Ácida</b> alcanzó <b>1,62x</b> (estándar >= 1,0x), demostrando que la empresa "
-        "puede cancelar el 100% de sus pasivos de forma inmediata sin necesidad de vender un solo electrodoméstico de su inventario. "
-        "El nivel de endeudamiento total se redujo del 32,7% en marzo al <b>27,37% en abril</b>, garantizando un perfil de riesgo sumamente bajo."
-    )
-    story.append(Paragraph(p_ana_liq, body_style))
-
     story.append(PageBreak())
 
     # =========================================================================
-    # PÁGINA 7: MATRIZ DE RATIOS, CONCLUSIONES Y FIRMAS OFICIALES
+    # PÁGINA 11: CAPACIDAD DE PAGO, CONCLUSIONES CLARAS Y FIRMAS OFICIALES
     # =========================================================================
-    story.append(Paragraph("4. MATRIZ CUATRIMESTRAL DE INDICADORES FINANCIEROS CLAVE", sec_header_style))
-    story.append(Paragraph("Evolución de Ratios de Liquidez, Endeudamiento, Actividad y Rentabilidad (2026)", meta_style))
-    story.append(HRFlowable(width="100%", thickness=1.5, color=c_gold, spaceAfter=8, spaceBefore=2))
+    story.append(Paragraph("4. CAPACIDAD DE PAGO, CONCLUSIONES Y CERTIFICACIÓN OFICIAL", sec_header_style))
+    story.append(Paragraph("Diagnóstico de Solvencia en Palabras Sencillas, Plan de Mejora y Firmas de Autoridades", meta_style))
+    story.append(HRFlowable(width="100%", thickness=1.5, color=c_gold, spaceAfter=6, spaceBefore=2))
 
-    ratios_data = [
-        [Paragraph("<b>INDICADOR FINANCIERO</b>", th_style), Paragraph("<b>FÓRMULA NIIF</b>", th_style), Paragraph("<b>ENERO</b>", th_r_style), Paragraph("<b>FEBRERO</b>", th_r_style), Paragraph("<b>MARZO</b>", th_r_style), Paragraph("<b>ABRIL</b>", th_r_style), Paragraph("<b>PARÁMETRO</b>", th_style)],
-        [Paragraph("Razón Corriente", td_bold), Paragraph("Activo Cte / Pasivo Cte", td_style), Paragraph("Infinita", td_r_style), Paragraph("2,15 x", td_r_style), Paragraph("1,92 x", td_r_style), Paragraph("<b>2,25 x</b>", td_r_green), Paragraph("Óptimo (>= 1,5x)", td_style)],
-        [Paragraph("Prueba Ácida", td_bold), Paragraph("(Activo Cte - Inv) / Pasivo Cte", td_style), Paragraph("Infinita", td_r_style), Paragraph("1,79 x", td_r_style), Paragraph("1,56 x", td_r_style), Paragraph("<b>1,62 x</b>", td_r_green), Paragraph("Excelente (>= 1,0x)", td_style)],
-        [Paragraph("Capital de Trabajo Neto", td_bold), Paragraph("Activo Cte - Pasivo Cte", td_style), Paragraph("$ 36,0M", td_r_style), Paragraph("$ 92,8M", td_r_style), Paragraph("$ 75,5M", td_r_style), Paragraph("<b>$ 67,4M</b>", td_r_green), Paragraph("Superávit líquido", td_style)],
-        [Paragraph("Nivel de Endeudamiento", td_bold), Paragraph("Pasivo Total / Activo Total", td_style), Paragraph("0,00 %", td_r_style), Paragraph("31,17 %", td_r_style), Paragraph("32,68 %", td_r_style), Paragraph("<b>27,37 %</b>", td_r_green), Paragraph("Bajo Riesgo (&lt;50%)", td_style)],
-        [Paragraph("Apalancamiento Financiero", td_bold), Paragraph("Pasivo Total / Patrimonio", td_style), Paragraph("0,00 %", td_r_style), Paragraph("45,30 %", td_r_style), Paragraph("48,55 %", td_r_style), Paragraph("<b>37,69 %</b>", td_r_green), Paragraph("Controlado (&lt;100%)", td_style)],
-        [Paragraph("Margen Bruto", td_bold), Paragraph("Utilidad Bruta / Ventas Netas", td_style), Paragraph("0,00 %", td_r_style), Paragraph("32,07 %", td_r_style), Paragraph("0,00 %", td_r_style), Paragraph("<b>59,69 %</b>", td_r_green), Paragraph("Expansión comercial", td_style)],
-        [Paragraph("Margen Neto", td_bold), Paragraph("Utilidad Neta / Ventas Netas", td_style), Paragraph("0,00 %", td_r_style), Paragraph("26,83 %", td_r_style), Paragraph("N/A", td_r_style), Paragraph("<b>-96,69 %</b>", td_r_red), Paragraph("Recuperación activa", td_style)],
-        [Paragraph("Rentabilidad Patrimonio (ROE)", td_bold), Paragraph("Utilidad Neta / Patrimonio", td_style), Paragraph("-0,51 %", td_r_style), Paragraph("+6,19 %", td_r_style), Paragraph("-6,90 %", td_r_style), Paragraph("<b>-3,28 %</b>", td_r_style), Paragraph("Meta anual: >12%", td_style)],
-    ]
-    t_rat = Table(ratios_data, colWidths=[114, 110, 50, 50, 50, 55, 75])
-    t_rat.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,0), c_primary),
-        ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#CBD5E1")),
-        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
-        ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F8FAFC")]),
-        ('TOPPADDING', (0,0), (-1,-1), 1),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1),
-        ('LEFTPADDING', (0,0), (-1,-1), 4),
-        ('RIGHTPADDING', (0,0), (-1,-1), 4),
-    ]))
-    story.append(t_rat)
+    story.append(create_chart_liquidity_solvency())
+    story.append(Spacer(1, 4))
+
+    p_ana_liq = (
+        "<b>¿Tiene la empresa suficiente dinero para pagar sus deudas? (Explicación Fácil de Solvencia):</b><br/>"
+        "Sí, absolutamente. La empresa está <b>totalmente respaldada y no corre ningún riesgo de quiebra</b>:<br/>"
+        "• Por cada <b>$1 de deuda</b> a corto plazo que debe pagar, la empresa tiene <b>$2,25 en bienes y plata disponible</b> para respaldarla.<br/>"
+        "• Incluso si no vendiera ningún electrodoméstico de la bodega, con solo la plata de los bancos y las cuentas por cobrar tiene <b>$1,62 por cada peso de deuda</b>.<br/>"
+        "• Además, en abril se pagaron <b>$29,9 millones de deudas viejas</b> con proveedores y la DIAN, dejando a la empresa con las cuentas muy limpias y sanas."
+    )
+    story.append(Paragraph(p_ana_liq, body_style))
+    story.append(Spacer(1, 6))
+
+    p_concl_facil = (
+        "<b>Conclusiones Claras y Plan de Acción para Mayo (Segundo Trimestre):</b><br/>"
+        "1. <b>Base Patrimonial Sólida:</b> Cuenta con $240,5M de patrimonio neto y bienes raíces propios sin hipotecas.<br/>"
+        "2. <b>Liquidez en Bancos:</b> Se cerró abril con más de $51,8M en efectivo en Bancolombia, garantizando salarios y arriendos.<br/>"
+        "3. <b>Punto de Equilibrio:</b> Tras el ahorro en nómina ($9,2M) y servicios ($3,5M), solo se necesita vender <b>$22M al mes</b> para operar con utilidad.<br/>"
+        "4. <b>Cobro de Cartera:</b> Se gestionará el recaudo de $28,8M de facturas a crédito pendientes para fondear inventario sin créditos.<br/>"
+        "5. <b>Negocio en Marcha:</b> Se certifica la viabilidad operativa y comercial ininterrumpida de ELECTROVIVIENDA S.A.S para todo 2026."
+    )
+    story.append(Paragraph(p_concl_facil, body_style))
     story.append(Spacer(1, 10))
 
-    story.append(Paragraph("5. CONCLUSIONES Y RECOMENDACIONES GERENCIALES", sec_header_style))
-    p_concl = (
-        "1. <b>Solvencia Blindada:</b> La compañía no afronta riesgo de quiebra ni cesación de pagos. Con un capital de trabajo neto de $67,4M "
-        "y un respaldo patrimonial de $240,5M, tiene autonomía para operar holgadamente.<br/>"
-        "2. <b>Estrategia de Ventas y Punto de Equilibrio:</b> Tras la reestructuración de gastos en abril (reducción de nómina a $9,25M y servicios a $3,5M), "
-        "el nuevo punto de equilibrio se redujo a $22.000.000 mensuales con el margen bruto del 59%. Se recomienda enfocar los esfuerzos en la rotación de neveras y smart TVs.<br/>"
-        "3. <b>Recuperación de Cartera:</b> La cartera de clientes por $28.857.500 debe gestionarse con acuerdos de pago a 30 días para inyectar recursos frescos a bancos.<br/>"
-        "4. <b>Certificación de Negocio en Marcha:</b> Conforme a la Sección 3 de las NIIF para PYMES, se dictamina que ELECTROVIVIENDA S.A.S cumple a cabalidad "
-        "la hipótesis de negocio en marcha durante los próximos 12 meses."
-    )
-    story.append(Paragraph(p_concl, body_style))
-    story.append(Spacer(1, 18))
-
-    story.append(Paragraph("6. CERTIFICACIÓN PERICIAL Y FIRMAS DE AUTORIDADES", sec_header_style))
-    story.append(HRFlowable(width="100%", thickness=1, color=c_gold, spaceAfter=20, spaceBefore=2))
+    story.append(Paragraph("<b>CERTIFICACIÓN PERICIAL Y FIRMAS FORMALES DE AUTORIDADES</b>", subsec_header_style))
+    story.append(HRFlowable(width="100%", thickness=1, color=c_gold, spaceAfter=14, spaceBefore=2))
 
     firmas_data = [
         [
-            Paragraph("________________________________________<br/><b>GINA VILLAMIZAR</b><br/>Aprendiz en Gestión Contable y Financiera<br/>Elaboró • Ficha 123101 SENA CSET", td_style),
+            Paragraph("________________________________________<br/><b>KEVIN GUERRERO</b><br/>Aprendiz en Gestión Contable y Financiera<br/>Elaboró • Ficha 123101 SENA CSET", td_style),
             Paragraph("________________________________________<br/><b>GEORGE OLAGO</b><br/>Instructor Líder de Contabilidad y Finanzas<br/>Revisó y Aprobó • SENA CSET Santander", td_style)
         ],
         [
@@ -941,14 +1046,14 @@ def build_pdf():
     t_firmas.setStyle(TableStyle([
         ('ALIGN', (0,0), (-1,-1), 'CENTER'),
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
-        ('TOPPADDING', (0,0), (-1,-1), 6),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 6),
+        ('TOPPADDING', (0,0), (-1,-1), 8),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 8),
     ]))
     story.append(t_firmas)
 
     # Construir PDF
     doc.build(story, canvasmaker=NumberedCanvas)
-    print(f"Informe Financiero de los 5 Estados generado exitosamente: {OUTPUT_PDF}")
+    print(f"Informe Financiero de Kevin Guerrero generado exitosamente: {OUTPUT_PDF}")
 
 if __name__ == "__main__":
     build_pdf()
