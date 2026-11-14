@@ -6189,6 +6189,282 @@ function renderReteicaFormHtml() {
   `;
 }
 
+
+// ============================================================================
+// FORMULARIO 110 DIAN — DECLARACIÓN DE RENTA PERSONAS JURÍDICAS (AÑO 2026)
+// ============================================================================
+function renderDianForm110Html() {
+  const emp = DB?.empresa || {};
+  return `
+    <div class="dian-form-paper">
+      <div class="dian-header-banner" style="background:#0F172A;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="background:#ffffff; color:#0F172A; font-weight:900; font-size:1.25rem; padding:4px 10px; border-radius:6px; letter-spacing:1px;">DIAN</div>
+          <div>
+            <div class="dian-header-title">FORMULARIO 110 — DECLARACIÓN DE RENTA Y COMPLEMENTARIOS PERSONAS JURÍDICAS</div>
+            <div style="font-size:0.75rem; color:#E2E8F0;">Dirección de Impuestos y Aduanas Nacionales • NIIF para las PYMES (Grupo 2)</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <span style="background:rgba(255,255,255,0.15); padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.8rem;">Año Gravable: 2026 • Tarifa Renta: 35%</span>
+        </div>
+      </div>
+
+      <div class="dian-sub-bar">
+        <div><strong>5. Número de Identificación Tributaria (NIT):</strong> <span class="code-col" style="font-size:0.88rem; font-weight:800;">901.765.438</span> <strong>DV:</strong> 3</div>
+        <div><strong>11. Razón Social:</strong> <strong style="color:var(--brand-primary);">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</strong></div>
+        <div><strong>12. Seccional:</strong> 04 Bucaramanga • Actividad Económica: 4759 (Comercio electrodomésticos)</div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin:14px 0 8px; padding:10px 14px; background:var(--bg-subtle); border-radius:6px;">
+        <span style="font-size:0.82rem; color:var(--text-secondary);">Liquidador Oficial con base en el Estado de Situación Financiera y Estado de Resultados NIIF</span>
+        <a class="btn btn-gold btn-sm" href="LIQUIDADOR_FORMULARIO_110_RENTA_2026.xlsx" download="LIQUIDADOR_FORMULARIO_110_RENTA_2026.xlsx">📥 Descargar Liquidador Formulario 110 en Excel (.xlsx)</a>
+      </div>
+
+      <!-- SECCIÓN PATRIMONIO -->
+      <div class="dian-section-header">1. PATRIMONIO (A CORTE DE CIERRE FISCAL)</div>
+      <div class="table-wrap">
+        <table class="dian-table">
+          <thead>
+            <tr><th style="width:60px; text-align:center;">Renglón</th><th>Concepto Patrimonial DIAN</th><th class="num-col" style="width:190px;">Valor Oficial (COP)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td style="text-align:center;"><span class="dian-casilla-tag">35</span></td><td>Total Patrimonio Bruto (Activos Totales en ESF)</td><td class="num-col">${fmtCOP(385906430)}</td></tr>
+            <tr><td style="text-align:center;"><span class="dian-casilla-tag">36</span></td><td>Deudas y Pasivos Totales (Pasivos Totales en ESF)</td><td class="num-col">${fmtCOP(120304255)}</td></tr>
+            <tr style="background:#F1F5F9; font-weight:800;"><td style="text-align:center;"><span class="dian-casilla-tag">37</span></td><td><strong>Total Patrimonio Líquido (Renglón 35 menos 36)</strong></td><td class="num-col" style="color:var(--brand-emerald);">${fmtCOP(265602175)}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- SECCIÓN INGRESOS, COSTOS Y RENTA LÍQUIDA -->
+      <div class="dian-section-header">2. INGRESOS BRUTOS, COSTOS, GASTOS Y RENTA LÍQUIDA GRAVABLE</div>
+      <div class="table-wrap">
+        <table class="dian-table">
+          <thead>
+            <tr><th style="width:60px; text-align:center;">Renglón</th><th>Concepto Operacional y Fiscal DIAN</th><th class="num-col" style="width:190px;">Valor Oficial (COP)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td style="text-align:center;"><span class="dian-casilla-tag">42</span></td><td>Ingresos brutos operacionales de comercio (Ventas facturadas)</td><td class="num-col">${fmtCOP(203614000)}</td></tr>
+            <tr><td style="text-align:center;"><span class="dian-casilla-tag">48</span></td><td>Menos: Devoluciones, rebajas y descuentos en ventas</td><td class="num-col text-danger">-${fmtCOP(17664000)}</td></tr>
+            <tr style="background:#F8FAFC; font-weight:800;"><td style="text-align:center;"><span class="dian-casilla-tag">49</span></td><td>Total ingresos netos (Renglón 42 menos 48)</td><td class="num-col">${fmtCOP(185950000)}</td></tr>
+            <tr><td style="text-align:center;"><span class="dian-casilla-tag">58</span></td><td>Costos de ventas de mercancías no fabricadas (Cuenta 6135)</td><td class="num-col">${fmtCOP(126310000)}</td></tr>
+            <tr><td style="text-align:center;"><span class="dian-casilla-tag">62</span></td><td>Gastos operacionales de administración (Cuenta 51)</td><td class="num-col">${fmtCOP(31527038)}</td></tr>
+            <tr style="background:#FEF3C7; font-weight:900;"><td style="text-align:center;"><span class="dian-casilla-tag" style="background:#D4AF37; color:#0F172A;">74</span></td><td><strong>Renta Líquida Ordinaria del Ejercicio Fiscal</strong></td><td class="num-col" style="font-size:1.05rem; color:#B45309;">${fmtCOP(28112962)}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- SECCIÓN LIQUIDACIÓN PRIVADA DEL IMPUESTO -->
+      <div class="dian-section-header">3. LIQUIDACIÓN PRIVADA DEL IMPUESTO SOBRE LA RENTA (TARIFA 35%)</div>
+      <div class="table-wrap">
+        <table class="dian-table">
+          <thead>
+            <tr><th style="width:60px; text-align:center;">Renglón</th><th>Liquidación Privada y Anticipos</th><th class="num-col" style="width:190px;">Valor Liquidado (COP)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td style="text-align:center;"><span class="dian-casilla-tag">88</span></td><td>Impuesto sobre la renta líquida gravable (35% sobre Renglón 74)</td><td class="num-col">${fmtCOP(9839537)}</td></tr>
+            <tr style="background:#F8FAFC; font-weight:800;"><td style="text-align:center;"><span class="dian-casilla-tag">97</span></td><td>Total impuesto sobre la renta líquida</td><td class="num-col">${fmtCOP(9839537)}</td></tr>
+            <tr><td style="text-align:center;"><span class="dian-casilla-tag">100</span></td><td>Menos: Retenciones en la fuente y autorretenciones que le practicaron (Cuenta 1355)</td><td class="num-col text-danger">-${fmtCOP(8356185)}</td></tr>
+            <tr style="background:#FEF3C7; font-weight:900; border:2px solid #D4AF37;"><td style="text-align:center;"><span class="dian-casilla-tag" style="background:#D4AF37; color:#0F172A;">104</span></td><td><strong>Total saldo a pagar por impuesto de renta del año</strong></td><td class="num-col" style="font-size:1.1rem; color:#B45309;">${fmtCOP(1483352)}</td></tr>
+            <tr style="background:#E8F5E9; font-weight:900;"><td style="text-align:center;"><span class="dian-casilla-tag" style="background:#005E38; color:#fff;">980</span></td><td><strong>TOTAL PAGO EN BANCOS</strong></td><td class="num-col" style="font-size:1.15rem; color:#005E38;">${fmtCOP(1483352)}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:18px; border-top:1.5px dashed #CBD5E1; padding-top:14px; display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px;">
+        <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
+          <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">981. REPRESENTANTE LEGAL</span>
+          <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.representante_legal || "Kevin Guerrero"}</strong>
+          <span style="font-size:0.74rem; color:#475569;">C.C. 1.098.765.432 • Firma Digital Autorizada</span>
+        </div>
+        <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
+          <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">982. CONTADORA PÚBLICA TITULAR</span>
+          <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.contadora || "Gina Villamizar"}</strong>
+          <span style="font-size:0.74rem; color:#475569;">Tarjeta Profesional: <strong>T.P. 248960-T</strong></span>
+        </div>
+        <div style="border:1.5px solid #005E38; border-radius:8px; padding:12px; background:#E8F5E9; display:flex; flex-direction:column; justify-content:center;">
+          <span style="font-size:0.7rem; font-weight:800; color:#005E38;">980. TOTAL PAGO EFECTIVO</span>
+          <span style="font-size:1.25rem; font-weight:900; color:#005E38;">${fmtCOP(1483352)}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ============================================================================
+// FORMATO 220 DIAN — CERTIFICADO DE INGRESOS Y RETENCIONES LABORALES
+// ============================================================================
+function renderDianForm220Html() {
+  const emp = DB?.empresa || {};
+  return `
+    <div class="dian-form-paper">
+      <div class="dian-header-banner" style="background:#4C1D95;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="background:#ffffff; color:#4C1D95; font-weight:900; font-size:1.25rem; padding:4px 10px; border-radius:6px; letter-spacing:1px;">DIAN</div>
+          <div>
+            <div class="dian-header-title">FORMATO 220 — CERTIFICADO DE INGRESOS Y RETENCIONES POR RENTAS DE TRABAJO</div>
+            <div style="font-size:0.75rem; color:#EDE9FE;">Artículo 378 del Estatuto Tributario • Dirección de Impuestos y Aduanas Nacionales</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <span style="background:rgba(255,255,255,0.15); padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.8rem;">Año Gravable: 2026</span>
+        </div>
+      </div>
+
+      <div class="dian-sub-bar">
+        <div><strong>Retenedor:</strong> <strong style="color:var(--brand-primary);">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</strong> • NIT: 901.765.438-3</div>
+        <div><strong>Trabajador Beneficiario:</strong> <strong>Kevin Guerrero</strong> • C.C. 1.098.765.432</div>
+        <div><strong>Período Certificado:</strong> 01/01/2026 a 30/04/2026</div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin:14px 0 8px; padding:10px 14px; background:var(--bg-subtle); border-radius:6px;">
+        <span style="font-size:0.82rem; color:var(--text-secondary);">Certificado Laboral y Tributario individual expedido con base en las planillas de nómina</span>
+        <a class="btn btn-gold btn-sm" href="FORMATO_220_CERTIFICADO_INGRESOS_RETENCIONES_2026.xlsx" download="FORMATO_220_CERTIFICADO_INGRESOS_RETENCIONES_2026.xlsx">📥 Descargar Formato 220 en Excel (.xlsx)</a>
+      </div>
+
+      <div class="dian-section-header">CONCEPTO DE LOS INGRESOS Y PRESTACIONES PAGADAS AL TRABAJADOR</div>
+      <div class="table-wrap">
+        <table class="dian-table">
+          <thead>
+            <tr><th style="width:60px; text-align:center;">Casilla</th><th>Concepto del Pago o Retención Laboral</th><th style="width:120px; text-align:center;">Cuenta PUC</th><th class="num-col" style="width:190px;">Monto Certificado (COP)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td style="text-align:center;"><span class="dian-casilla-tag">36</span></td><td>Pagos por salarios y emolumentos eclesiásticos</td><td style="text-align:center;">510506</td><td class="num-col">${fmtCOP(24000000)}</td></tr>
+            <tr><td style="text-align:center;"><span class="dian-casilla-tag">39</span></td><td>Auxilio de transporte pagado</td><td style="text-align:center;">510527</td><td class="num-col">${fmtCOP(1300000)}</td></tr>
+            <tr><td style="text-align:center;"><span class="dian-casilla-tag">40</span></td><td>Cesantías e intereses efectivamente pagadas en el período</td><td style="text-align:center;">510530</td><td class="num-col">${fmtCOP(2100000)}</td></tr>
+            <tr style="background:#F1F5F9; font-weight:800;"><td style="text-align:center;"><span class="dian-casilla-tag">44</span></td><td><strong>Total Ingresos Brutos Recibidos por el Trabajador</strong></td><td style="text-align:center;">SUMA</td><td class="num-col" style="color:var(--brand-primary);">${fmtCOP(27400000)}</td></tr>
+            <tr><td style="text-align:center;"><span class="dian-casilla-tag">45</span></td><td>Aportes obligatorios por salud (4% a cargo del trabajador)</td><td style="text-align:center;">237005</td><td class="num-col">${fmtCOP(960000)}</td></tr>
+            <tr><td style="text-align:center;"><span class="dian-casilla-tag">46</span></td><td>Aportes obligatorios a fondos de pensiones y solidaridad</td><td style="text-align:center;">238030</td><td class="num-col">${fmtCOP(960000)}</td></tr>
+            <tr style="background:#FEF3C7; font-weight:900;"><td style="text-align:center;"><span class="dian-casilla-tag" style="background:#D4AF37; color:#0F172A;">53</span></td><td><strong>Total Retenciones en la Fuente Practicadas en el Período</strong></td><td style="text-align:center;">246505</td><td class="num-col" style="font-size:1.05rem; color:#B45309;">${fmtCOP(2467000)}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:18px; border-top:1.5px dashed #CBD5E1; padding-top:14px; display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px;">
+        <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
+          <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">PAGADOR / RETENEDOR AUTORIZADO</span>
+          <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</strong>
+          <span style="font-size:0.74rem; color:#475569;">Certifica que los datos consignados fueron tomados de la nómina oficial</span>
+        </div>
+        <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
+          <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">CONTADORA PÚBLICA TITULAR</span>
+          <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.contadora || "Gina Villamizar"}</strong>
+          <span style="font-size:0.74rem; color:#475569;">Tarjeta Profesional: <strong>T.P. 248960-T</strong></span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ============================================================================
+// CENTRO DE DESCARGAS DE FORMULARIOS Y LIQUIDADORES EN EXCEL (.XLSX)
+// Tipo GH Revisores: Liquidadores Automáticos Oficiales DIAN
+// ============================================================================
+function renderLiquidadoresExcelDownloadsHtml() {
+  return `
+    <div class="card" style="box-shadow:var(--shadow-sm); border-radius:12px; overflow:hidden;">
+      <div class="card-header" style="background:#0F172A; color:#FFFFFF;">
+        <div>
+          <div class="card-title" style="color:#FFFFFF; font-size:1.1rem;">📥 Formularios, Liquidadores y Formatos DIAN Oficiales en Excel (.xlsx)</div>
+          <div style="font-size:0.78rem; color:#94A3B8; margin-top:3px;">Plantillas automatizadas con fórmulas de liquidación, validaciones tributarias y estructura idéntica a la DIAN (Referencia: GH Revisores)</div>
+        </div>
+        <span class="status-pill status-paid" style="background:#10B981; color:#fff;">Plantillas 2026 Gratuitas</span>
+      </div>
+
+      <div class="card-body" style="padding:24px;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:18px;">
+
+          <!-- Card 1: F350 -->
+          <div class="card" style="border:1.5px solid #005E38; border-radius:10px; padding:16px; background:#F0FDF4; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span class="dian-casilla-tag" style="background:#005E38; color:#fff; font-weight:900;">F-350</span>
+                <span class="status-pill status-paid">DIAN Retenciones</span>
+              </div>
+              <h4 style="color:#005E38; margin:0 0 6px; font-size:0.96rem;">Liquidador Formulario 350 — Retención en la Fuente</h4>
+              <p style="font-size:0.78rem; color:#334155; line-height:1.4; margin-bottom:12px;">
+                Incluye casillas oficiales de compras (2.5%), servicios (4%), pagos laborales, autorretenciones en renta Decreto 2201 (2.5%), autorretención especial (0.55%) y retención de IVA (15%). Fórmulas automáticas.
+              </p>
+            </div>
+            <a class="btn btn-primary btn-sm" href="LIQUIDADOR_FORMULARIO_350_RETEFUENTE_2026.xlsx" download="LIQUIDADOR_FORMULARIO_350_RETEFUENTE_2026.xlsx" style="text-align:center; background:#005E38; border-color:#005E38;">
+              📥 Descargar Formulario 350 (.xlsx)
+            </a>
+          </div>
+
+          <!-- Card 2: F300 -->
+          <div class="card" style="border:1.5px solid #1E3A8A; border-radius:10px; padding:16px; background:#EFF6FF; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span class="dian-casilla-tag" style="background:#1E3A8A; color:#fff; font-weight:900;">F-300</span>
+                <span class="status-pill status-sent">DIAN IVA</span>
+              </div>
+              <h4 style="color:#1E3A8A; margin:0 0 6px; font-size:0.96rem;">Liquidador Formulario 300 — Impuesto a las Ventas (IVA)</h4>
+              <p style="font-size:0.78rem; color:#334155; line-height:1.4; margin-bottom:12px;">
+                Control de operaciones gravadas al 19%, devoluciones en ventas, compras gravadas, impuesto generado, impuesto descontable, ReteIVA practicado a favor y saldo neto a pagar.
+              </p>
+            </div>
+            <a class="btn btn-primary btn-sm" href="LIQUIDADOR_FORMULARIO_300_IVA_2026.xlsx" download="LIQUIDADOR_FORMULARIO_300_IVA_2026.xlsx" style="text-align:center; background:#1E3A8A; border-color:#1E3A8A;">
+              📥 Descargar Formulario 300 (.xlsx)
+            </a>
+          </div>
+
+          <!-- Card 3: F110 -->
+          <div class="card" style="border:1.5px solid #0F172A; border-radius:10px; padding:16px; background:#F8FAFC; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span class="dian-casilla-tag" style="background:#0F172A; color:#fff; font-weight:900;">F-110</span>
+                <span class="status-pill status-alert">Renta PJ 35%</span>
+              </div>
+              <h4 style="color:#0F172A; margin:0 0 6px; font-size:0.96rem;">Liquidador Formulario 110 — Declaración de Renta Personas Jurídicas</h4>
+              <p style="font-size:0.78rem; color:#334155; line-height:1.4; margin-bottom:12px;">
+                Estructura completa de balance (Patrimonio Bruto, Deudas, Patrimonio Líquido), Estado de Resultados, depuración de Renta Líquida Ordinaria, cálculo del 35%, retenciones y saldo final.
+              </p>
+            </div>
+            <a class="btn btn-gold btn-sm" href="LIQUIDADOR_FORMULARIO_110_RENTA_2026.xlsx" download="LIQUIDADOR_FORMULARIO_110_RENTA_2026.xlsx" style="text-align:center;">
+              📥 Descargar Formulario 110 (.xlsx)
+            </a>
+          </div>
+
+          <!-- Card 4: F220 -->
+          <div class="card" style="border:1.5px solid #4C1D95; border-radius:10px; padding:16px; background:#FAF5FF; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span class="dian-casilla-tag" style="background:#4C1D95; color:#fff; font-weight:900;">F-220</span>
+                <span class="status-pill status-paid" style="background:#8B5CF6; color:#fff;">Laboral</span>
+              </div>
+              <h4 style="color:#4C1D95; margin:0 0 6px; font-size:0.96rem;">Formato 220 — Certificado de Ingresos y Retenciones</h4>
+              <p style="font-size:0.78rem; color:#334155; line-height:1.4; margin-bottom:12px;">
+                Certificado oficial expedido por el empleador a cada trabajador con desglose de sueldos, auxilio de transporte, cesantías pagadas, aportes a salud, pensión y retenciones aplicadas.
+              </p>
+            </div>
+            <a class="btn btn-primary btn-sm" href="FORMATO_220_CERTIFICADO_INGRESOS_RETENCIONES_2026.xlsx" download="FORMATO_220_CERTIFICADO_INGRESOS_RETENCIONES_2026.xlsx" style="text-align:center; background:#4C1D95; border-color:#4C1D95;">
+              📥 Descargar Formato 220 (.xlsx)
+            </a>
+          </div>
+
+          <!-- Card 5: Calendario Tributario -->
+          <div class="card" style="border:1.5px solid #D4AF37; border-radius:10px; padding:16px; background:#FFFBEB; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span class="dian-casilla-tag" style="background:#D4AF37; color:#0F172A; font-weight:900;">CAL</span>
+                <span class="status-pill status-pending">Vencimientos</span>
+              </div>
+              <h4 style="color:#B45309; margin:0 0 6px; font-size:0.96rem;">Calendario Tributario 2026 Completo DIAN & ICA</h4>
+              <p style="font-size:0.78rem; color:#334155; line-height:1.4; margin-bottom:12px;">
+                Fechas de vencimiento según el último dígito del NIT para Retención en la Fuente mensual, IVA bimestral, Renta Personas Jurídicas y ReteICA Bucaramanga.
+              </p>
+            </div>
+            <a class="btn btn-gold btn-sm" href="CALENDARIO_TRIBUTARIO_2026_ELECTROVIVIENDA.xlsx" download="CALENDARIO_TRIBUTARIO_2026_ELECTROVIVIENDA.xlsx" style="text-align:center;">
+              📥 Descargar Calendario Tributario (.xlsx)
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function renderTaxSection() {
   const cal = DB?.calendario_tributario || [];
   const tbody = document.getElementById("taxCalendarTableBody");
@@ -6230,6 +6506,18 @@ function renderTaxSection() {
   }
   if (ACTIVE_TAX_TAB === "RETEICA") {
     container.innerHTML = renderReteicaFormHtml();
+    return;
+  }
+  if (ACTIVE_TAX_TAB === "F110") {
+    container.innerHTML = renderDianForm110Html();
+    return;
+  }
+  if (ACTIVE_TAX_TAB === "F220") {
+    container.innerHTML = renderDianForm220Html();
+    return;
+  }
+  if (ACTIVE_TAX_TAB === "LIQUIDADORES_EXCEL") {
+    container.innerHTML = renderLiquidadoresExcelDownloadsHtml();
     return;
   }
 
