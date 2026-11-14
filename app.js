@@ -2712,6 +2712,13 @@ function renderAuxiliaresSection() {
 // ============================================================================
 // 6. SECCIÓN: KARDEX PROMEDIO PONDERADO
 // ============================================================================
+let ACTIVE_KARDEX_MONTH_FILTER = "ALL"; // "ALL" | "ENERO" | "FEBRERO" | "MARZO" | "ABRIL"
+
+function setKardexMonthFilter(m) {
+  ACTIVE_KARDEX_MONTH_FILTER = m;
+  renderKardexSection();
+}
+
 function renderKardexSection() {
   const kardex = DB.kardex || [];
   if (!kardex.length) {
@@ -2759,17 +2766,121 @@ function renderKardexSection() {
   `).join("");
 
   const prod = kardex.find(p => p.id === ACTIVE_KARDEX_ID) || kardex[0];
-  let salCant = 0, salVal = 0;
-  const rowsHtml = (prod.movimientos || []).map((m, idx) => {
+  const allMovs = prod.movimientos || [];
+
+  // Calcular movimientos con control estricto de traslado de saldo entre meses
+  let salCant = 0, salVal = 0, salProm = 0;
+  let lastMonth = null;
+  const processedRows = [];
+
+  allMovs.forEach((m, idx) => {
+    const curMonth = String(m.mes || "2026").toUpperCase();
+
+    // Si se pasa de mes y ya teníamos saldo acumulado, registrar banner de traslado de saldo
+    if (lastMonth && curMonth !== lastMonth && salCant > 0) {
+      processedRows.push({
+        isMonthCarryBanner: true,
+        prevMonth: lastMonth,
+        nextMonth: curMonth,
+        salCant,
+        salVal,
+        salProm
+      });
+    }
+
     salCant += (Number(m.ent_cant) || 0) - (Number(m.sal_cant) || 0);
     salVal += (Number(m.ent_valor) || 0) - (Number(m.sal_valor) || 0);
-    const prom = salCant > 0 ? (salVal / salCant) : (Number(m.promedio) || 0);
+    salProm = salCant > 0 ? Math.round(salVal / salCant) : (Number(m.promedio) || salProm);
+
+    processedRows.push({
+      isMonthCarryBanner: false,
+      m,
+      salCant,
+      salVal,
+      salProm,
+      idx: idx + 1
+    });
+
+    lastMonth = curMonth;
+  });
+
+  // Filtrar si el usuario seleccionó un mes específico
+  let displayRows = processedRows;
+  if (ACTIVE_KARDEX_MONTH_FILTER !== "ALL") {
+    // Si filtra por un mes específico, calcular el saldo inicial del mes anterior y mostrarlo primero
+    let initialCant = 0, initialVal = 0, initialProm = 0;
+    const filterIdx = ALL_12_MONTHS.indexOf(ACTIVE_KARDEX_MONTH_FILTER);
+
+    // Sumar todos los movimientos de meses anteriores
+    allMovs.forEach(m => {
+      const mIdx = ALL_12_MONTHS.indexOf(String(m.mes || "").toUpperCase());
+      if (mIdx !== -1 && mIdx < filterIdx) {
+        initialCant += (Number(m.ent_cant) || 0) - (Number(m.sal_cant) || 0);
+        initialVal += (Number(m.ent_valor) || 0) - (Number(m.sal_valor) || 0);
+        initialProm = initialCant > 0 ? Math.round(initialVal / initialCant) : (Number(m.promedio) || initialProm);
+      }
+    });
+
+    const monthMovs = processedRows.filter(r => !r.isMonthCarryBanner && String(r.m?.mes || "").toUpperCase() === ACTIVE_KARDEX_MONTH_FILTER);
+
+    displayRows = [];
+    if (initialCant > 0 || filterIdx > 0) {
+      displayRows.push({
+        isInitialCarryRow: true,
+        month: ACTIVE_KARDEX_MONTH_FILTER,
+        prevMonth: filterIdx > 0 ? ALL_12_MONTHS[filterIdx - 1] : "ANTERIOR",
+        cant: initialCant,
+        val: initialVal,
+        prom: initialProm
+      });
+    }
+    displayRows.push(...monthMovs);
+  }
+
+  const rowsHtml = displayRows.map((item, rowIdx) => {
+    if (item.isMonthCarryBanner) {
+      return `
+        <tr style="background:linear-gradient(90deg, #F1F5F9 0%, #FFFFFF 100%); border-top:2px solid #CBD5E1; border-bottom:2px solid #CBD5E1;">
+          <td colspan="5" style="padding:8px 12px; font-weight:800; color:#1E293B;">
+            <span style="color:#2563EB;">🔄 TRASLADO DE SALDO:</span> Cierre de <strong>${item.prevMonth}</strong> ➔ Saldo Inicial de <strong>${item.nextMonth}</strong>
+          </td>
+          <td class="num-col" colspan="5" style="color:var(--text-secondary); font-size:0.75rem;">
+            Costo Promedio Trasladado: <strong>${fmtCOP(item.salProm)}</strong>
+          </td>
+          <td class="num-col" style="background:rgba(212,175,55,0.18); font-weight:900; color:#0F172A;">${item.salCant}</td>
+          <td class="num-col" style="background:rgba(212,175,55,0.18); font-weight:900; color:#0F172A;">${fmtCOP(item.salVal)}</td>
+          <td class="num-col" style="font-weight:900; color:#2563EB;">${fmtCOP(item.salProm)}</td>
+        </tr>
+      `;
+    }
+
+    if (item.isInitialCarryRow) {
+      return `
+        <tr style="background:rgba(37,99,235,0.05); font-weight:700; border-bottom:1.5px solid var(--border-strong);">
+          <td class="code-col" style="color:#2563EB;">INI</td>
+          <td>01/2026</td>
+          <td><span class="status-pill status-paid">${item.month}</span></td>
+          <td style="color:#2563EB;"><strong>Inventario Inicial / Traslado de Saldo Mes Anterior (${item.prevMonth})</strong></td>
+          <td><span class="code-col">Cierre ${item.prevMonth}</span></td>
+          <td class="num-col">${fmtCOP(item.prom)}</td>
+          <td class="num-col" colspan="4" style="text-align:center; color:var(--text-muted); font-size:0.75rem;">
+            (Saldo de existencias trasladado del período ${item.prevMonth})
+          </td>
+          <td class="num-col" style="background:rgba(212,175,55,0.18); font-weight:900; color:#0F172A;">${item.cant}</td>
+          <td class="num-col" style="background:rgba(212,175,55,0.18); font-weight:900; color:#0F172A;">${fmtCOP(item.val)}</td>
+          <td class="num-col" style="font-weight:900; color:#2563EB;">${fmtCOP(item.prom)}</td>
+        </tr>
+      `;
+    }
+
+    const { m, salCant, salVal, salProm, idx } = item;
     const originBtn = m.hoja
       ? `<button class="btn btn-outline btn-sm" style="padding:2px 6px; font-size:0.68rem;" onclick="setGlobalPeriod('${m.mes || ACTIVE_PERIOD}'); ACTIVE_VOUCHER_SHEET='${m.mes || ACTIVE_PERIOD}|${m.hoja}'; switchSection('comprobantes');" title="Ir al Comprobante / Factura Origen">${m.doc || `Hoja ${m.hoja}`} 🔗</button>`
       : `<span class="code-col">${m.doc || "-"}</span>`;
+
     return `
       <tr>
-        <td class="code-col">${idx + 1}</td>
+        <td class="code-col">${idx}</td>
         <td>${m.fecha}</td>
         <td><span class="status-pill status-paid">${m.mes || "2026"}</span></td>
         <td><strong>${m.descripcion}</strong></td>
@@ -2781,19 +2892,30 @@ function renderKardexSection() {
         <td class="num-col" style="background:rgba(220,38,38,0.06);">${m.sal_valor ? fmtCOP(m.sal_valor) : ""}</td>
         <td class="num-col" style="background:rgba(212,175,55,0.12); font-weight:800;">${salCant}</td>
         <td class="num-col" style="background:rgba(212,175,55,0.12); font-weight:800;">${fmtCOP(salVal)}</td>
-        <td class="num-col"><strong>${fmtCOP(prom)}</strong></td>
+        <td class="num-col"><strong>${fmtCOP(salProm)}</strong></td>
       </tr>
     `;
   }).join("");
 
   document.getElementById("kardexDetailBody").innerHTML = `
-    <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:12px; padding:10px 14px; background:var(--bg-subtle); border-radius:6px; font-size:0.8rem;">
-      <div><strong>Artículo:</strong> ${prod.articulo}</div>
-      <div><strong>Referencia:</strong> <span class="code-col">${prod.referencia}</span></div>
-      <div><strong>Auxiliar PUC Encadenado:</strong> <span class="code-col">${prod.cuenta_puc || prod.auxiliar_puc || "14353601"}</span></div>
-      <div><strong>Proveedor Principal:</strong> ${prod.proveedor}</div>
-      <div><strong>Método:</strong> ${prod.metodo}</div>
+    <!-- Barra superior de metadatos y filtro por mes -->
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px; padding:10px 14px; background:var(--bg-subtle); border-radius:8px; font-size:0.8rem;">
+      <div style="display:flex; gap:14px; flex-wrap:wrap;">
+        <div><strong>Artículo:</strong> ${prod.articulo}</div>
+        <div><strong>Referencia:</strong> <span class="code-col">${prod.referencia}</span></div>
+        <div><strong>Auxiliar PUC:</strong> <span class="code-col">${prod.cuenta_puc || prod.auxiliar_puc || "14353601"}</span></div>
+        <div><strong>Proveedor:</strong> ${prod.proveedor}</div>
+        <div><strong>Método:</strong> ${prod.metodo}</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <span style="font-size:0.75rem; font-weight:800; color:var(--text-main);">Filtro Período:</span>
+        <button class="filter-chip ${ACTIVE_KARDEX_MONTH_FILTER === 'ALL' ? 'active' : ''}" onclick="setKardexMonthFilter('ALL')">⚡ Histórico Completo</button>
+        <button class="filter-chip ${ACTIVE_KARDEX_MONTH_FILTER === 'FEBRERO' ? 'active' : ''}" onclick="setKardexMonthFilter('FEBRERO')">Febrero</button>
+        <button class="filter-chip ${ACTIVE_KARDEX_MONTH_FILTER === 'MARZO' ? 'active' : ''}" onclick="setKardexMonthFilter('MARZO')">Marzo</button>
+        <button class="filter-chip ${ACTIVE_KARDEX_MONTH_FILTER === 'ABRIL' ? 'active' : ''}" onclick="setKardexMonthFilter('ABRIL')">Abril</button>
+      </div>
     </div>
+
     <div class="table-wrap">
       <table class="acct-table">
         <thead>
@@ -2818,6 +2940,7 @@ function renderKardexSection() {
     </div>
   `;
 }
+
 
 async function openNewProductKardexModal() {
   const ref = prompt("Referencia del nuevo producto (Ej: NV02):", "REF-05");
@@ -2897,16 +3020,38 @@ function sheetRows(sheet) {
   return raw.map(getRowCells);
 }
 
+function extractRowMonetaryValue(nonNull, codeToExclude) {
+  const nums = nonNull.filter(c => typeof c === "number" && !isNaN(c));
+  if (!nums.length) return 0;
+  const candNums = (codeToExclude !== undefined && codeToExclude !== null)
+    ? nums.filter(n => Math.round(n) !== Math.round(Number(codeToExclude)))
+    : nums;
+  if (!candNums.length) return 0;
+  const nonZeros = candNums.filter(n => n !== 0);
+  if (nonZeros.length > 0) {
+    const large = nonZeros.filter(n => Math.abs(n) >= 1);
+    if (large.length > 0) return large[large.length - 1];
+    return nonZeros[nonZeros.length - 1];
+  }
+  return candNums[0];
+}
+
 function parseNIIFStatementRows(rowsIn) {
   const rows = (rowsIn || []).map(getRowCells);
   const parsed = [];
+
+  let sumActivosCorrientes = 0;
+  let sumActivosNoCorrientes = 0;
+  let sumPasivosCorrientes = 0;
+  let sumPasivosNoCorrientes = 0;
+  let sumPatrimonio = 0;
+  let currentCategory = "ACTIVOS_CORRIENTES";
 
   rows.forEach((r, idx) => {
     const nonNull = r.filter(c => c !== null && String(c).trim() !== "");
     if (!nonNull.length) return;
     const fullText = nonNull.join(" ").toUpperCase();
-    const nums = nonNull.filter(c => typeof c === "number");
-    const lastNum = nums.length ? nums[nums.length - 1] : null;
+    if (fullText === "0") return;
 
     if (idx < 5 && (fullText.includes("ESTADO") || fullText.includes("ELECTROVIVIENDA") || fullText.includes("NIT") || fullText.includes("PERIODO") || fullText.includes("RRI"))) {
       return; // Cabecera institucional
@@ -2916,21 +3061,14 @@ function parseNIIFStatementRows(rowsIn) {
       return; // Fila de nombres de columnas
     }
 
-    if (fullText.includes("TOTAL ") || fullText.includes("RESULTADO ") || fullText.includes("UTILIDAD ") || fullText.includes("PERDIDA ")) {
-      const cleanConcept = nonNull.find(x => typeof x === "string" && x.trim() !== "-") || "TOTAL";
-      parsed.push({ type: "TOTAL", concept: cleanConcept, val: lastNum });
-      return;
-    }
-    if (fullText.includes("SUBTOTAL")) {
-      const cleanConcept = nonNull.find(x => typeof x === "string" && x.trim() !== "-") || "SUBTOTAL";
-      parsed.push({ type: "SUBTOTAL", concept: cleanConcept, val: lastNum });
-      return;
-    }
-
     // Identificar Clases (1 ACTIVOS, 2 PASIVOS, 3 PATRIMONIO, INGRESOS, COSTOS, GASTOS)
     const cleanWords = nonNull.filter(x => typeof x === "string" && x.trim() !== "-").map(x => x.trim());
     if (/^\s*[1-9]\s*$/.test(String(nonNull[0])) && nonNull.length >= 2 && ["ACTIVOS","PASIVOS","PATRIMONIO","INGRESOS","GASTOS","COSTOS"].some(w => String(nonNull[1]).toUpperCase().includes(w))) {
-      parsed.push({ type: "CLASE", code: nonNull[0], concept: nonNull[1] });
+      const clsNum = String(nonNull[0]).trim();
+      if (clsNum === "1") currentCategory = "ACTIVOS_CORRIENTES";
+      else if (clsNum === "2") currentCategory = "PASIVOS_CORRIENTES";
+      else if (clsNum === "3") currentCategory = "PATRIMONIO";
+      parsed.push({ type: "CLASE", code: clsNum, concept: nonNull[1] });
       return;
     }
     if (["INGRESOS", "COSTOS", "GASTOS"].some(w => cleanWords[0] === w || fullText.endsWith(" " + w))) {
@@ -2938,12 +3076,84 @@ function parseNIIFStatementRows(rowsIn) {
       return;
     }
 
-    // Identificar Cuentas (4 dígitos)
+    // Detectar cambios de subcategoría
+    if (fullText.includes("ACTIVOS CORRIENTES") || fullText.includes("ACTIVO CORRIENTE")) currentCategory = "ACTIVOS_CORRIENTES";
+    else if (fullText.includes("ACTIVOS NO CORRIENTES") || fullText.includes("ACTIVOS FIJOS") || fullText.includes("PROPIEDAD, PLANTA")) currentCategory = "ACTIVOS_NO_CORRIENTES";
+    else if (fullText.includes("PASIVOS CORRIENTES") || fullText.includes("PASIVO CORRIENTE")) currentCategory = "PASIVOS_CORRIENTES";
+    else if (fullText.includes("PASIVOS NO CORRIENTES") || fullText.includes("PASIVO NO CORRIENTE")) currentCategory = "PASIVOS_NO_CORRIENTES";
+    else if (fullText.includes("PATRIMONIO") && !fullText.includes("TOTAL") && !fullText.includes("PASIVO")) currentCategory = "PATRIMONIO";
+
+    // Detectar cuentas con código de 4 dígitos o cuentas de patrimonio (Utilidad / Pérdida del Ejercicio)
     const codeCand = nonNull.find(c => /^\d{4}$/.test(String(c).trim()));
-    if (codeCand) {
-      const codeStr = String(codeCand).trim();
-      const textCand = nonNull.find(c => typeof c === "string" && c.trim() !== "-" && c.trim() !== codeStr);
-      parsed.push({ type: "CUENTA", code: codeStr, concept: textCand || "", val: lastNum, note: "" });
+    const isUtilidadRow = fullText.includes("UTILIDAD DEL EJERCICIO");
+    const isPerdidaRow = fullText.includes("PERDIDA DEL EJERCICIO");
+
+    if (codeCand || isUtilidadRow || isPerdidaRow) {
+      const codeStr = codeCand ? String(codeCand).trim() : (isUtilidadRow ? "3605" : "3610");
+      const val = extractRowMonetaryValue(nonNull, codeCand);
+      let textCand = nonNull.find(c => typeof c === "string" && c.trim() !== "-" && c.trim() !== codeStr);
+      if (!textCand) textCand = isUtilidadRow ? "UTILIDAD DEL EJERCICIO" : (isPerdidaRow ? "PERDIDA DEL EJERCICIO" : "CUENTA");
+
+      // Acumular dinámicamente en su categoría
+      if (codeStr.startsWith("11") || codeStr.startsWith("12") || codeStr.startsWith("13") || codeStr.startsWith("14")) {
+        sumActivosCorrientes += val;
+      } else if (codeStr.startsWith("15") || codeStr.startsWith("16") || codeStr.startsWith("17") || codeStr.startsWith("18") || codeStr.startsWith("19")) {
+        sumActivosNoCorrientes += val;
+      } else if (codeStr.startsWith("2")) {
+        if (currentCategory === "PASIVOS_NO_CORRIENTES" || codeStr.startsWith("2120")) sumPasivosNoCorrientes += val;
+        else sumPasivosCorrientes += val;
+      } else if (codeStr.startsWith("3")) {
+        sumPatrimonio += val;
+      }
+
+      parsed.push({ type: "CUENTA", code: codeStr, concept: textCand, val: val, note: "" });
+      return;
+    }
+
+    // Manejar Impuesto de Renta y Reserva Legal en el Estado de Resultados (ER)
+    if (fullText.includes("IMPUESTO DE RENTA") || fullText.includes("RESERVA LEGAL")) {
+      const val = extractRowMonetaryValue(nonNull, null);
+      const isImpuesto = fullText.includes("IMPUESTO");
+      const label = isImpuesto ? "IMPUESTO DE RENTA (35%)" : "RESERVA LEGAL (10%)";
+      parsed.push({ type: "SUBTOTAL", concept: label, val: val });
+      return;
+    }
+
+    // Subtotales
+    if (fullText.includes("SUBTOTAL")) {
+      const cleanConcept = nonNull.find(x => typeof x === "string" && x.trim() !== "-" && !x.trim().startsWith("0")) || "SUBTOTAL";
+      let val = extractRowMonetaryValue(nonNull, null);
+      const uc = cleanConcept.toUpperCase();
+      if (uc.includes("ACTIVOS CORRIENTES")) {
+        if (!val || val === 0) val = sumActivosCorrientes;
+      } else if (uc.includes("ACTIVOS NO CORRIENTES") || uc.includes("ACTIVOS FIJOS")) {
+        if (!val || val === 0) val = sumActivosNoCorrientes;
+      } else if (uc.includes("PASIVOS CORRIENTES")) {
+        if (!val || val === 0) val = sumPasivosCorrientes;
+      } else if (uc.includes("PASIVOS NO CORRIENTES")) {
+        if (!val || val === 0) val = sumPasivosNoCorrientes;
+      } else if (currentCategory === "PATRIMONIO") {
+        if (!val || val === 0) val = sumPatrimonio;
+      }
+      parsed.push({ type: "SUBTOTAL", concept: cleanConcept, val: val });
+      return;
+    }
+
+    // Totales
+    if (fullText.includes("TOTAL ") || fullText.includes("RESULTADO ") || fullText.includes("UTILIDAD NETA") || fullText.includes("PERDIDA NETA") || fullText.includes("UTILIDAD ANTES") || fullText.includes("UTILIDAD DESPU") || fullText.includes("UTILIDAD DESPUÉS") || fullText.includes("UTILIDAD DESPUES")) {
+      const cleanConcept = nonNull.find(x => typeof x === "string" && x.trim() !== "-" && !x.trim().startsWith("0")) || "TOTAL";
+      let val = extractRowMonetaryValue(nonNull, null);
+      const uc = cleanConcept.toUpperCase();
+      if (uc.includes("TOTAL ACTIVOS")) {
+        if (!val || val === 0) val = sumActivosCorrientes + sumActivosNoCorrientes;
+      } else if (uc.includes("TOTAL PASIVOS") && !uc.includes("PATRIMONIO")) {
+        if (!val || val === 0) val = sumPasivosCorrientes + sumPasivosNoCorrientes;
+      } else if (uc.includes("TOTAL PATRIMONIO")) {
+        if (!val || val === 0) val = sumPatrimonio;
+      } else if (uc.includes("TOTAL PASIVO Y PATRIMONIO") || uc.includes("TOTAL PASIVO + PATRIMONIO")) {
+        if (!val || val === 0) val = (sumPasivosCorrientes + sumPasivosNoCorrientes) + sumPatrimonio;
+      }
+      parsed.push({ type: "TOTAL", concept: cleanConcept, val: val });
       return;
     }
 
@@ -3174,7 +3384,7 @@ function renderConsolidatedComparativeStatementHtml(rowsIn, statementType, month
     return `<div class="card"><div class="card-body">Sin datos en consolidado para ${month}.</div></div>`;
   }
 
-  // Find column header row
+  // Encontrar fila de encabezados
   let headerRowIdx = 4;
   for (let i = 0; i < Math.min(8, rows.length); i++) {
     const nonNull = rows[i].filter(c => c !== null).map(c => String(c).trim().toUpperCase());
@@ -3194,15 +3404,36 @@ function renderConsolidatedComparativeStatementHtml(rowsIn, statementType, month
   }
   if (firstCol === 99) firstCol = 0;
 
-  const rawHeaders = rows[headerRowIdx].slice(firstCol);
+  const rawHeaders = rows[headerRowIdx].slice(firstCol).map(h => (h !== null && h !== undefined) ? String(h).trim() : "");
+  // Agregar encabezado de Variación % si no existe
+  const hasPctHeader = rawHeaders.some(h => h.includes("%"));
+  const allHeaders = hasPctHeader ? rawHeaders : [...rawHeaders, "VARIACIÓN (%)"];
+
+  // Identificar índices clave de columnas
+  let idxCodigo = -1;
+  let idxConcepto = -1;
+  let idxMes1 = -1;
+  let idxMes2 = -1;
+  let idxVarCOP = -1;
+
+  rawHeaders.forEach((h, i) => {
+    const hu = h.toUpperCase();
+    if (hu.includes("CÓDIGO") || hu.includes("CODIGO")) idxCodigo = i;
+    else if (hu.includes("CONCEPTO")) idxConcepto = i;
+    else if (hu.includes("VARIACION $") || hu.includes("VARIACIÓN $") || hu === "VARIACION" || hu === "VARIACIÓN") idxVarCOP = i;
+    else if (ALL_12_MONTHS.some(m => hu.includes(m)) || /^(ENERO|FEBRERO|MARZO|ABRIL|SALDO)/i.test(hu)) {
+      if (idxMes1 === -1) idxMes1 = i;
+      else if (idxMes2 === -1) idxMes2 = i;
+    }
+  });
 
   const theadHtml = `
     <thead>
       <tr>
-        ${rawHeaders.map((h, hIdx) => {
-          const txt = h !== null && h !== undefined ? String(h).trim() : "";
-          const isNumHeader = hIdx >= 2;
-          return `<th style="${isNumHeader ? 'text-align:right;' : ''}">${txt}</th>`;
+        ${allHeaders.map((h, hIdx) => {
+          const hu = h.toUpperCase();
+          const isNum = hu.includes("ENERO") || hu.includes("FEBRERO") || hu.includes("MARZO") || hu.includes("ABRIL") || hu.includes("VARIACION") || hu.includes("VARIACIÓN") || hu.includes("%") || hu.includes("SALDO");
+          return `<th style="${isNum ? 'text-align:right;' : ''}">${h}</th>`;
         }).join("")}
       </tr>
     </thead>
@@ -3217,7 +3448,7 @@ function renderConsolidatedComparativeStatementHtml(rowsIn, statementType, month
     const fullText = nonNull.join(" ").toUpperCase();
     if (fullText === "0") return;
 
-    const isTotalRow = fullText.includes("TOTAL ACTIVOS") || fullText.includes("TOTAL PASIVOS") || fullText.includes("TOTAL PATRIMONIO") || fullText.includes("TOTAL PASIVO Y PATRIMONIO") || fullText.includes("TOTAL INGRESOS") || fullText.includes("TOTAL COSTOS") || fullText.includes("TOTAL GASTOS") || fullText.includes("RESULTADO DEL EJERCICIO");
+    const isTotalRow = fullText.includes("TOTAL ACTIVOS") || fullText.includes("TOTAL PASIVOS") || fullText.includes("TOTAL PATRIMONIO") || fullText.includes("TOTAL PASIVO Y PATRIMONIO") || fullText.includes("TOTAL PASIVO + PATRIMONIO") || fullText.includes("TOTAL INGRESOS") || fullText.includes("TOTAL COSTOS") || fullText.includes("TOTAL GASTOS") || fullText.includes("RESULTADO DEL EJERCICIO") || fullText.includes("UTILIDAD NETA");
     const isSubtotalRow = fullText.includes("SUBTOTAL");
     const isClassRow = ["ACTIVOS", "PASIVOS", "PATRIMONIO", "INGRESOS", "COSTOS", "GASTOS"].some(w => (fullText === w || fullText.includes(` ${w}`)) && !isTotalRow && !isSubtotalRow && nonNull.length <= 3);
     const isGroupRow = !isTotalRow && !isSubtotalRow && !isClassRow && nonNull.length <= 2 && !/^\d{4}$/.test(String(nonNull[0]).trim());
@@ -3227,7 +3458,7 @@ function renderConsolidatedComparativeStatementHtml(rowsIn, statementType, month
       const classCode = nonNull.find(x => /^[1-9]$/.test(String(x).trim())) || "";
       tbodyHtml += `
         <tr class="niif-row-clase">
-          <td colspan="${rawHeaders.length}">
+          <td colspan="${allHeaders.length}">
             <span class="niif-code-pill" style="background:var(--brand-primary); color:#fff; font-weight:800;">${classCode ? `CLASE ${classCode}` : "NIIF"}</span>
             <strong style="margin-left:8px; letter-spacing:0.4px;">${className}</strong>
           </td>
@@ -3239,40 +3470,99 @@ function renderConsolidatedComparativeStatementHtml(rowsIn, statementType, month
     if (isGroupRow) {
       tbodyHtml += `
         <tr class="niif-row-grupo">
-          <td colspan="${rawHeaders.length}"><strong>${nonNull.join(" ")}</strong></td>
+          <td colspan="${allHeaders.length}"><strong>${nonNull.join(" ")}</strong></td>
         </tr>
       `;
       return;
     }
 
+    // Fila de Cuenta / Subtotal / Total
     let trCls = "niif-row-cuenta";
     if (isTotalRow) trCls = "niif-row-total";
     else if (isSubtotalRow) trCls = "niif-row-subtotal";
 
-    const tdCells = [];
-    for (let c = firstCol; c < firstCol + rawHeaders.length; c++) {
-      const v = r[c];
-      const hTitle = String(rawHeaders[c - firstCol] || "").toUpperCase();
-      let disp = "";
-      let cls = "";
+    // Si es cuenta de Patrimonio (3605 Utilidad o 3610 Pérdida), dejar en fondo blanco como cuenta normal
+    if (fullText.includes("UTILIDAD DEL EJERCICIO") || fullText.includes("PERDIDA DEL EJERCICIO")) {
+      trCls = "niif-row-cuenta";
+    }
 
-      if (typeof v === "number") {
-        if (hTitle.includes("%") || (Math.abs(v) <= 1 && v !== 0 && !hTitle.includes("ENERO") && !hTitle.includes("FEBRERO") && !hTitle.includes("MARZO") && !hTitle.includes("ABRIL"))) {
-          disp = (v * 100).toFixed(1) + "%";
-          cls = "num-col" + (v < 0 ? " text-danger" : "");
-        } else {
-          disp = fmtCOP(v);
-          cls = "num-col" + (v < 0 ? " text-danger" : "");
+    const rowCells = r.slice(firstCol, firstCol + rawHeaders.length);
+    let valMes1 = 0, valMes2 = 0, valVarCOP = 0;
+
+    const tdCells = rawHeaders.map((hTitle, cIdx) => {
+      const v = rowCells[cIdx];
+      const hu = hTitle.toUpperCase();
+
+      // Columna de Código: NUNCA formatear como moneda, siempre como código limpio
+      if (cIdx === idxCodigo || hu.includes("CÓDIGO") || hu.includes("CODIGO")) {
+        const codeNum = v != null ? String(v).trim() : "";
+        if (/^\d{4}$/.test(codeNum)) {
+          return `<td class="code-col" style="width:90px;"><span class="niif-code-pill">${codeNum}</span></td>`;
         }
-      } else if (v !== null && v !== undefined && String(v).trim() !== "") {
-        disp = String(v).trim();
-        if (/^\d{4}$/.test(disp)) {
-          disp = `<span class="niif-code-pill">${disp}</span>`;
-          cls = "code-col";
-        }
+        return `<td class="code-col" style="width:90px;">${codeNum}</td>`;
       }
 
-      tdCells.push(`<td class="${cls}">${disp}</td>`);
+      // Columna de Concepto
+      if (cIdx === idxConcepto || hu.includes("CONCEPTO")) {
+        const conc = v != null ? String(v).trim() : "";
+        return `<td>${conc}</td>`;
+      }
+
+      // Columnas de Notas
+      if (hu.includes("NOTAS") || hu.includes("NOTA")) {
+        const note = v != null ? String(v).trim() : "";
+        return `<td style="text-align:center; color:var(--text-muted); font-size:0.75rem;">${note}</td>`;
+      }
+
+      // Columnas numéricas
+      if (typeof v === "number") {
+        if (cIdx === idxMes1) valMes1 = v;
+        if (cIdx === idxMes2) valMes2 = v;
+        if (cIdx === idxVarCOP) valVarCOP = v;
+        const isNeg = v < 0;
+        return `<td class="num-col ${isNeg ? 'text-danger' : ''}">${fmtCOP(v)}</td>`;
+      } else if (v !== null && v !== undefined && String(v).trim() !== "") {
+        const numVal = Number(String(v).replace(/[^0-9.-]/g, ""));
+        if (!isNaN(numVal) && isFinite(numVal) && String(v).trim() !== "") {
+          if (cIdx === idxMes1) valMes1 = numVal;
+          if (cIdx === idxMes2) valMes2 = numVal;
+          if (cIdx === idxVarCOP) valVarCOP = numVal;
+          return `<td class="num-col ${numVal < 0 ? 'text-danger' : ''}">${fmtCOP(numVal)}</td>`;
+        }
+        return `<td>${String(v).trim()}</td>`;
+      }
+      return `<td class="num-col">-</td>`;
+    });
+
+    // Calcular Variación Porcentual (%) si agregamos la columna
+    if (!hasPctHeader) {
+      if (valVarCOP === 0 && valMes2 !== 0 && valMes1 !== 0) {
+        valVarCOP = valMes2 - valMes1;
+      }
+      let pctDisp = "-";
+      let pctColor = "var(--text-muted)";
+
+      if (valMes1 !== 0) {
+        const pct = ((valMes2 - valMes1) / Math.abs(valMes1)) * 100;
+        if (pct > 0) {
+          pctDisp = `+${pct.toFixed(1)}%`;
+          pctColor = "#10B981";
+        } else if (pct < 0) {
+          pctDisp = `${pct.toFixed(1)}%`;
+          pctColor = "#DC2626";
+        } else {
+          pctDisp = "0.0%";
+          pctColor = "var(--text-muted)";
+        }
+      } else if (valMes2 !== 0) {
+        pctDisp = "+100.0%";
+        pctColor = "#10B981";
+      } else {
+        pctDisp = "0.0%";
+        pctColor = "var(--text-muted)";
+      }
+
+      tdCells.push(`<td class="num-col" style="font-weight:700; color:${pctColor};">${pctDisp}</td>`);
     }
 
     tbodyHtml += `<tr class="${trCls}">${tdCells.join("")}</tr>`;
@@ -3280,7 +3570,7 @@ function renderConsolidatedComparativeStatementHtml(rowsIn, statementType, month
 
   return `
     <div class="niif-statement-paper">
-${renderCorporateHeaderBoxHtml(statementTitle || "ESTADO FINANCIERO CONSOLIDADO NIIF", `Corte Consolidado Comparativo — ${month} 2026`, "Cifras en Pesos Colombianos (COP) • NIIF para las PYMES (Grupo 2) • Variaciones y Sumas Corridas")}
+${renderCorporateHeaderBoxHtml(statementTitle || "ESTADO FINANCIERO CONSOLIDADO COMPARATIVO NIIF", `Corte Consolidado Comparativo — ${month} 2026`, "Cifras en Pesos Colombianos (COP) • NIIF para las PYMES (Grupo 2) • Análisis Horizontal $ y %")}
 
       <div class="table-wrap">
         <table class="niif-table niif-table-consolidado">
@@ -3737,6 +4027,20 @@ function renderFlujoEfectivoStatementHtml(rowsIn, month) {
     if (c6 === null && c7 === null && c8 === null) return;
     const txt = [c6, c7, c8].filter(x => x !== null).join(" ").trim().toUpperCase();
     if (txt.includes("CÓDIGO") && txt.includes("DETALLE")) return;
+
+    // QUITAR EXPRESAMENTE EL TRASPASO DE LA UTILIDAD / PÉRDIDA ANTERIOR (cuentas 3710, 3705 y contrapartidas de reclasificación en 3610/3605)
+    const codeStr = c6 != null ? String(c6).trim() : "";
+    const detailStr = c7 != null ? String(c7).trim().toUpperCase() : "";
+    if (codeStr === "3710" || codeStr === "3705" || detailStr.includes("PERDIDAS ACUMULADAS") || detailStr.includes("UTILIDADES ACUMULADAS")) {
+      return; // Omitir traspaso contable a pérdidas/utilidades acumuladas
+    }
+    if (codeStr === "3610" && Math.abs(Number(c8) - 1271250) < 1) {
+      return; // Omitir traspaso de pérdida de enero en febrero
+    }
+    if (codeStr === "3605" && Number(c8) < 0 && Math.abs(Math.abs(Number(c8)) - 16446082.49) < 1) {
+      return; // Omitir traspaso de utilidad de febrero en marzo
+    }
+
     oficialRows.push({ c6, c7, c8, txt });
   });
 
@@ -3810,6 +4114,9 @@ function renderFlujoEfectivoStatementHtml(rowsIn, month) {
     if (c1 === null && c2 === null && c3 === null && c4 === null) return;
     const txt = [c1, c2, c3, c4].filter(x => x !== null).join(" ").trim().toUpperCase();
     if (txt.includes("CÓDIGO") && txt.includes("CONCEPTO")) return;
+    const codeStr1 = c1 != null ? String(c1).trim() : "";
+    const detailStr2 = c2 != null ? String(c2).trim().toUpperCase() : "";
+    if (codeStr1 === "3710" || codeStr1 === "3705" || detailStr2.includes("PERDIDAS ACUMULADAS") || detailStr2.includes("UTILIDADES ACUMULADAS")) return;
     varRows.push({ c1, c2, c3, c4, txt });
   });
 
@@ -3818,120 +4125,87 @@ function renderFlujoEfectivoStatementHtml(rowsIn, month) {
     const { c1, c2, c3, c4, txt } = item;
     const isClass = ["ACTIVOS", "ACTIVO", "PASIVOS", "PATRIMONIO"].some(w => txt === w || txt.startsWith(w + " ") || txt.endsWith(" " + w));
     const isTotal = txt.includes("TOTAL AUMENTO") || txt.includes("EFECTIVO FINAL") || txt.includes("EFECTIVO A ");
-    const isSubtotal = txt.includes("SUBTOTAL");
 
     if (isClass) {
       varTbody += `
         <tr class="niif-row-clase">
           <td colspan="4">
-            <span class="niif-code-pill" style="background:var(--brand-primary); color:#fff; font-weight:800;">GRUPO BALANCE</span>
+            <span class="niif-code-pill" style="background:var(--brand-primary); color:#fff; font-weight:800;">CLASE NIIF</span>
             <strong style="margin-left:8px; letter-spacing:0.4px;">${txt}</strong>
           </td>
         </tr>
       `;
     } else if (isTotal) {
-      const label = c1 || c2 || "TOTAL EFECTIVO";
-      const val = c4 != null ? c4 : c3;
       varTbody += `
         <tr class="niif-row-total">
-          <td colspan="3"><strong>${label}</strong></td>
-          <td class="num-col"><strong>${typeof val === "number" ? fmtCOP(val) : val}</strong></td>
-        </tr>
-      `;
-    } else if (isSubtotal) {
-      varTbody += `
-        <tr class="niif-row-subtotal">
-          <td colspan="2"><strong>SUBTOTAL</strong></td>
-          <td class="num-col"><strong>${typeof c3 === "number" ? fmtCOP(c3) : ""}</strong></td>
-          <td class="num-col"><strong>${typeof c4 === "number" ? fmtCOP(c4) : ""}</strong></td>
+          <td colspan="2"><strong>${c1 || c2 || "TOTAL"}</strong></td>
+          <td class="num-col" colspan="2"><strong>${typeof c3 === "number" ? fmtCOP(c3) : (c3 || "")}</strong></td>
         </tr>
       `;
     } else {
-      const codeStr = c1 != null ? String(c1).trim() : "";
-      const isNeg = typeof c4 === "number" && c4 < 0;
+      const isNum = typeof c3 === "number";
+      const isNeg = isNum && c3 < 0;
       varTbody += `
         <tr class="niif-row-cuenta">
-          <td class="code-col" style="width:85px;">${codeStr ? `<span class="niif-code-pill">${codeStr}</span>` : ""}</td>
+          <td class="code-col" style="width:80px;">${c1 != null ? `<span class="niif-code-pill">${c1}</span>` : ""}</td>
           <td>${c2 || ""}</td>
-          <td class="num-col" style="width:140px;">${typeof c3 === "number" ? fmtCOP(c3) : (c3 || "-")}</td>
-          <td class="num-col ${isNeg ? 'text-danger' : ''}" style="width:140px; ${isNeg ? 'font-weight:700;' : ''}">${typeof c4 === "number" ? fmtCOP(c4) : (c4 || "-")}</td>
+          <td class="num-col ${isNeg ? 'text-danger' : ''}">${isNum ? fmtCOP(c3) : (c3 || "-")}</td>
+          <td style="text-align:center; font-size:0.75rem; color:var(--text-muted);">${c4 || ""}</td>
         </tr>
       `;
     }
   });
 
-  const kpiFlujoHtml = `
-    <div class="niif-kpi-summary-strip" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:12px; margin-bottom:20px;">
-      <div class="niif-kpi-pill">
-        <span class="kpi-title">Saldo Inicial Efectivo (Marzo)</span>
-        <span class="kpi-amount">${fmtCOP(kpiEfectivoIni)}</span>
-        <span style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">Caja + Bancos inicio de mes</span>
-      </div>
-      <div class="niif-kpi-pill">
-        <span class="kpi-title">Flujo Actividades de Operación</span>
-        <span class="kpi-amount" style="color:#DC2626;">${fmtCOP(kpiFlujoOp)}</span>
-        <span style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">Proveedores, inventarios e impuestos</span>
-      </div>
-      <div class="niif-kpi-pill">
-        <span class="kpi-title">Variación Neta del Efectivo</span>
-        <span class="kpi-amount" style="color:#DC2626;">${fmtCOP(kpiVarNeta)}</span>
-        <span style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">Disminución neta del período</span>
-      </div>
-      <div class="niif-kpi-pill" style="border-color:var(--brand-gold);">
-        <span class="kpi-title" style="color:var(--brand-gold);">Efectivo Final (Abril 2026)</span>
-        <span class="kpi-amount" style="color:var(--brand-gold);">${fmtCOP(kpiEfectivoFin)}</span>
-        <span style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">Disponible al cierre del balance</span>
-      </div>
-    </div>
-  `;
-
   return `
     <div class="niif-statement-paper">
-${renderCorporateHeaderBoxHtml("ESTADO DE FLUJOS DE EFECTIVO — MÉTODO INDIRECTO", `Período Contable: ${month} 2026`, "NIIF para las PYMES (Sección 7) • Cifras en Pesos Colombianos (COP) • Sumas Corridas")}
+${renderCorporateHeaderBoxHtml("ESTADO DE FLUJOS DE EFECTIVO (MÉTODO INDIRECTO NIIF)", `Corte Comparativo — ${month} 2026`, "Cifras en Pesos Colombianos (COP) • NIIF para las PYMES (Sección 7) • Conciliación Neta de Caja")}
 
-      ${kpiFlujoHtml}
-
-      <!-- PARTE 1: ESTADO OFICIAL NIIF -->
-      <div style="margin-bottom:28px;">
-        <div style="background:var(--brand-primary); color:#FFFFFF; padding:8px 14px; border-radius:4px 4px 0 0; font-weight:800; font-size:0.83rem; letter-spacing:0.4px;">
-          📊 ESTADO OFICIAL DE FLUJO DE EFECTIVO (MÉTODO INDIRECTO NIIF)
+      <div class="niif-kpi-summary-strip">
+        <div class="niif-kpi-pill">
+          <span class="kpi-title">💵 Efectivo al Inicio</span>
+          <span class="kpi-amount" style="color:var(--brand-primary);">${fmtCOP(kpiEfectivoIni)}</span>
         </div>
-        <div class="table-wrap">
-          <table class="niif-table niif-table-flujo">
-            <thead>
-              <tr>
-                <th style="width:90px;">Código</th>
-                <th>Concepto / Actividad NIIF</th>
-                <th style="width:160px; text-align:right;">Efecto en Caja (COP)</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${oficialTbody}
-            </tbody>
-          </table>
+        <div class="niif-kpi-pill">
+          <span class="kpi-title">🔄 Flujo Neto del Período</span>
+          <span class="kpi-amount" style="color:${kpiVarNeta >= 0 ? 'var(--brand-emerald)' : '#DC2626'};">${fmtCOP(kpiVarNeta)}</span>
+        </div>
+        <div class="niif-kpi-pill">
+          <span class="kpi-title">🏦 Efectivo Final en Caja y Bancos</span>
+          <span class="kpi-amount" style="color:var(--brand-gold);">${fmtCOP(kpiEfectivoFin)}</span>
         </div>
       </div>
 
-      <!-- PARTE 2: HOJA DE TRABAJO Y VARIACIONES DE BALANCE -->
-      <div style="margin-bottom:20px;">
-        <div style="background:#1e293b; color:#FFFFFF; padding:8px 14px; border-radius:4px 4px 0 0; font-weight:800; font-size:0.83rem; letter-spacing:0.4px;">
-          📋 HOJA DE TRABAJO: VARIACIONES Y EFECTOS EN EL BALANCE GENERAL
-        </div>
-        <div class="table-wrap">
-          <table class="niif-table niif-table-flujo">
-            <thead>
-              <tr>
-                <th style="width:85px;">Código</th>
-                <th>Cuenta / Rubro de Balance</th>
-                <th style="width:140px; text-align:right;">Variación Período ($)</th>
-                <th style="width:140px; text-align:right;">Efecto ($)</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${varTbody}
-            </tbody>
-          </table>
-        </div>
+      <div class="table-wrap" style="margin-bottom:24px;">
+        <h4 style="margin:14px 0 8px; color:var(--brand-primary); font-size:0.9rem; letter-spacing:0.3px;">📋 Estado Oficial de Flujo de Efectivo — Método Indirecto</h4>
+        <table class="niif-table">
+          <thead>
+            <tr>
+              <th style="width:90px;">Código</th>
+              <th>Actividad / Detalle NIIF</th>
+              <th style="width:190px;" class="num-col">Efecto Neto en Caja (COP)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${oficialTbody}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap">
+        <h4 style="margin:14px 0 8px; color:var(--text-secondary); font-size:0.85rem;">🔍 Hoja de Trabajo de Variaciones Patrimoniales y de Balance</h4>
+        <table class="niif-table">
+          <thead>
+            <tr>
+              <th style="width:80px;">Código</th>
+              <th>Concepto de Balance</th>
+              <th class="num-col" style="width:170px;">Variación Neta ($)</th>
+              <th style="width:120px; text-align:center;">Efecto</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${varTbody}
+          </tbody>
+        </table>
       </div>
 
       ${renderOfficialSignaturesBlock()}
@@ -4769,6 +5043,312 @@ function initFinancialAnalysisCharts(period) {
 }
 
 
+
+// ============================================================================
+// SECCIÓN: CUENTAS T ORGANIZADAS (TARJETAS GRÁFICAS NIIF & HOJAS EXCEL)
+// ============================================================================
+let ACTIVE_CUENTAS_T_VIEW = "CARDS"; // "CARDS" | "EXCEL"
+let ACTIVE_CUENTAS_T_CLASS = "ALL"; // "ALL" | "1" | "2" | "3" | "4" | "5" | "6"
+let ACTIVE_CUENTAS_T_SEARCH = "";
+let ACTIVE_CUENTAS_T_SHEET = "";
+
+function setCuentasTView(v) {
+  ACTIVE_CUENTAS_T_VIEW = v;
+  renderEstadosFinancieros();
+}
+
+function setCuentasTClass(c) {
+  ACTIVE_CUENTAS_T_CLASS = c;
+  renderEstadosFinancieros();
+}
+
+function setCuentasTSearch(s) {
+  ACTIVE_CUENTAS_T_SEARCH = String(s || "").trim().toLowerCase();
+  renderEstadosFinancieros();
+}
+
+function renderCuentasTSectionHtml(month) {
+  const emp = DB?.empresa || {};
+  const txs = DB?.meses?.[month]?.transacciones || [];
+  const esp = DB?.meses?.[month]?.hojas_especiales || {};
+
+  // Buscar hojas oficiales de Cuentas T en el Excel
+  const ctSheetKeys = Object.keys(esp).filter(k => 
+    /^(T|T2|T\d+)$/i.test(k.trim()) || /^CT[\s\d-]/i.test(k.trim()) || k.toUpperCase().includes("CUENTAS T")
+  );
+
+  // Agrupar movimientos de transacciones por cuenta de 4 dígitos
+  const acctMap = new Map();
+
+  txs.forEach(tx => {
+    (tx.asientos || []).forEach(a => {
+      const fullCode = String(a.codigo || "").trim();
+      const code4 = fullCode.slice(0, 4);
+      if (!/^\d{4}$/.test(code4)) return;
+
+      if (!acctMap.has(code4)) {
+        // Buscar nombre en el PUC o usar el asiento
+        const foundPuc = (DB?.puc || []).find(p => String(p.codigo) === code4 || String(p.codigo).startsWith(code4));
+        const acctName = foundPuc?.nombre || a.cuenta || `Cuenta ${code4}`;
+        acctMap.set(code4, {
+          codigo: code4,
+          nombre: acctName,
+          clase: code4[0],
+          debitos: [],
+          creditos: [],
+          totalDebe: 0,
+          totalHaber: 0
+        });
+      }
+
+      const acct = acctMap.get(code4);
+      const valDebe = Number(a.debe) || 0;
+      const valHaber = Number(a.haber) || 0;
+
+      if (valDebe > 0) {
+        acct.debitos.push({
+          fecha: tx.fecha || "",
+          doc: tx.comprobante || tx.hoja || tx.tipo || "Comprobante",
+          tercero: tx.tercero || "",
+          subcuenta: fullCode.length > 4 ? fullCode : "",
+          valor: valDebe
+        });
+        acct.totalDebe += valDebe;
+      }
+      if (valHaber > 0) {
+        acct.creditos.push({
+          fecha: tx.fecha || "",
+          doc: tx.comprobante || tx.hoja || tx.tipo || "Comprobante",
+          tercero: tx.tercero || "",
+          subcuenta: fullCode.length > 4 ? fullCode : "",
+          valor: valHaber
+        });
+        acct.totalHaber += valHaber;
+      }
+    });
+  });
+
+  // Si no había transacciones cargadas pero hay hoja oficial CUENTAS T en Excel, extraer del Excel
+  const allAccounts = Array.from(acctMap.values()).sort((a, b) => a.codigo.localeCompare(b.codigo));
+  let grandTotalDebe = 0;
+  let grandTotalHaber = 0;
+  allAccounts.forEach(a => {
+    grandTotalDebe += a.totalDebe;
+    grandTotalHaber += a.totalHaber;
+  });
+
+  const isCuadrado = Math.abs(grandTotalDebe - grandTotalHaber) < 1;
+
+  // Filtrar cuentas por clase y búsqueda
+  const filteredAccounts = allAccounts.filter(a => {
+    if (ACTIVE_CUENTAS_T_CLASS !== "ALL" && a.clase !== ACTIVE_CUENTAS_T_CLASS) return false;
+    if (ACTIVE_CUENTAS_T_SEARCH) {
+      const q = ACTIVE_CUENTAS_T_SEARCH;
+      return a.codigo.includes(q) || a.nombre.toLowerCase().includes(q);
+    }
+    return true;
+  });
+
+  const classNames = {
+    "1": "Activos",
+    "2": "Pasivos",
+    "3": "Patrimonio",
+    "4": "Ingresos",
+    "5": "Gastos",
+    "6": "Costos"
+  };
+
+  const classColors = {
+    "1": "#2563EB",
+    "2": "#DC2626",
+    "3": "#D4AF37",
+    "4": "#10B981",
+    "5": "#F59E0B",
+    "6": "#8B5CF6"
+  };
+
+  // Contenido de la vista gráfica de tarjetas Cuentas T
+  let cardsHtml = "";
+  if (!filteredAccounts.length) {
+    cardsHtml = `
+      <div class="card" style="margin-top:14px;">
+        <div class="card-body" style="text-align:center; padding:32px;">
+          <p style="color:var(--text-muted); font-size:0.9rem;">No se encontraron Cuentas T para los filtros seleccionados en ${month} 2026.</p>
+          <button class="btn btn-outline btn-sm" onclick="setCuentasTClass('ALL'); setCuentasTSearch('');">Restablecer Filtros</button>
+        </div>
+      </div>
+    `;
+  } else {
+    cardsHtml = `
+      <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(360px, 1fr)); gap:18px; margin-top:16px;">
+        ${filteredAccounts.map(a => {
+          const saldo = a.totalDebe - a.totalHaber;
+          const isDebito = saldo >= 0;
+          const saldoVal = Math.abs(saldo);
+          const cColor = classColors[a.clase] || "var(--brand-primary)";
+
+          const maxRows = Math.max(a.debitos.length, a.creditos.length, 1);
+          let rowsTr = "";
+          for (let i = 0; i < maxRows; i++) {
+            const deb = a.debitos[i];
+            const cred = a.creditos[i];
+            rowsTr += `
+              <tr style="border-bottom:1px solid #F1F5F9; font-size:0.78rem;">
+                <td style="padding:5px 8px; width:50%; border-right:2px solid var(--border-strong); vertical-align:top;">
+                  ${deb ? `
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                      <span style="font-size:0.7rem; color:var(--text-muted);">${deb.doc}</span>
+                      <strong style="color:#0F172A;">${fmtCOP(deb.valor)}</strong>
+                    </div>
+                  ` : ""}
+                </td>
+                <td style="padding:5px 8px; width:50%; vertical-align:top;">
+                  ${cred ? `
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                      <span style="font-size:0.7rem; color:var(--text-muted);">${cred.doc}</span>
+                      <strong style="color:#0F172A;">${fmtCOP(cred.valor)}</strong>
+                    </div>
+                  ` : ""}
+                </td>
+              </tr>
+            `;
+          }
+
+          return `
+            <div class="card" style="border:1px solid var(--border-light); box-shadow:var(--shadow-xs); border-radius:10px; overflow:hidden; display:flex; flex-direction:column;">
+              <!-- Cabecera de la Cuenta T -->
+              <div style="background:#FFFFFF; padding:10px 14px; border-bottom:2px solid ${cColor}; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <span class="niif-code-pill" style="font-weight:900; font-size:0.85rem;">${a.codigo}</span>
+                  <strong style="font-size:0.88rem; color:#0F172A; margin-left:6px;">${a.nombre}</strong>
+                </div>
+                <span style="font-size:0.68rem; padding:2px 8px; border-radius:12px; background:${cColor}18; color:${cColor}; font-weight:800;">
+                  CLASE ${a.clase} — ${classNames[a.clase] || "NIIF"}
+                </span>
+              </div>
+
+              <!-- Tabla de la T: DEBE a la izquierda, HABER a la derecha -->
+              <div style="flex:1; background:#FFFFFF;">
+                <table style="width:100%; border-collapse:collapse;">
+                  <thead>
+                    <tr style="background:#F8FAFC; border-bottom:1.5px solid var(--border-strong); font-size:0.74rem;">
+                      <th style="padding:6px 10px; text-align:center; width:50%; border-right:2px solid var(--border-strong); color:#2563EB; font-weight:800;">DEBE (Débitos)</th>
+                      <th style="padding:6px 10px; text-align:center; width:50%; color:#DC2626; font-weight:800;">HABER (Créditos)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${rowsTr}
+                  </tbody>
+                  <tfoot>
+                    <tr style="background:#F8FAFC; border-top:2px solid var(--border-strong); font-weight:800; font-size:0.8rem;">
+                      <td style="padding:6px 10px; text-align:right; border-right:2px solid var(--border-strong); color:#0F172A;">
+                        ${fmtCOP(a.totalDebe)}
+                      </td>
+                      <td style="padding:6px 10px; text-align:right; color:#0F172A;">
+                        ${fmtCOP(a.totalHaber)}
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+              <!-- Pie con Saldo Débito o Crédito -->
+              <div style="background:#FAFAFA; border-top:1px solid var(--border-light); padding:8px 12px; display:flex; justify-content:space-between; align-items:center; font-size:0.8rem;">
+                <span style="color:var(--text-secondary); font-size:0.75rem;">Saldo Final:</span>
+                <span class="status-pill ${isDebito ? 'status-paid' : 'status-sent'}" style="font-weight:900; font-size:0.82rem;">
+                  ${isDebito ? 'Saldo Débito: ' : 'Saldo Crédito: '} ${fmtCOP(saldoVal)}
+                </span>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    `;
+  }
+
+  // Contenido de la vista de hojas de Excel
+  let excelViewHtml = "";
+  if (ACTIVE_CUENTAS_T_VIEW === "EXCEL") {
+    if (!ctSheetKeys.length) {
+      excelViewHtml = `<div class="card"><div class="card-body">No se encontraron hojas de Cuentas T en el libro de ${month}.</div></div>`;
+    } else {
+      if (!ctSheetKeys.includes(ACTIVE_CUENTAS_T_SHEET)) ACTIVE_CUENTAS_T_SHEET = ctSheetKeys[0];
+      const sheetOpts = ctSheetKeys.map(k => `
+        <button class="filter-chip ${k === ACTIVE_CUENTAS_T_SHEET ? 'active' : ''}" onclick="ACTIVE_CUENTAS_T_SHEET='${k}'; renderEstadosFinancieros();">
+          📄 ${k} (${sheetRows(esp[k]).length} filas)
+        </button>
+      `).join("");
+
+      excelViewHtml = `
+        <div class="card" style="margin-top:16px;">
+          <div class="card-header">
+            <div class="card-title">📊 Hoja Oficial de Excel: ${ACTIVE_CUENTAS_T_SHEET} (${month}.xlsx)</div>
+            <div class="filter-tabs">${sheetOpts}</div>
+          </div>
+          <div class="card-body">
+            ${renderExcelGridHtml(sheetRows(esp[ACTIVE_CUENTAS_T_SHEET]), ACTIVE_CUENTAS_T_SHEET)}
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  return `
+    <div class="niif-statement-paper">
+      ${renderCorporateHeaderBoxHtml("LIBRO DE CUENTAS T — MOVIMIENTOS Y SALDOS DEL MES", `Período Activo: ${month} 2026`, "Estructura Oficial T de Débitos y Créditos • Partida Doble en Vivo")}
+
+      <!-- Tira de KPIs de Cuentas T -->
+      <div class="niif-kpi-summary-strip">
+        <div class="niif-kpi-pill">
+          <span class="kpi-title">🔤 Cuentas T Activas</span>
+          <span class="kpi-amount" style="color:var(--brand-primary);">${allAccounts.length} Cuentas</span>
+        </div>
+        <div class="niif-kpi-pill">
+          <span class="kpi-title">📥 Total Movimientos Débito</span>
+          <span class="kpi-amount" style="color:#2563EB;">${fmtCOP(grandTotalDebe)}</span>
+        </div>
+        <div class="niif-kpi-pill">
+          <span class="kpi-title">📤 Total Movimientos Crédito</span>
+          <span class="kpi-amount" style="color:#DC2626;">${fmtCOP(grandTotalHaber)}</span>
+        </div>
+        <div class="niif-kpi-pill">
+          <span class="kpi-title">⚖️ Partida Doble (Sumas Iguales)</span>
+          <span class="kpi-amount" style="color:${isCuadrado ? 'var(--brand-emerald)' : '#DC2626'}; font-weight:800;">
+            ${isCuadrado ? '✓ Cuadrado (Débito = Crédito)' : '⚠️ Descuadre'}
+          </span>
+        </div>
+      </div>
+
+      <!-- Barra de Filtros y Selector de Vista -->
+      <div class="filter-bar" style="background:#FFFFFF; border:1px solid var(--border-light); border-radius:10px; padding:12px 16px; margin-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <span style="font-size:0.78rem; font-weight:800; color:var(--text-main); margin-right:4px;">Clase:</span>
+          <button class="filter-chip ${ACTIVE_CUENTAS_T_CLASS === 'ALL' ? 'active' : ''}" onclick="setCuentasTClass('ALL')">Todas (${allAccounts.length})</button>
+          <button class="filter-chip ${ACTIVE_CUENTAS_T_CLASS === '1' ? 'active' : ''}" onclick="setCuentasTClass('1')">1 Activos</button>
+          <button class="filter-chip ${ACTIVE_CUENTAS_T_CLASS === '2' ? 'active' : ''}" onclick="setCuentasTClass('2')">2 Pasivos</button>
+          <button class="filter-chip ${ACTIVE_CUENTAS_T_CLASS === '3' ? 'active' : ''}" onclick="setCuentasTClass('3')">3 Patrimonio</button>
+          <button class="filter-chip ${ACTIVE_CUENTAS_T_CLASS === '4' ? 'active' : ''}" onclick="setCuentasTClass('4')">4 Ingresos</button>
+          <button class="filter-chip ${ACTIVE_CUENTAS_T_CLASS === '5' ? 'active' : ''}" onclick="setCuentasTClass('5')">5 Gastos</button>
+          <button class="filter-chip ${ACTIVE_CUENTAS_T_CLASS === '6' ? 'active' : ''}" onclick="setCuentasTClass('6')">6 Costos</button>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <input type="text" class="form-control" style="max-width:220px; font-size:0.8rem; padding:5px 10px;" placeholder="🔍 Buscar cuenta..." value="${ACTIVE_CUENTAS_T_SEARCH}" oninput="setCuentasTSearch(this.value);" />
+          <div class="filter-tabs">
+            <button class="filter-chip ${ACTIVE_CUENTAS_T_VIEW === 'CARDS' ? 'active' : ''}" onclick="setCuentasTView('CARDS')">🔲 Tarjetas "T"</button>
+            <button class="filter-chip ${ACTIVE_CUENTAS_T_VIEW === 'EXCEL' ? 'active' : ''}" onclick="setCuentasTView('EXCEL')">📑 Hojas Excel (${ctSheetKeys.length})</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido de la vista seleccionada -->
+      ${ACTIVE_CUENTAS_T_VIEW === "CARDS" ? cardsHtml : excelViewHtml}
+
+      ${renderOfficialSignaturesBlock()}
+    </div>
+  `;
+}
+
 function renderEstadosFinancieros() {
   const container = document.getElementById("efContentContainer");
   if (!container || !DB) return;
@@ -4914,6 +5494,11 @@ function renderEstadosFinancieros() {
 
   if (ACTIVE_EF_TAB === "NOTAS") {
     container.innerHTML = renderNotasNIIFStatementHtml(ACTIVE_PERIOD);
+    return;
+  }
+
+  if (ACTIVE_EF_TAB === "CUENTAS_T") {
+    container.innerHTML = renderCuentasTSectionHtml(ACTIVE_PERIOD);
     return;
   }
 

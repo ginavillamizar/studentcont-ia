@@ -8423,6 +8423,32 @@
           "saldo_cant": 6,
           "saldo_valor": 21000000,
           "promedio": 3500000
+        },
+        {
+          "fecha": "2026-03-01",
+          "mes": "MARZO",
+          "descripcion": "Inventario Inicial Marzo / Traslado Saldo Febrero",
+          "doc": "Cierre Feb",
+          "hoja": "kardex TV LG",
+          "vlr_unitario": 3500000,
+          "ent_cant": 0,
+          "ent_valor": 0,
+          "sal_cant": 0,
+          "sal_valor": 0,
+          "promedio": 3500000
+        },
+        {
+          "fecha": "2026-04-01",
+          "mes": "ABRIL",
+          "descripcion": "Inventario Inicial Abril / Traslado Saldo Marzo",
+          "doc": "Cierre Mar",
+          "hoja": "kardex TV LG",
+          "vlr_unitario": 3500000,
+          "ent_cant": 0,
+          "ent_valor": 0,
+          "sal_cant": 0,
+          "sal_valor": 0,
+          "promedio": 3500000
         }
       ]
     },
@@ -8556,6 +8582,32 @@
           "sal_valor": 2720000,
           "saldo_cant": 15,
           "saldo_valor": 8160000,
+          "promedio": 544000
+        },
+        {
+          "fecha": "2026-03-01",
+          "mes": "MARZO",
+          "descripcion": "Inventario Inicial Marzo / Traslado Saldo Febrero",
+          "doc": "Cierre Feb",
+          "hoja": "kardex Nevera ",
+          "vlr_unitario": 544000,
+          "ent_cant": 0,
+          "ent_valor": 0,
+          "sal_cant": 0,
+          "sal_valor": 0,
+          "promedio": 544000
+        },
+        {
+          "fecha": "2026-04-01",
+          "mes": "ABRIL",
+          "descripcion": "Inventario Inicial Abril / Traslado Saldo Marzo",
+          "doc": "Cierre Mar",
+          "hoja": "kardex Nevera ",
+          "vlr_unitario": 544000,
+          "ent_cant": 0,
+          "ent_valor": 0,
+          "sal_cant": 0,
+          "sal_valor": 0,
           "promedio": 544000
         }
       ]
