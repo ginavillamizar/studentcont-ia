@@ -726,6 +726,7 @@ function switchSection(targetId) {
     kardex: ["Kardex de Productos — Promedio Ponderado", "Control permanente de existencias, entradas, salidas, devoluciones y costo promedio en vivo"],
     nomina: ["Nómina & Liquidación Laboral NIIF", "Gran planilla de sueldos, horas extras, auxilio de transporte, deducciones, aportes de seguridad social y provisiones"],
     estados: [`Estados Financieros NIIF & Libros Oficiales — ${ACTIVE_PERIOD} 2026`, "Situación Financiera (ESF), Resultados (ER), Consolidados, Flujo de Efectivo, Hoja de Trabajo y Mayor"],
+    presupuesto: [`Presupuesto Maestro Proyectado — Mayo, Junio y Julio 2026`, "Cédulas de ventas con margen 30%, recuento de inventario de Abril, flujo de caja (EFC) y estados financieros NIIF"],
     tributaria: ["Declaraciones Tributarias & Calendario Fiscal 2026", "Formularios Oficiales DIAN 350, 300, ReteICA Bucaramanga y alertas de vencimientos"],
     ia: ["Tutor de Inteligencia Artificial Contable (Entrenable)", "Pregunta cualquier tema de PUC, NIIF, impuestos o ejercicios y enseña nuevos conceptos a la IA"],
     reformas: ["Actualidad, Reformas y Leyes Contables en Colombia 2025-2026", "Reforma Tributaria, Reforma Pensional, Reducción Jornada Laboral, Facturación Electrónica DIAN y NIIF PYMES"]
@@ -742,6 +743,10 @@ function switchSection(targetId) {
     renderTaxSection();
   } else if (targetId === "estados") {
     renderEstadosFinancieros();
+  } else if (targetId === "presupuesto") {
+    if (typeof renderPresupuestoMJJ === "function") {
+      renderPresupuestoMJJ();
+    }
   }
 }
 
@@ -993,7 +998,20 @@ function renderDashboard() {
         </div>
       </td>
     </tr>
-  `).join("");
+  `).join("") + `
+    <tr style="background:rgba(212,175,55,0.08);">
+      <td><strong>🎯 Presupuesto Maestro May–Jul 2026</strong></td>
+      <td class="code-col">PRESUPUESTO_MAYO_JUNIO_JULIO_2026.xlsx</td>
+      <td>161 und.</td>
+      <td>18 hojas</td>
+      <td>
+        <div style="display:flex; gap:5px; flex-wrap:wrap;">
+          <button class="btn btn-primary btn-sm" onclick="switchSection('presupuesto')">Ver en Web</button>
+          <a class="btn btn-gold btn-sm" href="PRESUPUESTO_MAYO_JUNIO_JULIO_2026.xlsx" download="PRESUPUESTO_MAYO_JUNIO_JULIO_2026.xlsx">📥 .xlsx</a>
+        </div>
+      </td>
+    </tr>
+  `;
 
   const compRows = ALL_MONTHS.map(m => {
     const mData = DB.meses[m] || { transacciones: [], hojas_especiales: {} };
@@ -7638,6 +7656,23 @@ const DIDACTIC_GUIDES_BY_SECTION = {
       {
         head: "3. ReteICA Bucaramanga (9.6‰)",
         text: "Incluye la retención de Industria y Comercio (9.6 por mil), el impuesto complementario de Avisos y Tableros (15% del ICA) y la Sobretasa Bomberil (10% del ICA)."
+      }
+    ]
+  },
+  presupuesto: {
+    title: "🎓 Guía Didáctica: Cómo Entender y Explicar el Presupuesto Maestro May–Jul 2026",
+    cards: [
+      {
+        head: "1. Meta 50% EA y Margen 30%",
+        text: "Sobre el capital de $248.600.000 los socios exigen $8.543.408 libres/mes. Por eso vendemos con Precio = Costo ÷ (1 − 30%), diferenciando las 15 neveras de Abril ($544 mil) de las compras nuevas 50/50 ($555 mil)."
+      },
+      {
+        head: "2. Recuento Abril y Stock en 0",
+        text: "A Mayo llegan 37 unidades de Abril ($33.822.000), así que solo se compran 22 unidades ($28.440.000) para cerrar el inventario 1435 en $0. Junio y Julio parten en 0 (Compras = Ventas)."
+      },
+      {
+        head: "3. Caja (EFC) e Impuestos desde Mayo",
+        text: "Mayo arranca con el efectivo real de Abril ($51.852.812), cobra cartera ($28.857.500) y 50% contado, paga cuota Bancolombia ($1.892.260) y nómina, llevando la caja a $139.944.596 en Julio."
       }
     ]
   },

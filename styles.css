@@ -2299,3 +2299,263 @@ table.niif-table-flujo td.code-col {
     margin: 10px auto !important;
   }
 }
+
+/* ==========================================================================
+   ESTILOS MÓDULO PRESUPUESTO MAESTRO MAYO–JUNIO–JULIO 2026 (.pmjj-*)
+   ========================================================================== */
+.pmjj-hero-card {
+  border-left: 5px solid var(--brand-gold);
+  background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-subtle) 100%);
+  margin-bottom: 16px;
+}
+
+.pmjj-hero-inner {
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.pmjj-hero-title {
+  margin: 8px 0 6px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.pmjj-hero-sub {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  max-width: 780px;
+}
+
+.pmjj-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.pmjj-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pmjj-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.pmjj-badge-gold {
+  background: rgba(212, 175, 55, 0.16);
+  color: #8A6D14;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+}
+
+.pmjj-badge-emerald {
+  background: rgba(5, 150, 105, 0.12);
+  color: #047857;
+  border: 1px solid rgba(5, 150, 105, 0.35);
+}
+
+.pmjj-badge-blue {
+  background: rgba(30, 73, 118, 0.12);
+  color: #1E4976;
+  border: 1px solid rgba(30, 73, 118, 0.3);
+}
+
+.pmjj-badge-purple {
+  background: rgba(112, 48, 160, 0.12);
+  color: #6B21A8;
+  border: 1px solid rgba(112, 48, 160, 0.3);
+}
+
+[data-theme="dark"] .pmjj-badge-gold { color: #FCD34D; }
+[data-theme="dark"] .pmjj-badge-emerald { color: #34D399; }
+[data-theme="dark"] .pmjj-badge-blue { color: #93C5FD; }
+[data-theme="dark"] .pmjj-badge-purple { color: #D8B4FE; }
+
+.pmjj-subbar {
+  margin-bottom: 16px;
+}
+
+.pmjj-month-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.pmjj-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+.pmjj-step-card {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-top: 3px solid var(--brand-primary);
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pmjj-step-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+  color: var(--text-main);
+}
+
+.pmjj-step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--brand-primary);
+  color: #FFFFFF;
+  font-size: 0.78rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pmjj-step-text {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.pmjj-step-dato {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #047857;
+  background: rgba(5, 150, 105, 0.09);
+  border-radius: 6px;
+  padding: 5px 8px;
+}
+
+[data-theme="dark"] .pmjj-step-dato { color: #34D399; }
+
+.pmjj-explain-box {
+  background: rgba(212, 175, 55, 0.11);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  border-left: 4px solid var(--brand-gold);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-main);
+}
+
+.pmjj-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 960px) {
+  .pmjj-charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pmjj-row-highlight td {
+  background: rgba(5, 150, 105, 0.09) !important;
+  border-top: 1.5px solid rgba(5, 150, 105, 0.35);
+  border-bottom: 1.5px solid rgba(5, 150, 105, 0.35);
+}
+
+.pmjj-row-subtle td {
+  background: var(--bg-subtle) !important;
+}
+
+.pmjj-row-amber td {
+  background: rgba(245, 158, 11, 0.1) !important;
+}
+
+.pmjj-row-group td {
+  background: rgba(15, 41, 66, 0.08) !important;
+  font-weight: 800;
+  color: var(--brand-primary);
+  letter-spacing: 0.3px;
+}
+
+[data-theme="dark"] .pmjj-row-group td {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #FCD34D;
+}
+
+.pmjj-efc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+}
+
+.pmjj-efc-table th,
+.pmjj-efc-table td {
+  padding: 9px 12px;
+  border: 1px solid var(--border-light);
+}
+
+.pmjj-efc-banner {
+  background: #7030A0 !important;
+  color: #FFFFFF !important;
+  text-align: center;
+  font-size: 0.96rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.pmjj-efc-table thead tr:nth-child(2) th {
+  background: #B4A7D6;
+  color: #0F172A;
+  font-weight: 800;
+}
+
+.pmjj-efc-total td {
+  background: #D9D2E9 !important;
+  color: #0F172A !important;
+  border-top: 2px solid #7030A0;
+  border-bottom: 2px solid #7030A0;
+}
+
+.pmjj-dashboard-callout {
+  background: linear-gradient(135deg, rgba(15, 41, 66, 0.06), rgba(212, 175, 55, 0.14));
+  border: 1.5px solid rgba(212, 175, 55, 0.65);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media print {
+  .pmjj-hero-actions,
+  .pmjj-subbar,
+  .pmjj-month-pills {
+    display: none !important;
+  }
+}

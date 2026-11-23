@@ -1,0 +1,1917 @@
+{
+  "meta": {
+    "empresa": "ELECTROVIVIENDA S.A.S",
+    "nit": "901.765.438-3",
+    "regimen": "RRI - Agente Autorretenedor de Renta",
+    "archivo": "PRESUPUESTO_MAYO_JUNIO_JULIO_2026.xlsx",
+    "hojas_count": 18,
+    "hojas": [
+      "PARAMETROS",
+      "MAYO",
+      "MAYO ER PROY",
+      "EFC PROYECTADO MAYO",
+      "MAYO ESF PROY",
+      "JUNIO",
+      "EFC PROYECTADO JUNIO",
+      "JUNIO ESF PROY",
+      "JUNIO ER PROY",
+      "JULIO",
+      "EFC PROYECTADO JULIO",
+      "JULIO ESF PROY",
+      "JULIO ER PROY",
+      "JULIO ECP PROY",
+      "JULIO ESF CONS PROY",
+      "JULIO F&E PROY",
+      "TA",
+      "PUC"
+    ],
+    "meta_utilidad_mensual": 8543408.27,
+    "saldo_inicial_caja_abril": 51852811.65,
+    "excel_mtime": "2026-11-23 06:17:11",
+    "sincronizado_el": "2026-11-23 09:02:38"
+  },
+  "parametros": {
+    "reglas": [
+      {
+        "parametro": "Capital suscrito y pagado (Cuenta 3105)",
+        "valor": 248600000.0,
+        "nota": "Base para rentabilidad exigida por socios"
+      },
+      {
+        "parametro": "Rentabilidad Efectiva Anual exigida (EA)",
+        "valor": 0.5,
+        "nota": "50% EA sobre el capital aportado"
+      },
+      {
+        "parametro": "Tasa Efectiva Mensual =(1+EA)^(1/12)-1",
+        "valor": 0.03,
+        "nota": "Conversión financiera compuesta mensual"
+      },
+      {
+        "parametro": "Meta mensual de Utilidad Neta (después de impuestos y reserva)",
+        "valor": 8543408.27,
+        "nota": "Utilidad libre mensual objetivo"
+      },
+      {
+        "parametro": "Margen bruto sobre ventas (Precio = Costo / (1 - Margen))",
+        "valor": 0.3,
+        "nota": "30% margen bruto / 70% costo de ventas"
+      },
+      {
+        "parametro": "Política de Venta — Stock Final Deseado (Inventario 1435)",
+        "valor": 0.0,
+        "nota": "Stock en 0: todo lo comprado en el mes se vende"
+      },
+      {
+        "parametro": "Política de Cobro Ventas: % Contado (30 días) / % Crédito (60 días)",
+        "valor": 0.5,
+        "nota": "50% recaudo mes+1 y 50% recaudo mes+2"
+      },
+      {
+        "parametro": "Política de Pago Compras: % Contado (mes) / % Crédito (30 días)",
+        "valor": 0.5,
+        "nota": "50% pago en el mes y 50% pago mes+1"
+      },
+      {
+        "parametro": "Tarifa Impuesto de Renta Personas Jurídicas (Cuenta 5405 / 2499)",
+        "valor": 0.35,
+        "nota": "Art. 240 Estatuto Tributario (35%)"
+      },
+      {
+        "parametro": "Reserva Legal Obligatoria (Cuenta 3305)",
+        "valor": 0.1,
+        "nota": "10% sobre utilidad líquida después de renta"
+      },
+      {
+        "parametro": "Tarifa General de IVA — Cliente RRI y Proveedores RRI (2408)",
+        "valor": 0.19,
+        "nota": "Activo a partir de Mayo (F-300 bimestral)"
+      },
+      {
+        "parametro": "Retención en la Fuente en Compras Declarantes (236540)",
+        "valor": 0.03,
+        "nota": "2,5% compras generales (F-350 mensual)"
+      },
+      {
+        "parametro": "Autorretención en Renta Comercial (135515 / 236575)",
+        "valor": 0.03,
+        "nota": "2,5% Agente Autorretenedor (F-350 mensual)"
+      },
+      {
+        "parametro": "Autorretención Especial Decreto 2201 (135515 / 236575)",
+        "valor": 0.0,
+        "nota": "0% (Solo se aplica Autorretención Renta 2,5% según ESF Mayo)"
+      },
+      {
+        "parametro": "ReteICA Total Bucaramanga (9,6‰ + 15% Avisos + 10% Bomberil = 12‰)",
+        "valor": 0.01,
+        "nota": "12 × 1.000 (1,20% = 0,96% ICA + 0,144% Avisos + 0,096% Bomberil)"
+      }
+    ],
+    "proveedores_neveras": [
+      {
+        "proveedor": "ELECTRODOMÉSTICOS CRA. 13 (RRI — IVA 19%)",
+        "precio": 610000.0,
+        "porcentaje": 0.5
+      },
+      {
+        "proveedor": "ELECTROMENORES (No Resp. IVA — 0%)",
+        "precio": 500000.0,
+        "porcentaje": 0.5
+      },
+      {
+        "proveedor": "COSTO PROMEDIO PONDERADO NEVERA",
+        "precio": 555000.0,
+        "porcentaje": 1.0
+      }
+    ],
+    "catalogo_precios": [
+      {
+        "producto": "TV LG 70\" Smart 3D (Ref. TV01)",
+        "costo": 3500000.0,
+        "precio_venta": 5000000.0,
+        "ganancia_unit": 1500000.0
+      },
+      {
+        "producto": "Neveras Samsung 12 Pies (Compras Nuevas 50/50 — $555.000)",
+        "costo": 555000.0,
+        "precio_venta": 792857.14,
+        "ganancia_unit": 237857.14
+      },
+      {
+        "producto": "Lavadora secadora AIWA 18 lb (Ref. LvSec 03)",
+        "costo": 730000.0,
+        "precio_venta": 1042857.14,
+        "ganancia_unit": 312857.14
+      },
+      {
+        "producto": "Hornos microondas LG Spleed (Ref. HM 04)",
+        "costo": 92000.0,
+        "precio_venta": 131428.57,
+        "ganancia_unit": 39428.57
+      },
+      {
+        "producto": "Neveras Samsung 12 Pies (Inv. Inicial Kardex Abril — $544.000)",
+        "costo": 544000.0,
+        "precio_venta": 777142.86,
+        "ganancia_unit": 233142.86
+      }
+    ],
+    "tablero_comparativo": [
+      {
+        "concepto": "Unidades totales vendidas / Unidades compradas (Recuento Stock 0)",
+        "mayo": 59.0,
+        "junio": 51.0,
+        "julio": 51.0,
+        "trimestre": 161.0
+      },
+      {
+        "concepto": "Ventas netas operacionales (4135)",
+        "mayo": 88945714.29,
+        "junio": 88868571.43,
+        "julio": 88868571.43,
+        "trimestre": 266682857.14
+      },
+      {
+        "concepto": "(-) Costo de ventas (6135 — Stock en 0)",
+        "mayo": 62262000.0,
+        "junio": 62208000.0,
+        "julio": 62208000.0,
+        "trimestre": 186678000.0
+      },
+      {
+        "concepto": "(=) Utilidad Bruta (Margen 30%)",
+        "mayo": 26683714.29,
+        "junio": 26660571.43,
+        "julio": 26660571.43,
+        "trimestre": 80004857.14
+      },
+      {
+        "concepto": "(-) Gastos operacionales totales (incluye depreciación)",
+        "mayo": 12059442.02,
+        "junio": 12044986.8,
+        "julio": 12030370.71,
+        "trimestre": 36134799.53
+      },
+      {
+        "concepto": "(=) Utilidad Antes de Impuestos (UAI)",
+        "mayo": 14624272.27,
+        "junio": 14615584.62,
+        "julio": 14630200.71,
+        "trimestre": 43870057.61
+      },
+      {
+        "concepto": "(-) Impuesto de Renta (35%) y Reserva Legal (10%)",
+        "mayo": 6069072.99,
+        "junio": 6065467.62,
+        "julio": 6071533.3,
+        "trimestre": 18206073.91
+      },
+      {
+        "concepto": "(=) UTILIDAD NETA PROYECTADA",
+        "mayo": 8555199.28,
+        "junio": 8550117.01,
+        "julio": 8558667.42,
+        "trimestre": 25663983.7
+      },
+      {
+        "concepto": "IVA Neto generado en el mes (F-300)",
+        "mayo": 11781085.71,
+        "junio": 5635508.57,
+        "julio": 5635508.57,
+        "trimestre": 23052102.86
+      },
+      {
+        "concepto": "Formulario 350 del mes (Retefuente + Autorretenciones)",
+        "mayo": 2934642.86,
+        "junio": 3776914.29,
+        "julio": 3776914.29,
+        "trimestre": 10488471.43
+      },
+      {
+        "concepto": "Cobros efectivos a clientes (30 y 60 días)",
+        "mayo": 81246525.71,
+        "junio": 104732614.29,
+        "julio": 104687177.14,
+        "trimestre": 290666317.14
+      },
+      {
+        "concepto": "Pagos efectivos a proveedores (50% cont / 50% créd)",
+        "mayo": 22031160.0,
+        "junio": 51831072.0,
+        "julio": 71155824.0,
+        "trimestre": 145018056.0
+      },
+      {
+        "concepto": "Saldo Final de Caja Acumulado",
+        "mayo": 99583154.39,
+        "junio": 139076320.85,
+        "julio": 139944596.46,
+        "trimestre": 139944596.46
+      },
+      {
+        "concepto": "Total Activos = Total Pasivo + Patrimonio (ESF)",
+        "mayo": 370684010.29,
+        "junio": 412140343.93,
+        "julio": 414829883.87,
+        "trimestre": 414829883.87
+      },
+      {
+        "concepto": "Comprobación Ecuación Contable (Diferencia = $0)",
+        "mayo": 0.0,
+        "junio": 0.0,
+        "julio": -187340.0,
+        "trimestre": -187340.0
+      }
+    ]
+  },
+  "amortizacion": {
+    "condiciones": {
+      "t_efectiva": 0.14,
+      "t_nominal": 0.13,
+      "t_periodica": 0.01,
+      "plazo_meses": 36,
+      "credito": 56000000.0,
+      "estudio_credito": 124000.0,
+      "cuota": 1892260.45
+    },
+    "cuotas": [
+      {
+        "cuota": 1,
+        "mes_contable": "Marzo (Real)",
+        "valor_cuota": 1892260.45,
+        "abono_capital": 1270392.06,
+        "interes": 621868.39,
+        "saldo_capital": 54605607.94
+      },
+      {
+        "cuota": 2,
+        "mes_contable": "Abril (Real)",
+        "valor_cuota": 1892260.45,
+        "abono_capital": 1284530.8,
+        "interes": 607729.64,
+        "saldo_capital": 53321077.14
+      },
+      {
+        "cuota": 3,
+        "mes_contable": "MAYO (Proyectado)",
+        "valor_cuota": 1892260.45,
+        "abono_capital": 1298826.91,
+        "interes": 593433.54,
+        "saldo_capital": 52022250.23
+      },
+      {
+        "cuota": 4,
+        "mes_contable": "JUNIO (Proyectado)",
+        "valor_cuota": 1892260.45,
+        "abono_capital": 1313282.12,
+        "interes": 578978.33,
+        "saldo_capital": 50708968.11
+      },
+      {
+        "cuota": 5,
+        "mes_contable": "JULIO (Proyectado)",
+        "valor_cuota": 1892260.45,
+        "abono_capital": 1327898.21,
+        "interes": 564362.24,
+        "saldo_capital": 49381069.9
+      },
+      {
+        "cuota": 6,
+        "mes_contable": "Agosto",
+        "valor_cuota": 1892260.45,
+        "abono_capital": 1342676.97,
+        "interes": 549583.48,
+        "saldo_capital": 48038392.93
+      }
+    ]
+  },
+  "meses": {
+    "MAYO": {
+      "ventas": {
+        "filas": [
+          {
+            "ref": "TV01",
+            "producto": "TV LG 70\" Smart 3D",
+            "unidades": 12,
+            "costo_unit": 3500000.0,
+            "costo_total": 42000000.0,
+            "precio_venta": 5000000.0,
+            "ventas_netas": 60000000.0,
+            "iva": 11400000.0,
+            "reteica": 720000.0,
+            "neto_cobrar": 70680000.0,
+            "autoret": 1500000.0
+          },
+          {
+            "ref": "NV01-K",
+            "producto": "Neveras Samsung 12 Pies (Inv. Inicial Kardex — $544.000)",
+            "unidades": 15,
+            "costo_unit": 544000.0,
+            "costo_total": 8160000.0,
+            "precio_venta": 777142.86,
+            "ventas_netas": 11657142.86,
+            "iva": 2214857.14,
+            "reteica": 139885.71,
+            "neto_cobrar": 13732114.29,
+            "autoret": 291428.57
+          },
+          {
+            "ref": "NV01-N",
+            "producto": "Neveras Samsung 12 Pies (Compras Nuevas 50/50 — $555.000)",
+            "unidades": 6,
+            "costo_unit": 555000.0,
+            "costo_total": 3330000.0,
+            "precio_venta": 792857.14,
+            "ventas_netas": 4757142.86,
+            "iva": 903857.14,
+            "reteica": 57085.71,
+            "neto_cobrar": 5603914.29,
+            "autoret": 118928.57
+          },
+          {
+            "ref": "LvSec 03",
+            "producto": "Lavadora secadora AIWA 18 lb",
+            "unidades": 10,
+            "costo_unit": 730000.0,
+            "costo_total": 7300000.0,
+            "precio_venta": 1042857.14,
+            "ventas_netas": 10428571.43,
+            "iva": 1981428.57,
+            "reteica": 125142.86,
+            "neto_cobrar": 12284857.14,
+            "autoret": 260714.29
+          },
+          {
+            "ref": "HM 04",
+            "producto": "Hornos microondas LG Spleed",
+            "unidades": 16,
+            "costo_unit": 92000.0,
+            "costo_total": 1472000.0,
+            "precio_venta": 131428.57,
+            "ventas_netas": 2102857.14,
+            "iva": 399542.86,
+            "reteica": 25234.29,
+            "neto_cobrar": 2477165.71,
+            "autoret": 52571.43
+          }
+        ],
+        "totales": {
+          "unidades": 59,
+          "costo_total": 62262000.0,
+          "ventas_netas": 88945714.29,
+          "iva": 16899685.71,
+          "reteica": 1067348.57,
+          "neto_cobrar": 104778051.43,
+          "autoret": 2223642.86,
+          "contado_50": 52389025.71,
+          "credito_50": 52389025.71
+        }
+      },
+      "inventario": {
+        "filas": [
+          {
+            "ref": "TV01",
+            "producto": "TV LG 70\" Smart 3D",
+            "vender": 12,
+            "inv_inicial": 6,
+            "stock_deseado": 0,
+            "comprar": 6,
+            "costo_unit": 3500000.0,
+            "stock_final": 0,
+            "val_inv_final": 0.0,
+            "val_inv_inicial": 21000000.0,
+            "val_comprar": 21000000.0
+          },
+          {
+            "ref": "NV01-K",
+            "producto": "Neveras Samsung 12 Pies (Inv. Inicial Kardex — $544.000)",
+            "vender": 15,
+            "inv_inicial": 15,
+            "stock_deseado": 0,
+            "comprar": 0,
+            "costo_unit": 544000.0,
+            "stock_final": 0,
+            "val_inv_final": 0.0,
+            "val_inv_inicial": 8160000.0,
+            "val_comprar": 0.0
+          },
+          {
+            "ref": "NV01-N",
+            "producto": "Neveras Samsung 12 Pies (Compras Nuevas 50/50 — $555.000)",
+            "vender": 6,
+            "inv_inicial": 0,
+            "stock_deseado": 0,
+            "comprar": 6,
+            "costo_unit": 555000.0,
+            "stock_final": 0,
+            "val_inv_final": 0.0,
+            "val_inv_inicial": 0.0,
+            "val_comprar": 3330000.0
+          },
+          {
+            "ref": "LvSec 03",
+            "producto": "Lavadora secadora AIWA 18 lb",
+            "vender": 10,
+            "inv_inicial": 5,
+            "stock_deseado": 0,
+            "comprar": 5,
+            "costo_unit": 730000.0,
+            "stock_final": 0,
+            "val_inv_final": 0.0,
+            "val_inv_inicial": 3650000.0,
+            "val_comprar": 3650000.0
+          },
+          {
+            "ref": "HM 04",
+            "producto": "Hornos microondas LG Spleed",
+            "vender": 16,
+            "inv_inicial": 11,
+            "stock_deseado": 0,
+            "comprar": 5,
+            "costo_unit": 92000.0,
+            "stock_final": 0,
+            "val_inv_final": 0.0,
+            "val_inv_inicial": 1012000.0,
+            "val_comprar": 460000.0
+          }
+        ],
+        "totales": {
+          "vender": 59,
+          "inv_inicial": 37,
+          "stock_deseado": 0,
+          "comprar": 22,
+          "stock_final": 0,
+          "val_inv_final": 0.0,
+          "val_inv_inicial": 33822000.0,
+          "val_comprar": 28440000.0
+        }
+      },
+      "compras": {
+        "filas": [
+          {
+            "proveedor": "ELECTRODOMÉSTICOS CRA. 13 (RRI)",
+            "producto": "TV LG 70\" Smart 3D",
+            "unidades": 6,
+            "costo_unit": 3500000.0,
+            "subtotal": 21000000.0,
+            "iva_desc": 3990000.0,
+            "retefuente": 525000.0,
+            "reteica": 252000.0,
+            "neto_pagar": 24213000.0,
+            "contado_50": 12106500.0,
+            "credito_50": 12106500.0
+          },
+          {
+            "proveedor": "ELECTRODOMÉSTICOS CRA. 13 (RRI)",
+            "producto": "Neveras Samsung 12 Pies (50%)",
+            "unidades": 3,
+            "costo_unit": 610000.0,
+            "subtotal": 1830000.0,
+            "iva_desc": 347700.0,
+            "retefuente": 45750.0,
+            "reteica": 21960.0,
+            "neto_pagar": 2109990.0,
+            "contado_50": 1054995.0,
+            "credito_50": 1054995.0
+          },
+          {
+            "proveedor": "ELECTROMENORES (No Resp. IVA)",
+            "producto": "Neveras Samsung 12 Pies (50%)",
+            "unidades": 3,
+            "costo_unit": 500000.0,
+            "subtotal": 1500000.0,
+            "iva_desc": 0.0,
+            "retefuente": 37500.0,
+            "reteica": 18000.0,
+            "neto_pagar": 1444500.0,
+            "contado_50": 722250.0,
+            "credito_50": 722250.0
+          },
+          {
+            "proveedor": "LA CASA ORANGE Y CIA (RRI)",
+            "producto": "Lavadora secadora AIWA 18 lb",
+            "unidades": 5,
+            "costo_unit": 730000.0,
+            "subtotal": 3650000.0,
+            "iva_desc": 693500.0,
+            "retefuente": 91250.0,
+            "reteica": 43800.0,
+            "neto_pagar": 4208450.0,
+            "contado_50": 2104225.0,
+            "credito_50": 2104225.0
+          },
+          {
+            "proveedor": "LA CASA ORANGE Y CIA (RRI)",
+            "producto": "Hornos microondas LG Spleed",
+            "unidades": 5,
+            "costo_unit": 92000.0,
+            "subtotal": 460000.0,
+            "iva_desc": 87400.0,
+            "retefuente": 11500.0,
+            "reteica": 5520.0,
+            "neto_pagar": 530380.0,
+            "contado_50": 265190.0,
+            "credito_50": 265190.0
+          }
+        ],
+        "totales": {
+          "unidades": 22,
+          "subtotal": 28440000.0,
+          "iva_desc": 5118600.0,
+          "retefuente": 711000.0,
+          "reteica": 341280.0,
+          "neto_pagar": 32506320.0,
+          "contado_50": 16253160.0,
+          "credito_50": 16253160.0
+        }
+      },
+      "tributaria": [
+        {
+          "concepto": "Retefuente practicada en compras (2,5%)",
+          "puc": "236540",
+          "valor": 711000.0,
+          "nota": "Integrado en Formulario 350 mensual"
+        },
+        {
+          "concepto": "Autorretención en Renta (2,5% normal + 0,55% Dec. 2201)",
+          "puc": "236575",
+          "valor": 2223642.86,
+          "nota": "Integrado en Formulario 350 mensual"
+        },
+        {
+          "concepto": "TOTAL FORMULARIO 350 DEL MES (RETEFUENTE + AUTORRET.)",
+          "puc": "2365",
+          "valor": 2934642.86,
+          "nota": "Pago mensual DIAN al mes siguiente"
+        },
+        {
+          "concepto": "ReteICA total practicada en compras (9,6‰ + 15% Avisos + 10% Bomberil = 12‰)",
+          "puc": "2368",
+          "valor": 341280.0,
+          "nota": "Pago bimestral Hacienda Bucaramanga (Julio: May–Jun)"
+        },
+        {
+          "concepto": "Anticipo de Impuestos generado en ventas (ReteICA + Autorret.)",
+          "puc": "1355",
+          "valor": 3290991.43,
+          "nota": "Activo corriente a favor de Electrovivienda"
+        },
+        {
+          "concepto": "IVA Neto del mes (IVA Generado 19% − IVA Descontable RRI)",
+          "puc": "2408",
+          "valor": 11781085.71,
+          "nota": "Declaración bimestral F-300 (Pago en Julio: May–Jun)"
+        }
+      ],
+      "efc": {
+        "titulo": "CAJA — EFC PROYECTADO MAYO 2026",
+        "filas": [
+          {
+            "concepto": "SALDO INICIAL",
+            "entrada": null,
+            "salida": null,
+            "total": 51852811.65
+          },
+          {
+            "concepto": "COMPRAS AL CONTADO",
+            "entrada": null,
+            "salida": 16253160.0,
+            "total": 35599651.65
+          },
+          {
+            "concepto": "VENTAS AL CONTADO",
+            "entrada": 52389025.71,
+            "salida": null,
+            "total": 87988677.36
+          },
+          {
+            "concepto": "PAGO CUOTA CREDITO",
+            "entrada": null,
+            "salida": 1892260.45,
+            "total": 86096416.91
+          },
+          {
+            "concepto": "PAGO CUOTA DE REMODELACION",
+            "entrada": null,
+            "salida": 568800.0,
+            "total": 85527616.91
+          },
+          {
+            "concepto": "PAGO SEGURIDAD SOCIAL",
+            "entrada": null,
+            "salida": 1753544.92,
+            "total": 83774071.99
+          },
+          {
+            "concepto": "PAGO SALARIOS",
+            "entrada": null,
+            "salida": 6827927.6,
+            "total": 76946144.39
+          },
+          {
+            "concepto": "PAGO CARTERA JAIME",
+            "entrada": 28857500.0,
+            "salida": null,
+            "total": 105803644.39
+          },
+          {
+            "concepto": "PAGO PROVEEDORES CREDITO",
+            "entrada": null,
+            "salida": 5778000.0,
+            "total": 100025644.39
+          },
+          {
+            "concepto": "RETENCION EN LA FUENTE",
+            "entrada": null,
+            "salida": 442490.0,
+            "total": 99583154.39
+          }
+        ],
+        "saldo_inicial": 51852811.65,
+        "total_entradas": 81246525.71,
+        "total_salidas": 33516182.97,
+        "saldo_final": 99583154.39
+      },
+      "er": {
+        "periodo": "PERIODO 1 AL 31 DE MAYO 2026",
+        "ingresos_4135": 88945714.29,
+        "devoluciones_4175": 0.0,
+        "financieros_4210": 0.0,
+        "total_ingresos": 88945714.29,
+        "costos_6135": 62262000.0,
+        "total_costos": 62262000.0,
+        "utilidad_bruta": 26683714.29,
+        "gastos_detalle": [
+          {
+            "codigo": "5105",
+            "cuenta": "BENEFICIOS A EMPLEADOS",
+            "valor": 10186475.66
+          },
+          {
+            "codigo": "5160",
+            "cuenta": "DEPRECIACIONES",
+            "valor": 1080000.0
+          },
+          {
+            "codigo": "5260",
+            "cuenta": "DEPRECIACIONES",
+            "valor": 199532.81
+          },
+          {
+            "codigo": "5305",
+            "cuenta": "FINANCIEROS",
+            "valor": 593433.54
+          }
+        ],
+        "total_gastos": 12059442.02,
+        "uai": 14624272.27,
+        "impuesto_renta": 5118495.29,
+        "udi": 9505776.98,
+        "reserva_legal": 950577.7,
+        "utilidad_neta": 8555199.28
+      },
+      "esf": {
+        "activos_corrientes": [
+          {
+            "codigo": "1105",
+            "cuenta": "CAJA",
+            "valor": 1050000.0
+          },
+          {
+            "codigo": "1110",
+            "cuenta": "BANCOS",
+            "valor": 98533154.39
+          },
+          {
+            "codigo": "1305",
+            "cuenta": "CLIENTES",
+            "valor": 52389025.71
+          },
+          {
+            "codigo": "1330",
+            "cuenta": "ANTICIPOS (CXC NO FINANCIERAS)",
+            "valor": 0.0
+          },
+          {
+            "codigo": "1355",
+            "cuenta": "ANTICIPO DE IMPUESTOS",
+            "valor": 10101211.43
+          },
+          {
+            "codigo": "1435",
+            "cuenta": "MERCANCÍA NO FABRICADA POR LA EMPRESA",
+            "valor": 0.0
+          }
+        ],
+        "subtotal_ac": 162073391.54,
+        "activos_no_corrientes": [
+          {
+            "codigo": "1504",
+            "cuenta": "TERRENOS",
+            "valor": 89600000.0
+          },
+          {
+            "codigo": "1516",
+            "cuenta": "CONSTRUCCIONES Y EDIFICACIONES",
+            "valor": 53400000.0
+          },
+          {
+            "codigo": "1540",
+            "cuenta": "FLOTA Y EQUIPO DE TRANSPORTE",
+            "valor": 72000000.0
+          },
+          {
+            "codigo": "1592",
+            "cuenta": "DEPRECIÓN ACUMULADA ACTIVOS (CR)",
+            "valor": -6389381.25
+          }
+        ],
+        "subtotal_anc": 208610618.75,
+        "total_activos": 370684010.29,
+        "pasivos_corrientes": [
+          {
+            "codigo": "2105",
+            "cuenta": "BANCOS NACIONALES",
+            "valor": 16760746.85
+          },
+          {
+            "codigo": "2205",
+            "cuenta": "PROVEEDORES",
+            "valor": 16253160.0
+          },
+          {
+            "codigo": "2320",
+            "cuenta": "A CONTRATISTAS",
+            "valor": 0.0
+          },
+          {
+            "codigo": "2408",
+            "cuenta": "IMPUESTOS A LAS VENTAS POR PAGAR - IVA",
+            "valor": 11781085.71
+          },
+          {
+            "codigo": "2465",
+            "cuenta": "RETENCION EN LA FUENTE IMP.DE RENTA RETENIDO A TERCEROS",
+            "valor": 2934642.86
+          },
+          {
+            "codigo": "2468",
+            "cuenta": "IMPUESTO DE ICA RETENIDO A TERCEROS",
+            "valor": 436680.0
+          },
+          {
+            "codigo": "2499",
+            "cuenta": "PROVISIÓN PARA OBLIGACIONES FISCALES",
+            "valor": 14958031.83
+          },
+          {
+            "codigo": "2505",
+            "cuenta": "SALARIO POR PAGAR",
+            "valor": 0.0
+          },
+          {
+            "codigo": "2570",
+            "cuenta": "RETENCIONES Y APORTES DE NOMINA",
+            "valor": 609400.12
+          },
+          {
+            "codigo": "2580",
+            "cuenta": "FONDO DE PENSIONES Y CESANTIAS X PAGAR",
+            "valor": 1144144.8
+          },
+          {
+            "codigo": "2610",
+            "cuenta": "PROVISIÓN PARA OBLIGACIONES LABORALES",
+            "valor": 6420012.56
+          },
+          {
+            "codigo": "2705",
+            "cuenta": "INGRESOS RECIBIDOS POR ANTICIPADO",
+            "valor": 14058385.0
+          }
+        ],
+        "subtotal_pc": 85356289.73,
+        "pasivos_no_corrientes": [
+          {
+            "codigo": "2105",
+            "cuenta": "BANCOS NACIONALES",
+            "valor": 35261503.38
+          }
+        ],
+        "subtotal_pnc": 35261503.38,
+        "total_pasivos": 120617793.11,
+        "patrimonio": [
+          {
+            "codigo": "3105",
+            "cuenta": "CAPITAL SUSCRITO Y PAGADO",
+            "valor": 248600000.0
+          },
+          {
+            "codigo": "3305",
+            "cuenta": "RESERVAS OBLIGATORIAS",
+            "valor": 2777920.2
+          },
+          {
+            "codigo": "3605",
+            "cuenta": "UTILIDAD DEL EJERCICIO",
+            "valor": 8555199.28
+          },
+          {
+            "codigo": "3705",
+            "cuenta": "UTILIDADES ACUMULADAS",
+            "valor": 16446082.49
+          },
+          {
+            "codigo": "3710",
+            "cuenta": "PERDIDAS ACUMULADAS",
+            "valor": -26312984.79
+          }
+        ],
+        "total_patrimonio": 250066217.18,
+        "total_pasivo_patrimonio": 370684010.29,
+        "diferencia": 0.0
+      }
+    },
+    "JUNIO": {
+      "ventas": {
+        "filas": [
+          {
+            "ref": "TV01",
+            "producto": "TV LG 70\" Smart 3D",
+            "unidades": 13,
+            "costo_unit": 3500000.0,
+            "costo_total": 45500000.0,
+            "precio_venta": 5000000.0,
+            "ventas_netas": 65000000.0,
+            "iva": 12350000.0,
+            "reteica": 780000.0,
+            "neto_cobrar": 76570000.0,
+            "autoret": 1625000.0
+          },
+          {
+            "ref": "NV01",
+            "producto": "Neveras Samsung 12 Pies (Prom. 2 prov.)",
+            "unidades": 12,
+            "costo_unit": 555000.0,
+            "costo_total": 6660000.0,
+            "precio_venta": 792857.14,
+            "ventas_netas": 9514285.71,
+            "iva": 1807714.29,
+            "reteica": 114171.43,
+            "neto_cobrar": 11207828.57,
+            "autoret": 237857.14
+          },
+          {
+            "ref": "LvSec 03",
+            "producto": "Lavadora secadora AIWA 18 lb",
+            "unidades": 12,
+            "costo_unit": 730000.0,
+            "costo_total": 8760000.0,
+            "precio_venta": 1042857.14,
+            "ventas_netas": 12514285.71,
+            "iva": 2377714.29,
+            "reteica": 150171.43,
+            "neto_cobrar": 14741828.57,
+            "autoret": 312857.14
+          },
+          {
+            "ref": "HM 04",
+            "producto": "Hornos microondas LG Spleed",
+            "unidades": 14,
+            "costo_unit": 92000.0,
+            "costo_total": 1288000.0,
+            "precio_venta": 131428.57,
+            "ventas_netas": 1840000.0,
+            "iva": 349600.0,
+            "reteica": 22080.0,
+            "neto_cobrar": 2167520.0,
+            "autoret": 46000.0
+          }
+        ],
+        "totales": {
+          "unidades": 51,
+          "costo_total": 62208000.0,
+          "ventas_netas": 88868571.43,
+          "iva": 16885028.57,
+          "reteica": 1066422.86,
+          "neto_cobrar": 104687177.14,
+          "autoret": 2221714.29,
+          "contado_50": 52343588.57,
+          "credito_50": 52343588.57
+        }
+      },
+      "inventario": {
+        "filas": [
+          {
+            "ref": "TV01",
+            "producto": "TV LG 70\" Smart 3D",
+            "vender": 13,
+            "inv_inicial": 0,
+            "stock_deseado": 0,
+            "comprar": 13,
+            "costo_unit": 3500000.0,
+            "stock_final": 0,
+            "val_inv_final": 0.0,
+            "val_inv_inicial": 0.0,
+            "val_comprar": 45500000.0
+          },
+          {
+            "ref": "NV01",
+            "producto": "Neveras Samsung 12 Pies (Prom. 2 prov.)",
+            "vender": 12,
+            "inv_inicial": 0,
+            "stock_deseado": 0,
+            "comprar": 12,
+            "costo_unit": 555000.0,
+            "stock_final": 0,
+            "val_inv_final": 0.0,
+            "val_inv_inicial": 0.0,
+            "val_comprar": 6660000.0
+          },
+          {
+            "ref": "LvSec 03",
+            "producto": "Lavadora secadora AIWA 18 lb",
+            "vender": 12,
+            "inv_inicial": 0,
+            "stock_deseado": 0,
+            "comprar": 12,
+            "costo_unit": 730000.0,
+            "stock_final": 0,
+            "val_inv_final": 0.0,
+            "val_inv_inicial": 0.0,
+            "val_comprar": 8760000.0
+          },
+          {
+            "ref": "HM 04",
+            "producto": "Hornos microondas LG Spleed",
+            "vender": 14,
+            "inv_inicial": 0,
+            "stock_deseado": 0,
+            "comprar": 14,
+            "costo_unit": 92000.0,
+            "stock_final": 0,
+            "val_inv_final": 0.0,
+            "val_inv_inicial": 0.0,
+            "val_comprar": 1288000.0
+          }
+        ],
+        "totales": {
+          "vender": 51,
+          "inv_inicial": 0,
+          "stock_deseado": 0,
+          "comprar": 51,
+          "stock_final": 0,
+          "val_inv_final": 0.0,
+          "val_inv_inicial": 0.0,
+          "val_comprar": 62208000.0
+        }
+      },
+      "compras": {
+        "filas": [
+          {
+            "proveedor": "ELECTRODOMÉSTICOS CRA. 13 (RRI)",
+            "producto": "TV LG 70\" Smart 3D",
+            "unidades": 13,
+            "costo_unit": 3500000.0,
+            "subtotal": 45500000.0,
+            "iva_desc": 8645000.0,
+            "retefuente": 1137500.0,
+            "reteica": 546000.0,
+            "neto_pagar": 52461500.0,
+            "contado_50": 26230750.0,
+            "credito_50": 26230750.0
+          },
+          {
+            "proveedor": "ELECTRODOMÉSTICOS CRA. 13 (RRI)",
+            "producto": "Neveras Samsung 12 Pies (50%)",
+            "unidades": 6,
+            "costo_unit": 610000.0,
+            "subtotal": 3660000.0,
+            "iva_desc": 695400.0,
+            "retefuente": 91500.0,
+            "reteica": 43920.0,
+            "neto_pagar": 4219980.0,
+            "contado_50": 2109990.0,
+            "credito_50": 2109990.0
+          },
+          {
+            "proveedor": "ELECTROMENORES (No Resp. IVA)",
+            "producto": "Neveras Samsung 12 Pies (50%)",
+            "unidades": 6,
+            "costo_unit": 500000.0,
+            "subtotal": 3000000.0,
+            "iva_desc": 0.0,
+            "retefuente": 75000.0,
+            "reteica": 36000.0,
+            "neto_pagar": 2889000.0,
+            "contado_50": 1444500.0,
+            "credito_50": 1444500.0
+          },
+          {
+            "proveedor": "LA CASA ORANGE Y CIA (RRI)",
+            "producto": "Lavadora secadora AIWA 18 lb",
+            "unidades": 12,
+            "costo_unit": 730000.0,
+            "subtotal": 8760000.0,
+            "iva_desc": 1664400.0,
+            "retefuente": 219000.0,
+            "reteica": 105120.0,
+            "neto_pagar": 10100280.0,
+            "contado_50": 5050140.0,
+            "credito_50": 5050140.0
+          },
+          {
+            "proveedor": "LA CASA ORANGE Y CIA (RRI)",
+            "producto": "Hornos microondas LG Spleed",
+            "unidades": 14,
+            "costo_unit": 92000.0,
+            "subtotal": 1288000.0,
+            "iva_desc": 244720.0,
+            "retefuente": 32200.0,
+            "reteica": 15456.0,
+            "neto_pagar": 1485064.0,
+            "contado_50": 742532.0,
+            "credito_50": 742532.0
+          }
+        ],
+        "totales": {
+          "unidades": 51,
+          "subtotal": 62208000.0,
+          "iva_desc": 11249520.0,
+          "retefuente": 1555200.0,
+          "reteica": 746496.0,
+          "neto_pagar": 71155824.0,
+          "contado_50": 35577912.0,
+          "credito_50": 35577912.0
+        }
+      },
+      "tributaria": [
+        {
+          "concepto": "Retefuente practicada en compras (2,5%)",
+          "puc": "236540",
+          "valor": 1555200.0,
+          "nota": "Integrado en Formulario 350 mensual"
+        },
+        {
+          "concepto": "Autorretención en Renta (2,5% normal + 0,55% Dec. 2201)",
+          "puc": "236575",
+          "valor": 2221714.29,
+          "nota": "Integrado en Formulario 350 mensual"
+        },
+        {
+          "concepto": "TOTAL FORMULARIO 350 DEL MES (RETEFUENTE + AUTORRET.)",
+          "puc": "2365",
+          "valor": 3776914.29,
+          "nota": "Pago mensual DIAN al mes siguiente"
+        },
+        {
+          "concepto": "ReteICA total practicada en compras (9,6‰ + 15% Avisos + 10% Bomberil = 12‰)",
+          "puc": "2368",
+          "valor": 746496.0,
+          "nota": "Pago bimestral Hacienda Bucaramanga (Julio: May–Jun)"
+        },
+        {
+          "concepto": "Anticipo de Impuestos generado en ventas (ReteICA + Autorret.)",
+          "puc": "1355",
+          "valor": 3288137.14,
+          "nota": "Activo corriente a favor de Electrovivienda"
+        },
+        {
+          "concepto": "IVA Neto del mes (IVA Generado 19% − IVA Descontable RRI)",
+          "puc": "2408",
+          "valor": 5635508.57,
+          "nota": "Declaración bimestral F-300 (Pago en Julio: May–Jun)"
+        }
+      ],
+      "efc": {
+        "titulo": "CAJA — EFC PROYECTADO JUNIO 2026",
+        "filas": [
+          {
+            "concepto": "SALDO INICIAL",
+            "entrada": null,
+            "salida": null,
+            "total": 99583154.39
+          },
+          {
+            "concepto": "COMPRAS AL CONTADO",
+            "entrada": null,
+            "salida": 35577912.0,
+            "total": 64005242.39
+          },
+          {
+            "concepto": "VENTAS AL CONTADO",
+            "entrada": 52343588.57,
+            "salida": null,
+            "total": 116348830.97
+          },
+          {
+            "concepto": "VENTAS CREDITO MAYO (50%)",
+            "entrada": 52389025.71,
+            "salida": null,
+            "total": 168737856.68
+          },
+          {
+            "concepto": "PAGO PROVEEDORES MAYO (50%)",
+            "entrada": null,
+            "salida": 16253160.0,
+            "total": 152484696.68
+          },
+          {
+            "concepto": "PAGO CUOTA CREDITO",
+            "entrada": null,
+            "salida": 1892260.45,
+            "total": 150592436.23
+          },
+          {
+            "concepto": "PAGO SEGURIDAD SOCIAL",
+            "entrada": null,
+            "salida": 1753544.92,
+            "total": 148838891.31
+          },
+          {
+            "concepto": "PAGO SALARIOS",
+            "entrada": null,
+            "salida": 6827927.6,
+            "total": 142010963.71
+          },
+          {
+            "concepto": "PAGO FORMULARIO 350 MAYO",
+            "entrada": null,
+            "salida": 2934642.86,
+            "total": 139076320.85
+          }
+        ],
+        "saldo_inicial": 99583154.39,
+        "total_entradas": 104732614.29,
+        "total_salidas": 65239447.83,
+        "saldo_final": 139076320.85
+      },
+      "er": {
+        "periodo": "PERIODO 1 AL 30 DE JUNIO 2026",
+        "ingresos_4135": 88868571.43,
+        "devoluciones_4175": 0.0,
+        "financieros_4210": 0.0,
+        "total_ingresos": 88868571.43,
+        "costos_6135": 62208000.0,
+        "total_costos": 62208000.0,
+        "utilidad_bruta": 26660571.43,
+        "gastos_detalle": [
+          {
+            "codigo": "5105",
+            "cuenta": "BENEFICIOS A EMPLEADOS",
+            "valor": 10186475.66
+          },
+          {
+            "codigo": "5160",
+            "cuenta": "DEPRECIACIONES",
+            "valor": 1080000.0
+          },
+          {
+            "codigo": "5260",
+            "cuenta": "DEPRECIACIONES",
+            "valor": 199532.81
+          },
+          {
+            "codigo": "5305",
+            "cuenta": "FINANCIEROS",
+            "valor": 578978.33
+          }
+        ],
+        "total_gastos": 12044986.8,
+        "uai": 14615584.62,
+        "impuesto_renta": 5115454.62,
+        "udi": 9500130.01,
+        "reserva_legal": 950013.0,
+        "utilidad_neta": 8550117.01
+      },
+      "esf": {
+        "activos_corrientes": [
+          {
+            "codigo": "1105",
+            "cuenta": "CAJA",
+            "valor": 1050000.0
+          },
+          {
+            "codigo": "1110",
+            "cuenta": "BANCOS",
+            "valor": 138026320.85
+          },
+          {
+            "codigo": "1305",
+            "cuenta": "CLIENTES",
+            "valor": 52343588.57
+          },
+          {
+            "codigo": "1330",
+            "cuenta": "ANTICIPOS (CXC NO FINANCIERAS)",
+            "valor": 0.0
+          },
+          {
+            "codigo": "1355",
+            "cuenta": "ANTICIPO DE IMPUESTOS",
+            "valor": 13389348.57
+          },
+          {
+            "codigo": "1435",
+            "cuenta": "MERCANCÍA NO FABRICADA POR LA EMPRESA",
+            "valor": 0.0
+          }
+        ],
+        "subtotal_ac": 204809258.0,
+        "activos_no_corrientes": [
+          {
+            "codigo": "1504",
+            "cuenta": "TERRENOS",
+            "valor": 89600000.0
+          },
+          {
+            "codigo": "1516",
+            "cuenta": "CONSTRUCCIONES Y EDIFICACIONES",
+            "valor": 53400000.0
+          },
+          {
+            "codigo": "1540",
+            "cuenta": "FLOTA Y EQUIPO DE TRANSPORTE",
+            "valor": 72000000.0
+          },
+          {
+            "codigo": "1592",
+            "cuenta": "DEPRECIÓN ACUMULADA ACTIVOS (CR)",
+            "valor": -7668914.06
+          }
+        ],
+        "subtotal_anc": 207331085.94,
+        "total_activos": 412140343.93,
+        "pasivos_corrientes": [
+          {
+            "codigo": "2105",
+            "cuenta": "BANCOS NACIONALES",
+            "valor": 16947284.51
+          },
+          {
+            "codigo": "2205",
+            "cuenta": "PROVEEDORES",
+            "valor": 35577912.0
+          },
+          {
+            "codigo": "2320",
+            "cuenta": "A CONTRATISTAS",
+            "valor": 0.0
+          },
+          {
+            "codigo": "2408",
+            "cuenta": "IMPUESTOS A LAS VENTAS POR PAGAR - IVA",
+            "valor": 17416594.29
+          },
+          {
+            "codigo": "2465",
+            "cuenta": "RETENCION EN LA FUENTE IMP.DE RENTA RETENIDO A TERCEROS",
+            "valor": 3776914.29
+          },
+          {
+            "codigo": "2468",
+            "cuenta": "IMPUESTO DE ICA RETENIDO A TERCEROS",
+            "valor": 1183176.0
+          },
+          {
+            "codigo": "2499",
+            "cuenta": "PROVISIÓN PARA OBLIGACIONES FISCALES",
+            "valor": 20073486.45
+          },
+          {
+            "codigo": "2505",
+            "cuenta": "SALARIO POR PAGAR",
+            "valor": 0.0
+          },
+          {
+            "codigo": "2570",
+            "cuenta": "RETENCIONES Y APORTES DE NOMINA",
+            "valor": 609400.12
+          },
+          {
+            "codigo": "2580",
+            "cuenta": "FONDO DE PENSIONES Y CESANTIAS X PAGAR",
+            "valor": 1144144.8
+          },
+          {
+            "codigo": "2610",
+            "cuenta": "PROVISIÓN PARA OBLIGACIONES LABORALES",
+            "valor": 8025015.7
+          },
+          {
+            "codigo": "2705",
+            "cuenta": "INGRESOS RECIBIDOS POR ANTICIPADO",
+            "valor": 14058385.0
+          }
+        ],
+        "subtotal_pc": 118812313.16,
+        "pasivos_no_corrientes": [
+          {
+            "codigo": "2105",
+            "cuenta": "BANCOS NACIONALES",
+            "valor": 33761683.59
+          }
+        ],
+        "subtotal_pnc": 33761683.59,
+        "total_pasivos": 152573996.75,
+        "patrimonio": [
+          {
+            "codigo": "3105",
+            "cuenta": "CAPITAL SUSCRITO Y PAGADO",
+            "valor": 248600000.0
+          },
+          {
+            "codigo": "3305",
+            "cuenta": "RESERVAS OBLIGATORIAS",
+            "valor": 3727933.2
+          },
+          {
+            "codigo": "3605",
+            "cuenta": "UTILIDAD DEL EJERCICIO",
+            "valor": 17105316.28
+          },
+          {
+            "codigo": "3705",
+            "cuenta": "UTILIDADES ACUMULADAS",
+            "valor": 16446082.49
+          },
+          {
+            "codigo": "3710",
+            "cuenta": "PERDIDAS ACUMULADAS",
+            "valor": -26312984.79
+          }
+        ],
+        "total_patrimonio": 259566347.19,
+        "total_pasivo_patrimonio": 412140343.94,
+        "diferencia": -0.01
+      }
+    },
+    "JULIO": {
+      "ventas": {
+        "filas": [
+          {
+            "ref": "TV01",
+            "producto": "TV LG 70\" Smart 3D",
+            "unidades": 13,
+            "costo_unit": 3500000.0,
+            "costo_total": 45500000.0,
+            "precio_venta": 5000000.0,
+            "ventas_netas": 65000000.0,
+            "iva": 12350000.0,
+            "reteica": 780000.0,
+            "neto_cobrar": 76570000.0,
+            "autoret": 1625000.0
+          },
+          {
+            "ref": "NV01",
+            "producto": "Neveras Samsung 12 Pies (Prom. 2 prov.)",
+            "unidades": 12,
+            "costo_unit": 555000.0,
+            "costo_total": 6660000.0,
+            "precio_venta": 792857.14,
+            "ventas_netas": 9514285.71,
+            "iva": 1807714.29,
+            "reteica": 114171.43,
+            "neto_cobrar": 11207828.57,
+            "autoret": 237857.14
+          },
+          {
+            "ref": "LvSec 03",
+            "producto": "Lavadora secadora AIWA 18 lb",
+            "unidades": 12,
+            "costo_unit": 730000.0,
+            "costo_total": 8760000.0,
+            "precio_venta": 1042857.14,
+            "ventas_netas": 12514285.71,
+            "iva": 2377714.29,
+            "reteica": 150171.43,
+            "neto_cobrar": 14741828.57,
+            "autoret": 312857.14
+          },
+          {
+            "ref": "HM 04",
+            "producto": "Hornos microondas LG Spleed",
+            "unidades": 14,
+            "costo_unit": 92000.0,
+            "costo_total": 1288000.0,
+            "precio_venta": 131428.57,
+            "ventas_netas": 1840000.0,
+            "iva": 349600.0,
+            "reteica": 22080.0,
+            "neto_cobrar": 2167520.0,
+            "autoret": 46000.0
+          }
+        ],
+        "totales": {
+          "unidades": 51,
+          "costo_total": 62208000.0,
+          "ventas_netas": 88868571.43,
+          "iva": 16885028.57,
+          "reteica": 1066422.86,
+          "neto_cobrar": 104687177.14,
+          "autoret": 2221714.29,
+          "contado_50": 52343588.57,
+          "credito_50": 52343588.57
+        }
+      },
+      "inventario": {
+        "filas": [
+          {
+            "ref": "TV01",
+            "producto": "TV LG 70\" Smart 3D",
+            "vender": 13,
+            "inv_inicial": 0,
+            "stock_deseado": 0,
+            "comprar": 13,
+            "costo_unit": 3500000.0,
+            "stock_final": 0,
+            "val_inv_final": 0.0,
+            "val_inv_inicial": 0.0,
+            "val_comprar": 45500000.0
+          },
+          {
+            "ref": "NV01",
+            "producto": "Neveras Samsung 12 Pies (Prom. 2 prov.)",
+            "vender": 12,
+            "inv_inicial": 0,
+            "stock_deseado": 0,
+            "comprar": 12,
+            "costo_unit": 555000.0,
+            "stock_final": 0,
+            "val_inv_final": 0.0,
+            "val_inv_inicial": 0.0,
+            "val_comprar": 6660000.0
+          },
+          {
+            "ref": "LvSec 03",
+            "producto": "Lavadora secadora AIWA 18 lb",
+            "vender": 12,
+            "inv_inicial": 0,
+            "stock_deseado": 0,
+            "comprar": 12,
+            "costo_unit": 730000.0,
+            "stock_final": 0,
+            "val_inv_final": 0.0,
+            "val_inv_inicial": 0.0,
+            "val_comprar": 8760000.0
+          },
+          {
+            "ref": "HM 04",
+            "producto": "Hornos microondas LG Spleed",
+            "vender": 14,
+            "inv_inicial": 0,
+            "stock_deseado": 0,
+            "comprar": 14,
+            "costo_unit": 92000.0,
+            "stock_final": 0,
+            "val_inv_final": 0.0,
+            "val_inv_inicial": 0.0,
+            "val_comprar": 1288000.0
+          }
+        ],
+        "totales": {
+          "vender": 51,
+          "inv_inicial": 0,
+          "stock_deseado": 0,
+          "comprar": 51,
+          "stock_final": 0,
+          "val_inv_final": 0.0,
+          "val_inv_inicial": 0.0,
+          "val_comprar": 62208000.0
+        }
+      },
+      "compras": {
+        "filas": [
+          {
+            "proveedor": "ELECTRODOMÉSTICOS CRA. 13 (RRI)",
+            "producto": "TV LG 70\" Smart 3D",
+            "unidades": 13,
+            "costo_unit": 3500000.0,
+            "subtotal": 45500000.0,
+            "iva_desc": 8645000.0,
+            "retefuente": 1137500.0,
+            "reteica": 546000.0,
+            "neto_pagar": 52461500.0,
+            "contado_50": 26230750.0,
+            "credito_50": 26230750.0
+          },
+          {
+            "proveedor": "ELECTRODOMÉSTICOS CRA. 13 (RRI)",
+            "producto": "Neveras Samsung 12 Pies (50%)",
+            "unidades": 6,
+            "costo_unit": 610000.0,
+            "subtotal": 3660000.0,
+            "iva_desc": 695400.0,
+            "retefuente": 91500.0,
+            "reteica": 43920.0,
+            "neto_pagar": 4219980.0,
+            "contado_50": 2109990.0,
+            "credito_50": 2109990.0
+          },
+          {
+            "proveedor": "ELECTROMENORES (No Resp. IVA)",
+            "producto": "Neveras Samsung 12 Pies (50%)",
+            "unidades": 6,
+            "costo_unit": 500000.0,
+            "subtotal": 3000000.0,
+            "iva_desc": 0.0,
+            "retefuente": 75000.0,
+            "reteica": 36000.0,
+            "neto_pagar": 2889000.0,
+            "contado_50": 1444500.0,
+            "credito_50": 1444500.0
+          },
+          {
+            "proveedor": "LA CASA ORANGE Y CIA (RRI)",
+            "producto": "Lavadora secadora AIWA 18 lb",
+            "unidades": 12,
+            "costo_unit": 730000.0,
+            "subtotal": 8760000.0,
+            "iva_desc": 1664400.0,
+            "retefuente": 219000.0,
+            "reteica": 105120.0,
+            "neto_pagar": 10100280.0,
+            "contado_50": 5050140.0,
+            "credito_50": 5050140.0
+          },
+          {
+            "proveedor": "LA CASA ORANGE Y CIA (RRI)",
+            "producto": "Hornos microondas LG Spleed",
+            "unidades": 14,
+            "costo_unit": 92000.0,
+            "subtotal": 1288000.0,
+            "iva_desc": 244720.0,
+            "retefuente": 32200.0,
+            "reteica": 15456.0,
+            "neto_pagar": 1485064.0,
+            "contado_50": 742532.0,
+            "credito_50": 742532.0
+          }
+        ],
+        "totales": {
+          "unidades": 51,
+          "subtotal": 62208000.0,
+          "iva_desc": 11249520.0,
+          "retefuente": 1555200.0,
+          "reteica": 746496.0,
+          "neto_pagar": 71155824.0,
+          "contado_50": 35577912.0,
+          "credito_50": 35577912.0
+        }
+      },
+      "tributaria": [
+        {
+          "concepto": "Retefuente practicada en compras (2,5%)",
+          "puc": "236540",
+          "valor": 1555200.0,
+          "nota": "Integrado en Formulario 350 mensual"
+        },
+        {
+          "concepto": "Autorretención en Renta (2,5% normal + 0,55% Dec. 2201)",
+          "puc": "236575",
+          "valor": 2221714.29,
+          "nota": "Integrado en Formulario 350 mensual"
+        },
+        {
+          "concepto": "TOTAL FORMULARIO 350 DEL MES (RETEFUENTE + AUTORRET.)",
+          "puc": "2365",
+          "valor": 3776914.29,
+          "nota": "Pago mensual DIAN al mes siguiente"
+        },
+        {
+          "concepto": "ReteICA total practicada en compras (9,6‰ + 15% Avisos + 10% Bomberil = 12‰)",
+          "puc": "2465",
+          "valor": 746496.0,
+          "nota": "Pago bimestral Hacienda Bucaramanga (Julio: May–Jun)"
+        },
+        {
+          "concepto": "Anticipo de Impuestos generado en ventas (ReteICA + Autorret.)",
+          "puc": "1355",
+          "valor": 3288137.14,
+          "nota": "Activo corriente a favor de Electrovivienda"
+        },
+        {
+          "concepto": "IVA Neto del mes (IVA Generado 19% − IVA Descontable RRI)",
+          "puc": "2408",
+          "valor": 5635508.57,
+          "nota": "Declaración bimestral F-300 (Pago en Julio: May–Jun)"
+        }
+      ],
+      "efc": {
+        "titulo": "CAJA — EFC PROYECTADO JULIO 2026",
+        "filas": [
+          {
+            "concepto": "SALDO INICIAL",
+            "entrada": null,
+            "salida": null,
+            "total": 139076320.85
+          },
+          {
+            "concepto": "COMPRAS AL CONTADO",
+            "entrada": null,
+            "salida": 35577912.0,
+            "total": 103498408.85
+          },
+          {
+            "concepto": "VENTAS AL CONTADO",
+            "entrada": 52343588.57,
+            "salida": null,
+            "total": 155841997.43
+          },
+          {
+            "concepto": "VENTAS CREDITO JUNIO (50%)",
+            "entrada": 52343588.57,
+            "salida": null,
+            "total": 208185586.0
+          },
+          {
+            "concepto": "PAGO PROVEEDORES JUNIO (50%)",
+            "entrada": null,
+            "salida": 35577912.0,
+            "total": 172607674.0
+          },
+          {
+            "concepto": "PAGO CUOTA CREDITO",
+            "entrada": null,
+            "salida": 1892260.45,
+            "total": 170715413.55
+          },
+          {
+            "concepto": "PAGO SEGURIDAD SOCIAL",
+            "entrada": null,
+            "salida": 1753544.92,
+            "total": 168961868.63
+          },
+          {
+            "concepto": "PAGO SALARIOS",
+            "entrada": null,
+            "salida": 6827927.6,
+            "total": 162133941.03
+          },
+          {
+            "concepto": "PAGO FORMULARIO 350 JUNIO",
+            "entrada": null,
+            "salida": 3776914.29,
+            "total": 158357026.74
+          },
+          {
+            "concepto": "PAGO RETEICA BIM. MAY-JUN",
+            "entrada": null,
+            "salida": 1183176.0,
+            "total": 157173850.74
+          },
+          {
+            "concepto": "PAGO IVA F-300 BIM. MAY-JUN",
+            "entrada": null,
+            "salida": 17229254.29,
+            "total": 139944596.46
+          }
+        ],
+        "saldo_inicial": 139076320.85,
+        "total_entradas": 104687177.14,
+        "total_salidas": 103818901.54,
+        "saldo_final": 139944596.46
+      },
+      "er": {
+        "periodo": "PERIODO 1 AL 31 DE JULIO 2026",
+        "ingresos_4135": 88868571.43,
+        "devoluciones_4175": 0.0,
+        "financieros_4210": 0.0,
+        "total_ingresos": 88868571.43,
+        "costos_6135": 62208000.0,
+        "total_costos": 62208000.0,
+        "utilidad_bruta": 26660571.43,
+        "gastos_detalle": [
+          {
+            "codigo": "5105",
+            "cuenta": "BENEFICIOS A EMPLEADOS",
+            "valor": 10186475.66
+          },
+          {
+            "codigo": "5160",
+            "cuenta": "DEPRECIACIONES",
+            "valor": 1080000.0
+          },
+          {
+            "codigo": "5260",
+            "cuenta": "DEPRECIACIONES",
+            "valor": 199532.81
+          },
+          {
+            "codigo": "5305",
+            "cuenta": "FINANCIEROS",
+            "valor": 564362.24
+          }
+        ],
+        "total_gastos": 12030370.71,
+        "uai": 14630200.71,
+        "impuesto_renta": 5120570.25,
+        "udi": 9509630.46,
+        "reserva_legal": 950963.05,
+        "utilidad_neta": 8558667.42
+      },
+      "esf": {
+        "activos_corrientes": [
+          {
+            "codigo": "1105",
+            "cuenta": "CAJA",
+            "valor": 1050000.0
+          },
+          {
+            "codigo": "1110",
+            "cuenta": "BANCOS",
+            "valor": 138894596.46
+          },
+          {
+            "codigo": "1305",
+            "cuenta": "CLIENTES",
+            "valor": 52343588.57
+          },
+          {
+            "codigo": "1330",
+            "cuenta": "ANTICIPOS (CXC NO FINANCIERAS)",
+            "valor": 0.0
+          },
+          {
+            "codigo": "1355",
+            "cuenta": "ANTICIPO DE IMPUESTOS",
+            "valor": 16490145.71
+          },
+          {
+            "codigo": "1435",
+            "cuenta": "MERCANCÍA NO FABRICADA POR LA EMPRESA",
+            "valor": 0.0
+          }
+        ],
+        "subtotal_ac": 208778330.74,
+        "activos_no_corrientes": [
+          {
+            "codigo": "1504",
+            "cuenta": "TERRENOS",
+            "valor": 89600000.0
+          },
+          {
+            "codigo": "1516",
+            "cuenta": "CONSTRUCCIONES Y EDIFICACIONES",
+            "valor": 53400000.0
+          },
+          {
+            "codigo": "1540",
+            "cuenta": "FLOTA Y EQUIPO DE TRANSPORTE",
+            "valor": 72000000.0
+          },
+          {
+            "codigo": "1592",
+            "cuenta": "DEPRECIÓN ACUMULADA ACTIVOS (CR)",
+            "valor": -8948446.88
+          }
+        ],
+        "subtotal_anc": 206051553.12,
+        "total_activos": 414829883.87,
+        "pasivos_corrientes": [
+          {
+            "codigo": "2105",
+            "cuenta": "BANCOS NACIONALES",
+            "valor": 17135898.24
+          },
+          {
+            "codigo": "2205",
+            "cuenta": "PROVEEDORES",
+            "valor": 35577912.0
+          },
+          {
+            "codigo": "2320",
+            "cuenta": "A CONTRATISTAS",
+            "valor": 0.0
+          },
+          {
+            "codigo": "2408",
+            "cuenta": "IMPUESTOS A LAS VENTAS POR PAGAR - IVA",
+            "valor": 5822848.57
+          },
+          {
+            "codigo": "2465",
+            "cuenta": "RETENCION EN LA FUENTE IMP.DE RENTA RETENIDO A TERCEROS",
+            "valor": 3776914.29
+          },
+          {
+            "codigo": "2468",
+            "cuenta": "IMPUESTO DE ICA RETENIDO A TERCEROS",
+            "valor": 746496.0
+          },
+          {
+            "codigo": "2499",
+            "cuenta": "PROVISIÓN PARA OBLIGACIONES FISCALES",
+            "valor": 25194056.7
+          },
+          {
+            "codigo": "2505",
+            "cuenta": "SALARIO POR PAGAR",
+            "valor": 0.0
+          },
+          {
+            "codigo": "2570",
+            "cuenta": "RETENCIONES Y APORTES DE NOMINA",
+            "valor": 609400.12
+          },
+          {
+            "codigo": "2580",
+            "cuenta": "FONDO DE PENSIONES Y CESANTIAS X PAGAR",
+            "valor": 1144144.8
+          },
+          {
+            "codigo": "2610",
+            "cuenta": "PROVISIÓN PARA OBLIGACIONES LABORALES",
+            "valor": 9630018.84
+          },
+          {
+            "codigo": "2705",
+            "cuenta": "INGRESOS RECIBIDOS POR ANTICIPADO",
+            "valor": 14058385.0
+          }
+        ],
+        "subtotal_pc": 113696074.56,
+        "pasivos_no_corrientes": [
+          {
+            "codigo": "2105",
+            "cuenta": "BANCOS NACIONALES",
+            "valor": 32245171.66
+          }
+        ],
+        "subtotal_pnc": 32245171.66,
+        "total_pasivos": 145941246.22,
+        "patrimonio": [
+          {
+            "codigo": "3105",
+            "cuenta": "CAPITAL SUSCRITO Y PAGADO",
+            "valor": 248600000.0
+          },
+          {
+            "codigo": "3305",
+            "cuenta": "RESERVAS OBLIGATORIAS",
+            "valor": 4678896.24
+          },
+          {
+            "codigo": "3605",
+            "cuenta": "UTILIDAD DEL EJERCICIO",
+            "valor": 25663983.7
+          },
+          {
+            "codigo": "3705",
+            "cuenta": "UTILIDADES ACUMULADAS",
+            "valor": 16446082.49
+          },
+          {
+            "codigo": "3710",
+            "cuenta": "PERDIDAS ACUMULADAS",
+            "valor": -26312984.79
+          }
+        ],
+        "total_patrimonio": 269075977.65,
+        "total_pasivo_patrimonio": 415017223.87,
+        "diferencia": -187340.0
+      }
+    }
+  }
+}

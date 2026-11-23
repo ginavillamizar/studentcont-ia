@@ -11,7 +11,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <link rel="stylesheet" href="styles.css?v=20261110_34" />
+  <link rel="stylesheet" href="styles.css?v=20261123_01" />
 </head>
 <body>
 
@@ -250,6 +250,10 @@
         <span class="nav-item-left"><span style="font-size:1.1rem;">📊</span><span style="font-weight:800; color:var(--brand-gold);">Análisis & Gráficas NIIF</span></span>
         <span class="nav-badge" style="background:#D4AF37; color:#0B192C; font-weight:900;">NUEVO</span>
       </button>
+      <button class="nav-item" data-target="presupuesto" onclick="switchSection('presupuesto')" style="background:rgba(16,185,129,0.12); border-left:3px solid #10B981;">
+        <span class="nav-item-left"><span style="font-size:1.1rem;">🎯</span><span style="font-weight:800; color:#34D399;">Presupuesto May–Jul</span></span>
+        <span class="nav-badge" style="background:#10B981; color:#06281E; font-weight:900;">MAY–JUL</span>
+      </button>
       <button class="nav-item" data-target="tributaria" onclick="switchSection('tributaria')">
         <span class="nav-item-left"><span>⚖️</span><span>Declaraciones & Calendario</span></span>
         <span class="nav-badge" id="navBadgeAlertas">4</span>
@@ -388,6 +392,22 @@
                   <button class="btn btn-gold" onclick="openUploadTallerExcelModal()" style="font-weight:800; font-size:0.8rem; padding:8px 16px; display:flex; align-items:center; gap:6px; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,0.08);">
                     <span>📤</span> <span>Subir Archivos Excel a mi Taller</span>
                   </button>
+                </div>
+
+                <!-- ACCESO DIRECTO AL PRESUPUESTO MAESTRO MAYO–JUNIO–JULIO 2026 -->
+                <div class="pmjj-dashboard-callout">
+                  <div style="flex:1; min-width:240px;">
+                    <div style="font-size:0.86rem; font-weight:800; color:var(--text-main); margin-bottom:2px;">
+                      🎯 Nuevo: Presupuesto Maestro Mayo, Junio y Julio 2026
+                    </div>
+                    <div style="font-size:0.75rem; color:var(--text-secondary); line-height:1.4;">
+                      Guía paso a paso para sustentar ventas, recuento de inventario de Abril (15 neveras a $544 mil), flujo de caja (EFC), ER y ESF NIIF.
+                    </div>
+                  </div>
+                  <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn btn-primary btn-sm" onclick="switchSection('presupuesto')" style="font-weight:800;">📊 Abrir Presupuesto en la Web</button>
+                    <a class="btn btn-gold btn-sm" href="PRESUPUESTO_MAYO_JUNIO_JULIO_2026.xlsx" download="PRESUPUESTO_MAYO_JUNIO_JULIO_2026.xlsx" style="font-weight:800;">📥 Descargar Excel (.xlsx)</a>
+                  </div>
                 </div>
 
                 <div class="table-wrap">
@@ -876,6 +896,13 @@
           </div>
 
           <div id="efContentContainer"></div>
+        </section>
+
+        <!-- ===============================================================
+             7B. SECCIÓN: PRESUPUESTO MAESTRO MAYO, JUNIO Y JULIO 2026
+             =============================================================== -->
+        <section id="sec-presupuesto" class="section-view">
+          <div id="presupuestoMjjRoot"></div>
         </section>
 
         <!-- ===============================================================
@@ -1496,6 +1523,7 @@
   </div>
 
   <div class="toast-container" id="toastContainer"></div>
-  <script src="app.js?v=20261112_01"></script>
+  <script src="app.js?v=20261123_01"></script>
+  <script src="presupuesto_mjj.js?v=20261123_01"></script>
 </body>
 </html>
