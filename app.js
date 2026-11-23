@@ -6191,391 +6191,423 @@ function selectTaxTab(tab) {
   renderTaxSection();
 }
 
-function renderDianForm350Html() {
-  const emp = DB?.empresa || {};
-  
-  // Lista oficial completa de renglones del Formulario 350 DIAN
-  // Casillas con datos de Electrovivienda se cargan con su valor; las no usadas van en $0
-  const f350AllRows = [
-    { cat: "A PERSONAS JURÍDICAS Y ASIMILADAS", rBase: 29, rRet: 42, conc: "Honorarios", base: 0, ret: 0 },
-    { cat: "A PERSONAS JURÍDICAS Y ASIMILADAS", rBase: 30, rRet: 43, conc: "Comisiones", base: 0, ret: 0 },
-    { cat: "A PERSONAS JURÍDICAS Y ASIMILADAS", rBase: 31, rRet: 44, conc: "Servicios", base: 2400000, ret: 96000 },
-    { cat: "A PERSONAS JURÍDICAS Y ASIMILADAS", rBase: 32, rRet: 45, conc: "Rendimientos financieros e intereses", base: 0, ret: 0 },
-    { cat: "A PERSONAS JURÍDICAS Y ASIMILADAS", rBase: 33, rRet: 46, conc: "Arrendamientos (Muebles e inmuebles)", base: 0, ret: 0 },
-    { cat: "A PERSONAS JURÍDICAS Y ASIMILADAS", rBase: 34, rRet: 47, conc: "Regalías y explotación de la propiedad intelectual", base: 0, ret: 0 },
-    { cat: "A PERSONAS JURÍDICAS Y ASIMILADAS", rBase: 35, rRet: 48, conc: "Dividendos y participaciones", base: 0, ret: 0 },
-    { cat: "A PERSONAS JURÍDICAS Y ASIMILADAS", rBase: 36, rRet: 49, conc: "Compras", base: 155470000, ret: 3886750 },
-    { cat: "A PERSONAS JURÍDICAS Y ASIMILADAS", rBase: 37, rRet: 50, conc: "Transacciones con tarjetas débito y crédito", base: 0, ret: 0 },
-    { cat: "A PERSONAS JURÍDICAS Y ASIMILADAS", rBase: 38, rRet: 51, conc: "Contratos de construcción", base: 0, ret: 0 },
-    { cat: "A PERSONAS JURÍDICAS Y ASIMILADAS", rBase: 39, rRet: 52, conc: "Loterías, rifas, apuestas y similares", base: 0, ret: 0 },
-    { cat: "A PERSONAS JURÍDICAS Y ASIMILADAS", rBase: 40, rRet: 53, conc: "Hidrocarburos, carbón y demás productos mineros", base: 0, ret: 0 },
-    { cat: "A PERSONAS JURÍDICAS Y ASIMILADAS", rBase: 41, rRet: 54, conc: "Otros pagos sujetos a retención", base: 0, ret: 0 },
-    
-    { cat: "A PERSONAS NATURALES Y ASIMILADAS", rBase: 77, rRet: 78, conc: "Rentas de trabajo (Sueldos y Pagos Laborales)", base: 40556796, ret: 2467000 },
-    { cat: "A PERSONAS NATURALES Y ASIMILADAS", rBase: 78, rRet: 79, conc: "Rentas de pensiones", base: 0, ret: 0 },
-    { cat: "A PERSONAS NATURALES Y ASIMILADAS", rBase: 79, rRet: 93, conc: "Honorarios personas naturales", base: 0, ret: 0 },
-    { cat: "A PERSONAS NATURALES Y ASIMILADAS", rBase: 80, rRet: 94, conc: "Comisiones personas naturales", base: 0, ret: 0 },
-    { cat: "A PERSONAS NATURALES Y ASIMILADAS", rBase: 81, rRet: 95, conc: "Servicios personas naturales", base: 0, ret: 0 },
-    { cat: "A PERSONAS NATURALES Y ASIMILADAS", rBase: 82, rRet: 96, conc: "Rendimientos financieros personas naturales", base: 0, ret: 0 },
-    { cat: "A PERSONAS NATURALES Y ASIMILADAS", rBase: 83, rRet: 97, conc: "Arrendamientos personas naturales", base: 0, ret: 0 },
-    { cat: "A PERSONAS NATURALES Y ASIMILADAS", rBase: 84, rRet: 98, conc: "Regalías personas naturales", base: 0, ret: 0 },
-    { cat: "A PERSONAS NATURALES Y ASIMILADAS", rBase: 85, rRet: 99, conc: "Dividendos personas naturales", base: 0, ret: 0 },
-    { cat: "A PERSONAS NATURALES Y ASIMILADAS", rBase: 86, rRet: 100, conc: "Compras a personas naturales", base: 0, ret: 0 },
-    { cat: "A PERSONAS NATURALES Y ASIMILADAS", rBase: 87, rRet: 101, conc: "Enajenación de activos fijos ante notarios", base: 0, ret: 0 },
-    { cat: "A PERSONAS NATURALES Y ASIMILADAS", rBase: 88, rRet: 102, conc: "Otros pagos a personas naturales", base: 0, ret: 0 },
+const DECL_OFFICIAL_ASSETS = {
+  F350: {
+    pdf: "assets/declaraciones/Formulario_350_DIAN_Retefuente_2026_ELECTROVIVIENDA.pdf",
+    jpg: "assets/declaraciones/Formulario_350_DIAN_Retefuente_2026_ELECTROVIVIENDA.jpg",
+    xlsx: "LIQUIDADOR_FORMULARIO_350_RETEFUENTE_2026.xlsx",
+    pdfName: "Formulario_350_DIAN_Retefuente_2026_ELECTROVIVIENDA.pdf",
+    jpgName: "Formulario_350_DIAN_Retefuente_2026_ELECTROVIVIENDA.jpg"
+  },
+  F300: {
+    pdf: "assets/declaraciones/Formulario_300_DIAN_IVA_2026_ELECTROVIVIENDA.pdf",
+    jpg: "assets/declaraciones/Formulario_300_DIAN_IVA_2026_ELECTROVIVIENDA.jpg",
+    xlsx: "LIQUIDADOR_FORMULARIO_300_IVA_2026.xlsx",
+    pdfName: "Formulario_300_DIAN_IVA_2026_ELECTROVIVIENDA.pdf",
+    jpgName: "Formulario_300_DIAN_IVA_2026_ELECTROVIVIENDA.jpg"
+  },
+  RETEICA: {
+    pdf: "assets/declaraciones/Formulario_ReteICA_Bucaramanga_2026_ELECTROVIVIENDA.pdf",
+    jpg: "assets/declaraciones/Formulario_ReteICA_Bucaramanga_2026_ELECTROVIVIENDA.jpg",
+    xlsx: null,
+    pdfName: "Formulario_ReteICA_Bucaramanga_2026_ELECTROVIVIENDA.pdf",
+    jpgName: "Formulario_ReteICA_Bucaramanga_2026_ELECTROVIVIENDA.jpg"
+  }
+};
 
-    { cat: "AUTORRETENCIONES (PERSONAS JURÍDICAS)", rBase: 59, rRet: 68, conc: "Autorretenciones en ventas por comercio (Decreto 2201 de 2016)", base: 149470000, ret: 3736750 },
-    { cat: "AUTORRETENCIONES (PERSONAS JURÍDICAS)", rBase: 60, rRet: 69, conc: "Autorretención especial Renta (0.55% Ley 1819)", base: 154363636, ret: 849000 },
-    { cat: "AUTORRETENCIONES (PERSONAS JURÍDICAS)", rBase: 61, rRet: 70, conc: "Autorretenciones por rendimientos financieros", base: 0, ret: 0 },
-    { cat: "AUTORRETENCIONES (PERSONAS JURÍDICAS)", rBase: 62, rRet: 71, conc: "Otras autorretenciones", base: 0, ret: 0 },
+const DECL_CALENDAR_MAP = {
+  "CAL-02": "F350",
+  "CAL-03": "F300",
+  "CAL-04": "RETEICA"
+};
 
-    { cat: "PAGOS O ABONOS EN CUENTA AL EXTERIOR", rBase: 55, rRet: 57, conc: "A países sin convenio de doble imposición", base: 0, ret: 0 },
-    { cat: "PAGOS O ABONOS EN CUENTA AL EXTERIOR", rBase: 56, rRet: 58, conc: "A países con convenio de doble imposición vigente", base: 0, ret: 0 },
+function fmtDecCOP(val) {
+  const n = Number(val) || 0;
+  if (Math.abs(n) < 0.005) return "$0";
+  const isNeg = n < 0;
+  const absVal = Math.abs(n);
+  const hasDec = Math.abs(absVal - Math.round(absVal)) > 0.004;
+  const formatted = absVal.toLocaleString("es-CO", {
+    minimumFractionDigits: hasDec ? 2 : 0,
+    maximumFractionDigits: hasDec ? 2 : 0
+  });
+  return isNeg ? `<span class="val-negative">-$${formatted}</span>` : `$${formatted}`;
+}
 
-    { cat: "RETENCIONES A TÍTULO DE IVA", rBase: 75, rRet: 76, conc: "A responsables de IVA (Art. 437-2 E.T. - Tarifa 15% del IVA)", base: 30583667, ret: 4587550 },
-    { cat: "RETENCIONES A TÍTULO DE IVA", rBase: 76, rRet: 82, conc: "Por servicios prestados desde el exterior", base: 0, ret: 0 },
+function fmtSignedDiffCOP(val) {
+  const n = Number(val) || 0;
+  if (Math.abs(n) < 0.005) return "$0";
+  if (n < 0) return fmtDecCOP(n);
+  return `+${fmtDecCOP(n)}`;
+}
 
-    { cat: "RETENCIONES IMPUESTO DE TIMBRE", rBase: 83, rRet: 84, conc: "Impuesto de timbre nacional sobre documentos públicos", base: 0, ret: 0 },
+function renderDeclarationShellTop(cfg) {
+  const assets = DECL_OFFICIAL_ASSETS[cfg.key];
+  const xlsxBtn = assets.xlsx
+    ? `<a class="btn btn-gold btn-sm" href="${assets.xlsx}" download="${assets.xlsx}">📊 Descargar Liquidador (.xlsx)</a>`
+    : "";
 
-    { cat: "TOTALES", isTotal: true, rBase: "", rRet: 85, conc: "Total retenciones renta y complementarios (Suma de retenciones)", base: 0, ret: 11037000 },
-    { cat: "TOTALES", isTotal: true, rBase: "", rRet: 86, conc: "Total retenciones a título de IVA (Casilla 76 + 82)", base: 0, ret: 4587550 },
-    { cat: "TOTALES", isTotal: true, rBase: "", rRet: 87, conc: "Total retenciones del período fiscal (Casilla 85 + 86)", base: 0, ret: 15624550 },
-    { cat: "TOTALES", isTotal: true, rBase: "", rRet: 88, conc: "Sanciones por extemporaneidad o corrección", base: 0, ret: 0 },
-    { cat: "TOTALES", isTotal: true, isHighlight: true, rBase: "", rRet: 980, conc: "TOTAL SALDO A PAGAR POR RETENCIONES DEL PERÍODO", base: 0, ret: 15624550 }
-  ];
-
-  let currentCategory = "";
-  const tableRows = f350AllRows.map(r => {
-    let catHeader = "";
-    if (r.cat !== currentCategory && !r.isTotal) {
-      currentCategory = r.cat;
-      catHeader = `
-        <tr class="niif-row-clase">
-          <td colspan="4" style="background:#005E38; color:#fff; font-weight:800; padding:6px 10px; font-size:0.78rem;">
-            ${currentCategory}
-          </td>
-        </tr>
-      `;
-    }
-
-    const rowStyle = r.isHighlight ? "background:#FEF3C7; font-weight:900; border:2px solid #D4AF37;" : (r.isTotal ? "background:#F1F5F9; font-weight:800;" : "");
-    const baseDisp = r.rBase ? `<span class="dian-casilla-tag" style="margin-right:6px;">${r.rBase}</span>${fmtCOP(r.base)}` : "—";
-    const retDisp = `<span class="dian-casilla-tag" style="margin-right:6px; ${r.isHighlight ? 'background:#D4AF37; color:#0F172A;' : ''}">${r.rRet}</span>${fmtCOP(r.ret)}`;
-
-    return `
-      ${catHeader}
-      <tr style="${rowStyle}">
-        <td style="text-align:center; width:65px;"><span class="dian-casilla-tag">${r.rRet}</span></td>
-        <td><strong>${r.conc}</strong></td>
-        <td class="num-col" style="width:190px;">${baseDisp}</td>
-        <td class="num-col" style="width:190px; ${r.isHighlight ? 'font-size:1.1rem; color:#B45309;' : (r.isTotal ? 'color:#005E38;' : '')}">${retDisp}</td>
-      </tr>
-    `;
-  }).join("");
+  const kpisHtml = cfg.kpis.map(k => `
+    <div style="border:1.5px solid ${k.border || '#CBD5E1'}; border-radius:8px; padding:11px 14px; background:${k.bg || 'var(--bg-subtle)'};">
+      <div style="font-size:0.7rem; font-weight:800; color:${k.labelColor || 'var(--text-secondary)'}; text-transform:uppercase; letter-spacing:0.4px;">${k.label}</div>
+      <div style="font-size:1.18rem; font-weight:900; color:${k.valColor || 'var(--text-main)'}; margin-top:4px; font-family:'JetBrains Mono', monospace;">${k.valueHtml}</div>
+      <div style="font-size:0.73rem; color:var(--text-secondary); margin-top:3px;">${k.sub}</div>
+    </div>
+  `).join("");
 
   return `
-    <div class="dian-form-paper">
-      <div class="dian-header-banner" style="background:#005E38;">
-        <div style="display:flex; align-items:center; gap:12px;">
-          <div style="background:#ffffff; color:#005E38; font-weight:900; font-size:1.25rem; padding:4px 10px; border-radius:6px; letter-spacing:1px;">DIAN</div>
-          <div>
-            <div class="dian-header-title">FORMULARIO 350 OFICIAL COMPLETO — DECLARACIÓN DE RETENCIÓN EN LA FUENTE</div>
-            <div style="font-size:0.75rem; color:#E8F5E9;">Estructura Oficial DIAN Renglón por Renglón (Referencia: GH Revisores) • Todas las Casillas Oficiales</div>
-          </div>
-        </div>
-        <div style="text-align:right;">
-          <span style="background:rgba(255,255,255,0.2); padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.8rem;">Año Gravable: 2026 • Período: Mensual</span>
+    <div class="dian-header-banner" style="background:${cfg.accent};">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div style="background:#ffffff; color:${cfg.accent}; font-weight:900; font-size:1.2rem; padding:4px 10px; border-radius:6px; letter-spacing:1px;">${cfg.badge}</div>
+        <div>
+          <div class="dian-header-title">${cfg.title}</div>
+          <div style="font-size:0.75rem; color:rgba(255,255,255,0.88);">${cfg.subtitle}</div>
         </div>
       </div>
-
-      <div class="dian-sub-bar">
-        <div><strong>5. Número de Identificación Tributaria (NIT):</strong> <span class="code-col" style="font-size:0.88rem; font-weight:800;">901.765.438</span> <strong>DV:</strong> 3</div>
-        <div><strong>11. Razón Social:</strong> <strong style="color:var(--brand-primary);">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</strong></div>
-        <div><strong>12. Seccional:</strong> 04 Bucaramanga • Formulario Oficial Completo (Casillas no usadas en $0)</div>
+      <div style="text-align:right;">
+        <span style="background:rgba(255,255,255,0.2); padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.8rem;">${cfg.periodTag}</span>
       </div>
+    </div>
 
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin:14px 0 8px; padding:10px 14px; background:var(--bg-subtle); border-radius:6px;">
-        <span style="font-size:0.82rem; color:var(--text-secondary);">Formulario 350 Oficial DIAN: Incluye la totalidad de casillas respetando el formato legal oficial</span>
-        <a class="btn btn-gold btn-sm" href="LIQUIDADOR_FORMULARIO_350_RETEFUENTE_2026.xlsx" download="LIQUIDADOR_FORMULARIO_350_RETEFUENTE_2026.xlsx">📥 Descargar Liquidador Formulario 350 (.xlsx)</a>
+    <div class="dian-sub-bar">
+      <div><strong>NIT:</strong> <span class="code-col" style="font-size:0.88rem; font-weight:800;">901.765.438</span> <strong>DV:</strong> 3</div>
+      <div><strong>Razón Social:</strong> <strong style="color:var(--brand-primary);">${cfg.razonSocial}</strong></div>
+      <div>${cfg.metaRight}</div>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin:14px 0 10px; padding:10px 14px; background:var(--bg-subtle); border-radius:8px; border:1px solid var(--border-color);">
+      <span style="font-size:0.82rem; font-weight:600; color:var(--text-main);">📎 Documento Oficial Diligenciado y Soportes Descargables:</span>
+      <div style="display:flex; flex-wrap:wrap; gap:8px;">
+        <a class="btn btn-primary btn-sm" href="${assets.pdf}" download="${assets.pdfName}" style="background:${cfg.accent}; border-color:${cfg.accent};">📥 Descargar Declaración (.pdf)</a>
+        <a class="btn btn-outline btn-sm" href="${assets.jpg}" download="${assets.jpgName}">🖼️ Descargar Imagen (.jpg)</a>
+        ${xlsxBtn}
       </div>
+    </div>
 
-      <div class="table-wrap">
-        <table class="dian-table">
-          <thead>
-            <tr>
-              <th style="width:65px; text-align:center;">Renglón</th>
-              <th>Concepto Sujeto a Retención en la Fuente Oficial DIAN</th>
-              <th class="num-col" style="width:200px;">Base Sujeta a Retención (COP)</th>
-              <th class="num-col" style="width:200px;">Retención Practicada (COP)</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${tableRows}
-          </tbody>
-        </table>
+    <div class="dian-section-header" style="border-left-color:${cfg.accent}; color:${cfg.accent};">1. RESUMEN DEL VALOR A PAGAR Y AJUSTE POR REDONDEO (ART. 577 E.T.)</div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(215px, 1fr)); gap:12px; margin:10px 0 14px;">
+      ${kpisHtml}
+    </div>
+
+    <div class="pmjj-explain-box">${cfg.explainHtml}</div>
+  `;
+}
+
+function renderDeclarationFooterAndPreview(cfg) {
+  const emp = cfg.emp || {};
+  const assets = DECL_OFFICIAL_ASSETS[cfg.key];
+  return `
+    <div style="margin-top:18px; border-top:1.5px dashed #CBD5E1; padding-top:14px; display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:14px;">
+      <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
+        <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">981. REPRESENTANTE LEGAL</span>
+        <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.representante_legal || "Kevin Guerrero"}</strong>
+        <span style="font-size:0.74rem; color:#475569;">Firma Autorizada Declarante</span>
       </div>
+      <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
+        <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">982. CONTADORA PÚBLICA TITULAR</span>
+        <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.contadora || "Gina Villamizar"}</strong>
+        <span style="font-size:0.74rem; color:#475569;">Tarjeta Profesional: <strong>T.P. 248960-T</strong></span>
+      </div>
+      <div style="border:1.5px solid ${cfg.accent}; border-radius:8px; padding:12px; background:${cfg.totalBg}; display:flex; flex-direction:column; justify-content:center;">
+        <span style="font-size:0.7rem; font-weight:800; color:${cfg.accent};">${cfg.totalBoxLabel}</span>
+        <span style="font-size:1.25rem; font-weight:900; color:${cfg.accent};">${fmtDecCOP(cfg.totalPago)}</span>
+      </div>
+    </div>
 
-      <div style="margin-top:18px; border-top:1.5px dashed #CBD5E1; padding-top:14px; display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px;">
-        <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
-          <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">981. REPRESENTANTE LEGAL</span>
-          <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.representante_legal || "Kevin Guerrero"}</strong>
-          <span style="font-size:0.74rem; color:#475569;">C.C. 1.098.765.432 • Firma Digital Autorizada</span>
+    <div style="margin-top:18px; border:1px solid #CBD5E1; border-radius:8px; padding:14px; background:#F8FAFC;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+        <strong style="font-size:0.86rem; color:#0B192C;">📄 Vista Previa del Formulario Oficial Diligenciado (${cfg.docTitle})</strong>
+        <div style="display:flex; gap:8px;">
+          <a class="btn btn-outline btn-sm" href="${assets.jpg}" target="_blank" rel="noopener">🔍 Ver Imagen Tamaño Completo</a>
+          <a class="btn btn-primary btn-sm" href="${assets.pdf}" download="${assets.pdfName}" style="background:${cfg.accent}; border-color:${cfg.accent};">📥 Descargar PDF Oficial</a>
         </div>
-        <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
-          <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">982. CONTADORA PÚBLICA TITULAR</span>
-          <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.contadora || "Gina Villamizar"}</strong>
-          <span style="font-size:0.74rem; color:#475569;">Tarjeta Profesional: <strong>T.P. 248960-T</strong></span>
-        </div>
-        <div style="border:1.5px solid #005E38; border-radius:8px; padding:12px; background:#E8F5E9; display:flex; flex-direction:column; justify-content:center;">
-          <span style="font-size:0.7rem; font-weight:800; color:#005E38;">980. TOTAL PAGO EFECTIVO</span>
-          <span style="font-size:1.25rem; font-weight:900; color:#005E38;">${fmtCOP(15624550)}</span>
-        </div>
+      </div>
+      <div style="text-align:center; background:#ffffff; padding:10px; border-radius:6px; border:1px solid #E2E8F0;">
+        <img src="${assets.jpg}" alt="${cfg.docTitle}" style="max-width:100%; height:auto; max-height:680px; border-radius:4px;" />
       </div>
     </div>
   `;
 }
 
-
-function renderDianForm300Html() {
-  const emp = DB?.empresa || {};
-
-  const f300AllRows = [
-    // SECCIÓN 1: INGRESOS BRUTOS
-    { sec: "1. INGRESOS BRUTOS", r: 27, conc: "Por operaciones gravadas a la tarifa del 5%", val: 0 },
-    { sec: "1. INGRESOS BRUTOS", r: 28, conc: "Por operaciones gravadas a la tarifa general (19%)", val: 203614000 },
-    { sec: "1. INGRESOS BRUTOS", r: 29, conc: "A.I.U por operaciones gravadas (base gravable especial)", val: 0 },
-    { sec: "1. INGRESOS BRUTOS", r: 30, conc: "Por exportación de bienes", val: 0 },
-    { sec: "1. INGRESOS BRUTOS", r: 31, conc: "Por exportación de servicios", val: 0 },
-    { sec: "1. INGRESOS BRUTOS", r: 32, conc: "Por ventas a sociedades de comercialización internacional", val: 0 },
-    { sec: "1. INGRESOS BRUTOS", r: 33, conc: "Por ventas a zonas francas", val: 0 },
-    { sec: "1. INGRESOS BRUTOS", r: 34, conc: "Por juegos de suerte y azar", val: 0 },
-    { sec: "1. INGRESOS BRUTOS", r: 35, conc: "Por operaciones exentas (Artículos 477, 478 y 481 del E.T.)", val: 0 },
-    { sec: "1. INGRESOS BRUTOS", r: 36, conc: "Por venta de cerveza de producción nacional o importada", val: 0 },
-    { sec: "1. INGRESOS BRUTOS", r: 37, conc: "Por venta de gaseosas o similares", val: 0 },
-    { sec: "1. INGRESOS BRUTOS", r: 38, conc: "Por venta de licores, aperitivos, vinos y similares", val: 0 },
-    { sec: "1. INGRESOS BRUTOS", r: 39, conc: "Por operaciones excluidas del IVA", val: 0 },
-    { sec: "1. INGRESOS BRUTOS", r: 40, conc: "Por operaciones no gravadas", val: 0 },
-    { sec: "1. INGRESOS BRUTOS", r: 41, isTotal: true, conc: "Total Ingresos brutos (Sume renglones 27 a 40)", val: 203614000 },
-    { sec: "1. INGRESOS BRUTOS", r: 42, conc: "Menos: Devoluciones en ventas anuladas, rescindidas o resueltas", val: -17664000 },
-    { sec: "1. INGRESOS BRUTOS", r: 43, isTotal: true, isHighlight: true, conc: "TOTAL INGRESOS NETOS RECIBIDOS EN EL PERÍODO (Renglón 41 menos 42)", val: 185950000 },
-
-    // SECCIÓN 2: COMPRAS E IMPORTACIONES
-    { sec: "2. COMPRAS E IMPORTACIONES", r: 44, conc: "Importaciones de bienes gravados a la tarifa del 5%", val: 0 },
-    { sec: "2. COMPRAS E IMPORTACIONES", r: 45, conc: "Importaciones de bienes gravados a la tarifa general (19%)", val: 0 },
-    { sec: "2. COMPRAS E IMPORTACIONES", r: 46, conc: "Importaciones de bienes y servicios gravados provenientes de Zonas Francas", val: 0 },
-    { sec: "2. COMPRAS E IMPORTACIONES", r: 47, conc: "Importaciones de bienes no gravados", val: 0 },
-    { sec: "2. COMPRAS E IMPORTACIONES", r: 48, conc: "Importaciones de bienes excluidos y exentos provenientes de Zonas Francas", val: 0 },
-    { sec: "2. COMPRAS E IMPORTACIONES", r: 49, conc: "Importaciones de servicios", val: 0 },
-    { sec: "2. COMPRAS E IMPORTACIONES", r: 50, conc: "Compras nacionales de bienes gravados a la tarifa del 5%", val: 0 },
-    { sec: "2. COMPRAS E IMPORTACIONES", r: 51, conc: "Compras nacionales de bienes gravados a la tarifa general (19%)", val: 155470000 },
-    { sec: "2. COMPRAS E IMPORTACIONES", r: 52, conc: "Compras nacionales de servicios gravados a la tarifa del 5%", val: 0 },
-    { sec: "2. COMPRAS E IMPORTACIONES", r: 53, conc: "Compras nacionales de servicios gravados a la tarifa general (19%)", val: 2400000 },
-    { sec: "2. COMPRAS E IMPORTACIONES", r: 54, conc: "Compras de bienes y servicios excluidos, exentos y no gravados", val: 0 },
-    { sec: "2. COMPRAS E IMPORTACIONES", r: 55, isTotal: true, conc: "Total Compras e importaciones brutas (Sume renglones 44 a 54)", val: 157870000 },
-    { sec: "2. COMPRAS E IMPORTACIONES", r: 56, conc: "Menos: Devoluciones en compras anuladas, rescindidas o resueltas", val: -14000000 },
-    { sec: "2. COMPRAS E IMPORTACIONES", r: 57, isTotal: true, isHighlight: true, conc: "TOTAL COMPRAS NETAS REALIZADAS EN EL PERÍODO (Renglón 55 menos 56)", val: 143870000 },
-
-    // SECCIÓN 3: LIQUIDACIÓN PRIVADA DEL IMPUESTO
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 58, conc: "Impuesto generado a la tarifa del 5%", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 59, conc: "Impuesto generado a la tarifa general (19%) sobre ventas netas", val: 35330500 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 60, conc: "Impuesto generado sobre A.I.U en operaciones gravadas", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 61, conc: "Impuesto generado en juegos de suerte y azar", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 62, conc: "Impuesto generado en venta cerveza nacional o importada", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 63, conc: "Impuesto generado en venta de gaseosas y similares", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 64, conc: "Impuesto generado en venta de licores, aperitivos, vinos", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 65, conc: "Impuesto generado en retiro de inventario para autoconsumo", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 66, conc: "IVA recuperado en devoluciones en compras anuladas", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 67, isTotal: true, conc: "Total impuesto generado por operaciones gravadas (Sume 58 a 66)", val: 35330500 },
-
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 68, conc: "Descontable: Por importaciones gravadas a la tarifa del 5%", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 69, conc: "Descontable: Por importaciones gravadas a la tarifa general", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 70, conc: "Descontable: De bienes y servicios gravados provenientes de Zonas Francas", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 71, conc: "Descontable: Por compras de bienes gravados a la tarifa del 5%", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 72, conc: "Descontable: Por compras de bienes gravados a la tarifa general (19%)", val: 26879300 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 73, conc: "Descontable: Por licores, aperitivos, vinos y similares", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 74, conc: "Descontable: Por servicios gravados a la tarifa del 5%", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 75, conc: "Descontable: Por servicios gravados a la tarifa general (19%)", val: 456000 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 76, conc: "Descuento IVA exploración de hidrocarburos", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 77, isTotal: true, conc: "Total impuesto descontable pagado o facturado (Sume 68 a 76)", val: 27335300 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 78, conc: "IVA retenido por servicios prestados en Colombia por no domiciliados", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 79, conc: "Menos: IVA resultante por devoluciones en ventas anuladas", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 80, conc: "Ajuste impuestos descontables", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 81, isTotal: true, conc: "Total Impuestos descontables del período (77 + 78 - 79 + 80)", val: 27335300 },
-
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 82, isTotal: true, conc: "Saldo a pagar por el período fiscal (Renglón 67 menos 81)", val: 7995200 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 83, conc: "Saldo a favor del período fiscal (Renglón 81 menos 67)", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 84, conc: "Saldo a favor del período fiscal anterior sin solicitud de devolución", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 85, conc: "Menos: Retenciones por IVA que le practicaron (ReteIVA a favor)", val: -4587550 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 86, isTotal: true, conc: "Saldo a pagar por impuesto del período (82 - 84 - 85)", val: 3407650 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 87, conc: "Sanciones por extemporaneidad o corrección", val: 0 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 88, isTotal: true, isHighlight: true, conc: "TOTAL SALDO A PAGAR POR IVA DEL PERÍODO (Renglón 86 más 87)", val: 3407650 },
-    { sec: "3. LIQUIDACIÓN PRIVADA", r: 980, isTotal: true, isHighlight: true, conc: "PAGO TOTAL EN BANCOS (IVA)", val: 3407650 }
-  ];
-
+function renderDeclAnexoTable({ accent, totalBg, sectionTitle, col1Title, col2Title, col3Title, col7Title, col1Width, col2Width, rows }) {
   let currentSec = "";
-  const tableRows = f300AllRows.map(r => {
+  const bodyHtml = rows.map(r => {
     let secHeader = "";
     if (r.sec !== currentSec) {
       currentSec = r.sec;
       secHeader = `
         <tr class="niif-row-clase">
-          <td colspan="3" style="background:#1E3A8A; color:#fff; font-weight:800; padding:6px 10px; font-size:0.78rem;">
+          <td colspan="7" style="background:${accent}; color:#fff; font-weight:800; padding:6px 10px; font-size:0.78rem;">
             ${currentSec}
           </td>
         </tr>
       `;
     }
+    const rowStyle = r.isHighlight
+      ? "background:#FEF3C7; font-weight:900; border:2px solid #D4AF37;"
+      : (r.isTotal ? `background:${totalBg}; font-weight:800;` : (r.isSub ? "background:#F8FAFC; font-weight:700;" : ""));
 
-    const rowStyle = r.isHighlight ? "background:#FEF3C7; font-weight:900; border:2px solid #D4AF37;" : (r.isTotal ? "background:#F1F5F9; font-weight:800;" : "");
-    const valClass = r.val < 0 ? "text-danger" : (r.isHighlight ? "color:#B45309; font-size:1.05rem;" : (r.isTotal ? "color:#1E3A8A;" : ""));
+    const valStyle = r.isHighlight ? "color:#B45309; font-size:1.05rem;" : (r.isTotal ? `color:${accent};` : "");
+    const oficialDisp = r.oficial === null || r.hideOficial ? "—" : fmtDecCOP(r.oficial);
+    const diffDisp = r.diff === null ? "" : `<div style="font-size:0.7rem; font-weight:600; color:#64748B;">Dif: ${fmtSignedDiffCOP(r.diff)}</div>`;
 
     return `
       ${secHeader}
       <tr style="${rowStyle}">
-        <td style="text-align:center; width:65px;"><span class="dian-casilla-tag" style="${r.isHighlight ? 'background:#D4AF37; color:#0F172A;' : ''}">${r.r}</span></td>
-        <td><strong>${r.conc}</strong></td>
-        <td class="num-col" style="width:200px; ${valClass}">${fmtCOP(r.val)}</td>
+        <td style="text-align:center;"><span class="dian-casilla-tag" style="${r.isHighlight ? 'background:#D4AF37; color:#0F172A;' : `background:${accent};`}">${r.col1}</span></td>
+        <td class="code-col">${r.col2}</td>
+        <td><strong>${r.col3}</strong></td>
+        <td class="num-col">${r.base === null ? "—" : fmtDecCOP(r.base)}</td>
+        <td style="text-align:center;">${r.rate}</td>
+        <td class="num-col">${fmtDecCOP(r.exacto)}</td>
+        <td class="num-col" style="${valStyle}">${oficialDisp}${diffDisp}</td>
       </tr>
     `;
   }).join("");
 
   return `
-    <div class="dian-form-paper">
-      <div class="dian-header-banner" style="background:#1E3A8A;">
-        <div style="display:flex; align-items:center; gap:12px;">
-          <div style="background:#ffffff; color:#1E3A8A; font-weight:900; font-size:1.25rem; padding:4px 10px; border-radius:6px; letter-spacing:1px;">DIAN</div>
-          <div>
-            <div class="dian-header-title">FORMULARIO 300 OFICIAL COMPLETO — DECLARACIÓN DEL IMPUESTO SOBRE LAS VENTAS (IVA)</div>
-            <div style="font-size:0.75rem; color:#E0E7FF;">Estructura Oficial DIAN Renglones 27 al 980 (Referencia: GH Revisores) • Todas las Casillas Oficiales</div>
-          </div>
-        </div>
-        <div style="text-align:right;">
-          <span style="background:rgba(255,255,255,0.2); padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.8rem;">Año: 2026 • Periodicidad: Bimestral</span>
-        </div>
-      </div>
-
-      <div class="dian-sub-bar">
-        <div><strong>5. NIT:</strong> <span class="code-col" style="font-size:0.88rem; font-weight:800;">901.765.438</span> <strong>DV:</strong> 3</div>
-        <div><strong>11. Razón Social:</strong> <strong style="color:var(--brand-primary);">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</strong></div>
-        <div><strong>24. Periodicidad:</strong> Bimestral (X) • Formulario Completo Oficial (Casillas no usadas en $0)</div>
-      </div>
-
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin:14px 0 8px; padding:10px 14px; background:var(--bg-subtle); border-radius:6px;">
-        <span style="font-size:0.82rem; color:var(--text-secondary);">Formulario 300 Oficial DIAN: Incluye la totalidad de renglones respetando el formato legal oficial</span>
-        <a class="btn btn-primary btn-sm" href="LIQUIDADOR_FORMULARIO_300_IVA_2026.xlsx" download="LIQUIDADOR_FORMULARIO_300_IVA_2026.xlsx" style="background:#1E3A8A; border-color:#1E3A8A;">📥 Descargar Liquidador Formulario 300 (.xlsx)</a>
-      </div>
-
-      <div class="table-wrap">
-        <table class="dian-table">
-          <thead>
-            <tr>
-              <th style="width:65px; text-align:center;">Renglón</th>
-              <th>Concepto Oficial DIAN (Ingresos, Compras y Liquidación Privada)</th>
-              <th class="num-col" style="width:200px;">Valor Oficial Declarado (COP)</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${tableRows}
-          </tbody>
-        </table>
-      </div>
-
-      <div style="margin-top:18px; border-top:1.5px dashed #CBD5E1; padding-top:14px; display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px;">
-        <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
-          <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">981. REPRESENTANTE LEGAL</span>
-          <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.representante_legal || "Kevin Guerrero"}</strong>
-          <span style="font-size:0.74rem; color:#475569;">C.C. 1.098.765.432 • Firma Digital Autorizada</span>
-        </div>
-        <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
-          <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">982. CONTADORA PÚBLICA TITULAR</span>
-          <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.contadora || "Gina Villamizar"}</strong>
-          <span style="font-size:0.74rem; color:#475569;">Tarjeta Profesional: <strong>T.P. 248960-T</strong></span>
-        </div>
-        <div style="border:1.5px solid #1E3A8A; border-radius:8px; padding:12px; background:#EFF6FF; display:flex; flex-direction:column; justify-content:center;">
-          <span style="font-size:0.7rem; font-weight:800; color:#1E3A8A;">980. PAGO TOTAL IVA DEL PERÍODO</span>
-          <span style="font-size:1.25rem; font-weight:900; color:#1E3A8A;">${fmtCOP(3407650)}</span>
-        </div>
-      </div>
+    <div class="dian-section-header" style="border-left-color:${accent}; color:${accent};">${sectionTitle}</div>
+    <div class="table-wrap">
+      <table class="dian-table">
+        <thead>
+          <tr>
+            <th style="width:${col1Width || '72px'}; text-align:center;">${col1Title}</th>
+            <th style="width:${col2Width || '96px'};">${col2Title}</th>
+            <th>${col3Title}</th>
+            <th class="num-col" style="width:140px;">Base Gravable</th>
+            <th style="width:68px; text-align:center;">Tarifa</th>
+            <th class="num-col" style="width:145px;">Contable Exacto</th>
+            <th class="num-col" style="width:165px;">${col7Title}</th>
+          </tr>
+        </thead>
+        <tbody>${bodyHtml}</tbody>
+      </table>
     </div>
   `;
 }
 
+function renderDianForm350Html() {
+  const emp = DB?.empresa || {};
+  const accent = "#005E38";
+
+  // Anexo conciliado con ANEXO 1, HOJA 48 (Marzo 2026) y Formulario 350 Oficial
+  const f350AnexoRows = [
+    { sec: "A. COMPRAS A PERSONAS JURÍDICAS (PUC 246540 • Casillas 36 / 49)", col1: "36 / 49", col2: "2026-02-07", col3: "Electrodomésticos Cra 13 (NIT 850.251.207) — Compra gravada", base: 158300000, rate: "2,5%", exacto: 3957500, oficial: null, diff: null },
+    { sec: "A. COMPRAS A PERSONAS JURÍDICAS (PUC 246540 • Casillas 36 / 49)", col1: "36 / 49", col2: "2026-02-12", col3: "Devolución en Compra — Electrodomésticos Cra 13", base: -8830000, rate: "2,5%", exacto: -220750, oficial: null, diff: null },
+    { sec: "A. COMPRAS A PERSONAS JURÍDICAS (PUC 246540 • Casillas 36 / 49)", col1: "36 / 49", col2: "Neto Ter.", col3: "Neto Electrodomésticos Cra 13 (Redondeo Art. 577 → 53955002)", base: 149470000, rate: "2,5%", exacto: 3736750, oficial: 3737000, diff: -250, isSub: true },
+    { sec: "A. COMPRAS A PERSONAS JURÍDICAS (PUC 246540 • Casillas 36 / 49)", col1: "36 / 49", col2: "2026-02-18", col3: "Electromenores (NIT 75.260.210 • NO R.I. declarante)", base: 6000000, rate: "2,5%", exacto: 150000, oficial: 150000, diff: 0 },
+    { sec: "A. COMPRAS A PERSONAS JURÍDICAS (PUC 246540 • Casillas 36 / 49)", col1: "36 / 49", col2: "Cas. 36→49", col3: "SUBTOTAL COMPRAS PERSONAS JURÍDICAS", base: 155470000, rate: "2,5%", exacto: 3886750, oficial: 3887000, diff: -250, isTotal: true },
+
+    { sec: "B. RENTAS DE TRABAJO Y SERVICIOS A PERSONAS NATURALES (PUC 246505 / 246525)", col1: "77 / 93", col2: "2026-02-28", col3: "Rentas de Trabajo — Esperanza Contreras (C.C. 12.012.223 • 53955001)", base: 14796000, rate: "Art. 383", exacto: 2466825.2, oficial: 2467000, diff: -174.8 },
+    { sec: "B. RENTAS DE TRABAJO Y SERVICIOS A PERSONAS NATURALES (PUC 246505 / 246525)", col1: "81 / 97", col2: "2026-02-07", col3: "Servicios PN Declarante — Rafael Suárez (C.C. 75.050.205 • 24652501)", base: 2400000, rate: "4,0%", exacto: 96000, oficial: 96000, diff: 0 },
+    { sec: "B. RENTAS DE TRABAJO Y SERVICIOS A PERSONAS NATURALES (PUC 246505 / 246525)", col1: "93 + 97", col2: "Subtotal", col3: "SUBTOTAL RETENCIONES A PERSONAS NATURALES", base: 17196000, rate: "Mixta", exacto: 2562825.2, oficial: 2563000, diff: -174.8, isTotal: true },
+
+    { sec: "C. AUTORRETENCIONES EN VENTAS — PERSONA JURÍDICA (PUC 246575 • Casillas 60 / 69)", col1: "60 / 69", col2: "2026-02-08", col3: "Venta — Industrias Super (NIT 950.240.208 • G.C. Aut.)", base: 81600000, rate: "2,5%", exacto: 2040000, oficial: null, diff: null },
+    { sec: "C. AUTORRETENCIONES EN VENTAS — PERSONA JURÍDICA (PUC 246575 • Casillas 60 / 69)", col1: "60 / 69", col2: "2026-02-10", col3: "Devolución en Venta — Industrias Super", base: -12230000, rate: "2,5%", exacto: -305750, oficial: null, diff: null },
+    { sec: "C. AUTORRETENCIONES EN VENTAS — PERSONA JURÍDICA (PUC 246575 • Casillas 60 / 69)", col1: "60 / 69", col2: "Neto Ter.", col3: "Neto Industrias Super (Redondeo Art. 577 → 53955003)", base: 69370000, rate: "2,5%", exacto: 1734250, oficial: 1735000, diff: -750, isSub: true },
+    { sec: "C. AUTORRETENCIONES EN VENTAS — PERSONA JURÍDICA (PUC 246575 • Casillas 60 / 69)", col1: "60 / 69", col2: "2026-02-15", col3: "Venta — El Marqués de la 9 (NIT 880.472.209 • 53955004)", base: 80100000, rate: "2,5%", exacto: 2002500, oficial: 2003000, diff: -500 },
+    { sec: "C. AUTORRETENCIONES EN VENTAS — PERSONA JURÍDICA (PUC 246575 • Casillas 60 / 69)", col1: "60→69", col2: "Cas. 60→69", col3: "SUBTOTAL AUTORRETENCIÓN VENTAS PERSONA JURÍDICA", base: 149470000, rate: "2,5%", exacto: 3736750, oficial: 3738000, diff: -1250, isTotal: true },
+
+    { sec: "D. AUTORRETENCIONES EN VENTAS — PERSONA NATURAL (PUC 246575 • Casillas 113 / 121)", col1: "113 / 121", col2: "2026-02-20", col3: "Venta PN — Jaime Salas Mora (C.C. 35.258.211 • 53955005)", base: 24250000, rate: "3,5%", exacto: 848750, oficial: 849000, diff: -250 },
+
+    { sec: "E. CONSOLIDACIÓN FORMULARIO 350 DIAN Y AJUSTE AL PESO (HOJA 48)", col1: "130 / 136", col2: "2026-03-15", col3: "TOTAL RETENCIONES CONTABLES VS. FORMULARIO 350 DIAN", base: 346386000, rate: "—", exacto: 11035075.2, oficial: 11037000, diff: -1924.8, isTotal: true },
+    { sec: "E. CONSOLIDACIÓN FORMULARIO 350 DIAN Y AJUSTE AL PESO (HOJA 48)", col1: "539550", col2: "2026-03-15", col3: "Ajuste por Aproximación al Múltiplo de $1.000 (Pérdidas Diversas — PUC 539550)", base: null, rate: "Art. 577", exacto: 1924.8, oficial: 0, hideOficial: true, diff: 1924.8 },
+    { sec: "E. CONSOLIDACIÓN FORMULARIO 350 DIAN Y AJUSTE AL PESO (HOJA 48)", col1: "980", col2: "Cheque 20206", col3: "PAGO TOTAL OFICIAL DIAN (Comprobante Egreso N° 16 / Diario N° 28)", base: null, rate: "21050501", exacto: 11037000, oficial: 11037000, diff: 0, isHighlight: true }
+  ];
+
+  const topHtml = renderDeclarationShellTop({
+    key: "F350",
+    badge: "DIAN",
+    accent,
+    title: "FORMULARIO 350 DIAN — DECLARACIÓN DE RETENCIÓN EN LA FUENTE",
+    subtitle: "Anexo Conciliado por Tercero, Resumen del Valor a Pagar y Redondeo Art. 577 E.T.",
+    periodTag: "Año 2026 • Período 01 (Presentado Mar 2026)",
+    razonSocial: emp.razon_social || "ELECTROVIVIENDA S.A.S",
+    metaRight: `<strong>Seccional:</strong> 04 Bucaramanga • <strong>Periodicidad:</strong> Mensual • <strong>Hoja 48</strong>`,
+    kpis: [
+      { label: "Saldo Contable Exacto (PUC 2465)", valueHtml: fmtDecCOP(11035075.2), sub: "Suma exacta en libros antes de aproximar" },
+      { label: "Total Pagado DIAN (Casilla 980)", valueHtml: fmtDecCOP(11037000), sub: "Valor aproximado al múltiplo de $1.000", border: accent, bg: "#ECFDF5", labelColor: accent, valColor: accent },
+      { label: "Ajuste Redondeo Art. 577 E.T.", valueHtml: `${fmtSignedDiffCOP(1924.8)} <span style="font-size:0.78rem;">(${fmtDecCOP(-1924.8)})</span>`, sub: "PUC 539550: Esperanza +$174,80 • Cra 13 +$250 • Super +$750 • Marqués +$500 • Jaime +$250", border: "#D4AF37", bg: "#FEFCE8" },
+      { label: "Soporte Bancario y Egreso", valueHtml: "Cheque #20206", sub: "15/03/2026 • Comprobante Egreso N° 16 • Diario N° 28 (Bancolombia)" }
+    ],
+    explainHtml: `
+      <strong>💡 Explicación del Valor a Pagar y Redondeo (Artículo 577 E.T.):</strong><br/>
+      • <strong>¿Cómo se calcula la retención?</strong> Se consolidan las retenciones practicadas a terceros durante el período (Compras PJ <strong>$3.886.750</strong>, Rentas de trabajo Esperanza Contreras <strong>$2.466.825,20</strong> y Servicios Rafael Suárez <strong>$96.000</strong>) más las Autorretenciones en ventas (PJ <strong>$3.736.750</strong> y PN Jaime Salas <strong>$848.750</strong>), obteniendo un saldo contable exacto de <strong>$11.035.075,20</strong>.<br/>
+      • <strong>¿Por qué sube a $11.037.000?</strong> Conforme al <strong>Artículo 577 del Estatuto Tributario</strong>, cada renglón del Formulario 350 se aproxima al múltiplo de <strong>$1.000</strong> más cercano: Cra 13 ($3.736.750 → $3.737.000, <strong>+$250</strong>), Esperanza ($2.466.825,20 → $2.467.000, <strong>+$174,80</strong>), Industrias Super ($1.734.250 → $1.735.000, <strong>+$750</strong>), El Marqués ($2.002.500 → $2.003.000, <strong>+$500</strong>) y Jaime Salas ($848.750 → $849.000, <strong>+$250</strong>).<br/>
+      • <strong>Contabilización (Hoja 48):</strong> La diferencia neta de <strong>+$1.924,80</strong> (vista en conciliación como ${fmtDecCOP(-1924.8)}) se registra en el gasto <code>539550 — Ajuste al peso, obligaciones fiscales</code> contra <code>2465</code> y se gira el Cheque <strong>#20206</strong> por <strong>$11.037.000</strong> desde <code>21050501 Bancolombia</code>.
+    `
+  });
+
+  const tableHtml = renderDeclAnexoTable({
+    accent,
+    totalBg: "#ECFDF5",
+    sectionTitle: "2. ANEXO DETALLADO POR TERCERO Y CASILLA OFICIAL (RECONCILIADO CON ANEXO 1)",
+    col1Title: "Casilla",
+    col2Title: "Fecha",
+    col3Title: "Concepto / Tercero / Subcuenta PUC",
+    col7Title: "Declarado DIAN / Dif.",
+    rows: f350AnexoRows
+  });
+
+  const bottomHtml = renderDeclarationFooterAndPreview({
+    key: "F350",
+    emp,
+    accent,
+    totalBg: "#ECFDF5",
+    totalBoxLabel: "980. TOTAL PAGO OFICIAL DIAN (CHEQUE #20206)",
+    totalPago: 11037000,
+    docTitle: "Formulario 350 DIAN — Retención en la Fuente"
+  });
+
+  return `<div class="dian-form-paper">${topHtml}${tableHtml}${bottomHtml}</div>`;
+}
+
+
+function renderDianForm300Html() {
+  const emp = DB?.empresa || {};
+  const accent = "#1E3A8A";
+
+  const f300AnexoRows = [
+    { sec: "A. INGRESOS GRAVADOS E IVA GENERADO (PUC 240805 • Casillas 28, 41–43, 59, 66, 67)", col1: "28 / 59", col2: "2026-02-08", col3: "Venta Gravada — Industrias Super (NIT 950.240.208)", base: 81600000, rate: "19%", exacto: 15504000, oficial: 15504000, diff: 0 },
+    { sec: "A. INGRESOS GRAVADOS E IVA GENERADO (PUC 240805 • Casillas 28, 41–43, 59, 66, 67)", col1: "28 / 59", col2: "2026-02-15", col3: "Venta Gravada — El Marqués de la 9 (NIT 880.472.209)", base: 80100000, rate: "19%", exacto: 15219000, oficial: 15219000, diff: 0 },
+    { sec: "A. INGRESOS GRAVADOS E IVA GENERADO (PUC 240805 • Casillas 28, 41–43, 59, 66, 67)", col1: "28 / 59", col2: "2026-02-20", col3: "Venta Gravada — Jaime Salas Mora (C.C. 35.258.211)", base: 24250000, rate: "19%", exacto: 4607500, oficial: 4608000, diff: -500 },
+    { sec: "A. INGRESOS GRAVADOS E IVA GENERADO (PUC 240805 • Casillas 28, 41–43, 59, 66, 67)", col1: "41 / 59", col2: "Cas. 59", col3: "SUBTOTAL INGRESOS BRUTOS E IVA GENERADO EN VENTAS", base: 185950000, rate: "19%", exacto: 35330500, oficial: 35331000, diff: -500, isSub: true },
+    { sec: "A. INGRESOS GRAVADOS E IVA GENERADO (PUC 240805 • Casillas 28, 41–43, 59, 66, 67)", col1: "56 / 66", col2: "2026-02-12", col3: "IVA Recuperado en Devolución en Compras — Electrodomésticos Cra 13", base: 8830000, rate: "19%", exacto: 1677700, oficial: 1678000, diff: -300 },
+    { sec: "A. INGRESOS GRAVADOS E IVA GENERADO (PUC 240805 • Casillas 28, 41–43, 59, 66, 67)", col1: "67", col2: "Cas. 67", col3: "TOTAL IMPUESTO GENERADO POR OPERACIONES GRAVADAS (59 + 66)", base: 185950000, rate: "19%", exacto: 37008200, oficial: 37009000, diff: -800, isTotal: true },
+
+    { sec: "B. COMPRAS GRAVADAS E IVA DESCONTABLE (PUC 240810 • Casillas 51, 55–57, 72, 77, 79, 81)", col1: "51 / 72", col2: "2026-02-02", col3: "Compra de Chequera — Bancolombia (Gasto bancario gravado)", base: 105000, rate: "19%", exacto: 19950, oficial: 19000, diff: 950 },
+    { sec: "B. COMPRAS GRAVADAS E IVA DESCONTABLE (PUC 240810 • Casillas 51, 55–57, 72, 77, 79, 81)", col1: "51 / 72", col2: "2026-02-07", col3: "Compra Mercancía Gravada — Electrodomésticos Cra 13", base: 158300000, rate: "19%", exacto: 30077000, oficial: 30077000, diff: 0 },
+    { sec: "B. COMPRAS GRAVADAS E IVA DESCONTABLE (PUC 240810 • Casillas 51, 55–57, 72, 77, 79, 81)", col1: "72 / 77", col2: "Cas. 77", col3: "SUBTOTAL COMPRAS BRUTAS E IVA DESCONTABLE FACTURADO (Cas. 72)", base: 158405000, rate: "19%", exacto: 30096950, oficial: 30096000, diff: 950, isSub: true },
+    { sec: "B. COMPRAS GRAVADAS E IVA DESCONTABLE (PUC 240810 • Casillas 51, 55–57, 72, 77, 79, 81)", col1: "42 / 79", col2: "2026-02-10", col3: "IVA Resultante por Devolución en Ventas — Industrias Super", base: 12230000, rate: "19%", exacto: 2323700, oficial: 2323000, diff: 700 },
+    { sec: "B. COMPRAS GRAVADAS E IVA DESCONTABLE (PUC 240810 • Casillas 51, 55–57, 72, 77, 79, 81)", col1: "81", col2: "Cas. 81", col3: "TOTAL IMPUESTOS DESCONTABLES DEL PERÍODO (Cas. 77 + 79) • Compras Netas Cas. 57: $149.575.000", base: 149575000, rate: "19%", exacto: 32420650, oficial: 32419000, diff: 1650, isTotal: true },
+
+    { sec: "C. LIQUIDACIÓN PRIVADA Y CRUCE RETEIVA (PUC 2408 − 13551701 • Casillas 82 a 980)", col1: "82", col2: "67 − 81", col3: "Saldo a Pagar del Período Antes de ReteIVA (IVA Generado − IVA Descontable)", base: 173720000, rate: "Neto", exacto: 4587550, oficial: 4590000, diff: -2450, isSub: true },
+    { sec: "C. LIQUIDACIÓN PRIVADA Y CRUCE RETEIVA (PUC 2408 − 13551701 • Casillas 82 a 980)", col1: "85", col2: "2026-02-08", col3: "Menos: ReteIVA que practicó Industrias Super G.C. (15% sobre $15.504.000)", base: -15504000, rate: "15%", exacto: -2325600, oficial: null, diff: null },
+    { sec: "C. LIQUIDACIÓN PRIVADA Y CRUCE RETEIVA (PUC 2408 − 13551701 • Casillas 82 a 980)", col1: "85", col2: "2026-02-10", col3: "Reversión ReteIVA por Devolución en Venta — Industrias Super", base: 2323700, rate: "15%", exacto: 348555, oficial: null, diff: null },
+    { sec: "C. LIQUIDACIÓN PRIVADA Y CRUCE RETEIVA (PUC 2408 − 13551701 • Casillas 82 a 980)", col1: "85", col2: "13551701", col3: "TOTAL RETENCIONES POR IVA QUE LE PRACTICARON (Cruce PUC 13551701)", base: -13180300, rate: "15%", exacto: -1977045, oficial: -1977000, diff: -45, isSub: true },
+    { sec: "C. LIQUIDACIÓN PRIVADA Y CRUCE RETEIVA (PUC 2408 − 13551701 • Casillas 82 a 980)", col1: "86 / 88", col2: "2026-03-18", col3: "SALDO NETO A PAGAR ANTES DE AJUSTE AL PESO (Cas. 82 − Cas. 85)", base: null, rate: "2408", exacto: 2610505, oficial: 2613000, diff: -2495, isTotal: true },
+    { sec: "C. LIQUIDACIÓN PRIVADA Y CRUCE RETEIVA (PUC 2408 − 13551701 • Casillas 82 a 980)", col1: "53955099", col2: "2026-03-18", col3: "Ajuste al Peso — Gasto No Descontable por Redondeo (PUC 53955099 IVA)", base: null, rate: "Art. 577", exacto: 2495, oficial: 0, hideOficial: true, diff: 2495 },
+    { sec: "C. LIQUIDACIÓN PRIVADA Y CRUCE RETEIVA (PUC 2408 − 13551701 • Casillas 82 a 980)", col1: "980", col2: "Cheque 20218", col3: "PAGO TOTAL OFICIAL DIAN FORMULARIO 300 (Egreso N° 17 / Diario N° 29)", base: null, rate: "21050501", exacto: 2613000, oficial: 2613000, diff: 0, isHighlight: true }
+  ];
+
+  const topHtml = renderDeclarationShellTop({
+    key: "F300",
+    badge: "DIAN",
+    accent,
+    title: "FORMULARIO 300 DIAN — DECLARACIÓN DEL IMPUESTO SOBRE LAS VENTAS (IVA)",
+    subtitle: "Anexo Conciliado de IVA Generado, Descontable, ReteIVA (135517) y Redondeo Art. 577 E.T.",
+    periodTag: "Año 2026 • Período 01 (Presentado Mar 2026)",
+    razonSocial: emp.razon_social || "ELECTROVIVIENDA S.A.S",
+    metaRight: `<strong>Periodicidad:</strong> Bimestral (X) • <strong>Ingresos Netos Cas. 43:</strong> ${fmtDecCOP(173720000)} • <strong>Hoja 49</strong>`,
+    kpis: [
+      { label: "Saldo Neto Contable (2408 − 135517)", valueHtml: fmtDecCOP(2610505), sub: "IVA por pagar $4.587.550 menos ReteIVA $1.977.045" },
+      { label: "Total Pagado DIAN (Casilla 980)", valueHtml: fmtDecCOP(2613000), sub: "Cas. 82 ($4.590.000) menos Cas. 85 ($1.977.000)", border: accent, bg: "#EFF6FF", labelColor: accent, valColor: accent },
+      { label: "Ajuste Redondeo Art. 577 E.T.", valueHtml: `${fmtSignedDiffCOP(2495)} <span style="font-size:0.78rem;">(${fmtDecCOP(-2495)})</span>`, sub: "PUC 53955099 IVA: +$2.450 redondeo IVA + $45 redondeo ReteIVA", border: "#D4AF37", bg: "#FEFCE8" },
+      { label: "Soporte Bancario y Egreso", valueHtml: "Cheque #20218", sub: "18/03/2026 • Comprobante Egreso N° 17 • Diario N° 29 (Bancolombia)" }
+    ],
+    explainHtml: `
+      <strong>💡 Explicación del Valor a Pagar y Redondeo (Artículo 577 E.T.):</strong><br/>
+      • <strong>1) IVA Generado vs. Descontable:</strong> El IVA generado exacto suma <strong>$37.008.200</strong> (Ventas $35.330.500 + IVA recuperado dev. compras $1.677.700), el cual se aproxima en la Casilla 67 a <strong>$37.009.000</strong> (<strong>+$800</strong>). El IVA descontable exacto suma <strong>$32.420.650</strong> (Compras $30.096.950 + IVA dev. ventas $2.323.700), aproximado en la Casilla 81 a <strong>$32.419.000</strong> (${fmtSignedDiffCOP(-1650)}). La diferencia arroja un saldo antes de retenciones de <strong>$4.587.550</strong> en libros vs. <strong>$4.590.000</strong> en la Casilla 82 (<strong>+$2.450</strong>).<br/>
+      • <strong>2) Cruce de ReteIVA (PUC 13551701):</strong> Industrias Super nos retuvo el 15% del IVA ($2.325.600) menos su devolución (-$348.555) = <strong>$1.977.045</strong> exactos, aproximado en Casilla 85 a <strong>$1.977.000</strong> (<strong>+$45</strong> adicionales a cargo del contribuyente).<br/>
+      • <strong>3) Pago y Ajuste Contable (Hoja 49):</strong> De libros quedaban por girar <strong>$2.610.505</strong>; la DIAN exige <strong>$2.613.000</strong> (múltiplo de $1.000). Los <strong>+$2.495</strong> ($2.450 + $45) se cargan a <code>53955099 — Ajuste al peso IVA</code> y se pagan <strong>$2.613.000</strong> con el Cheque <strong>#20218</strong>.
+    `
+  });
+
+  const tableHtml = renderDeclAnexoTable({
+    accent,
+    totalBg: "#EFF6FF",
+    sectionTitle: "2. ANEXO DETALLADO DE IVA GENERADO, DESCONTABLE Y RETEIVA (ANEXO 1 + HOJA 49)",
+    col1Title: "Casilla",
+    col2Title: "Fecha / Ref.",
+    col3Title: "Concepto / Tercero / Subcuenta PUC",
+    col7Title: "Declarado DIAN / Dif.",
+    rows: f300AnexoRows
+  });
+
+  const bottomHtml = renderDeclarationFooterAndPreview({
+    key: "F300",
+    emp,
+    accent,
+    totalBg: "#EFF6FF",
+    totalBoxLabel: "980. PAGO TOTAL IVA DEL PERÍODO (CHEQUE #20218)",
+    totalPago: 2613000,
+    docTitle: "Formulario 300 DIAN — Impuesto sobre las Ventas (IVA)"
+  });
+
+  return `<div class="dian-form-paper">${topHtml}${tableHtml}${bottomHtml}</div>`;
+}
+
 
 function renderReteicaFormHtml() {
-  const dec = DB?.declaraciones?.RETEICA || {};
   const emp = DB?.empresa || {};
-  const rengs = dec.renglones || [];
+  const accent = "#1E3A8A";
 
-  const rows = rengs.map(r => {
-    const isHigh = r.is_highlight;
-    const isTot = r.is_total;
-    const rowStyle = isHigh ? "background:#FEF3C7; font-weight:900; border:2px solid #D4AF37;" : (isTot ? "background:#F1F5F9; font-weight:800;" : "");
-    return `
-      <tr style="${rowStyle}">
-        <td style="text-align:center; width:50px;"><span class="dian-casilla-tag" style="background:#1E3A8A;">${r.renglon}</span></td>
-        <td><strong>${r.concepto}</strong></td>
-        <td class="num-col">${fmtCOP(r.ind_cio)}</td>
-        <td class="num-col">${fmtCOP(r.avisos)}</td>
-        <td class="num-col">${fmtCOP(r.bomberos)}</td>
-        <td class="num-col" style="${isHigh ? 'font-size:1.05rem; color:#B45309;' : 'font-weight:800;'}">${fmtCOP(r.total)}</td>
-      </tr>
-    `;
-  }).join("");
+  const reteicaAnexoRows = [
+    { sec: "A. RENGLÓN 1 — RETENCIÓN POR COMPRA DE BIENES (Base Bruta $164.300.000 − Dev. $8.830.000 = $155.470.000)", col1: "1", col2: "24680102 / 03", col3: "Industria y Comercio Bienes (Electrodomésticos Cra 13 $1.434.912 + Electromenores $57.600)", base: 155470000, rate: "9,6‰", exacto: 1492512, oficial: 1493000, diff: -488 },
+    { sec: "A. RENGLÓN 1 — RETENCIÓN POR COMPRA DE BIENES (Base Bruta $164.300.000 − Dev. $8.830.000 = $155.470.000)", col1: "1", col2: "24680202 / 03", col3: "Avisos y Tableros Bienes (15% s/ICA: Cra 13 $215.236,80 + Electromenores $8.640)", base: 1492512, rate: "15%", exacto: 223876.8, oficial: 224000, diff: -123.2 },
+    { sec: "A. RENGLÓN 1 — RETENCIÓN POR COMPRA DE BIENES (Base Bruta $164.300.000 − Dev. $8.830.000 = $155.470.000)", col1: "1", col2: "24680302 / 03", col3: "Sobretasa Bomberil Bienes (10% s/ICA: Cra 13 $143.491,20 + Electromenores $5.760)", base: 1492512, rate: "10%", exacto: 149251.2, oficial: 149000, diff: 251.2 },
+    { sec: "A. RENGLÓN 1 — RETENCIÓN POR COMPRA DE BIENES (Base Bruta $164.300.000 − Dev. $8.830.000 = $155.470.000)", col1: "1", col2: "Subtotal", col3: "SUBTOTAL RENGLÓN 1 — RETENCIÓN POR COMPRA DE BIENES", base: 155470000, rate: "12‰", exacto: 1865640, oficial: 1866000, diff: -360, isTotal: true },
 
-  return `
-    <div class="dian-form-paper" style="border-color:#1E3A8A;">
-      <div class="dian-header-banner" style="background:#1E3A8A;">
-        <div>
-          <div class="dian-header-title">DECLARACIÓN DE RETENCIÓN EN LA FUENTE DE INDUSTRIA Y COMERCIO (RETEICA)</div>
-          <div style="font-size:0.75rem; color:#DBEAFE;">Alcaldía de Bucaramanga • Secretaría de Hacienda Municipal • NIT 890.201.222-1</div>
-        </div>
-        <div style="text-align:right;">
-          <span style="background:rgba(255,255,255,0.2); padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.8rem;">Año: 2026 • Primer Trimestre (Ene-Mar)</span>
-        </div>
-      </div>
+    { sec: "B. RENGLÓN 2 — RETENCIÓN POR SERVICIOS (Rafael Suárez C.C. 75.050.205 • Base $2.400.000)", col1: "2", col2: "24680101", col3: "Industria y Comercio Servicios (Rafael Suárez)", base: 2400000, rate: "9,6‰", exacto: 23040, oficial: 23000, diff: 40 },
+    { sec: "B. RENGLÓN 2 — RETENCIÓN POR SERVICIOS (Rafael Suárez C.C. 75.050.205 • Base $2.400.000)", col1: "2", col2: "24680201", col3: "Avisos y Tableros Servicios (15% s/ICA)", base: 23040, rate: "15%", exacto: 3456, oficial: 4000, diff: -544 },
+    { sec: "B. RENGLÓN 2 — RETENCIÓN POR SERVICIOS (Rafael Suárez C.C. 75.050.205 • Base $2.400.000)", col1: "2", col2: "24680301", col3: "Sobretasa Bomberil Servicios (10% s/ICA)", base: 23040, rate: "10%", exacto: 2304, oficial: 2000, diff: 304 },
+    { sec: "B. RENGLÓN 2 — RETENCIÓN POR SERVICIOS (Rafael Suárez C.C. 75.050.205 • Base $2.400.000)", col1: "2", col2: "Subtotal", col3: "SUBTOTAL RENGLÓN 2 — RETENCIÓN POR SERVICIOS", base: 2400000, rate: "12‰", exacto: 28800, oficial: 29000, diff: -200, isTotal: true },
 
-      <div class="dian-sub-bar" style="background:#EFF6FF; border-bottom:2px solid #1E3A8A;">
-        <div><strong>Agente Retenedor:</strong> <strong style="color:#1E3A8A;">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</strong></div>
-        <div><strong>NIT:</strong> <span class="code-col">901.765.438-3</span></div>
-        <div><strong>Tarifa ICA:</strong> 9.6 x mil • <strong>Avisos:</strong> 15% • <strong>Bomberil:</strong> 10%</div>
-      </div>
+    { sec: "C. RESUMEN POR COMPONENTE Y PAGO ALCALDÍA DE BUCARAMANGA (Renglones 4 / 10 / 15)", col1: "4 / 10", col2: "246801", col3: "Total Industria y Comercio (9,6 × 1000)", base: 157870000, rate: "9,6‰", exacto: 1515552, oficial: 1516000, diff: -448 },
+    { sec: "C. RESUMEN POR COMPONENTE Y PAGO ALCALDÍA DE BUCARAMANGA (Renglones 4 / 10 / 15)", col1: "4 / 10", col2: "246802", col3: "Total Avisos y Tableros (15% s/ICA)", base: 1515552, rate: "15%", exacto: 227332.8, oficial: 228000, diff: -667.2 },
+    { sec: "C. RESUMEN POR COMPONENTE Y PAGO ALCALDÍA DE BUCARAMANGA (Renglones 4 / 10 / 15)", col1: "4 / 10", col2: "246803", col3: "Total Sobretasa Bomberil (10% s/ICA)", base: 1515552, rate: "10%", exacto: 151555.2, oficial: 151000, diff: 555.2 },
+    { sec: "C. RESUMEN POR COMPONENTE Y PAGO ALCALDÍA DE BUCARAMANGA (Renglones 4 / 10 / 15)", col1: "53955098", col2: "53955098", col3: "Ajuste al Peso — Pérdidas Diversas RETEICA (Art. 577 E.T.)", base: null, rate: "Ajuste", exacto: 560, oficial: 0, hideOficial: true, diff: 560 },
+    { sec: "C. RESUMEN POR COMPONENTE Y PAGO ALCALDÍA DE BUCARAMANGA (Renglones 4 / 10 / 15)", col1: "15", col2: "21050501", col3: "TOTAL A PAGAR MUNICIPIO DE BUCARAMANGA (Cheque #20217)", base: null, rate: "Mensual", exacto: 1894440, oficial: 1895000, diff: -560, isHighlight: true }
+  ];
 
-      <div class="dian-section-header" style="border-left-color:#1E3A8A;">LIQUIDACIÓN PRIVADA DE RETENCIONES Y SOBRETASAS</div>
-      <div class="table-wrap">
-        <table class="dian-table">
-          <thead>
-            <tr>
-              <th style="width:50px; text-align:center;">Renglón</th>
-              <th>Actividad Sujeta a Retención</th>
-              <th class="num-col">Industria y Cyo (9.6‰)</th>
-              <th class="num-col">Avisos y Tableros (15%)</th>
-              <th class="num-col">Sobretasa Bomberil (10%)</th>
-              <th class="num-col" style="background:#1E3A8A; color:#fff;">Total Retenido</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${rows}
-          </tbody>
-        </table>
-      </div>
+  const topHtml = renderDeclarationShellTop({
+    key: "RETEICA",
+    badge: "BGA",
+    accent,
+    title: "DECLARACIÓN DE RETENCIÓN DE INDUSTRIA Y COMERCIO (RETEICA)",
+    subtitle: "Alcaldía de Bucaramanga • Secretaría de Hacienda Municipal • Rubros Separados y Redondeo",
+    periodTag: "Año 2026 • Mes: Marzo (Mensual)",
+    razonSocial: emp.razon_social || "ELECTROVIVIENDA S.A.S",
+    metaRight: `<strong>Periodicidad:</strong> Mensual • <strong>Acuerdo 033/2020:</strong> ICA 9,6‰ + Avisos 15% + Bomberil 10%`,
+    kpis: [
+      { label: "Saldo Contable Exacto (PUC 2468)", valueHtml: fmtDecCOP(1894440), sub: "Bienes $1.865.640 + Servicios $28.800" },
+      { label: "Total Pagado Alcaldía (Renglón 15)", valueHtml: fmtDecCOP(1895000), sub: "ICA $1.516.000 + Avisos $228.000 + Bomb. $151.000", border: accent, bg: "#EFF6FF", labelColor: accent, valColor: accent },
+      { label: "Ajuste Redondeo Art. 577 E.T.", valueHtml: `${fmtSignedDiffCOP(560)} <span style="font-size:0.78rem;">(${fmtDecCOP(-560)})</span>`, sub: "PUC 53955098 RETEICA: Bienes +$360 + Servicios +$200", border: "#D4AF37", bg: "#FEFCE8" },
+      { label: "Soporte Bancario y Egreso", valueHtml: "Cheque #20217", sub: "29/03/2026 • Comprobante Egreso N° 18 • Diario N° 30 (Hoja RETEICA)" }
+    ],
+    explainHtml: `
+      <strong>💡 Explicación del Valor a Pagar y Redondeo por Rubro Separado:</strong><br/>
+      • <strong>Separación obligatoria de tributos municipales (Acuerdo 033/2020):</strong> Cada concepto se calcula y redondea al <strong>$1.000 más cercano</strong> de forma independiente: <strong>(1) Industria y Comercio (9,6 × 1000)</strong>, <strong>(2) Avisos y Tableros (15% sobre el ICA)</strong> y <strong>(3) Sobretasa Bomberil (10% sobre el ICA)</strong>.<br/>
+      • <strong>Compra de Bienes (Renglón 1 • Base neta $155.470.000):</strong> Contable exacto $1.492.512 + $223.876,80 + $149.251,20 = <strong>$1.865.640</strong> → Redondeo oficial: $1.493.000 + $224.000 + $149.000 = <strong>$1.866.000</strong> (Diferencia <strong>+$360</strong>).<br/>
+      • <strong>Servicios (Renglón 2 • Rafael Suárez $2.400.000):</strong> Contable exacto $23.040 + $3.456 + $2.304 = <strong>$28.800</strong> → Redondeo oficial: $23.000 + $4.000 + $2.000 = <strong>$29.000</strong> (Diferencia <strong>+$200</strong>).<br/>
+      • <strong>Contabilización del Pago (Hoja RETEICA):</strong> Saldo en <code>2468</code> por <strong>$1.894.440</strong> + ajuste por redondeo de <strong>$560</strong> en <code>53955098 RETEICA</code> = <strong>$1.895.000</strong> girados con el Cheque <strong>#20217</strong> a la Alcaldía de Bucaramanga.
+    `
+  });
 
-      <div style="margin-top:18px; border-top:1.5px dashed #CBD5E1; padding-top:14px; display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px;">
-        <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
-          <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">REPRESENTANTE LEGAL</span>
-          <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.representante_legal || "Kevin Guerrero"}</strong>
-        </div>
-        <div style="border:1px solid #CBD5E1; border-radius:8px; padding:12px; background:#F8FAFC;">
-          <span style="font-size:0.7rem; font-weight:800; color:#64748B; display:block;">CONTADORA PÚBLICA</span>
-          <strong style="color:#0B192C; display:block; font-size:0.86rem; margin-top:3px;">${emp.contadora || "Gina Villamizar"}</strong>
-          <span style="font-size:0.74rem; color:#475569;">T.P. 248960-T</span>
-        </div>
-        <div style="border:1.5px solid #1E3A8A; border-radius:8px; padding:12px; background:#EFF6FF; display:flex; flex-direction:column; justify-content:center;">
-          <span style="font-size:0.7rem; font-weight:800; color:#1E3A8A;">15. TOTAL A PAGAR AL MUNICIPIO</span>
-          <span style="font-size:1.25rem; font-weight:900; color:#1E3A8A;">${fmtCOP(dec.total_pago || 1895000)}</span>
-        </div>
-      </div>
-    </div>
-  `;
+  const tableHtml = renderDeclAnexoTable({
+    accent,
+    totalBg: "#EFF6FF",
+    sectionTitle: "2. ANEXO DETALLADO POR RUBRO Y TERCERO (ANEXO 1 + HOJA RETEICA)",
+    col1Title: "Renglón",
+    col2Title: "Cuenta PUC",
+    col3Title: "Rubro / Concepto / Tercero",
+    col7Title: "Declarado BGA / Dif.",
+    col1Width: "65px",
+    col2Width: "105px",
+    rows: reteicaAnexoRows
+  });
+
+  const bottomHtml = renderDeclarationFooterAndPreview({
+    key: "RETEICA",
+    emp,
+    accent,
+    totalBg: "#EFF6FF",
+    totalBoxLabel: "15. TOTAL A PAGAR AL MUNICIPIO (CHEQUE #20217)",
+    totalPago: 1895000,
+    docTitle: "Formulario ReteICA — Alcaldía de Bucaramanga"
+  });
+
+  return `<div class="dian-form-paper" style="border-color:${accent};">${topHtml}${tableHtml}${bottomHtml}</div>`;
 }
 
 
@@ -6964,6 +6996,11 @@ function renderTaxSection() {
       const isPaid = item.estado.includes("PAGADO") || item.estado.includes("PRESENTADO");
       const isAlert = item.estado.includes("ALERTA") || item.estado.includes("PENDIENTE");
       const pillCls = isPaid ? "status-paid" : (isAlert ? "status-alert" : "status-pending");
+      const declKey = DECL_CALENDAR_MAP[item.id];
+      const declAssets = declKey ? DECL_OFFICIAL_ASSETS[declKey] : null;
+      const downloadBtn = declAssets
+        ? `<a class="btn btn-primary btn-sm" href="${declAssets.pdf}" download="${declAssets.pdfName}" title="Descargar declaración oficial en PDF">📥 PDF</a>`
+        : "";
       return `
         <tr>
           <td class="code-col">${item.id}</td>
@@ -6975,9 +7012,12 @@ function renderTaxSection() {
           <td><span class="status-pill ${pillCls}">${item.estado}</span></td>
           <td class="num-col"><strong>${fmtCOP(item.valor_pagado)}</strong></td>
           <td>
-            <button class="btn btn-outline btn-sm" onclick="toggleTaxItemStatus('${item.id}')">
-              ${isPaid ? "Reabrir" : "✓ Marcar Pagado"}
-            </button>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              ${downloadBtn}
+              <button class="btn btn-outline btn-sm" onclick="toggleTaxItemStatus('${item.id}')">
+                ${isPaid ? "Reabrir" : "✓ Marcar Pagado"}
+              </button>
+            </div>
           </td>
         </tr>
       `;
@@ -7085,6 +7125,17 @@ function renderTaxSection() {
 }
 
 function exportActiveTaxDeclarationPdf() {
+  const officialAsset = DECL_OFFICIAL_ASSETS[ACTIVE_TAX_TAB];
+  if (officialAsset) {
+    const link = document.createElement("a");
+    link.href = officialAsset.pdf;
+    link.download = officialAsset.pdfName;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    return;
+  }
+
   const container = document.getElementById("taxFormContentContainer");
   if (!container) return;
   const emp = DB?.empresa || {};
