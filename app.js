@@ -417,6 +417,79 @@ function fmtCOP(val) {
   }).format(Math.round(num));
 }
 
+function numeroALetrasCOP(monto) {
+  const raw = Number(monto);
+  if (!Number.isFinite(raw)) return "CERO PESOS M/CTE.";
+  const isNeg = raw < 0;
+  const roundedTotal = Math.round(Math.abs(raw) * 100);
+  const entero = Math.floor(roundedTotal / 100);
+  const centavos = roundedTotal % 100;
+
+  if (entero === 0 && centavos === 0) return "CERO PESOS M/CTE.";
+
+  const UNIDADES = ["", "UN", "DOS", "TRES", "CUATRO", "CINCO", "SEIS", "SIETE", "OCHO", "NUEVE"];
+  const ESPECIALES = ["DIEZ", "ONCE", "DOCE", "TRECE", "CATORCE", "QUINCE", "DIECISÉIS", "DIECISIETE", "DIECIOCHO", "DIECINUEVE"];
+  const VEINTIS = ["VEINTE", "VEINTIÚN", "VEINTIDÓS", "VEINTITRÉS", "VEINTICUATRO", "VEINTICINCO", "VEINTISÉIS", "VEINTISIETE", "VEINTIOCHO", "VEINTINUEVE"];
+  const DECENAS = ["", "", "VEINTE", "TREINTA", "CUARENTA", "CINCUENTA", "SESENTA", "SETENTA", "OCHENTA", "NOVENTA"];
+  const CENTENAS = ["", "CIENTO", "DOSCIENTOS", "TRESCIENTOS", "CUATROCIENTOS", "QUINIENTOS", "SEISCIENTOS", "SETECIENTOS", "OCHOCIENTOS", "NOVECIENTOS"];
+
+  function convertirGrupo(n) {
+    if (n === 0) return "";
+    if (n === 100) return "CIEN";
+    const c = Math.floor(n / 100);
+    const r = n % 100;
+    const parts = [];
+    if (c > 0) parts.push(CENTENAS[c]);
+    if (r > 0) {
+      if (r < 10) parts.push(UNIDADES[r]);
+      else if (r < 20) parts.push(ESPECIALES[r - 10]);
+      else if (r < 30) parts.push(VEINTIS[r - 20]);
+      else {
+        const d = Math.floor(r / 10);
+        const u = r % 10;
+        parts.push(u > 0 ? `${DECENAS[d]} Y ${UNIDADES[u]}` : DECENAS[d]);
+      }
+    }
+    return parts.join(" ");
+  }
+
+  function convertirHasta999999(n) {
+    if (n === 0) return "";
+    const miles = Math.floor(n / 1000);
+    const resto = n % 1000;
+    const parts = [];
+    if (miles === 1) parts.push("MIL");
+    else if (miles > 1) parts.push(`${convertirGrupo(miles)} MIL`);
+    if (resto > 0) parts.push(convertirGrupo(resto));
+    return parts.join(" ");
+  }
+
+  let textoEntero = "";
+  if (entero === 0) {
+    textoEntero = "CERO";
+  } else {
+    const millones = Math.floor(entero / 1000000);
+    const resto = entero % 1000000;
+    const parts = [];
+    if (millones === 1) parts.push("UN MILLÓN");
+    else if (millones > 1) parts.push(`${convertirHasta999999(millones)} MILLONES`);
+    if (resto > 0) parts.push(convertirHasta999999(resto));
+    textoEntero = parts.join(" ");
+  }
+
+  const moneda = (entero === 1 && centavos === 0)
+    ? "PESO M/CTE."
+    : (entero >= 1000000 && entero % 1000000 === 0 && centavos === 0)
+      ? "DE PESOS M/CTE."
+      : "PESOS M/CTE.";
+
+  const centText = centavos > 0
+    ? ` CON ${convertirGrupo(centavos)} ${centavos === 1 ? "CENTAVO" : "CENTAVOS"}`
+    : "";
+
+  return `${isNeg ? "MENOS " : ""}${textoEntero}${centText} ${moneda}`;
+}
+
 function fmtNum(val, dec = 0) {
   const num = Number(val) || 0;
   return new Intl.NumberFormat("es-CO", {
@@ -904,11 +977,24 @@ function renderDashboard() {
       if (t.num_comprobante_diario) numDiarios.add(t.num_comprobante_diario);
       (t.asientos || []).forEach(a => {
         if (String(a.codigo).startsWith("4135") && a.haber > 0) ventasAcumuladas += a.haber;
-        if (String(a.codigo) === "3105" && a.haber > 0) capitalSocial += a.haber;
       });
     });
   });
 
+  // Saldo de Cuenta T 3105 de ENERO (Haber - Debe = $248.600.000)
+  const calcSaldo3105 = txs => (txs || []).reduce((acc, t) => {
+    (t.asientos || []).forEach(a => {
+      if (String(a.codigo || "").trim() === "3105") {
+        acc += (Number(a.haber) || 0) - (Number(a.debe) || 0);
+      }
+    });
+    return acc;
+  }, 0);
+
+  capitalSocial = calcSaldo3105(DB.meses["ENERO"]?.transacciones);
+  if (capitalSocial === 0) {
+    capitalSocial = ALL_MONTHS.reduce((acc, m) => acc + calcSaldo3105(DB.meses[m]?.transacciones), 0);
+  }
   if (capitalSocial === 0 && (emp.socios || []).length) {
     capitalSocial = (emp.socios || []).reduce((acc, s) => acc + (Number(s.aporte) || 0), 0);
   }
@@ -927,7 +1013,7 @@ function renderDashboard() {
     <div class="kpi-card">
       <div class="kpi-label">Aporte Social / Capital (3105)</div>
       <div class="kpi-value">${fmtCOP(capitalSocial)}</div>
-      <div class="kpi-sub">${capitalSocial > 0 ? "Comprobante Diario N° 1 (Hoja 1)" : "Taller en $0 (Listo para iniciar)"}</div>
+      <div class="kpi-sub">${capitalSocial > 0 ? "Saldo Cuenta T 3105 — Enero 2026" : "Taller en $0 (Listo para iniciar)"}</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Ingresos por Ventas (4135)</div>
@@ -1316,7 +1402,7 @@ function renderCommercialInvoicePreview(inv) {
             <div style="font-size:0.78rem; font-weight:700; color:var(--brand-primary); margin-bottom:4px;">Observaciones y Soporte Contable:</div>
             <p style="font-size:0.78rem; color:var(--text-secondary); margin-bottom:8px;">${inv.enunciado}</p>
             <div style="font-size:0.75rem; background:var(--brand-gold-soft); padding:8px 12px; border-radius:6px; border:1px solid var(--brand-gold);">
-              <strong>Valor en Letras:</strong> ${inv.suma_letras || "Valor según liquidación oficial."}
+              <strong>Valor en Letras:</strong> ${numeroALetrasCOP(inv.total_neto ?? inv.total_debe ?? 0)}
             </div>
             <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
               <button class="btn btn-outline btn-sm" onclick="setGlobalPeriod('${inv.mes}'); ACTIVE_VOUCHER_SHEET='${inv.mes}|${inv.hoja}'; switchSection('comprobantes');">
@@ -1639,7 +1725,7 @@ function renderVoucherDetail() {
             <strong>Tercero / Beneficiario:</strong> ${tx.tercero || DB.empresa.razon_social}<br/>
             <strong>NIT / CC:</strong> <span class="code-col">${tx.nit_tercero || DB.empresa.nit}</span><br/>
             <strong>Cheque / Pago / Referencia:</strong> ${tx.cheque || "Contado / Causación"}<br/>
-            <strong>La Suma de (Letras):</strong> ${tx.suma_letras || fmtCOP(tx.total_debe)}
+            <strong>La Suma de (Letras):</strong> ${numeroALetrasCOP(tx.total_debe ?? tx.total_haber ?? 0)}
           </div>
         </div>
       </div>
@@ -2199,7 +2285,7 @@ function recalcLiveTransaction() {
     forma_pago: formaPago,
     cheque: document.getElementById("txCheque")?.value || formaPago,
     enunciado: document.getElementById("txEnunciado")?.value || "",
-    suma_letras: `${fmtCOP(neto)} PESOS M/CTE.`,
+    suma_letras: numeroALetrasCOP(neto),
     subtotal: base,
     iva,
     retefuente,
@@ -2262,7 +2348,7 @@ async function saveAndSyncTransaction() {
     nit_tercero: nitTercero,
     cheque,
     concepto_soporte: `${enunciado} [Origen: ${numFactura} • Hoja ${hoja} • ${mes}]`,
-    suma_letras: `${fmtCOP(st.neto)} PESOS M/CTE.`,
+    suma_letras: numeroALetrasCOP(st.neto),
     elaborado_por: ACTIVE_STUDENT_PROFILE.nombre || DB.empresa.elaborado_por || "Gina Villamizar",
     auxiliar_tercero: (isVentaSide || st.tipo === "INGRESO") ? st.auxCliente?.codigo : st.auxProveedor?.codigo,
     auxiliar_kardex: st.auxKardexProd?.codigo || "",
@@ -2365,7 +2451,7 @@ async function saveAndSyncTransaction() {
       reteiva: st.reteiva,
       reteica: st.reteica,
       total_neto: st.neto,
-      suma_letras: `${fmtCOP(st.neto)} PESOS M/CTE.`,
+      suma_letras: numeroALetrasCOP(st.neto),
       asientos: st.asientos,
       total_debe: st.sumDebe,
       total_haber: st.sumHaber
@@ -3054,6 +3140,60 @@ function extractRowMonetaryValue(nonNull, codeToExclude) {
   return candNums[0];
 }
 
+function normalizeNIIFGroupLabel(text) {
+  const clean = String(text || "").trim().replace(/\s+/g, " ");
+  if (!clean) return "";
+  if (/^activos?\s+fijos?$/i.test(clean) || /^activos?\s+no\s+corrientes?$/i.test(clean)) return "Activos Fijos";
+  if (/^activos?\s+corrientes?$/i.test(clean)) return "Activos Corrientes";
+  if (/^pasivos?\s+no\s+corrientes?$/i.test(clean)) return "Pasivos No Corrientes";
+  if (/^pasivos?\s+corrientes?$/i.test(clean)) return "Pasivos Corrientes";
+
+  const ACRONYMS = new Set(["IVA", "ICA", "NIIF", "PUC", "S.A.S", "S.A.S.", "SAS", "DIAN", "RRI", "COP", "EA", "PYMES", "CXC", "CXP", "CR", "DB", "TA", "UAI", "UDI"]);
+  const LOWER_WORDS = new Set(["y", "e", "o", "u", "de", "del", "al", "a", "en", "la", "las", "el", "los", "por", "para", "con", "sin"]);
+  return clean.split(" ").map((word, idx) => {
+    const up = word.toUpperCase();
+    if (ACRONYMS.has(up)) return up;
+    const lw = word.toLowerCase();
+    if (idx > 0 && LOWER_WORDS.has(lw)) return lw;
+    return lw.replace(/[a-záéíóúüñ]/i, ch => ch.toUpperCase());
+  }).join(" ");
+}
+
+function normalizeNIIFSubtotalLabel(text) {
+  const clean = String(text || "").trim().replace(/\s+/g, " ");
+  return clean.replace(/SUBTOTAL\s+ACTIVOS\s+NO\s+CORRIENTES/gi, "SUBTOTAL ACTIVOS FIJOS");
+}
+
+function getNIIFClassTone(code, concept) {
+  const c = String(code || "").trim();
+  const u = String(concept || "").toUpperCase();
+  if (c === "1" || u.includes("ACTIVO")) return "niif-clase-activo";
+  if (c === "2" || u.includes("PASIVO")) return "niif-clase-pasivo";
+  if (c === "3" || u.includes("PATRIMONIO")) return "niif-clase-patrimonio";
+  return "";
+}
+
+function getNIIFGroupTone(concept) {
+  const u = String(concept || "").toUpperCase();
+  if (u.includes("ACTIVOS CORRIENTES") || u.includes("ACTIVO CORRIENTE")) return "niif-grupo-activo-corr";
+  if (u.includes("ACTIVOS FIJOS") || u.includes("ACTIVO FIJO") || u.includes("ACTIVOS NO CORRIENTES") || u.includes("ACTIVO NO CORRIENTE") || u.includes("PROPIEDAD, PLANTA")) return "niif-grupo-activo-fijo";
+  if (u.includes("PASIVOS NO CORRIENTES") || u.includes("PASIVO NO CORRIENTE")) return "niif-grupo-pasivo-nocorr";
+  if (u.includes("PASIVOS CORRIENTES") || u.includes("PASIVO CORRIENTE")) return "niif-grupo-pasivo-corr";
+  if (u === "PATRIMONIO") return "niif-grupo-patrimonio";
+  return "niif-grupo-sub";
+}
+
+function isMajorNIIFGroupLabel(concept) {
+  const u = String(concept || "").toUpperCase();
+  return (
+    u.includes("ACTIVOS CORRIENTES") || u.includes("ACTIVO CORRIENTE") ||
+    u.includes("ACTIVOS FIJOS") || u.includes("ACTIVO FIJO") ||
+    u.includes("ACTIVOS NO CORRIENTES") || u.includes("ACTIVO NO CORRIENTE") ||
+    u.includes("PASIVOS NO CORRIENTES") || u.includes("PASIVO NO CORRIENTE") ||
+    u.includes("PASIVOS CORRIENTES") || u.includes("PASIVO CORRIENTE")
+  );
+}
+
 function parseNIIFStatementRows(rowsIn) {
   const rows = (rowsIn || []).map(getRowCells);
   const parsed = [];
@@ -3086,19 +3226,20 @@ function parseNIIFStatementRows(rowsIn) {
       if (clsNum === "1") currentCategory = "ACTIVOS_CORRIENTES";
       else if (clsNum === "2") currentCategory = "PASIVOS_CORRIENTES";
       else if (clsNum === "3") currentCategory = "PATRIMONIO";
-      parsed.push({ type: "CLASE", code: clsNum, concept: nonNull[1] });
+      parsed.push({ type: "CLASE", code: clsNum, concept: nonNull[1], clsTone: getNIIFClassTone(clsNum, nonNull[1]) });
       return;
     }
     if (["INGRESOS", "COSTOS", "GASTOS"].some(w => cleanWords[0] === w || fullText.endsWith(" " + w))) {
-      parsed.push({ type: "CLASE", code: "", concept: cleanWords[0] || fullText });
+      const cName = cleanWords[0] || fullText;
+      parsed.push({ type: "CLASE", code: "", concept: cName, clsTone: getNIIFClassTone("", cName) });
       return;
     }
 
     // Detectar cambios de subcategoría
     if (fullText.includes("ACTIVOS CORRIENTES") || fullText.includes("ACTIVO CORRIENTE")) currentCategory = "ACTIVOS_CORRIENTES";
-    else if (fullText.includes("ACTIVOS NO CORRIENTES") || fullText.includes("ACTIVOS FIJOS") || fullText.includes("PROPIEDAD, PLANTA")) currentCategory = "ACTIVOS_NO_CORRIENTES";
-    else if (fullText.includes("PASIVOS CORRIENTES") || fullText.includes("PASIVO CORRIENTE")) currentCategory = "PASIVOS_CORRIENTES";
+    else if (fullText.includes("ACTIVOS NO CORRIENTES") || fullText.includes("ACTIVOS FIJOS") || fullText.includes("ACTIVO FIJO") || fullText.includes("PROPIEDAD, PLANTA")) currentCategory = "ACTIVOS_NO_CORRIENTES";
     else if (fullText.includes("PASIVOS NO CORRIENTES") || fullText.includes("PASIVO NO CORRIENTE")) currentCategory = "PASIVOS_NO_CORRIENTES";
+    else if (fullText.includes("PASIVOS CORRIENTES") || fullText.includes("PASIVO CORRIENTE")) currentCategory = "PASIVOS_CORRIENTES";
     else if (fullText.includes("PATRIMONIO") && !fullText.includes("TOTAL") && !fullText.includes("PASIVO")) currentCategory = "PATRIMONIO";
 
     // Detectar cuentas con código de 4 dígitos o cuentas de patrimonio (Utilidad / Pérdida del Ejercicio)
@@ -3153,7 +3294,7 @@ function parseNIIFStatementRows(rowsIn) {
       } else if (currentCategory === "PATRIMONIO") {
         if (!val || val === 0) val = sumPatrimonio;
       }
-      parsed.push({ type: "SUBTOTAL", concept: cleanConcept, val: val });
+      parsed.push({ type: "SUBTOTAL", concept: normalizeNIIFSubtotalLabel(cleanConcept), val: val });
       return;
     }
 
@@ -3178,7 +3319,13 @@ function parseNIIFStatementRows(rowsIn) {
     // Grupos / Subsecciones
     const grupoTitle = cleanWords.join(" ");
     if (grupoTitle) {
-      parsed.push({ type: "GRUPO", concept: grupoTitle });
+      const normConcept = normalizeNIIFGroupLabel(grupoTitle);
+      parsed.push({
+        type: "GRUPO",
+        concept: normConcept,
+        groupTone: getNIIFGroupTone(normConcept),
+        isMajorGroup: isMajorNIIFGroupLabel(normConcept)
+      });
     }
   });
 
@@ -3216,20 +3363,20 @@ function renderCorporateHeaderBoxHtml(title, periodTag, subTag) {
   const emp = DB?.empresa || {};
   return `
     <div class="niif-header-box">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; margin-bottom:10px; border-bottom:1.5px solid rgba(212,175,55,0.35); padding-bottom:10px;">
-        <div style="background:#FFFFFF; padding:6px 14px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); border:1px solid #E2E8F0; display:inline-flex; align-items:center;">
-          <img src="assets/logo-electrovivienda.png" alt="ELECTROVIVIENDA S.A.S" style="height:44px; width:auto; max-width:220px; object-fit:contain;" />
+      <div class="niif-header-top">
+        <div class="niif-header-logo-pill">
+          <img src="assets/logo-electrovivienda.png" alt="${emp.razon_social || "ELECTROVIVIENDA S.A.S"}" />
         </div>
-        <div style="text-align:right;">
-          <div class="niif-company-title" style="font-size:1.15rem; font-weight:900;">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</div>
+        <div class="niif-header-meta">
+          <div class="niif-company-title">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</div>
           <div class="niif-company-sub">NIT: ${emp.nit || "901.765.438-3"} • ${emp.regimen || "RRI — Agente Autorretenedor de Renta"}</div>
-          <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">${emp.direccion || "Cra 21 N° 46-11"} • ${emp.ciudad || "Bucaramanga, Santander"}</div>
+          <div class="niif-company-addr">${emp.direccion || "Cra 21 N° 46-11"} • ${emp.ciudad || "Bucaramanga, Santander"}</div>
         </div>
       </div>
       <div class="niif-statement-badge">
         <div class="niif-statement-name">${title}</div>
         <span class="niif-period-tag">${periodTag}</span>
-        ${subTag ? `<span style="font-size:0.7rem; color:#94A3B8; display:block; margin-top:3px;">${subTag}</span>` : ""}
+        ${subTag ? `<span class="niif-sub-tag">${subTag}</span>` : ""}
       </div>
     </div>
   `;
@@ -3269,20 +3416,22 @@ function renderExecutiveNIIFStatementHtml(rowsIn, statementType, month, statemen
       <div class="niif-kpi-summary-strip">
         <div class="niif-kpi-pill">
           <span class="kpi-title">🏛️ Total Activos</span>
-          <span class="kpi-amount" style="color:var(--brand-primary);">${fmtCOP(totActivos)}</span>
+          <span class="kpi-amount ef-col-activo">${fmtCOP(totActivos)}</span>
         </div>
         <div class="niif-kpi-pill">
           <span class="kpi-title">💳 Total Pasivos</span>
-          <span class="kpi-amount" style="color:#DC2626;">${fmtCOP(totPasivos)}</span>
+          <span class="kpi-amount ef-col-pasivo">${fmtCOP(totPasivos)}</span>
         </div>
         <div class="niif-kpi-pill">
           <span class="kpi-title">💎 Total Patrimonio</span>
-          <span class="kpi-amount" style="color:var(--brand-emerald);">${fmtCOP(totPatrimonio)}</span>
+          <span class="kpi-amount ef-col-patrimonio">${fmtCOP(totPatrimonio)}</span>
         </div>
         <div class="niif-kpi-pill">
           <span class="kpi-title">⚖️ Ecuación Patrimonial</span>
-          <span class="kpi-amount" style="font-size:0.95rem; font-weight:800; color:${isCuadrado ? 'var(--brand-emerald)' : '#DC2626'};">
-            ${isCuadrado ? '✓ Activo = Pasivo + Patrimonio' : '⚠️ Descuadre'}
+          <span class="kpi-amount" style="font-size:0.95rem; font-weight:800;">
+            ${isCuadrado
+              ? `<span class="ef-eq-check">✓</span> <span class="ef-col-activo">Activo</span> <span class="ef-eq-op">=</span> <span class="ef-col-pasivo">Pasivo</span> <span class="ef-eq-op">+</span> <span class="ef-col-patrimonio">Patrimonio</span>`
+              : `<span style="color:#DC2626;">⚠️ Descuadre</span>`}
           </span>
           <span style="font-size:0.7rem; color:var(--text-muted);">${fmtCOP(totPasivoPat || (totPasivos + totPatrimonio))}</span>
         </div>
@@ -3316,13 +3465,51 @@ function renderExecutiveNIIFStatementHtml(rowsIn, statementType, month, statemen
     `;
   }
 
+  // Ocultar cuentas con saldo en $0 y subgrupos huérfanos sin cuentas visibles
+  const nonZeroAccounts = parsed.filter(item => {
+    if (item.type === "CUENTA") {
+      return item.val !== null && item.val !== undefined && Math.abs(Number(item.val) || 0) >= 0.01;
+    }
+    return true;
+  });
+
+  const visibleRows = nonZeroAccounts.filter((item, idx, arr) => {
+    if (item.type !== "GRUPO") return true;
+    let hasVisibleCuenta = false;
+    let nextSubtotalVal = null;
+    for (let j = idx + 1; j < arr.length; j++) {
+      const nxt = arr[j];
+      if (nxt.type === "CUENTA") {
+        hasVisibleCuenta = true;
+        break;
+      }
+      if (nxt.type === "SUBTOTAL") {
+        nextSubtotalVal = Number(nxt.val) || 0;
+        break;
+      }
+      if (nxt.type === "GRUPO" || nxt.type === "CLASE" || nxt.type === "TOTAL") {
+        if (!item.isMajorGroup) break;
+        if (nxt.type === "CLASE" || nxt.type === "TOTAL") break;
+      }
+    }
+    if (!item.isMajorGroup) return hasVisibleCuenta;
+    return hasVisibleCuenta || (nextSubtotalVal !== null && Math.abs(nextSubtotalVal) >= 0.01);
+  });
+
   // Generar filas de la tabla
-  const tableRows = parsed.map(item => {
+  const tableRows = visibleRows.map(item => {
     if (item.type === "CLASE") {
+      const pillBg = item.clsTone === "niif-clase-activo"
+        ? "#0F172A"
+        : item.clsTone === "niif-clase-pasivo"
+          ? "#DC2626"
+          : item.clsTone === "niif-clase-patrimonio"
+            ? "#059669"
+            : "var(--brand-primary)";
       return `
-        <tr class="niif-row-clase">
+        <tr class="niif-row-clase ${item.clsTone || ''}">
           <td colspan="2">
-            <span class="niif-code-pill" style="background:var(--brand-primary); color:#fff; font-weight:800;">${item.code ? `CLASE ${item.code}` : "NIIF"}</span>
+            <span class="niif-code-pill" style="background:${pillBg}; color:#fff; font-weight:800;">${item.code ? `CLASE ${item.code}` : "NIIF"}</span>
             <strong style="margin-left:8px; letter-spacing:0.4px;">${item.concept}</strong>
           </td>
           <td style="text-align:center;"></td>
@@ -3332,7 +3519,7 @@ function renderExecutiveNIIFStatementHtml(rowsIn, statementType, month, statemen
     }
     if (item.type === "GRUPO") {
       return `
-        <tr class="niif-row-grupo">
+        <tr class="niif-row-grupo ${item.groupTone || ''}">
           <td colspan="3"><strong>${item.concept}</strong></td>
           <td class="num-col"></td>
         </tr>
@@ -3458,7 +3645,7 @@ function renderConsolidatedComparativeStatementHtml(rowsIn, statementType, month
   `;
 
   const dataRows = rows.slice(headerRowIdx + 1);
-  let tbodyHtml = "";
+  const parsedConsRows = [];
 
   dataRows.forEach(r => {
     const nonNull = r.filter(c => c !== null && String(c).trim() !== "");
@@ -3466,7 +3653,7 @@ function renderConsolidatedComparativeStatementHtml(rowsIn, statementType, month
     const fullText = nonNull.join(" ").toUpperCase();
     if (fullText === "0") return;
 
-    const isTotalRow = fullText.includes("TOTAL ACTIVOS") || fullText.includes("TOTAL PASIVOS") || fullText.includes("TOTAL PATRIMONIO") || fullText.includes("TOTAL PASIVO Y PATRIMONIO") || fullText.includes("TOTAL PASIVO + PATRIMONIO") || fullText.includes("TOTAL INGRESOS") || fullText.includes("TOTAL COSTOS") || fullText.includes("TOTAL GASTOS") || fullText.includes("RESULTADO DEL EJERCICIO") || fullText.includes("UTILIDAD NETA");
+    const isTotalRow = fullText.includes("TOTAL ACTIVOS") || fullText.includes("TOTAL PASIVOS") || fullText.includes("TOTAL PATRIMONIO") || fullText.includes("TOTAL PASIVO Y PATRIMONIO") || fullText.includes("TOTAL PASIVO + PATRIMONIO") || fullText.includes("TOTAL INGRESOS") || fullText.includes("TOTAL COSTOS") || fullText.includes("TOTAL GASTOS") || fullText.includes("RESULTADO DEL EJERCICIO") || fullText.includes("RESULTADO ANTES") || fullText.includes("RESULTADO DESPU") || fullText.includes("UTILIDAD NETA");
     const isSubtotalRow = fullText.includes("SUBTOTAL");
     const isClassRow = ["ACTIVOS", "PASIVOS", "PATRIMONIO", "INGRESOS", "COSTOS", "GASTOS"].some(w => (fullText === w || fullText.includes(` ${w}`)) && !isTotalRow && !isSubtotalRow && nonNull.length <= 3);
     const isGroupRow = !isTotalRow && !isSubtotalRow && !isClassRow && nonNull.length <= 2 && !/^\d{4}$/.test(String(nonNull[0]).trim());
@@ -3474,23 +3661,42 @@ function renderConsolidatedComparativeStatementHtml(rowsIn, statementType, month
     if (isClassRow) {
       const className = nonNull.find(x => typeof x === "string" && x.trim() !== "-") || fullText;
       const classCode = nonNull.find(x => /^[1-9]$/.test(String(x).trim())) || "";
-      tbodyHtml += `
-        <tr class="niif-row-clase">
+      const clsTone = getNIIFClassTone(classCode, className);
+      const pillBg = clsTone === "niif-clase-activo"
+        ? "#0F172A"
+        : clsTone === "niif-clase-pasivo"
+          ? "#DC2626"
+          : clsTone === "niif-clase-patrimonio"
+            ? "#059669"
+            : "var(--brand-primary)";
+      parsedConsRows.push({
+        type: "CLASE",
+        html: `
+        <tr class="niif-row-clase ${clsTone}">
           <td colspan="${allHeaders.length}">
-            <span class="niif-code-pill" style="background:var(--brand-primary); color:#fff; font-weight:800;">${classCode ? `CLASE ${classCode}` : "NIIF"}</span>
+            <span class="niif-code-pill" style="background:${pillBg}; color:#fff; font-weight:800;">${classCode ? `CLASE ${classCode}` : "NIIF"}</span>
             <strong style="margin-left:8px; letter-spacing:0.4px;">${className}</strong>
           </td>
         </tr>
-      `;
+      `
+      });
       return;
     }
 
     if (isGroupRow) {
-      tbodyHtml += `
-        <tr class="niif-row-grupo">
-          <td colspan="${allHeaders.length}"><strong>${nonNull.join(" ")}</strong></td>
+      const rawGroup = nonNull.filter(x => typeof x === "string" && x.trim() !== "-").join(" ").trim() || nonNull.join(" ");
+      const normGroup = normalizeNIIFGroupLabel(rawGroup);
+      const groupTone = getNIIFGroupTone(normGroup);
+      const isMajor = isMajorNIIFGroupLabel(normGroup);
+      parsedConsRows.push({
+        type: "GRUPO",
+        isMajor,
+        html: `
+        <tr class="niif-row-grupo ${groupTone}">
+          <td colspan="${allHeaders.length}"><strong>${normGroup}</strong></td>
         </tr>
-      `;
+      `
+      });
       return;
     }
 
@@ -3506,6 +3712,7 @@ function renderConsolidatedComparativeStatementHtml(rowsIn, statementType, month
 
     const rowCells = r.slice(firstCol, firstCol + rawHeaders.length);
     let valMes1 = 0, valMes2 = 0, valVarCOP = 0;
+    const numericVals = [];
 
     const tdCells = rawHeaders.map((hTitle, cIdx) => {
       const v = rowCells[cIdx];
@@ -3513,7 +3720,8 @@ function renderConsolidatedComparativeStatementHtml(rowsIn, statementType, month
 
       // Columna de Código: NUNCA formatear como moneda, siempre como código limpio
       if (cIdx === idxCodigo || hu.includes("CÓDIGO") || hu.includes("CODIGO")) {
-        const codeNum = v != null ? String(v).trim() : "";
+        let codeNum = v != null ? String(v).trim() : "";
+        if (isSubtotalRow && codeNum) codeNum = normalizeNIIFSubtotalLabel(codeNum);
         if (/^\d{4}$/.test(codeNum)) {
           return `<td class="code-col" style="width:90px;"><span class="niif-code-pill">${codeNum}</span></td>`;
         }
@@ -3522,7 +3730,8 @@ function renderConsolidatedComparativeStatementHtml(rowsIn, statementType, month
 
       // Columna de Concepto
       if (cIdx === idxConcepto || hu.includes("CONCEPTO")) {
-        const conc = v != null ? String(v).trim() : "";
+        let conc = v != null ? String(v).trim() : "";
+        if (isSubtotalRow) conc = normalizeNIIFSubtotalLabel(conc);
         return `<td>${conc}</td>`;
       }
 
@@ -3534,6 +3743,7 @@ function renderConsolidatedComparativeStatementHtml(rowsIn, statementType, month
 
       // Columnas numéricas
       if (typeof v === "number") {
+        numericVals.push(v);
         if (cIdx === idxMes1) valMes1 = v;
         if (cIdx === idxMes2) valMes2 = v;
         if (cIdx === idxVarCOP) valVarCOP = v;
@@ -3542,15 +3752,22 @@ function renderConsolidatedComparativeStatementHtml(rowsIn, statementType, month
       } else if (v !== null && v !== undefined && String(v).trim() !== "") {
         const numVal = Number(String(v).replace(/[^0-9.-]/g, ""));
         if (!isNaN(numVal) && isFinite(numVal) && String(v).trim() !== "") {
+          numericVals.push(numVal);
           if (cIdx === idxMes1) valMes1 = numVal;
           if (cIdx === idxMes2) valMes2 = numVal;
           if (cIdx === idxVarCOP) valVarCOP = numVal;
           return `<td class="num-col ${numVal < 0 ? 'text-danger' : ''}">${fmtCOP(numVal)}</td>`;
         }
-        return `<td>${String(v).trim()}</td>`;
+        const txtCell = isSubtotalRow ? normalizeNIIFSubtotalLabel(String(v)) : String(v).trim();
+        return `<td>${txtCell}</td>`;
       }
       return `<td class="num-col">-</td>`;
     });
+
+    // Ocultar cuentas detalle que están en cero ($0) en todos sus períodos
+    if (trCls === "niif-row-cuenta" && (numericVals.length === 0 || numericVals.every(nv => Math.abs(nv) < 0.01))) {
+      return;
+    }
 
     // Calcular Variación Porcentual (%) si agregamos la columna
     if (!hasPctHeader) {
@@ -3583,8 +3800,20 @@ function renderConsolidatedComparativeStatementHtml(rowsIn, statementType, month
       tdCells.push(`<td class="num-col" style="font-weight:700; color:${pctColor};">${pctDisp}</td>`);
     }
 
-    tbodyHtml += `<tr class="${trCls}">${tdCells.join("")}</tr>`;
+    parsedConsRows.push({
+      type: trCls === "niif-row-total" ? "TOTAL" : (trCls === "niif-row-subtotal" ? "SUBTOTAL" : "CUENTA"),
+      html: `<tr class="${trCls}">${tdCells.join("")}</tr>`
+    });
   });
+
+  const tbodyHtml = parsedConsRows.filter((row, idx, arr) => {
+    if (row.type !== "GRUPO" || row.isMajor) return true;
+    for (let j = idx + 1; j < arr.length; j++) {
+      if (arr[j].type === "CUENTA") return true;
+      if (arr[j].type === "GRUPO" || arr[j].type === "SUBTOTAL" || arr[j].type === "CLASE" || arr[j].type === "TOTAL") return false;
+    }
+    return false;
+  }).map(r => r.html).join("");
 
   return `
     <div class="niif-statement-paper">
@@ -3703,15 +3932,7 @@ function renderClassifiedTrialBalance(txs, period) {
 
   return `
     <div class="niif-statement-paper">
-      <div class="niif-header-box">
-        <div class="niif-company-title">ELECTROVIVIENDA S.A.S</div>
-        <div class="niif-company-sub">NIT: 901.765.438-3 • RRI — Agente Autorretenedor de Renta</div>
-        <div class="niif-statement-badge">
-          <div class="niif-statement-name">BALANCE DE COMPROBACIÓN CLASIFICADO</div>
-          <span class="niif-period-tag">Período: ${period} 2026</span>
-          <span style="font-size:0.7rem; color:#94A3B8; display:block; margin-top:3px;">6 Clases del PUC • Principio Universal de Partida Doble</span>
-        </div>
-      </div>
+      ${renderCorporateHeaderBoxHtml("BALANCE DE COMPROBACIÓN CLASIFICADO", `Período: ${period} 2026`, "6 Clases del PUC • Principio Universal de Partida Doble")}
 
       <div style="margin-bottom:16px;">
         ${sectionsHtml}
@@ -3807,7 +4028,7 @@ function renderNotasNIIFStatementHtml(month) {
         nota: "NOTA 5",
         title: "CAPITAL SOCIAL, RESERVAS Y PATRIMONIO (GRUPOS 31 A 37)",
         paragraphs: [
-          "El Capital Suscrito y Pagado (3105) asciende a $280.000.000, respaldado en aportes de capital según Comprobante de Apertura N° 1.",
+          "El Capital Suscrito y Pagado (3105) asciende a $248.600.000, respaldado en aportes de capital según Comprobante de Apertura N° 1.",
           "La Reserva Legal (3305) se apropia según el artículo 452 del Código de Comercio (10% de las utilidades líquidas del ejercicio)."
         ]
       }
@@ -3845,17 +4066,7 @@ function renderNotasNIIFStatementHtml(month) {
 
   return `
     <div class="niif-statement-paper">
-      <div class="niif-header-box">
-        <div class="niif-company-title">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</div>
-        <div class="niif-company-sub">NIT: ${emp.nit || "901.765.438-3"} • ${emp.regimen || "RRI — Agente Autorretenedor de Renta"}</div>
-        <div class="niif-statement-badge">
-          <div class="niif-statement-name">NOTAS Y REVELACIONES A LOS ESTADOS FINANCIEROS</div>
-          <span class="niif-period-tag">Período Contable: ${month} 2026</span>
-          <span style="font-size:0.7rem; color:#94A3B8; display:block; margin-top:3px;">
-            Decreto Único Reglamentario 2420 de 2015 • NIIF para las PYMES (Grupo 2)
-          </span>
-        </div>
-      </div>
+      ${renderCorporateHeaderBoxHtml("NOTAS Y REVELACIONES A LOS ESTADOS FINANCIEROS", `Período Contable: ${month} 2026`, "Decreto Único Reglamentario 2420 de 2015 • NIIF para las PYMES (Grupo 2)")}
 
       <div class="niif-notas-container">
         ${blocksHtml}
@@ -3967,7 +4178,9 @@ function renderECPStatementHtml(rowsIn, month) {
     </div>
   `;
 
-  const tbodyRows = items.map(it => {
+  const tbodyRows = items
+    .filter(it => Math.abs(it.saldoIni) >= 0.01 || Math.abs(it.aumento) >= 0.01 || Math.abs(it.disminucion) >= 0.01 || Math.abs(it.saldoFin) >= 0.01)
+    .map(it => {
     return `
       <tr class="niif-row-cuenta">
         <td class="code-col" style="width:90px;"><span class="niif-code-pill">${it.code}</span></td>
@@ -4111,6 +4324,7 @@ function renderFlujoEfectivoStatementHtml(rowsIn, month) {
     } else {
       const codeStr = c6 != null ? String(c6).trim() : "";
       const isNum = typeof c8 === "number";
+      if (isNum && Math.abs(c8) < 0.01) return;
       const isNeg = isNum && c8 < 0;
       oficialTbody += `
         <tr class="niif-row-cuenta">
@@ -4145,10 +4359,18 @@ function renderFlujoEfectivoStatementHtml(rowsIn, month) {
     const isTotal = txt.includes("TOTAL AUMENTO") || txt.includes("EFECTIVO FINAL") || txt.includes("EFECTIVO A ");
 
     if (isClass) {
+      const clsTone = getNIIFClassTone("", txt);
+      const pillBg = clsTone === "niif-clase-activo"
+        ? "#0F172A"
+        : clsTone === "niif-clase-pasivo"
+          ? "#DC2626"
+          : clsTone === "niif-clase-patrimonio"
+            ? "#059669"
+            : "var(--brand-primary)";
       varTbody += `
-        <tr class="niif-row-clase">
+        <tr class="niif-row-clase ${clsTone}">
           <td colspan="4">
-            <span class="niif-code-pill" style="background:var(--brand-primary); color:#fff; font-weight:800;">CLASE NIIF</span>
+            <span class="niif-code-pill" style="background:${pillBg}; color:#fff; font-weight:800;">CLASE NIIF</span>
             <strong style="margin-left:8px; letter-spacing:0.4px;">${txt}</strong>
           </td>
         </tr>
@@ -4162,6 +4384,7 @@ function renderFlujoEfectivoStatementHtml(rowsIn, month) {
       `;
     } else {
       const isNum = typeof c3 === "number";
+      if (isNum && Math.abs(c3) < 0.01) return;
       const isNeg = isNum && c3 < 0;
       varTbody += `
         <tr class="niif-row-cuenta">
@@ -4290,28 +4513,35 @@ function renderExcelGridHtml(rowsIn, sheetTitle) {
   let tbodyHtml = "";
 
   dataRows.forEach((r, idx) => {
+    const rowText = r.map(x => x == null ? "" : String(x)).join(" ").toUpperCase();
+    const isTotalRow = rowText.includes("TOTAL") || rowText.includes("SUMAS IGUALES") || rowText.includes("RESULTADO");
+    const isSubtotalRow = rowText.includes("SUBTOTAL");
+    const nonNullCount = r.filter(c => c !== null && String(c).trim() !== "").length;
+    const isClassRow = ["ACTIVOS", "PASIVOS", "PATRIMONIO", "INGRESOS", "COSTOS", "GASTOS"].some(w => rowText.includes(w) && !isTotalRow && !isSubtotalRow && nonNullCount <= 3);
+    const isGroupRow = idx > 0 && !isTotalRow && !isSubtotalRow && !isClassRow && nonNullCount <= 2 && !r.some(c => /^\d{4}$/.test(String(c ?? "").trim()));
+
     const cells = [];
+    const numVals = [];
     for (let c = firstNonEmptyCol; c < maxCols; c++) {
       const v = r[c];
       let disp = "";
       let cls = "";
       if (typeof v === "number") {
+        numVals.push(v);
         disp = Math.abs(v) > 999 ? fmtCOP(v) : fmtNum(v, 2);
         cls = "num-col";
       } else if (v !== null && v !== undefined && String(v).trim() !== "") {
-        disp = String(v);
-        if (/^\d{4}$/.test(disp.trim())) {
-          disp = `<span class="niif-code-pill">${disp.trim()}</span>`;
+        disp = String(v).trim();
+        if (/^\d{4}$/.test(disp)) {
+          disp = `<span class="niif-code-pill">${disp}</span>`;
           cls = "code-col";
+        } else if (idx > 0) {
+          if (isSubtotalRow) disp = normalizeNIIFSubtotalLabel(disp);
+          else if (isGroupRow) disp = normalizeNIIFGroupLabel(disp);
         }
       }
       cells.push({ val: disp, cls });
     }
-
-    const rowText = r.map(x => x == null ? "" : String(x)).join(" ").toUpperCase();
-    const isTotalRow = rowText.includes("TOTAL") || rowText.includes("SUMAS IGUALES") || rowText.includes("RESULTADO");
-    const isSubtotalRow = rowText.includes("SUBTOTAL");
-    const isClassRow = ["ACTIVOS", "PASIVOS", "PATRIMONIO", "INGRESOS", "COSTOS", "GASTOS"].some(w => rowText.includes(w) && !isTotalRow && !isSubtotalRow && r.filter(c => c !== null).length <= 3);
 
     if (idx === 0) {
       theadHtml = `
@@ -4328,7 +4558,12 @@ function renderExcelGridHtml(rowsIn, sheetTitle) {
       } else if (isSubtotalRow) {
         trCls = "niif-row-subtotal";
       } else if (isClassRow) {
-        trCls = "niif-row-clase";
+        trCls = `niif-row-clase ${getNIIFClassTone("", rowText)}`.trim();
+      } else if (isGroupRow) {
+        const normGrp = normalizeNIIFGroupLabel(r.filter(c => typeof c === "string" && c.trim() !== "-").join(" "));
+        trCls = `niif-row-grupo ${getNIIFGroupTone(normGrp)}`.trim();
+      } else if (numVals.length > 0 && numVals.every(nv => Math.abs(nv) < 0.01)) {
+        return;
       }
       tbodyHtml += `
         <tr class="${trCls}">
@@ -4338,19 +4573,9 @@ function renderExcelGridHtml(rowsIn, sheetTitle) {
     }
   });
 
-  const emp = DB?.empresa || {};
-
   return `
     <div class="niif-statement-paper">
-      <div class="niif-header-box">
-        <div class="niif-company-title">${emp.razon_social || "ELECTROVIVIENDA S.A.S"}</div>
-        <div class="niif-company-sub">NIT: ${emp.nit || "901.765.438-3"} • ${emp.regimen || "RRI — Agente Autorretenedor de Renta"}</div>
-        <div class="niif-statement-badge">
-          <div class="niif-statement-name">${docTitle}</div>
-          <span class="niif-period-tag">${docPeriod}</span>
-          <span style="font-size:0.7rem; color:#94A3B8; display:block; margin-top:3px;">Cifras en Pesos Colombianos (COP) • NIIF para las PYMES</span>
-        </div>
-      </div>
+      ${renderCorporateHeaderBoxHtml(docTitle, docPeriod, "Cifras en Pesos Colombianos (COP) • NIIF para las PYMES")}
 
       <div class="table-wrap">
         <table class="niif-table niif-table-consolidado">
@@ -8753,7 +8978,7 @@ function buildRealDianInvoiceHtml(inv, includeJournal = false) {
         <div style="display:flex; flex-direction:column; gap:8px;">
           <div style="background:#fef9c3; border:1px solid #eab308; border-radius:6px; padding:8px 12px; font-size:10.5px;">
             <strong>SON (VALOR EN LETRAS):</strong><br/>
-            <span style="font-weight:800; color:#0f172a;">${inv.suma_letras || `${fmtCOP(inv.total_neto)} PESOS M/CTE.`}</span>
+            <span style="font-weight:800; color:#0f172a;">${numeroALetrasCOP(inv.total_neto ?? inv.total_debe ?? 0)}</span>
           </div>
 
           <div style="border:1px solid #cbd5e1; border-radius:6px; padding:8px 12px; font-size:10.5px; color:#334155;">
@@ -8902,7 +9127,7 @@ function buildRealAccountingVoucherHtml(tx, mes) {
           <strong>Tercero / Beneficiario:</strong> ${tx.tercero || emp.razon_social}<br/>
           <strong>NIT / Cédula:</strong> <span style="font-family:'JetBrains Mono', monospace;">${tx.nit_tercero || emp.nit}</span><br/>
           <strong>Medio de Pago / Referencia:</strong> ${tx.cheque || "Contado / Causación Contable"}<br/>
-          <strong>La Suma de (Letras):</strong> ${tx.suma_letras || fmtCOP(tx.total_debe)}
+          <strong>La Suma de (Letras):</strong> ${numeroALetrasCOP(tx.total_debe ?? tx.total_haber ?? 0)}
         </div>
       </div>
 
@@ -9676,7 +9901,7 @@ function parseSheetVoucher(rows, sheetName, defaultMonth) {
     tercero: pagadoA || "Tercero Registrado",
     cheque: cheque,
     concepto_soporte: conceptoSoporte,
-    suma_letras: sumaLetras,
+    suma_letras: (sumaLetras && !/\d/.test(sumaLetras)) ? sumaLetras : numeroALetrasCOP(totalDebe),
     elaborado_por: ACTIVE_STUDENT_PROFILE?.nombre || "Estudiante",
     total_debe: Math.round(totalDebe * 100) / 100,
     total_haber: Math.round(totalHaber * 100) / 100,

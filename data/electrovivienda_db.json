@@ -5605,7 +5605,7 @@
       "regimen_vendedor": "Gran Contribuyente • Autorretenedor",
       "regimen_comprador": "Régimen Responsable de IVA (RRI)",
       "tipo_operacion": "FACTURA DE COMPRA / DOCUMENTO SOPORTE",
-      "enunciado": "Causamos la compra de productos para el consumo a SUPERTIENDAS SAO, de Bogotá, Nit 880.114.206 Gran Contribuyente, Autorretenedor, Según factura de Compra No. 75020, Nota: Contabilizar el IVA como un mayor valor del costo y registrar la compra como un Activo diferido.",
+      "enunciado": "Causamos la compra de productos para el consumo a SUPERTIENDAS SAO, de Bogotá, Nit 880.114.206 Gran Contribuyente, Autorretenedor, Según factura de Compra No. 75020, Nota: Contabilizar el IVA como un mayor valor del costo.",
       "comprobante_diario": "Comprobante Diario N° 9 (Compra Factura 75020)",
       "suma_letras": "",
       "asientos": [
@@ -22211,10 +22211,10 @@
           "mes": "FEBRERO",
           "fecha": "2026-02-07",
           "tipo": "COMPROBANTE DE CONTABILIDAD",
-          "enunciado": "Causamos la compra de productos para el consumo a SUPERTIENDAS SAO, de Bogotá, Nit 880.114.206 Gran Contribuyente, Autorretenedor, Según factura de Compra No. 75020, Nota: Contabilizar el IVA como un mayor valor del costo y registrar la compra como un Activo diferido.",
+          "enunciado": "Causamos la compra de productos para el consumo a SUPERTIENDAS SAO, de Bogotá, Nit 880.114.206 Gran Contribuyente, Autorretenedor, Según factura de Compra No. 75020, Nota: Contabilizar el IVA como un mayor valor del costo.",
           "tercero": "Varios / Interno",
           "cheque": "",
-          "concepto_soporte": "Causamos la compra de productos para el consumo a SUPERTIENDAS SAO, de Bogotá, Nit 880.114.206 Gran Contribuyente, Autorretenedor, Según factura de Compra No. 75020, Nota: Contabilizar el IVA como un mayor valor del costo y registrar la compra como un Activo diferido.",
+          "concepto_soporte": "Causamos la compra de productos para el consumo a SUPERTIENDAS SAO, de Bogotá, Nit 880.114.206 Gran Contribuyente, Autorretenedor, Según factura de Compra No. 75020, Nota: Contabilizar el IVA como un mayor valor del costo.",
           "suma_letras": "",
           "elaborado_por": "GINA VILLAMIZAR",
           "total_debe": 2251690.0,
@@ -22353,7 +22353,7 @@
               "cells": [
                 null,
                 null,
-                "Causamos la compra de productos para el consumo a SUPERTIENDAS SAO, de Bogotá, Nit 880.114.206 Gran Contribuyente, Autorretenedor, Según factura de Compra No. 75020, Nota: Contabilizar el IVA como un mayor valor del costo y registrar la compra como un Activo diferido."
+                "Causamos la compra de productos para el consumo a SUPERTIENDAS SAO, de Bogotá, Nit 880.114.206 Gran Contribuyente, Autorretenedor, Según factura de Compra No. 75020, Nota: Contabilizar el IVA como un mayor valor del costo."
               ]
             },
             {

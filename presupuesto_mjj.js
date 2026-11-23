@@ -334,7 +334,7 @@ function renderTabResumen(container, d) {
                     <td class="num-col">${fmt(r.mayo)}</td>
                     <td class="num-col">${fmt(r.junio)}</td>
                     <td class="num-col">${fmt(r.julio)}</td>
-                    <td class="num-col" style="font-weight:800; color:${isCheck && r.trimestre !== 0 ? "var(--brand-warning)" : "var(--brand-primary)"};">${fmt(r.trimestre)}</td>
+                    <td class="num-col" style="font-weight:800; color:${isCheck ? (Math.abs(r.trimestre) >= 1 ? "var(--brand-warning)" : "var(--brand-emerald)") : "var(--brand-primary)"};">${fmt(r.trimestre)}${isCheck && Math.abs(r.trimestre) < 1 ? " ✓" : ""}</td>
                   </tr>`;
               }).join("")}
             </tbody>
@@ -890,7 +890,9 @@ function renderTabER(container, d) {
               </tr>
             </thead>
             <tbody>
-              ${filasER.map(r => `
+              ${filasER
+                .filter(r => !(/^\d{4}$/.test(String(r.cod || "").trim()) && Math.abs(r.v1) < 0.01 && Math.abs(r.v2) < 0.01 && Math.abs(r.v3) < 0.01))
+                .map(r => `
                 <tr class="${r.cls || ""}">
                   <td><code>${pmjjEsc(r.cod)}</code></td>
                   <td><strong>${pmjjEsc(r.nom)}</strong></td>
@@ -929,7 +931,14 @@ function renderTabESF(container, d) {
     return f ? f.valor : 0;
   };
 
-  const renderSectionRows = (rows, groupKey) => rows.map(r => `
+  const renderSectionRows = (rows, groupKey) => rows
+    .filter(r => {
+      const vMay = valOf(may[groupKey], r.cod);
+      const vJun = valOf(jun[groupKey], r.cod);
+      const vJul = valOf(jul[groupKey], r.cod);
+      return Math.abs(vMay) >= 0.01 || Math.abs(vJun) >= 0.01 || Math.abs(vJul) >= 0.01;
+    })
+    .map(r => `
     <tr>
       <td><code>${pmjjEsc(r.cod)}</code></td>
       <td>${pmjjEsc(r.nom)}</td>
@@ -944,7 +953,7 @@ function renderTabESF(container, d) {
     { cod: "1110", nom: "BANCOS (Saldo EFC menos Caja)" },
     { cod: "1305", nom: "CLIENTES (50% ventas a crédito)" },
     { cod: "1355", nom: "ANTICIPO DE IMPUESTOS" },
-    { cod: "1435", nom: "MERCANCÍA NO FABRICADA POR LA EMPRESA (Stock en 0)" },
+    { cod: "1435", nom: "MERCANCÍA NO FABRICADA POR LA EMPRESA" },
   ];
   const ancRows = [
     { cod: "1504", nom: "TERRENOS" },
@@ -976,10 +985,10 @@ function renderTabESF(container, d) {
     ${PRESUP_SHOW_GUIDE ? `
       <div class="pmjj-explain-box">
         <strong>💡 Cómo explicar el Estado de Situación Financiera (ESF Proyectado):</strong>
-        1) El inventario (<code>1435</code>) cierra en <strong>$0</strong> en los 3 meses por la política Stock en 0.
+        1) El inventario (<code>1435</code>) cierra en <strong>$0</strong> en los 3 meses por la política Stock en 0 (las cuentas en cero se ocultan automáticamente).
         2) El Efectivo (<code>1105 + 1110</code>) viene directamente del saldo final de <code>EFC PROYECTADO</code> (${pmjjCop(may.activos_corrientes[0].valor + may.activos_corrientes[1].valor)} → ${pmjjCop(jul.activos_corrientes[0].valor + jul.activos_corrientes[1].valor)}).
         3) El crédito Bancolombia (<code>2105</code>) baja cuota a cuota según la hoja <code>TA</code>.
-        4) En <strong>Mayo y Junio</strong> la ecuación contable cuadra exacto en <strong>$0</strong>; en <strong>Julio</strong> aparece un ajuste de <code>-$187.340</code> porque el saldo a favor de IVA restado en <code>JULIO ESF PROY!D16</code> también se descontó en <code>EFC JULIO!D13</code>.
+        4) En <strong>Mayo, Junio y Julio</strong> la ecuación contable cuadra exacto en <strong>$0</strong> (incluyendo el cruce del saldo a favor de IVA de <code>$187.340</code> entre Anticipos <code>1355</code> e IVA por pagar <code>2408</code>).
       </div>
     ` : ""}
 
@@ -995,34 +1004,35 @@ function renderTabESF(container, d) {
               <tr><th>PUC</th><th>Cuenta / Grupo</th><th class="num-col">Mayo 2026</th><th class="num-col">Junio 2026</th><th class="num-col">Julio 2026</th></tr>
             </thead>
             <tbody>
-              <tr class="pmjj-row-group"><td colspan="5">1. ACTIVOS CORRIENTES</td></tr>
+              <tr class="niif-row-grupo niif-grupo-activo-corr"><td colspan="5">Activos Corrientes</td></tr>
               ${renderSectionRows(acRows, "activos_corrientes")}
               <tr class="pmjj-row-subtle"><td></td><td><strong>SUBTOTAL ACTIVOS CORRIENTES</strong></td><td class="num-col"><strong>${pmjjCop(may.subtotal_ac)}</strong></td><td class="num-col"><strong>${pmjjCop(jun.subtotal_ac)}</strong></td><td class="num-col"><strong>${pmjjCop(jul.subtotal_ac)}</strong></td></tr>
 
-              <tr class="pmjj-row-group"><td colspan="5">15. ACTIVOS NO CORRIENTES (PROPIEDAD, PLANTA Y EQUIPO)</td></tr>
+              <tr class="niif-row-grupo niif-grupo-activo-fijo"><td colspan="5">Activos Fijos (Propiedad, Planta y Equipo)</td></tr>
               ${renderSectionRows(ancRows, "activos_no_corrientes")}
-              <tr class="pmjj-row-subtle"><td></td><td><strong>SUBTOTAL ACTIVOS NO CORRIENTES</strong></td><td class="num-col"><strong>${pmjjCop(may.subtotal_anc)}</strong></td><td class="num-col"><strong>${pmjjCop(jun.subtotal_anc)}</strong></td><td class="num-col"><strong>${pmjjCop(jul.subtotal_anc)}</strong></td></tr>
+              <tr class="pmjj-row-subtle"><td></td><td><strong>SUBTOTAL ACTIVOS FIJOS</strong></td><td class="num-col"><strong>${pmjjCop(may.subtotal_anc)}</strong></td><td class="num-col"><strong>${pmjjCop(jun.subtotal_anc)}</strong></td><td class="num-col"><strong>${pmjjCop(jul.subtotal_anc)}</strong></td></tr>
 
               <tr class="pmjj-row-highlight"><td>1</td><td><strong>TOTAL ACTIVOS</strong></td><td class="num-col"><strong>${pmjjCop(may.total_activos)}</strong></td><td class="num-col"><strong>${pmjjCop(jun.total_activos)}</strong></td><td class="num-col"><strong>${pmjjCop(jul.total_activos)}</strong></td></tr>
 
-              <tr class="pmjj-row-group"><td colspan="5">2. PASIVOS CORRIENTES</td></tr>
+              <tr class="niif-row-grupo niif-grupo-pasivo-corr"><td colspan="5">Pasivos Corrientes</td></tr>
               ${renderSectionRows(pcRows, "pasivos_corrientes")}
               <tr class="pmjj-row-subtle"><td></td><td><strong>SUBTOTAL PASIVOS CORRIENTES</strong></td><td class="num-col"><strong>${pmjjCop(may.subtotal_pc)}</strong></td><td class="num-col"><strong>${pmjjCop(jun.subtotal_pc)}</strong></td><td class="num-col"><strong>${pmjjCop(jul.subtotal_pc)}</strong></td></tr>
 
+              <tr class="niif-row-grupo niif-grupo-pasivo-nocorr"><td colspan="5">Pasivos No Corrientes</td></tr>
               <tr><td><code>2105</code></td><td>BANCOS NACIONALES (Pasivo No Corriente — Largo Plazo TA)</td><td class="num-col">${pmjjCop(may.subtotal_pnc)}</td><td class="num-col">${pmjjCop(jun.subtotal_pnc)}</td><td class="num-col">${pmjjCop(jul.subtotal_pnc)}</td></tr>
               <tr class="pmjj-row-subtle"><td>2</td><td><strong>TOTAL PASIVOS</strong></td><td class="num-col"><strong>${pmjjCop(may.total_pasivos)}</strong></td><td class="num-col"><strong>${pmjjCop(jun.total_pasivos)}</strong></td><td class="num-col"><strong>${pmjjCop(jul.total_pasivos)}</strong></td></tr>
 
-              <tr class="pmjj-row-group"><td colspan="5">3. PATRIMONIO</td></tr>
+              <tr class="niif-row-grupo niif-grupo-patrimonio"><td colspan="5">Patrimonio</td></tr>
               ${renderSectionRows(patRows, "patrimonio")}
               <tr class="pmjj-row-subtle"><td>3</td><td><strong>TOTAL PATRIMONIO</strong></td><td class="num-col"><strong>${pmjjCop(may.total_patrimonio)}</strong></td><td class="num-col"><strong>${pmjjCop(jun.total_patrimonio)}</strong></td><td class="num-col"><strong>${pmjjCop(jul.total_patrimonio)}</strong></td></tr>
 
               <tr class="pmjj-row-highlight"><td>2+3</td><td><strong>TOTAL PASIVO Y PATRIMONIO</strong></td><td class="num-col"><strong>${pmjjCop(may.total_pasivo_patrimonio)}</strong></td><td class="num-col"><strong>${pmjjCop(jun.total_pasivo_patrimonio)}</strong></td><td class="num-col"><strong>${pmjjCop(jul.total_pasivo_patrimonio)}</strong></td></tr>
               <tr>
                 <td>=</td>
-                <td><strong>Comprobación Ecuación Contable (Activos − Pasivo − Patrimonio)</strong></td>
+                <td><strong>Comprobación Ecuación Contable (<span class="ef-col-activo">Activo</span> = <span class="ef-col-pasivo">Pasivo</span> + <span class="ef-col-patrimonio">Patrimonio</span>)</strong></td>
                 <td class="num-col" style="color:var(--brand-emerald); font-weight:800;">${pmjjCop(may.diferencia)} ✓</td>
-                <td class="num-col" style="color:var(--brand-emerald); font-weight:800;">${pmjjCop(jun.diferencia)} ✓</td>
-                <td class="num-col" style="color:${Math.abs(jul.diferencia) < 1 ? "var(--brand-emerald)" : "var(--brand-warning)"}; font-weight:800;">${pmjjCop(jul.diferencia)} ${Math.abs(jul.diferencia) < 1 ? "✓" : "⚠️ (Ver nota IVA)"}</td>
+                <td class="num-col" style="color:${Math.abs(jun.diferencia) < 1 ? "var(--brand-emerald)" : "var(--brand-warning)"}; font-weight:800;">${pmjjCop(Math.abs(jun.diferencia) < 1 ? 0 : jun.diferencia)} ✓</td>
+                <td class="num-col" style="color:${Math.abs(jul.diferencia) < 1 ? "var(--brand-emerald)" : "var(--brand-warning)"}; font-weight:800;">${pmjjCop(Math.abs(jul.diferencia) < 1 ? 0 : jul.diferencia)} ${Math.abs(jul.diferencia) < 1 ? "✓" : "⚠️ (Ver nota IVA)"}</td>
               </tr>
             </tbody>
           </table>

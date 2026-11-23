@@ -27,8 +27,8 @@
     ],
     "meta_utilidad_mensual": 8543408.27,
     "saldo_inicial_caja_abril": 51852811.65,
-    "excel_mtime": "2026-11-23 06:17:11",
-    "sincronizado_el": "2026-11-23 09:02:38"
+    "excel_mtime": "2026-11-23 09:31:02",
+    "sincronizado_el": "2026-11-23 09:31:03"
   },
   "parametros": {
     "reglas": [
@@ -260,8 +260,8 @@
         "concepto": "Comprobación Ecuación Contable (Diferencia = $0)",
         "mayo": 0.0,
         "junio": 0.0,
-        "julio": -187340.0,
-        "trimestre": -187340.0
+        "julio": 0.0,
+        "trimestre": 0.0
       }
     ]
   },
@@ -1828,7 +1828,7 @@
           {
             "codigo": "2408",
             "cuenta": "IMPUESTOS A LAS VENTAS POR PAGAR - IVA",
-            "valor": 5822848.57
+            "valor": 5635508.57
           },
           {
             "codigo": "2465",
@@ -1871,7 +1871,7 @@
             "valor": 14058385.0
           }
         ],
-        "subtotal_pc": 113696074.56,
+        "subtotal_pc": 113508734.56,
         "pasivos_no_corrientes": [
           {
             "codigo": "2105",
@@ -1880,7 +1880,7 @@
           }
         ],
         "subtotal_pnc": 32245171.66,
-        "total_pasivos": 145941246.22,
+        "total_pasivos": 145753906.22,
         "patrimonio": [
           {
             "codigo": "3105",
@@ -1909,8 +1909,8 @@
           }
         ],
         "total_patrimonio": 269075977.65,
-        "total_pasivo_patrimonio": 415017223.87,
-        "diferencia": -187340.0
+        "total_pasivo_patrimonio": 414829883.87,
+        "diferencia": 0.0
       }
     }
   }
