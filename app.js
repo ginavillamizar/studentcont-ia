@@ -3541,23 +3541,25 @@ function renderExecutiveNIIFStatementHtml(rowsIn, statementType, month, statemen
           <td class="code-col"><span class="niif-code-pill">${item.code}</span></td>
           <td>${item.concept}</td>
           <td style="text-align:center; color:var(--text-muted); font-size:0.75rem;">${item.note || ""}</td>
-          <td class="num-col" style="${isNeg ? 'color:#DC2626; font-weight:700;' : ''}">${item.val !== null ? fmtCOP(item.val) : "-"}</td>
+          <td class="num-col ${isNeg ? 'val-negative' : ''}">${item.val !== null ? fmtCOP(item.val) : "-"}</td>
         </tr>
       `;
     }
     if (item.type === "SUBTOTAL") {
+      const isNeg = (item.val || 0) < 0;
       return `
         <tr class="niif-row-subtotal">
           <td colspan="3"><strong>${item.concept}</strong></td>
-          <td class="num-col"><strong>${fmtCOP(item.val || 0)}</strong></td>
+          <td class="num-col ${isNeg ? 'val-negative' : ''}"><strong>${fmtCOP(item.val || 0)}</strong></td>
         </tr>
       `;
     }
     if (item.type === "TOTAL") {
+      const isNeg = (item.val || 0) < 0;
       return `
         <tr class="niif-row-total">
           <td colspan="3"><strong>${item.concept}</strong></td>
-          <td class="num-col"><strong>${fmtCOP(item.val || 0)}</strong></td>
+          <td class="num-col ${isNeg ? 'val-negative' : ''}"><strong>${fmtCOP(item.val || 0)}</strong></td>
         </tr>
       `;
     }
@@ -3896,9 +3898,9 @@ function renderClassifiedTrialBalance(txs, period) {
         <tr>
           <td class="code-col"><span class="niif-code-pill">${s.codigo}</span></td>
           <td><strong>${s.cuenta}</strong></td>
-          <td class="num-col">${fmtCOP(s.debe)}</td>
-          <td class="num-col">${fmtCOP(s.haber)}</td>
-          <td class="num-col" style="font-weight:700;">${fmtCOP(saldoNeto)}</td>
+          <td class="num-col ${s.debe < 0 ? 'val-negative' : ''}">${fmtCOP(s.debe)}</td>
+          <td class="num-col ${s.haber < 0 ? 'val-negative' : ''}">${fmtCOP(s.haber)}</td>
+          <td class="num-col ${saldoNeto < 0 ? 'val-negative' : ''}" style="font-weight:700;">${fmtCOP(saldoNeto)}</td>
         </tr>
       `;
     }).join("");
@@ -3909,7 +3911,7 @@ function renderClassifiedTrialBalance(txs, period) {
       <div style="margin-bottom:20px;">
         <div style="background:var(--brand-primary); color:#FFFFFF; padding:8px 14px; font-weight:800; font-size:0.84rem; border-radius:6px 6px 0 0; display:flex; justify-content:space-between; align-items:center;">
           <span>${classNames[cl]}</span>
-          <span style="font-size:0.75rem; color:var(--brand-gold);">Saldo Neto: ${fmtCOP(clSaldo)}</span>
+          <span style="font-size:0.75rem; color:${clSaldo < 0 ? '#FCA5A5' : 'var(--brand-gold)'};">Saldo Neto: ${fmtCOP(clSaldo)}</span>
         </div>
         <div class="table-wrap" style="border-radius:0 0 6px 6px; border-top:none;">
           <table class="acct-table">
@@ -3926,9 +3928,9 @@ function renderClassifiedTrialBalance(txs, period) {
               ${rowsHtml}
               <tr style="background:var(--bg-subtle); font-weight:800; border-top:2px solid var(--border-strong);">
                 <td colspan="2">SUBTOTAL ${classNames[cl]}</td>
-                <td class="num-col">${fmtCOP(clDebe)}</td>
-                <td class="num-col">${fmtCOP(clHaber)}</td>
-                <td class="num-col">${fmtCOP(clSaldo)}</td>
+                <td class="num-col ${clDebe < 0 ? 'val-negative' : ''}">${fmtCOP(clDebe)}</td>
+                <td class="num-col ${clHaber < 0 ? 'val-negative' : ''}">${fmtCOP(clHaber)}</td>
+                <td class="num-col ${clSaldo < 0 ? 'val-negative' : ''}">${fmtCOP(clSaldo)}</td>
               </tr>
             </tbody>
           </table>
@@ -4194,10 +4196,10 @@ function renderECPStatementHtml(rowsIn, month) {
       <tr class="niif-row-cuenta">
         <td class="code-col" style="width:90px;"><span class="niif-code-pill">${it.code}</span></td>
         <td><strong>${it.concept}</strong></td>
-        <td class="num-col" style="width:170px;">${fmtCOP(it.saldoIni)}</td>
-        <td class="num-col" style="width:160px; ${it.aumento > 0 ? 'color:#059669; font-weight:700;' : 'color:var(--text-muted);'}">${it.aumento !== 0 ? fmtCOP(it.aumento) : "-"}</td>
-        <td class="num-col" style="width:160px; ${it.disminucion > 0 ? 'color:#DC2626; font-weight:700;' : 'color:var(--text-muted);'}">${it.disminucion !== 0 ? fmtCOP(it.disminucion) : "-"}</td>
-        <td class="num-col" style="width:180px; font-weight:800; color:var(--text-main);">${fmtCOP(it.saldoFin)}</td>
+        <td class="num-col ${it.saldoIni < 0 ? 'val-negative' : ''}" style="width:170px;">${fmtCOP(it.saldoIni)}</td>
+        <td class="num-col ${it.aumento < 0 ? 'val-negative' : ''}" style="width:160px; ${it.aumento > 0 ? 'color:#059669; font-weight:700;' : 'color:var(--text-muted);'}">${it.aumento !== 0 ? fmtCOP(it.aumento) : "-"}</td>
+        <td class="num-col ${it.disminucion < 0 ? 'val-negative' : ''}" style="width:160px; ${it.disminucion > 0 ? 'color:#DC2626; font-weight:700;' : 'color:var(--text-muted);'}">${it.disminucion !== 0 ? fmtCOP(it.disminucion) : "-"}</td>
+        <td class="num-col ${it.saldoFin < 0 ? 'val-negative' : ''}" style="width:180px; font-weight:800; color:var(--text-main);">${fmtCOP(it.saldoFin)}</td>
       </tr>
     `;
   }).join("");
@@ -4205,10 +4207,10 @@ function renderECPStatementHtml(rowsIn, month) {
   const totalHtml = totalRow ? `
     <tr class="niif-row-total" style="font-size:0.92rem; background:rgba(212,175,55,0.14); border-top:2px solid var(--brand-gold);">
       <td colspan="2"><strong>${totalRow.label}</strong></td>
-      <td class="num-col"><strong>${fmtCOP(totalRow.saldoIni)}</strong></td>
-      <td class="num-col" style="color:#059669;"><strong>${fmtCOP(totalRow.aumento)}</strong></td>
-      <td class="num-col" style="color:#DC2626;"><strong>${fmtCOP(totalRow.disminucion)}</strong></td>
-      <td class="num-col" style="color:var(--brand-gold); font-weight:900;"><strong>${fmtCOP(totalRow.saldoFin)}</strong></td>
+      <td class="num-col ${totalRow.saldoIni < 0 ? 'val-negative' : ''}"><strong>${fmtCOP(totalRow.saldoIni)}</strong></td>
+      <td class="num-col ${totalRow.aumento < 0 ? 'val-negative' : ''}" style="color:#059669;"><strong>${fmtCOP(totalRow.aumento)}</strong></td>
+      <td class="num-col ${totalRow.disminucion < 0 ? 'val-negative' : ''}" style="color:#DC2626;"><strong>${fmtCOP(totalRow.disminucion)}</strong></td>
+      <td class="num-col ${totalRow.saldoFin < 0 ? 'val-negative' : ''}" style="color:var(--brand-gold); font-weight:900;"><strong>${fmtCOP(totalRow.saldoFin)}</strong></td>
     </tr>
   ` : "";
 
@@ -4316,18 +4318,20 @@ function renderFlujoEfectivoStatementHtml(rowsIn, month) {
     } else if (isTotal) {
       const label = c6 || c7 || "TOTAL FLUJO DE EFECTIVO";
       const val = c8 != null ? c8 : c7;
+      const isNeg = typeof val === "number" && val < 0;
       oficialTbody += `
         <tr class="niif-row-total">
           <td colspan="2"><strong>${label}</strong></td>
-          <td class="num-col"><strong>${typeof val === "number" ? fmtCOP(val) : val}</strong></td>
+          <td class="num-col ${isNeg ? 'val-negative' : ''}"><strong>${typeof val === "number" ? fmtCOP(val) : val}</strong></td>
         </tr>
       `;
     } else if (isSubtotal) {
       const val = c8 != null ? c8 : c7;
+      const isNeg = typeof val === "number" && val < 0;
       oficialTbody += `
         <tr class="niif-row-subtotal">
           <td colspan="2"><strong>SUBTOTAL FLUJO NETO</strong></td>
-          <td class="num-col"><strong>${typeof val === "number" ? fmtCOP(val) : val}</strong></td>
+          <td class="num-col ${isNeg ? 'val-negative' : ''}"><strong>${typeof val === "number" ? fmtCOP(val) : val}</strong></td>
         </tr>
       `;
     } else {
@@ -4385,10 +4389,11 @@ function renderFlujoEfectivoStatementHtml(rowsIn, month) {
         </tr>
       `;
     } else if (isTotal) {
+      const isNeg = typeof c3 === "number" && c3 < 0;
       varTbody += `
         <tr class="niif-row-total">
           <td colspan="2"><strong>${c1 || c2 || "TOTAL"}</strong></td>
-          <td class="num-col" colspan="2"><strong>${typeof c3 === "number" ? fmtCOP(c3) : (c3 || "")}</strong></td>
+          <td class="num-col ${isNeg ? 'val-negative' : ''}" colspan="2"><strong>${typeof c3 === "number" ? fmtCOP(c3) : (c3 || "")}</strong></td>
         </tr>
       `;
     } else {
@@ -4538,7 +4543,7 @@ function renderExcelGridHtml(rowsIn, sheetTitle) {
       if (typeof v === "number") {
         numVals.push(v);
         disp = Math.abs(v) > 999 ? fmtCOP(v) : fmtNum(v, 2);
-        cls = "num-col";
+        cls = v < 0 ? "num-col val-negative" : "num-col";
       } else if (v !== null && v !== undefined && String(v).trim() !== "") {
         disp = String(v).trim();
         if (/^\d{4}$/.test(disp)) {

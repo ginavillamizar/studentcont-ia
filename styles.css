@@ -1179,6 +1179,15 @@ table.niif-table td {
   font-weight: 800;
   margin: 0 2px;
 }
+.val-negative,
+.text-danger {
+  color: #DC2626 !important;
+  font-weight: 700;
+}
+[data-theme="dark"] .val-negative,
+[data-theme="dark"] .text-danger {
+  color: #F87171 !important;
+}
 
 /* Filas NIIF según jerarquía */
 table.niif-table tr.niif-row-clase td {

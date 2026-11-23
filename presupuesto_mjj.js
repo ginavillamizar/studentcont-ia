@@ -31,6 +31,14 @@ function pmjjCop(n, decimals = 0) {
   return val < 0 ? `-$${formatted}` : `$${formatted}`;
 }
 
+function pmjjCopHtml(n, decimals = 0) {
+  const formatted = pmjjCop(n, decimals);
+  if (n !== null && n !== undefined && !isNaN(Number(n)) && Number(n) < 0) {
+    return `<span class="val-negative">${formatted}</span>`;
+  }
+  return formatted;
+}
+
 function pmjjNum(n) {
   if (n === null || n === undefined || isNaN(Number(n))) return "-";
   return new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 }).format(Number(n));
@@ -346,7 +354,7 @@ function renderTabResumen(container, d) {
                 const isCount = i === 0;
                 const isHighlight = i === 7 || i === 12;
                 const isCheck = i === 14;
-                const fmt = v => isCount ? pmjjNum(v) + " und." : pmjjCop(v);
+                const fmt = v => isCount ? pmjjNum(v) + " und." : pmjjCopHtml(v);
                 return `
                   <tr class="${isHighlight ? "pmjj-row-highlight" : ""}">
                     <td><strong>${pmjjEsc(r.concepto)}</strong></td>
@@ -804,16 +812,16 @@ function renderTabEFC(container, d) {
               ${efc.filas.map(f => `
                 <tr>
                   <td><strong>${pmjjEsc(f.concepto)}</strong></td>
-                  <td class="num-col" style="color:#047857; font-weight:600;">${f.entrada !== null ? pmjjCop(f.entrada) : ""}</td>
-                  <td class="num-col" style="color:#B91C1C; font-weight:600;">${f.salida !== null ? pmjjCop(f.salida) : ""}</td>
-                  <td class="num-col" style="font-weight:700;">${pmjjCop(f.total)}</td>
+                  <td class="num-col" style="color:#047857; font-weight:600;">${f.entrada !== null ? pmjjCopHtml(f.entrada) : ""}</td>
+                  <td class="num-col" style="color:#B91C1C; font-weight:600;">${f.salida !== null ? pmjjCopHtml(f.salida) : ""}</td>
+                  <td class="num-col" style="font-weight:700;">${pmjjCopHtml(f.total)}</td>
                 </tr>
               `).join("")}
               <tr class="pmjj-efc-total">
                 <td><strong>SALDO NETO FINAL ${mesLabel}</strong></td>
-                <td class="num-col"><strong>${pmjjCop(efc.total_entradas)}</strong></td>
-                <td class="num-col"><strong>${pmjjCop(efc.total_salidas)}</strong></td>
-                <td class="num-col"><strong>${pmjjCop(efc.saldo_final)}</strong></td>
+                <td class="num-col"><strong>${pmjjCopHtml(efc.total_entradas)}</strong></td>
+                <td class="num-col"><strong>${pmjjCopHtml(efc.total_salidas)}</strong></td>
+                <td class="num-col"><strong>${pmjjCopHtml(efc.saldo_final)}</strong></td>
               </tr>
             </tbody>
           </table>
@@ -854,10 +862,10 @@ function renderTabEFC(container, d) {
                 <tr><th>Concepto de Flujo</th><th class="num-col">Mayo 2026</th><th class="num-col">Junio 2026</th><th class="num-col">Julio 2026</th></tr>
               </thead>
               <tbody>
-                <tr><td><strong>Saldo Inicial de Caja y Bancos</strong></td><td class="num-col">${pmjjCop(may.saldo_inicial)}</td><td class="num-col">${pmjjCop(jun.saldo_inicial)}</td><td class="num-col">${pmjjCop(jul.saldo_inicial)}</td></tr>
-                <tr><td><strong>(+) Total Entradas del Mes (Contado + Cartera)</strong></td><td class="num-col" style="color:var(--brand-emerald); font-weight:700;">${pmjjCop(may.total_entradas)}</td><td class="num-col" style="color:var(--brand-emerald); font-weight:700;">${pmjjCop(jun.total_entradas)}</td><td class="num-col" style="color:var(--brand-emerald); font-weight:700;">${pmjjCop(jul.total_entradas)}</td></tr>
-                <tr><td><strong>(-) Total Salidas del Mes (Compras + Nómina + Cuota + Impuestos)</strong></td><td class="num-col" style="color:var(--brand-danger); font-weight:700;">${pmjjCop(may.total_salidas)}</td><td class="num-col" style="color:var(--brand-danger); font-weight:700;">${pmjjCop(jun.total_salidas)}</td><td class="num-col" style="color:var(--brand-danger); font-weight:700;">${pmjjCop(jul.total_salidas)}</td></tr>
-                <tr class="pmjj-row-highlight"><td><strong>(=) SALDO FINAL NETO EN CAJA Y BANCOS (1105 + 1110)</strong></td><td class="num-col"><strong>${pmjjCop(may.saldo_final)}</strong></td><td class="num-col"><strong>${pmjjCop(jun.saldo_final)}</strong></td><td class="num-col"><strong>${pmjjCop(jul.saldo_final)}</strong></td></tr>
+                <tr><td><strong>Saldo Inicial de Caja y Bancos</strong></td><td class="num-col">${pmjjCopHtml(may.saldo_inicial)}</td><td class="num-col">${pmjjCopHtml(jun.saldo_inicial)}</td><td class="num-col">${pmjjCopHtml(jul.saldo_inicial)}</td></tr>
+                <tr><td><strong>(+) Total Entradas del Mes (Contado + Cartera)</strong></td><td class="num-col" style="color:var(--brand-emerald); font-weight:700;">${pmjjCopHtml(may.total_entradas)}</td><td class="num-col" style="color:var(--brand-emerald); font-weight:700;">${pmjjCopHtml(jun.total_entradas)}</td><td class="num-col" style="color:var(--brand-emerald); font-weight:700;">${pmjjCopHtml(jul.total_entradas)}</td></tr>
+                <tr><td><strong>(-) Total Salidas del Mes (Compras + Nómina + Cuota + Impuestos)</strong></td><td class="num-col" style="color:var(--brand-danger); font-weight:700;">${pmjjCopHtml(may.total_salidas)}</td><td class="num-col" style="color:var(--brand-danger); font-weight:700;">${pmjjCopHtml(jun.total_salidas)}</td><td class="num-col" style="color:var(--brand-danger); font-weight:700;">${pmjjCopHtml(jul.total_salidas)}</td></tr>
+                <tr class="pmjj-row-highlight"><td><strong>(=) SALDO FINAL NETO EN CAJA Y BANCOS (1105 + 1110)</strong></td><td class="num-col"><strong>${pmjjCopHtml(may.saldo_final)}</strong></td><td class="num-col"><strong>${pmjjCopHtml(jun.saldo_final)}</strong></td><td class="num-col"><strong>${pmjjCopHtml(jul.saldo_final)}</strong></td></tr>
               </tbody>
             </table>
           </div>
@@ -885,19 +893,19 @@ function renderTabER(container, d) {
   };
 
   const filasER = [
-    { cod: "4135", nom: "COMERCIO AL POR MAYOR Y POR MENOR (Ventas Netas)", v1: may.ingresos_4135, v2: jun.ingresos_4135, v3: jul.ingresos_4135, cls: "pmjj-row-subtle" },
-    { cod: "6135", nom: "(-) COSTO DE VENTAS (Mercancía vendida — 70%)", v1: may.costos_6135, v2: jun.costos_6135, v3: jul.costos_6135 },
-    { cod: "—",    nom: "(=) UTILIDAD BRUTA EN VENTAS (Margen 30%)", v1: may.utilidad_bruta, v2: jun.utilidad_bruta, v3: jul.utilidad_bruta, cls: "pmjj-row-highlight" },
-    { cod: "5105", nom: "(-) BENEFICIOS A EMPLEADOS (Nómina + Seguridad Soc. + Prestaciones)", v1: gastoPorCodigo(may, "5105"), v2: gastoPorCodigo(jun, "5105"), v3: gastoPorCodigo(jul, "5105") },
-    { cod: "5160", nom: "(-) DEPRECIACIONES ADMINISTRATIVAS (Construcciones)", v1: gastoPorCodigo(may, "5160"), v2: gastoPorCodigo(jun, "5160"), v3: gastoPorCodigo(jul, "5160") },
-    { cod: "5260", nom: "(-) DEPRECIACIONES VENTAS (Flota y equipo)", v1: gastoPorCodigo(may, "5260"), v2: gastoPorCodigo(jun, "5260"), v3: gastoPorCodigo(jul, "5260") },
-    { cod: "5305", nom: "(-) GASTOS FINANCIEROS (Interés cuota crédito de hoja TA)", v1: gastoPorCodigo(may, "5305"), v2: gastoPorCodigo(jun, "5305"), v3: gastoPorCodigo(jul, "5305") },
-    { cod: "—",    nom: "(=) TOTAL GASTOS OPERACIONALES", v1: may.total_gastos, v2: jun.total_gastos, v3: jul.total_gastos, cls: "pmjj-row-subtle" },
-    { cod: "—",    nom: "(=) UTILIDAD ANTES DE IMPUESTOS (UAI)", v1: may.uai, v2: jun.uai, v3: jul.uai, cls: "pmjj-row-subtle" },
-    { cod: "2499", nom: "(-) PROVISIÓN IMPUESTO DE RENTA (35% — Mensual)", v1: may.impuesto_renta, v2: jun.impuesto_renta, v3: jul.impuesto_renta },
-    { cod: "—",    nom: "(=) UTILIDAD DESPUÉS DE IMPUESTOS", v1: may.udi, v2: jun.udi, v3: jul.udi },
-    { cod: "3305", nom: "(-) RESERVA LEGAL (10%)", v1: may.reserva_legal, v2: jun.reserva_legal, v3: jul.reserva_legal },
-    { cod: "3605", nom: "(=) UTILIDAD NETA PROYECTADA DEL MES", v1: may.utilidad_neta, v2: jun.utilidad_neta, v3: jul.utilidad_neta, cls: "pmjj-row-highlight" },
+    { cod: "4135", nom: "COMERCIO AL POR MAYOR Y POR MENOR", v1: may.ingresos_4135, v2: jun.ingresos_4135, v3: jul.ingresos_4135, cls: "pmjj-row-subtle" },
+    { cod: "6135", nom: "COSTO DE VENTAS", v1: may.costos_6135, v2: jun.costos_6135, v3: jul.costos_6135 },
+    { cod: "—",    nom: "UTILIDAD BRUTA EN VENTAS", v1: may.utilidad_bruta, v2: jun.utilidad_bruta, v3: jul.utilidad_bruta, cls: "pmjj-row-highlight" },
+    { cod: "5105", nom: "BENEFICIOS A EMPLEADOS", v1: gastoPorCodigo(may, "5105"), v2: gastoPorCodigo(jun, "5105"), v3: gastoPorCodigo(jul, "5105") },
+    { cod: "5160", nom: "DEPRECIACIONES ADMINISTRATIVAS", v1: gastoPorCodigo(may, "5160"), v2: gastoPorCodigo(jun, "5160"), v3: gastoPorCodigo(jul, "5160") },
+    { cod: "5260", nom: "DEPRECIACIONES VENTAS", v1: gastoPorCodigo(may, "5260"), v2: gastoPorCodigo(jun, "5260"), v3: gastoPorCodigo(jul, "5260") },
+    { cod: "5305", nom: "GASTOS FINANCIEROS", v1: gastoPorCodigo(may, "5305"), v2: gastoPorCodigo(jun, "5305"), v3: gastoPorCodigo(jul, "5305") },
+    { cod: "—",    nom: "TOTAL GASTOS OPERACIONALES", v1: may.total_gastos, v2: jun.total_gastos, v3: jul.total_gastos, cls: "pmjj-row-subtle" },
+    { cod: "—",    nom: "UTILIDAD ANTES DE IMPUESTOS", v1: may.uai, v2: jun.uai, v3: jul.uai, cls: "pmjj-row-subtle" },
+    { cod: "2499", nom: "PROVISIÓN IMPUESTO DE RENTA (35%)", v1: may.impuesto_renta, v2: jun.impuesto_renta, v3: jul.impuesto_renta },
+    { cod: "—",    nom: "UTILIDAD DESPUÉS DE IMPUESTOS", v1: may.udi, v2: jun.udi, v3: jul.udi },
+    { cod: "3305", nom: "RESERVA LEGAL (10%)", v1: may.reserva_legal, v2: jun.reserva_legal, v3: jul.reserva_legal },
+    { cod: "3605", nom: "UTILIDAD NETA DEL EJERCICIO", v1: may.utilidad_neta, v2: jun.utilidad_neta, v3: jul.utilidad_neta, cls: "pmjj-row-highlight" },
   ];
 
   container.innerHTML = `
@@ -932,18 +940,18 @@ function renderTabER(container, d) {
                 <tr class="${r.cls || ""}">
                   <td><code>${pmjjEsc(r.cod)}</code></td>
                   <td><strong>${pmjjEsc(r.nom)}</strong></td>
-                  <td class="num-col">${pmjjCop(r.v1)}</td>
-                  <td class="num-col">${pmjjCop(r.v2)}</td>
-                  <td class="num-col">${pmjjCop(r.v3)}</td>
-                  <td class="num-col" style="font-weight:800;">${pmjjCop(r.v1 + r.v2 + r.v3)}</td>
+                  <td class="num-col">${pmjjCopHtml(r.v1)}</td>
+                  <td class="num-col">${pmjjCopHtml(r.v2)}</td>
+                  <td class="num-col">${pmjjCopHtml(r.v3)}</td>
+                  <td class="num-col" style="font-weight:800;">${pmjjCopHtml(r.v1 + r.v2 + r.v3)}</td>
                 </tr>
               `).join("")}
               <tr>
                 <td>✓</td>
                 <td><strong>Cumplimiento vs. Meta 50% EA (${pmjjCop(meta)}/mes)</strong></td>
-                <td class="num-col" style="color:var(--brand-emerald); font-weight:800;">+${pmjjCop(may.utilidad_neta - meta)} ✓</td>
-                <td class="num-col" style="color:var(--brand-emerald); font-weight:800;">+${pmjjCop(jun.utilidad_neta - meta)} ✓</td>
-                <td class="num-col" style="color:var(--brand-emerald); font-weight:800;">+${pmjjCop(jul.utilidad_neta - meta)} ✓</td>
+                <td class="num-col" style="color:var(--brand-emerald); font-weight:800;">${may.utilidad_neta - meta < 0 ? pmjjCopHtml(may.utilidad_neta - meta) : "+" + pmjjCop(may.utilidad_neta - meta)} ✓</td>
+                <td class="num-col" style="color:var(--brand-emerald); font-weight:800;">${jun.utilidad_neta - meta < 0 ? pmjjCopHtml(jun.utilidad_neta - meta) : "+" + pmjjCop(jun.utilidad_neta - meta)} ✓</td>
+                <td class="num-col" style="color:var(--brand-emerald); font-weight:800;">${jul.utilidad_neta - meta < 0 ? pmjjCopHtml(jul.utilidad_neta - meta) : "+" + pmjjCop(jul.utilidad_neta - meta)} ✓</td>
                 <td class="num-col" style="color:var(--brand-emerald); font-weight:800;">3 / 3 Meses Cumplen ✓</td>
               </tr>
             </tbody>
@@ -978,16 +986,16 @@ function renderTabESF(container, d) {
     <tr>
       <td><code>${pmjjEsc(r.cod)}</code></td>
       <td>${pmjjEsc(r.nom)}</td>
-      <td class="num-col">${pmjjCop(valOf(may[groupKey], r.cod))}</td>
-      <td class="num-col">${pmjjCop(valOf(jun[groupKey], r.cod))}</td>
-      <td class="num-col">${pmjjCop(valOf(jul[groupKey], r.cod))}</td>
+      <td class="num-col">${pmjjCopHtml(valOf(may[groupKey], r.cod))}</td>
+      <td class="num-col">${pmjjCopHtml(valOf(jun[groupKey], r.cod))}</td>
+      <td class="num-col">${pmjjCopHtml(valOf(jul[groupKey], r.cod))}</td>
     </tr>
   `).join("");
 
   const acRows = [
     { cod: "1105", nom: "CAJA" },
-    { cod: "1110", nom: "BANCOS (Saldo EFC menos Caja)" },
-    { cod: "1305", nom: "CLIENTES (50% ventas a crédito)" },
+    { cod: "1110", nom: "BANCOS" },
+    { cod: "1305", nom: "CLIENTES" },
     { cod: "1355", nom: "ANTICIPO DE IMPUESTOS" },
     { cod: "1435", nom: "MERCANCÍA NO FABRICADA POR LA EMPRESA" },
   ];
@@ -998,12 +1006,12 @@ function renderTabESF(container, d) {
     { cod: "1592", nom: "DEPRECIACIÓN ACUMULADA ACTIVOS (CR)" },
   ];
   const pcRows = [
-    { cod: "2105", nom: "BANCOS NACIONALES (Porción Corriente crédito Bancolombia)" },
-    { cod: "2205", nom: "PROVEEDORES (50% compras a crédito)" },
+    { cod: "2105", nom: "BANCOS NACIONALES" },
+    { cod: "2205", nom: "PROVEEDORES" },
     { cod: "2408", nom: "IMPUESTO A LAS VENTAS POR PAGAR - IVA" },
-    { cod: "2465", nom: "RETENCIÓN EN LA FUENTE POR PAGAR (F-350)" },
+    { cod: "2465", nom: "RETENCIÓN EN LA FUENTE POR PAGAR" },
     { cod: "2468", nom: "IMPUESTO DE ICA RETENIDO A TERCEROS" },
-    { cod: "2499", nom: "PROVISIÓN PARA OBLIGACIONES FISCALES (Renta 35%)" },
+    { cod: "2499", nom: "PROVISIÓN PARA OBLIGACIONES FISCALES" },
     { cod: "2570", nom: "RETENCIONES Y APORTES DE NÓMINA" },
     { cod: "2580", nom: "FONDO DE PENSIONES Y CESANTÍAS POR PAGAR" },
     { cod: "2610", nom: "PROVISIÓN PARA OBLIGACIONES LABORALES" },
@@ -1012,9 +1020,9 @@ function renderTabESF(container, d) {
   const patRows = [
     { cod: "3105", nom: "CAPITAL SUSCRITO Y PAGADO" },
     { cod: "3305", nom: "RESERVAS OBLIGATORIAS" },
-    { cod: "3605", nom: "UTILIDAD DEL EJERCICIO (Acumulada May–Jul)" },
-    { cod: "3705", nom: "UTILIDADES ACUMULADAS (De ejercicios anteriores)" },
-    { cod: "3710", nom: "PÉRDIDAS ACUMULADAS (Enero–Abril)" },
+    { cod: "3605", nom: "UTILIDAD DEL EJERCICIO" },
+    { cod: "3705", nom: "UTILIDADES ACUMULADAS" },
+    { cod: "3710", nom: "PÉRDIDAS ACUMULADAS" },
   ];
 
   container.innerHTML = `
@@ -1042,33 +1050,33 @@ function renderTabESF(container, d) {
             <tbody>
               <tr class="niif-row-grupo niif-grupo-activo-corr"><td colspan="5">Activos Corrientes</td></tr>
               ${renderSectionRows(acRows, "activos_corrientes")}
-              <tr class="pmjj-row-subtle"><td></td><td><strong>SUBTOTAL ACTIVOS CORRIENTES</strong></td><td class="num-col"><strong>${pmjjCop(may.subtotal_ac)}</strong></td><td class="num-col"><strong>${pmjjCop(jun.subtotal_ac)}</strong></td><td class="num-col"><strong>${pmjjCop(jul.subtotal_ac)}</strong></td></tr>
+              <tr class="pmjj-row-subtle"><td></td><td><strong>SUBTOTAL ACTIVOS CORRIENTES</strong></td><td class="num-col"><strong>${pmjjCopHtml(may.subtotal_ac)}</strong></td><td class="num-col"><strong>${pmjjCopHtml(jun.subtotal_ac)}</strong></td><td class="num-col"><strong>${pmjjCopHtml(jul.subtotal_ac)}</strong></td></tr>
 
-              <tr class="niif-row-grupo niif-grupo-activo-fijo"><td colspan="5">Activos Fijos (Propiedad, Planta y Equipo)</td></tr>
+              <tr class="niif-row-grupo niif-grupo-activo-fijo"><td colspan="5">Activos Fijos</td></tr>
               ${renderSectionRows(ancRows, "activos_no_corrientes")}
-              <tr class="pmjj-row-subtle"><td></td><td><strong>SUBTOTAL ACTIVOS FIJOS</strong></td><td class="num-col"><strong>${pmjjCop(may.subtotal_anc)}</strong></td><td class="num-col"><strong>${pmjjCop(jun.subtotal_anc)}</strong></td><td class="num-col"><strong>${pmjjCop(jul.subtotal_anc)}</strong></td></tr>
+              <tr class="pmjj-row-subtle"><td></td><td><strong>SUBTOTAL ACTIVOS FIJOS</strong></td><td class="num-col"><strong>${pmjjCopHtml(may.subtotal_anc)}</strong></td><td class="num-col"><strong>${pmjjCopHtml(jun.subtotal_anc)}</strong></td><td class="num-col"><strong>${pmjjCopHtml(jul.subtotal_anc)}</strong></td></tr>
 
-              <tr class="pmjj-row-highlight"><td>1</td><td><strong>TOTAL ACTIVOS</strong></td><td class="num-col"><strong>${pmjjCop(may.total_activos)}</strong></td><td class="num-col"><strong>${pmjjCop(jun.total_activos)}</strong></td><td class="num-col"><strong>${pmjjCop(jul.total_activos)}</strong></td></tr>
+              <tr class="pmjj-row-highlight"><td>1</td><td><strong>TOTAL ACTIVOS</strong></td><td class="num-col"><strong>${pmjjCopHtml(may.total_activos)}</strong></td><td class="num-col"><strong>${pmjjCopHtml(jun.total_activos)}</strong></td><td class="num-col"><strong>${pmjjCopHtml(jul.total_activos)}</strong></td></tr>
 
               <tr class="niif-row-grupo niif-grupo-pasivo-corr"><td colspan="5">Pasivos Corrientes</td></tr>
               ${renderSectionRows(pcRows, "pasivos_corrientes")}
-              <tr class="pmjj-row-subtle"><td></td><td><strong>SUBTOTAL PASIVOS CORRIENTES</strong></td><td class="num-col"><strong>${pmjjCop(may.subtotal_pc)}</strong></td><td class="num-col"><strong>${pmjjCop(jun.subtotal_pc)}</strong></td><td class="num-col"><strong>${pmjjCop(jul.subtotal_pc)}</strong></td></tr>
+              <tr class="pmjj-row-subtle"><td></td><td><strong>SUBTOTAL PASIVOS CORRIENTES</strong></td><td class="num-col"><strong>${pmjjCopHtml(may.subtotal_pc)}</strong></td><td class="num-col"><strong>${pmjjCopHtml(jun.subtotal_pc)}</strong></td><td class="num-col"><strong>${pmjjCopHtml(jul.subtotal_pc)}</strong></td></tr>
 
               <tr class="niif-row-grupo niif-grupo-pasivo-nocorr"><td colspan="5">Pasivos No Corrientes</td></tr>
-              <tr><td><code>2105</code></td><td>BANCOS NACIONALES (Pasivo No Corriente — Largo Plazo TA)</td><td class="num-col">${pmjjCop(may.subtotal_pnc)}</td><td class="num-col">${pmjjCop(jun.subtotal_pnc)}</td><td class="num-col">${pmjjCop(jul.subtotal_pnc)}</td></tr>
-              <tr class="pmjj-row-subtle"><td>2</td><td><strong>TOTAL PASIVOS</strong></td><td class="num-col"><strong>${pmjjCop(may.total_pasivos)}</strong></td><td class="num-col"><strong>${pmjjCop(jun.total_pasivos)}</strong></td><td class="num-col"><strong>${pmjjCop(jul.total_pasivos)}</strong></td></tr>
+              <tr><td><code>2105</code></td><td>BANCOS NACIONALES</td><td class="num-col">${pmjjCopHtml(may.subtotal_pnc)}</td><td class="num-col">${pmjjCopHtml(jun.subtotal_pnc)}</td><td class="num-col">${pmjjCopHtml(jul.subtotal_pnc)}</td></tr>
+              <tr class="pmjj-row-subtle"><td>2</td><td><strong>TOTAL PASIVOS</strong></td><td class="num-col"><strong>${pmjjCopHtml(may.total_pasivos)}</strong></td><td class="num-col"><strong>${pmjjCopHtml(jun.total_pasivos)}</strong></td><td class="num-col"><strong>${pmjjCopHtml(jul.total_pasivos)}</strong></td></tr>
 
               <tr class="niif-row-grupo niif-grupo-patrimonio"><td colspan="5">Patrimonio</td></tr>
               ${renderSectionRows(patRows, "patrimonio")}
-              <tr class="pmjj-row-subtle"><td>3</td><td><strong>TOTAL PATRIMONIO</strong></td><td class="num-col"><strong>${pmjjCop(may.total_patrimonio)}</strong></td><td class="num-col"><strong>${pmjjCop(jun.total_patrimonio)}</strong></td><td class="num-col"><strong>${pmjjCop(jul.total_patrimonio)}</strong></td></tr>
+              <tr class="pmjj-row-subtle"><td>3</td><td><strong>TOTAL PATRIMONIO</strong></td><td class="num-col"><strong>${pmjjCopHtml(may.total_patrimonio)}</strong></td><td class="num-col"><strong>${pmjjCopHtml(jun.total_patrimonio)}</strong></td><td class="num-col"><strong>${pmjjCopHtml(jul.total_patrimonio)}</strong></td></tr>
 
-              <tr class="pmjj-row-highlight"><td>2+3</td><td><strong>TOTAL PASIVO Y PATRIMONIO</strong></td><td class="num-col"><strong>${pmjjCop(may.total_pasivo_patrimonio)}</strong></td><td class="num-col"><strong>${pmjjCop(jun.total_pasivo_patrimonio)}</strong></td><td class="num-col"><strong>${pmjjCop(jul.total_pasivo_patrimonio)}</strong></td></tr>
+              <tr class="pmjj-row-highlight"><td>2+3</td><td><strong>TOTAL PASIVO Y PATRIMONIO</strong></td><td class="num-col"><strong>${pmjjCopHtml(may.total_pasivo_patrimonio)}</strong></td><td class="num-col"><strong>${pmjjCopHtml(jun.total_pasivo_patrimonio)}</strong></td><td class="num-col"><strong>${pmjjCopHtml(jul.total_pasivo_patrimonio)}</strong></td></tr>
               <tr>
                 <td>=</td>
                 <td><strong>Comprobación Ecuación Contable (<span class="ef-col-activo">Activo</span> = <span class="ef-col-pasivo">Pasivo</span> + <span class="ef-col-patrimonio">Patrimonio</span>)</strong></td>
-                <td class="num-col" style="color:var(--brand-emerald); font-weight:800;">${pmjjCop(may.diferencia)} ✓</td>
-                <td class="num-col" style="color:${Math.abs(jun.diferencia) < 1 ? "var(--brand-emerald)" : "var(--brand-warning)"}; font-weight:800;">${pmjjCop(Math.abs(jun.diferencia) < 1 ? 0 : jun.diferencia)} ✓</td>
-                <td class="num-col" style="color:${Math.abs(jul.diferencia) < 1 ? "var(--brand-emerald)" : "var(--brand-warning)"}; font-weight:800;">${pmjjCop(Math.abs(jul.diferencia) < 1 ? 0 : jul.diferencia)} ${Math.abs(jul.diferencia) < 1 ? "✓" : "⚠️ (Ver nota IVA)"}</td>
+                <td class="num-col" style="color:var(--brand-emerald); font-weight:800;">${pmjjCopHtml(may.diferencia)} ✓</td>
+                <td class="num-col" style="color:${Math.abs(jun.diferencia) < 1 ? "var(--brand-emerald)" : "var(--brand-warning)"}; font-weight:800;">${pmjjCopHtml(Math.abs(jun.diferencia) < 1 ? 0 : jun.diferencia)} ✓</td>
+                <td class="num-col" style="color:${Math.abs(jul.diferencia) < 1 ? "var(--brand-emerald)" : "var(--brand-warning)"}; font-weight:800;">${pmjjCopHtml(Math.abs(jul.diferencia) < 1 ? 0 : jul.diferencia)} ${Math.abs(jul.diferencia) < 1 ? "✓" : "⚠️ (Ver nota IVA)"}</td>
               </tr>
             </tbody>
           </table>
