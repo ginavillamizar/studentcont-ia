@@ -27,6 +27,13 @@ def txt(v, default=""):
     return str(v).strip()
 
 
+def split_ica(base, total_ica):
+    ica = round(base * 0.0096, 2)
+    avisos = round(ica * 0.15, 2)
+    bomberil = round(total_ica - ica - avisos, 2)
+    return ica, avisos, bomberil
+
+
 def extract_month_operativo(ws, month_name):
     if month_name == "MAYO":
         v_rows = range(6, 11)
@@ -45,6 +52,9 @@ def extract_month_operativo(ws, month_name):
 
     ventas_filas = []
     for r in v_rows:
+        vn = num(ws.cell(r, 7).value)
+        ri = num(ws.cell(r, 9).value)
+        v_ica, v_av, v_bom = split_ica(vn, ri)
         ventas_filas.append({
             "ref": txt(ws.cell(r, 1).value),
             "producto": txt(ws.cell(r, 2).value),
@@ -52,19 +62,29 @@ def extract_month_operativo(ws, month_name):
             "costo_unit": num(ws.cell(r, 4).value),
             "costo_total": num(ws.cell(r, 5).value),
             "precio_venta": num(ws.cell(r, 6).value),
-            "ventas_netas": num(ws.cell(r, 7).value),
+            "ventas_netas": vn,
             "iva": num(ws.cell(r, 8).value),
-            "reteica": num(ws.cell(r, 9).value),
+            "ica": v_ica,
+            "avisos": v_av,
+            "bomberil": v_bom,
+            "reteica": ri,
             "neto_cobrar": num(ws.cell(r, 10).value),
             "autoret": num(ws.cell(r, 11).value),
         })
 
+    v_tot_ica = round(sum(x["ica"] for x in ventas_filas), 2)
+    v_tot_av = round(sum(x["avisos"] for x in ventas_filas), 2)
+    v_tot_ri = num(ws.cell(11, 9).value)
+    v_tot_bom = round(v_tot_ri - v_tot_ica - v_tot_av, 2)
     ventas_tot = {
         "unidades": int(round(num(ws.cell(11, 3).value))),
         "costo_total": num(ws.cell(11, 5).value),
         "ventas_netas": num(ws.cell(11, 7).value),
         "iva": num(ws.cell(11, 8).value),
-        "reteica": num(ws.cell(11, 9).value),
+        "ica": v_tot_ica,
+        "avisos": v_tot_av,
+        "bomberil": v_tot_bom,
+        "reteica": v_tot_ri,
         "neto_cobrar": num(ws.cell(11, 10).value),
         "autoret": num(ws.cell(11, 11).value),
         "contado_50": num(ws.cell(12, 10).value),
@@ -100,26 +120,39 @@ def extract_month_operativo(ws, month_name):
 
     comp_filas = []
     for r in c_rows:
+        sub = num(ws.cell(r, 5).value)
+        ri = num(ws.cell(r, 8).value)
+        c_ica, c_av, c_bom = split_ica(sub, ri)
         comp_filas.append({
             "proveedor": txt(ws.cell(r, 1).value),
             "producto": txt(ws.cell(r, 2).value),
             "unidades": int(round(num(ws.cell(r, 3).value))),
             "costo_unit": num(ws.cell(r, 4).value),
-            "subtotal": num(ws.cell(r, 5).value),
+            "subtotal": sub,
             "iva_desc": num(ws.cell(r, 6).value),
             "retefuente": num(ws.cell(r, 7).value),
-            "reteica": num(ws.cell(r, 8).value),
+            "ica": c_ica,
+            "avisos": c_av,
+            "bomberil": c_bom,
+            "reteica": ri,
             "neto_pagar": num(ws.cell(r, 9).value),
             "contado_50": num(ws.cell(r, 10).value),
             "credito_50": num(ws.cell(r, 11).value),
         })
 
+    c_tot_ica = round(sum(x["ica"] for x in comp_filas), 2)
+    c_tot_av = round(sum(x["avisos"] for x in comp_filas), 2)
+    c_tot_ri = num(ws.cell(c_tot, 8).value)
+    c_tot_bom = round(c_tot_ri - c_tot_ica - c_tot_av, 2)
     comp_totals = {
         "unidades": int(round(num(ws.cell(c_tot, 3).value))),
         "subtotal": num(ws.cell(c_tot, 5).value),
         "iva_desc": num(ws.cell(c_tot, 6).value),
         "retefuente": num(ws.cell(c_tot, 7).value),
-        "reteica": num(ws.cell(c_tot, 8).value),
+        "ica": c_tot_ica,
+        "avisos": c_tot_av,
+        "bomberil": c_tot_bom,
+        "reteica": c_tot_ri,
         "neto_pagar": num(ws.cell(c_tot, 9).value),
         "contado_50": num(ws.cell(c_tot, 10).value),
         "credito_50": num(ws.cell(c_tot, 11).value),
@@ -129,12 +162,41 @@ def extract_month_operativo(ws, month_name):
     for r in t_rows:
         puc_raw = ws.cell(r, 2).value
         puc_str = str(int(puc_raw)) if isinstance(puc_raw, (int, float)) else txt(puc_raw)
-        trib_filas.append({
-            "concepto": txt(ws.cell(r, 1).value),
-            "puc": puc_str,
-            "valor": num(ws.cell(r, 3).value),
-            "nota": txt(ws.cell(r, 4).value),
-        })
+        if puc_str == "2468":
+            nota_m = "Pago mensual Hacienda Bucaramanga (mes siguiente)"
+            trib_filas.extend([
+                {
+                    "concepto": "ICA retenido en compras (9,6 × 1.000)",
+                    "puc": "246801",
+                    "valor": comp_totals["ica"],
+                    "nota": nota_m,
+                },
+                {
+                    "concepto": "Avisos y Tableros retenidos (15% sobre ICA)",
+                    "puc": "246802",
+                    "valor": comp_totals["avisos"],
+                    "nota": nota_m,
+                },
+                {
+                    "concepto": "Sobretasa Bomberil retenida (10% sobre ICA)",
+                    "puc": "246803",
+                    "valor": comp_totals["bomberil"],
+                    "nota": nota_m,
+                },
+                {
+                    "concepto": "TOTAL RETEICA + AVISOS + BOMBERIL A PAGAR",
+                    "puc": "2468",
+                    "valor": comp_totals["reteica"],
+                    "nota": "Declaración y pago mensual Hacienda Bucaramanga (mes siguiente)",
+                },
+            ])
+        else:
+            trib_filas.append({
+                "concepto": txt(ws.cell(r, 1).value),
+                "puc": puc_str,
+                "valor": num(ws.cell(r, 3).value),
+                "nota": txt(ws.cell(r, 4).value),
+            })
 
     return {
         "ventas": {"filas": ventas_filas, "totales": ventas_tot},
@@ -149,8 +211,8 @@ def extract_efc(ws, month_name):
         rows = range(5, 15)
         r_tot = 15
     elif month_name == "JUNIO":
-        rows = range(3, 12)
-        r_tot = 12
+        rows = range(3, 13)
+        r_tot = 13
     else:
         rows = range(3, 14)
         r_tot = 14
@@ -266,11 +328,31 @@ def main():
     ws_p = wb["PARAMETROS"]
     params_lista = []
     for r in range(6, 21):
-        params_lista.append({
-            "parametro": txt(ws_p.cell(r, 1).value),
-            "valor": num(ws_p.cell(r, 2).value),
-            "nota": txt(ws_p.cell(r, 3).value),
-        })
+        p_nom = txt(ws_p.cell(r, 1).value)
+        if "ReteICA Total" in p_nom or r == 20:
+            params_lista.extend([
+                {
+                    "parametro": "ICA Bucaramanga — Tarifa Comercial (135518 / 246801)",
+                    "valor": 0.0096,
+                    "nota": "9,6 × 1.000 (0,96%) sobre base gravable — Pago mensual",
+                },
+                {
+                    "parametro": "Avisos y Tableros (135520 / 246802)",
+                    "valor": 0.15,
+                    "nota": "15% liquidado sobre el valor del ICA (0,144% sobre base) — Pago mensual",
+                },
+                {
+                    "parametro": "Sobretasa Bomberil (135525 / 246803)",
+                    "valor": 0.10,
+                    "nota": "10% liquidado sobre el valor del ICA (0,096% sobre base) — Pago mensual",
+                },
+            ])
+        else:
+            params_lista.append({
+                "parametro": p_nom,
+                "valor": num(ws_p.cell(r, 2).value),
+                "nota": txt(ws_p.cell(r, 3).value),
+            })
 
     neveras_prov = []
     for r in (6, 7, 8):

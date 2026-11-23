@@ -84,9 +84,28 @@ function togglePresupMjjGuide() {
   renderPresupuestoMJJ();
 }
 
+function syncPresupuestoMjjWithGlobalPeriod(period) {
+  if (["MAYO", "JUNIO", "JULIO"].includes(period)) {
+    PRESUP_ACTIVE_MONTH = period;
+    if (PRESUP_EFC_MODE !== "COMPARATIVO") {
+      PRESUP_EFC_MODE = period;
+    }
+    if (PRESUP_MJJ_DATA) {
+      renderPresupuestoMJJ();
+    }
+  }
+}
+
 async function renderPresupuestoMJJ() {
   const root = document.getElementById("presupuestoMjjRoot");
   if (!root) return;
+
+  if (typeof ACTIVE_PERIOD !== "undefined" && ["MAYO", "JUNIO", "JULIO"].includes(ACTIVE_PERIOD)) {
+    PRESUP_ACTIVE_MONTH = ACTIVE_PERIOD;
+    if (PRESUP_EFC_MODE !== "COMPARATIVO") {
+      PRESUP_EFC_MODE = ACTIVE_PERIOD;
+    }
+  }
 
   if (!PRESUP_MJJ_DATA) {
     root.innerHTML = `
@@ -247,13 +266,13 @@ function renderTabResumen(container, d) {
     {
       num: "4",
       titulo: "Gastos Fijos + Tabla de Amortización + Impuestos",
-      texto: "A partir de Mayo solo proyectamos 3 gastos: Nómina/Beneficios ($10.186.476), Depreciación ($1.279.533) e Intereses del crédito Bancolombia tomados de la hoja TA (cuotas 3, 4 y 5). Además se activan IVA 19%, Retefuente 2,5%, Autorretención 2,5% y ReteICA 12‰.",
+      texto: "A partir de Mayo solo proyectamos 3 gastos: Nómina/Beneficios ($10.186.476), Depreciación ($1.279.533) e Intereses del crédito Bancolombia tomados de la hoja TA (cuotas 3, 4 y 5). Además se activan IVA 19%, Retefuente 2,5% (246540), Autorretención 2,5% (246575), ICA 9,6‰ (246801), Avisos 15% (246802) y Bomberil 10% (246803).",
       dato: `Financieros 5305: May ${pmjjCop(593434)} | Jun ${pmjjCop(578978)} | Jul ${pmjjCop(564362)}`
     },
     {
       num: "5",
       titulo: "Flujo de Caja (EFC) Sano y Creciente",
-      texto: `Mayo inicia con el efectivo real de Abril (${pmjjCop(d.meta.saldo_inicial_caja_abril)}), cobra la Cartera de Jaime (${pmjjCop(28857500)}) y el 50% contado de ventas, y paga los saldos pendientes de Abril más cuotas de Bancolombia y nómina. La caja sube a ${pmjjCop(jul.efc.saldo_final)} en Julio, incluso tras pagar IVA y ReteICA bimestral.`,
+      texto: `Mayo inicia con el efectivo real de Abril (${pmjjCop(d.meta.saldo_inicial_caja_abril)}), cobra la Cartera de Jaime (${pmjjCop(28857500)}) y el 50% contado de ventas, y paga los saldos pendientes de Abril más cuotas de Bancolombia y nómina. La caja sube a ${pmjjCop(jul.efc.saldo_final)} en Julio, incluso tras pagar ReteICA mensual e IVA bimestral (F-300).`,
       dato: `Caja: Abr ${pmjjCop(51852812)} → May ${pmjjCop(may.efc.saldo_final)} → Jun ${pmjjCop(jun.efc.saldo_final)} → Jul ${pmjjCop(jul.efc.saldo_final)}`
     },
   ];
@@ -472,11 +491,11 @@ function renderTabParametros(container, d) {
         </div>
 
         <div class="card">
-          <div class="card-header"><div class="card-title">🏷️ 3. Catálogo de Precios = Costo ÷ (1 − 30%)</div></div>
+          <div class="card-header"><div class="card-title">🏷️ 3. Catálogo de Base de Venta = Costo ÷ (1 − 30%)</div></div>
           <div class="card-body">
             <div class="table-wrap">
               <table class="acct-table">
-                <thead><tr><th>Producto (Kardex / Lote)</th><th class="num-col">Costo Unit.</th><th class="num-col">Precio Venta</th><th class="num-col">Ganancia Unit.</th></tr></thead>
+                <thead><tr><th>Producto (Kardex / Lote)</th><th class="num-col">Costo Unit.</th><th class="num-col">Base de Venta</th><th class="num-col">Ganancia Unit.</th></tr></thead>
                 <tbody>
                   ${catalogo_precios.map((c, idx) => `
                     <tr class="${idx === 4 ? "pmjj-row-amber" : ""}">
@@ -551,12 +570,9 @@ function renderTabOperativo(container, d) {
   };
 
   container.innerHTML = `
-    <div class="pmjj-month-pills">
-      ${["MAYO", "JUNIO", "JULIO"].map(mes => `
-        <button class="filter-chip ${m === mes ? "active" : ""}" onclick="setPresupMjjMonth('${mes}')">
-          📅 ${mes} 2026 (${pmjjNum(d.meses[mes].ventas.totales.unidades)} und.)
-        </button>
-      `).join("")}
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+      <span class="pmjj-badge pmjj-badge-blue">📅 Mes activo: ${m} 2026 (${pmjjNum(mesData.ventas.totales.unidades)} und.)</span>
+      <span style="font-size:0.78rem; color:var(--text-muted); font-weight:600;">Cambia entre MAY, JUN y JUL en la barra superior</span>
     </div>
 
     ${PRESUP_SHOW_GUIDE ? `
@@ -578,9 +594,12 @@ function renderTabOperativo(container, d) {
               <tr>
                 <th>Ref.</th><th>Producto (Kardex / Lote)</th><th class="num-col">Unid.</th>
                 <th class="num-col">Costo Unit.</th><th class="num-col">Costo Ventas (6135)</th>
-                <th class="num-col">Precio = Costo/0,7</th><th class="num-col">Ventas Netas (4135)</th>
-                <th class="num-col">IVA Gen. 19%</th><th class="num-col">ReteICA 1,2%</th>
-                <th class="num-col">Neto Cobrar (1305)</th><th class="num-col">Autorret. 2,5%</th>
+                <th class="num-col">Base de Venta (Costo/0,7)</th><th class="num-col">Ventas Netas (4135)</th>
+                <th class="num-col">IVA Gen. 19%</th>
+                <th class="num-col">ICA 9,6‰ (135518)</th>
+                <th class="num-col">Avisos 15% (135520)</th>
+                <th class="num-col">Bomberil 10% (135525)</th>
+                <th class="num-col">Neto Cobrar (1305)</th><th class="num-col">Autorret. 2,5% (246575)</th>
               </tr>
             </thead>
             <tbody>
@@ -594,7 +613,9 @@ function renderTabOperativo(container, d) {
                   <td class="num-col">${pmjjCop(f.precio_venta)}</td>
                   <td class="num-col"><strong>${pmjjCop(f.ventas_netas)}</strong></td>
                   <td class="num-col">${pmjjCop(f.iva)}</td>
-                  <td class="num-col">${pmjjCop(f.reteica)}</td>
+                  <td class="num-col">${pmjjCop(f.ica ?? 0)}</td>
+                  <td class="num-col">${pmjjCop(f.avisos ?? 0)}</td>
+                  <td class="num-col">${pmjjCop(f.bomberil ?? 0)}</td>
                   <td class="num-col" style="font-weight:700; color:var(--brand-primary);">${pmjjCop(f.neto_cobrar)}</td>
                   <td class="num-col">${pmjjCop(f.autoret)}</td>
                 </tr>
@@ -608,7 +629,9 @@ function renderTabOperativo(container, d) {
                 <td class="num-col">-</td>
                 <td class="num-col"><strong>${pmjjCop(mesData.ventas.totales.ventas_netas)}</strong></td>
                 <td class="num-col"><strong>${pmjjCop(mesData.ventas.totales.iva)}</strong></td>
-                <td class="num-col"><strong>${pmjjCop(mesData.ventas.totales.reteica)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.ventas.totales.ica ?? 0)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.ventas.totales.avisos ?? 0)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.ventas.totales.bomberil ?? 0)}</strong></td>
                 <td class="num-col"><strong>${pmjjCop(mesData.ventas.totales.neto_cobrar)}</strong></td>
                 <td class="num-col"><strong>${pmjjCop(mesData.ventas.totales.autoret)}</strong></td>
               </tr>
@@ -678,8 +701,11 @@ function renderTabOperativo(container, d) {
               <tr>
                 <th>Proveedor</th><th>Producto</th><th class="num-col">Unid.</th>
                 <th class="num-col">Costo Unit.</th><th class="num-col">Subtotal Compra</th>
-                <th class="num-col">IVA Desc. 19%</th><th class="num-col">Retefuente 2,5%</th>
-                <th class="num-col">ReteICA 1,2%</th><th class="num-col">Neto Pagar (2205)</th>
+                <th class="num-col">IVA Desc. 19%</th><th class="num-col">Retefuente 2,5% (246540)</th>
+                <th class="num-col">ICA 9,6‰ (246801)</th>
+                <th class="num-col">Avisos 15% (246802)</th>
+                <th class="num-col">Bomberil 10% (246803)</th>
+                <th class="num-col">Neto Pagar (2205)</th>
                 <th class="num-col">50% Contado</th><th class="num-col">50% Crédito 30d</th>
               </tr>
             </thead>
@@ -693,7 +719,9 @@ function renderTabOperativo(container, d) {
                   <td class="num-col">${pmjjCop(f.subtotal)}</td>
                   <td class="num-col">${pmjjCop(f.iva_desc)}</td>
                   <td class="num-col">${pmjjCop(f.retefuente)}</td>
-                  <td class="num-col">${pmjjCop(f.reteica)}</td>
+                  <td class="num-col">${pmjjCop(f.ica ?? 0)}</td>
+                  <td class="num-col">${pmjjCop(f.avisos ?? 0)}</td>
+                  <td class="num-col">${pmjjCop(f.bomberil ?? 0)}</td>
                   <td class="num-col" style="font-weight:700;">${pmjjCop(f.neto_pagar)}</td>
                   <td class="num-col">${pmjjCop(f.contado_50)}</td>
                   <td class="num-col">${pmjjCop(f.credito_50)}</td>
@@ -707,7 +735,9 @@ function renderTabOperativo(container, d) {
                 <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.subtotal)}</strong></td>
                 <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.iva_desc)}</strong></td>
                 <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.retefuente)}</strong></td>
-                <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.reteica)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.ica ?? 0)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.avisos ?? 0)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.bomberil ?? 0)}</strong></td>
                 <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.neto_pagar)}</strong></td>
                 <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.contado_50)}</strong></td>
                 <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.credito_50)}</strong></td>
@@ -725,8 +755,8 @@ function renderTabOperativo(container, d) {
           <table class="acct-table">
             <thead><tr><th>Concepto Tributario</th><th>PUC</th><th class="num-col">Valor (COP)</th><th>Declaración / Vencimiento</th></tr></thead>
             <tbody>
-              ${mesData.tributaria.map((t, idx) => `
-                <tr class="${idx === 2 || idx === 5 ? "pmjj-row-highlight" : ""}">
+              ${mesData.tributaria.map(t => `
+                <tr class="${["2465", "2468", "2408"].includes(String(t.puc || "").trim()) ? "pmjj-row-highlight" : ""}">
                   <td><strong>${pmjjEsc(t.concepto)}</strong></td>
                   <td><code>${pmjjEsc(t.puc)}</code></td>
                   <td class="num-col" style="font-weight:800;">${pmjjCop(t.valor)}</td>
@@ -792,19 +822,25 @@ function renderTabEFC(container, d) {
     </div>
   `;
 
+  const activeMonth = ["MAYO", "JUNIO", "JULIO"].includes(PRESUP_ACTIVE_MONTH) ? PRESUP_ACTIVE_MONTH : "MAYO";
+
   container.innerHTML = `
-    <div class="pmjj-month-pills">
-      ${["MAYO", "JUNIO", "JULIO", "COMPARATIVO"].map(mOpt => `
-        <button class="filter-chip ${mode === mOpt ? "active" : ""}" onclick="setPresupEfcMode('${mOpt}')">
-          ${mOpt === "COMPARATIVO" ? "📊 Comparativo 3 Meses" : `💵 ${mOpt} 2026`}
+    <div class="pmjj-month-pills" style="justify-content:space-between; align-items:center;">
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button class="filter-chip ${mode !== "COMPARATIVO" ? "active" : ""}" onclick="setPresupEfcMode(PRESUP_ACTIVE_MONTH)">
+          💵 Ver Mes Activo (${activeMonth} 2026)
         </button>
-      `).join("")}
+        <button class="filter-chip ${mode === "COMPARATIVO" ? "active" : ""}" onclick="setPresupEfcMode('COMPARATIVO')">
+          📊 Ver Comparativo 3 Meses
+        </button>
+      </div>
+      <span style="font-size:0.78rem; color:var(--text-muted); font-weight:600;">Cambia entre MAY, JUN y JUL en la barra superior</span>
     </div>
 
     ${PRESUP_SHOW_GUIDE ? `
       <div class="pmjj-explain-box">
         <strong>💡 Cómo explicar el Flujo de Efectivo (EFC):</strong>
-        En <strong>Mayo</strong> arrancamos con la caja + bancos reales de Abril (${pmjjCop(may.saldo_inicial)}), cobramos la cartera pendiente de Jaime (${pmjjCop(28857500)}) y el 50% contado de ventas de Mayo, y pagamos proveedores pendientes de Abril (${pmjjCop(5778000)}), la última cuota de remodelación (${pmjjCop(568800)}), Retefuente de Abril (${pmjjCop(442490)}), Seguridad Social, Salarios y Cuota del crédito Bancolombia. En <strong>Junio y Julio</strong> entra el 50% a crédito del mes anterior, y en <strong>Julio</strong> se pagan los impuestos bimestrales (IVA F-300 y ReteICA May–Jun).
+        En <strong>Mayo</strong> arrancamos con la caja + bancos reales de Abril (${pmjjCop(may.saldo_inicial)}), cobramos la cartera pendiente de Jaime (${pmjjCop(28857500)}) y el 50% contado de ventas de Mayo, y pagamos proveedores pendientes de Abril (${pmjjCop(5778000)}), la última cuota de remodelación (${pmjjCop(568800)}), Retefuente de Abril (${pmjjCop(442490)}), Seguridad Social, Salarios y Cuota del crédito Bancolombia. En <strong>Junio y Julio</strong> entra el 50% a crédito del mes anterior, el <strong>ReteICA se paga mensualmente</strong> (en Junio se paga Mayo y en Julio se paga Junio), y en <strong>Julio</strong> se paga el <strong>IVA F-300 bimestral</strong> (May–Jun).
       </div>
     ` : ""}
 
@@ -830,7 +866,7 @@ function renderTabEFC(container, d) {
       ${renderSingleEFC(may, "MAYO")}
       ${renderSingleEFC(jun, "JUNIO")}
       ${renderSingleEFC(jul, "JULIO")}
-    ` : renderSingleEFC(d.meses[mode].efc, mode)}
+    ` : renderSingleEFC(d.meses[activeMonth].efc, activeMonth)}
   `;
 }
 
@@ -858,7 +894,7 @@ function renderTabER(container, d) {
     { cod: "5305", nom: "(-) GASTOS FINANCIEROS (Interés cuota crédito de hoja TA)", v1: gastoPorCodigo(may, "5305"), v2: gastoPorCodigo(jun, "5305"), v3: gastoPorCodigo(jul, "5305") },
     { cod: "—",    nom: "(=) TOTAL GASTOS OPERACIONALES", v1: may.total_gastos, v2: jun.total_gastos, v3: jul.total_gastos, cls: "pmjj-row-subtle" },
     { cod: "—",    nom: "(=) UTILIDAD ANTES DE IMPUESTOS (UAI)", v1: may.uai, v2: jun.uai, v3: jul.uai, cls: "pmjj-row-subtle" },
-    { cod: "5405", nom: "(-) IMPUESTO DE RENTA (35%)", v1: may.impuesto_renta, v2: jun.impuesto_renta, v3: jul.impuesto_renta },
+    { cod: "2499", nom: "(-) PROVISIÓN IMPUESTO DE RENTA (35% — Mensual)", v1: may.impuesto_renta, v2: jun.impuesto_renta, v3: jul.impuesto_renta },
     { cod: "—",    nom: "(=) UTILIDAD DESPUÉS DE IMPUESTOS", v1: may.udi, v2: jun.udi, v3: jul.udi },
     { cod: "3305", nom: "(-) RESERVA LEGAL (10%)", v1: may.reserva_legal, v2: jun.reserva_legal, v3: jul.reserva_legal },
     { cod: "3605", nom: "(=) UTILIDAD NETA PROYECTADA DEL MES", v1: may.utilidad_neta, v2: jun.utilidad_neta, v3: jul.utilidad_neta, cls: "pmjj-row-highlight" },

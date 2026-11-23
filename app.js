@@ -869,6 +869,7 @@ function setGlobalPeriod(period) {
   renderAuxiliaresSection();
   renderEstadosFinancieros();
   renderTaxSection();
+  if (typeof syncPresupuestoMjjWithGlobalPeriod === "function") syncPresupuestoMjjWithGlobalPeriod(period);
   showToast(`Mes activo seleccionado: ${period} 2026`);
 }
 
@@ -1009,6 +1010,14 @@ function renderDashboard() {
     if (cant > 0 && val > 0) invTotal += val;
   });
 
+  const executedMonths = ALL_MONTHS.filter(m => (DB.meses[m]?.transacciones || []).length > 0);
+  const capMes = m => m.charAt(0) + m.slice(1).toLowerCase();
+  const monthsActiveSub = executedMonths.length === 0
+    ? "0 Meses Ejecutados"
+    : executedMonths.length === 1
+      ? `1 Mes Ejecutado (${capMes(executedMonths[0])})`
+      : `${executedMonths.length} Meses Ejecutados (${capMes(executedMonths[0])} a ${capMes(executedMonths[executedMonths.length - 1])})`;
+
   document.getElementById("dashboardKpiGrid").innerHTML = `
     <div class="kpi-card">
       <div class="kpi-label">Aporte Social / Capital (3105)</div>
@@ -1028,7 +1037,7 @@ function renderDashboard() {
     <div class="kpi-card">
       <div class="kpi-label">Comprobantes Diarios y Hojas</div>
       <div class="kpi-value">${numDiarios.size || totalTxs} Diarios / ${totalTxs} Hojas</div>
-      <div class="kpi-sub">12 Meses Activos (Enero a Diciembre)</div>
+      <div class="kpi-sub">${monthsActiveSub}</div>
     </div>
   `;
 
@@ -6126,7 +6135,7 @@ function renderNominaSection() {
               <tr style="background:#F8FAFC;"><td class="code-col">237006</td><td>Aportes a Fondos de Pensiones (AFP por pagar)</td><td class="num-col">$ 0</td><td class="num-col">${fmtCOP(penTrabajador + totPenEmp + solTrabajador)}</td></tr>
               <tr style="background:#F8FAFC;"><td class="code-col">237007</td><td>Aportes a Riesgos Laborales (ARL por pagar)</td><td class="num-col">$ 0</td><td class="num-col">${fmtCOP(totArl)}</td></tr>
               <tr style="background:#F8FAFC;"><td class="code-col">237010</td><td>Aportes a Cajas, ICBF y SENA por pagar</td><td class="num-col">$ 0</td><td class="num-col">${fmtCOP(totCcf + totSena + totIcbf)}</td></tr>
-              <tr style="background:#F8FAFC;"><td class="code-col">236505</td><td>Retención en la Fuente Salarios (Art. 383 E.T.)</td><td class="num-col">$ 0</td><td class="num-col">${fmtCOP(retTrabajador)}</td></tr>
+              <tr style="background:#F8FAFC;"><td class="code-col">246505</td><td>Retención en la Fuente Salarios (Art. 383 E.T.)</td><td class="num-col">$ 0</td><td class="num-col">${fmtCOP(retTrabajador)}</td></tr>
               <tr style="background:#F8FAFC;"><td class="code-col">2610</td><td>Obligaciones Laborales y Provisiones Consolidadas</td><td class="num-col">$ 0</td><td class="num-col">${fmtCOP(totCes + totInt + totPri + totVac)}</td></tr>
               <tr style="background:#F8FAFC;"><td class="code-col">250505</td><td>Salarios por Pagar (Neto a pagar a trabajadores)</td><td class="num-col">$ 0</td><td class="num-col">${fmtCOP(netoPagar)}</td></tr>
 

@@ -27,8 +27,8 @@
     ],
     "meta_utilidad_mensual": 8543408.27,
     "saldo_inicial_caja_abril": 51852811.65,
-    "excel_mtime": "2026-11-23 09:31:02",
-    "sincronizado_el": "2026-11-23 09:31:03"
+    "excel_mtime": "2026-11-23 10:00:34",
+    "sincronizado_el": "2026-11-23 10:00:34"
   },
   "parametros": {
     "reglas": [
@@ -73,7 +73,7 @@
         "nota": "50% pago en el mes y 50% pago mes+1"
       },
       {
-        "parametro": "Tarifa Impuesto de Renta Personas Jurídicas (Cuenta 5405 / 2499)",
+        "parametro": "Tarifa Impuesto de Renta Personas Jurídicas — Provisión Mensual (Cuenta 2499)",
         "valor": 0.35,
         "nota": "Art. 240 Estatuto Tributario (35%)"
       },
@@ -88,24 +88,34 @@
         "nota": "Activo a partir de Mayo (F-300 bimestral)"
       },
       {
-        "parametro": "Retención en la Fuente en Compras Declarantes (236540)",
+        "parametro": "Retención en la Fuente en Compras Declarantes (246540)",
         "valor": 0.03,
         "nota": "2,5% compras generales (F-350 mensual)"
       },
       {
-        "parametro": "Autorretención en Renta Comercial (135515 / 236575)",
+        "parametro": "Autorretención en Renta Comercial (135575 / 246575)",
         "valor": 0.03,
         "nota": "2,5% Agente Autorretenedor (F-350 mensual)"
       },
       {
-        "parametro": "Autorretención Especial Decreto 2201 (135515 / 236575)",
+        "parametro": "Autorretención Especial Decreto 2201 (135575 / 246575)",
         "valor": 0.0,
         "nota": "0% (Solo se aplica Autorretención Renta 2,5% según ESF Mayo)"
       },
       {
-        "parametro": "ReteICA Total Bucaramanga (9,6‰ + 15% Avisos + 10% Bomberil = 12‰)",
-        "valor": 0.01,
-        "nota": "12 × 1.000 (1,20% = 0,96% ICA + 0,144% Avisos + 0,096% Bomberil)"
+        "parametro": "ICA Bucaramanga — Tarifa Comercial (135518 / 246801)",
+        "valor": 0.0096,
+        "nota": "9,6 × 1.000 (0,96%) sobre base gravable — Pago mensual"
+      },
+      {
+        "parametro": "Avisos y Tableros (135520 / 246802)",
+        "valor": 0.15,
+        "nota": "15% liquidado sobre el valor del ICA (0,144% sobre base) — Pago mensual"
+      },
+      {
+        "parametro": "Sobretasa Bomberil (135525 / 246803)",
+        "valor": 0.1,
+        "nota": "10% liquidado sobre el valor del ICA (0,096% sobre base) — Pago mensual"
       }
     ],
     "proveedores_neveras": [
@@ -245,14 +255,14 @@
       {
         "concepto": "Saldo Final de Caja Acumulado",
         "mayo": 99583154.39,
-        "junio": 139076320.85,
+        "junio": 138639640.85,
         "julio": 139944596.46,
         "trimestre": 139944596.46
       },
       {
         "concepto": "Total Activos = Total Pasivo + Patrimonio (ESF)",
         "mayo": 370684010.29,
-        "junio": 412140343.93,
+        "junio": 411703663.93,
         "julio": 414829883.87,
         "trimestre": 414829883.87
       },
@@ -339,6 +349,9 @@
             "precio_venta": 5000000.0,
             "ventas_netas": 60000000.0,
             "iva": 11400000.0,
+            "ica": 576000.0,
+            "avisos": 86400.0,
+            "bomberil": 57600.0,
             "reteica": 720000.0,
             "neto_cobrar": 70680000.0,
             "autoret": 1500000.0
@@ -352,6 +365,9 @@
             "precio_venta": 777142.86,
             "ventas_netas": 11657142.86,
             "iva": 2214857.14,
+            "ica": 111908.57,
+            "avisos": 16786.29,
+            "bomberil": 11190.85,
             "reteica": 139885.71,
             "neto_cobrar": 13732114.29,
             "autoret": 291428.57
@@ -365,6 +381,9 @@
             "precio_venta": 792857.14,
             "ventas_netas": 4757142.86,
             "iva": 903857.14,
+            "ica": 45668.57,
+            "avisos": 6850.29,
+            "bomberil": 4566.85,
             "reteica": 57085.71,
             "neto_cobrar": 5603914.29,
             "autoret": 118928.57
@@ -378,6 +397,9 @@
             "precio_venta": 1042857.14,
             "ventas_netas": 10428571.43,
             "iva": 1981428.57,
+            "ica": 100114.29,
+            "avisos": 15017.14,
+            "bomberil": 10011.43,
             "reteica": 125142.86,
             "neto_cobrar": 12284857.14,
             "autoret": 260714.29
@@ -391,6 +413,9 @@
             "precio_venta": 131428.57,
             "ventas_netas": 2102857.14,
             "iva": 399542.86,
+            "ica": 20187.43,
+            "avisos": 3028.11,
+            "bomberil": 2018.75,
             "reteica": 25234.29,
             "neto_cobrar": 2477165.71,
             "autoret": 52571.43
@@ -401,6 +426,9 @@
           "costo_total": 62262000.0,
           "ventas_netas": 88945714.29,
           "iva": 16899685.71,
+          "ica": 853878.86,
+          "avisos": 128081.83,
+          "bomberil": 85387.88,
           "reteica": 1067348.57,
           "neto_cobrar": 104778051.43,
           "autoret": 2223642.86,
@@ -497,6 +525,9 @@
             "subtotal": 21000000.0,
             "iva_desc": 3990000.0,
             "retefuente": 525000.0,
+            "ica": 201600.0,
+            "avisos": 30240.0,
+            "bomberil": 20160.0,
             "reteica": 252000.0,
             "neto_pagar": 24213000.0,
             "contado_50": 12106500.0,
@@ -510,6 +541,9 @@
             "subtotal": 1830000.0,
             "iva_desc": 347700.0,
             "retefuente": 45750.0,
+            "ica": 17568.0,
+            "avisos": 2635.2,
+            "bomberil": 1756.8,
             "reteica": 21960.0,
             "neto_pagar": 2109990.0,
             "contado_50": 1054995.0,
@@ -523,6 +557,9 @@
             "subtotal": 1500000.0,
             "iva_desc": 0.0,
             "retefuente": 37500.0,
+            "ica": 14400.0,
+            "avisos": 2160.0,
+            "bomberil": 1440.0,
             "reteica": 18000.0,
             "neto_pagar": 1444500.0,
             "contado_50": 722250.0,
@@ -536,6 +573,9 @@
             "subtotal": 3650000.0,
             "iva_desc": 693500.0,
             "retefuente": 91250.0,
+            "ica": 35040.0,
+            "avisos": 5256.0,
+            "bomberil": 3504.0,
             "reteica": 43800.0,
             "neto_pagar": 4208450.0,
             "contado_50": 2104225.0,
@@ -549,6 +589,9 @@
             "subtotal": 460000.0,
             "iva_desc": 87400.0,
             "retefuente": 11500.0,
+            "ica": 4416.0,
+            "avisos": 662.4,
+            "bomberil": 441.6,
             "reteica": 5520.0,
             "neto_pagar": 530380.0,
             "contado_50": 265190.0,
@@ -560,6 +603,9 @@
           "subtotal": 28440000.0,
           "iva_desc": 5118600.0,
           "retefuente": 711000.0,
+          "ica": 273024.0,
+          "avisos": 40953.6,
+          "bomberil": 27302.4,
           "reteica": 341280.0,
           "neto_pagar": 32506320.0,
           "contado_50": 16253160.0,
@@ -569,19 +615,19 @@
       "tributaria": [
         {
           "concepto": "Retefuente practicada en compras (2,5%)",
-          "puc": "236540",
+          "puc": "246540",
           "valor": 711000.0,
           "nota": "Integrado en Formulario 350 mensual"
         },
         {
           "concepto": "Autorretención en Renta (2,5% normal + 0,55% Dec. 2201)",
-          "puc": "236575",
+          "puc": "246575",
           "valor": 2223642.86,
           "nota": "Integrado en Formulario 350 mensual"
         },
         {
           "concepto": "TOTAL FORMULARIO 350 DEL MES (RETEFUENTE + AUTORRET.)",
-          "puc": "2365",
+          "puc": "2465",
           "valor": 2934642.86,
           "nota": "Pago mensual DIAN al mes siguiente"
         },
@@ -589,7 +635,7 @@
           "concepto": "ReteICA total practicada en compras (9,6‰ + 15% Avisos + 10% Bomberil = 12‰)",
           "puc": "2368",
           "valor": 341280.0,
-          "nota": "Pago bimestral Hacienda Bucaramanga (Julio: May–Jun)"
+          "nota": "Pago mensual Hacienda Bucaramanga (mes siguiente)"
         },
         {
           "concepto": "Anticipo de Impuestos generado en ventas (ReteICA + Autorret.)",
@@ -885,6 +931,9 @@
             "precio_venta": 5000000.0,
             "ventas_netas": 65000000.0,
             "iva": 12350000.0,
+            "ica": 624000.0,
+            "avisos": 93600.0,
+            "bomberil": 62400.0,
             "reteica": 780000.0,
             "neto_cobrar": 76570000.0,
             "autoret": 1625000.0
@@ -898,6 +947,9 @@
             "precio_venta": 792857.14,
             "ventas_netas": 9514285.71,
             "iva": 1807714.29,
+            "ica": 91337.14,
+            "avisos": 13700.57,
+            "bomberil": 9133.72,
             "reteica": 114171.43,
             "neto_cobrar": 11207828.57,
             "autoret": 237857.14
@@ -911,6 +963,9 @@
             "precio_venta": 1042857.14,
             "ventas_netas": 12514285.71,
             "iva": 2377714.29,
+            "ica": 120137.14,
+            "avisos": 18020.57,
+            "bomberil": 12013.72,
             "reteica": 150171.43,
             "neto_cobrar": 14741828.57,
             "autoret": 312857.14
@@ -924,6 +979,9 @@
             "precio_venta": 131428.57,
             "ventas_netas": 1840000.0,
             "iva": 349600.0,
+            "ica": 17664.0,
+            "avisos": 2649.6,
+            "bomberil": 1766.4,
             "reteica": 22080.0,
             "neto_cobrar": 2167520.0,
             "autoret": 46000.0
@@ -934,6 +992,9 @@
           "costo_total": 62208000.0,
           "ventas_netas": 88868571.43,
           "iva": 16885028.57,
+          "ica": 853138.28,
+          "avisos": 127970.74,
+          "bomberil": 85313.84,
           "reteica": 1066422.86,
           "neto_cobrar": 104687177.14,
           "autoret": 2221714.29,
@@ -1017,6 +1078,9 @@
             "subtotal": 45500000.0,
             "iva_desc": 8645000.0,
             "retefuente": 1137500.0,
+            "ica": 436800.0,
+            "avisos": 65520.0,
+            "bomberil": 43680.0,
             "reteica": 546000.0,
             "neto_pagar": 52461500.0,
             "contado_50": 26230750.0,
@@ -1030,6 +1094,9 @@
             "subtotal": 3660000.0,
             "iva_desc": 695400.0,
             "retefuente": 91500.0,
+            "ica": 35136.0,
+            "avisos": 5270.4,
+            "bomberil": 3513.6,
             "reteica": 43920.0,
             "neto_pagar": 4219980.0,
             "contado_50": 2109990.0,
@@ -1043,6 +1110,9 @@
             "subtotal": 3000000.0,
             "iva_desc": 0.0,
             "retefuente": 75000.0,
+            "ica": 28800.0,
+            "avisos": 4320.0,
+            "bomberil": 2880.0,
             "reteica": 36000.0,
             "neto_pagar": 2889000.0,
             "contado_50": 1444500.0,
@@ -1056,6 +1126,9 @@
             "subtotal": 8760000.0,
             "iva_desc": 1664400.0,
             "retefuente": 219000.0,
+            "ica": 84096.0,
+            "avisos": 12614.4,
+            "bomberil": 8409.6,
             "reteica": 105120.0,
             "neto_pagar": 10100280.0,
             "contado_50": 5050140.0,
@@ -1069,6 +1142,9 @@
             "subtotal": 1288000.0,
             "iva_desc": 244720.0,
             "retefuente": 32200.0,
+            "ica": 12364.8,
+            "avisos": 1854.72,
+            "bomberil": 1236.48,
             "reteica": 15456.0,
             "neto_pagar": 1485064.0,
             "contado_50": 742532.0,
@@ -1080,6 +1156,9 @@
           "subtotal": 62208000.0,
           "iva_desc": 11249520.0,
           "retefuente": 1555200.0,
+          "ica": 597196.8,
+          "avisos": 89579.52,
+          "bomberil": 59719.68,
           "reteica": 746496.0,
           "neto_pagar": 71155824.0,
           "contado_50": 35577912.0,
@@ -1089,19 +1168,19 @@
       "tributaria": [
         {
           "concepto": "Retefuente practicada en compras (2,5%)",
-          "puc": "236540",
+          "puc": "246540",
           "valor": 1555200.0,
           "nota": "Integrado en Formulario 350 mensual"
         },
         {
           "concepto": "Autorretención en Renta (2,5% normal + 0,55% Dec. 2201)",
-          "puc": "236575",
+          "puc": "246575",
           "valor": 2221714.29,
           "nota": "Integrado en Formulario 350 mensual"
         },
         {
           "concepto": "TOTAL FORMULARIO 350 DEL MES (RETEFUENTE + AUTORRET.)",
-          "puc": "2365",
+          "puc": "2465",
           "valor": 3776914.29,
           "nota": "Pago mensual DIAN al mes siguiente"
         },
@@ -1109,7 +1188,7 @@
           "concepto": "ReteICA total practicada en compras (9,6‰ + 15% Avisos + 10% Bomberil = 12‰)",
           "puc": "2368",
           "valor": 746496.0,
-          "nota": "Pago bimestral Hacienda Bucaramanga (Julio: May–Jun)"
+          "nota": "Pago mensual Hacienda Bucaramanga (mes siguiente)"
         },
         {
           "concepto": "Anticipo de Impuestos generado en ventas (ReteICA + Autorret.)",
@@ -1180,12 +1259,18 @@
             "entrada": null,
             "salida": 2934642.86,
             "total": 139076320.85
+          },
+          {
+            "concepto": "PAGO RETEICA MAYO (MENSUAL)",
+            "entrada": null,
+            "salida": 436680.0,
+            "total": 138639640.85
           }
         ],
         "saldo_inicial": 99583154.39,
         "total_entradas": 104732614.29,
-        "total_salidas": 65239447.83,
-        "saldo_final": 139076320.85
+        "total_salidas": 65676127.83,
+        "saldo_final": 138639640.85
       },
       "er": {
         "periodo": "PERIODO 1 AL 30 DE JUNIO 2026",
@@ -1235,7 +1320,7 @@
           {
             "codigo": "1110",
             "cuenta": "BANCOS",
-            "valor": 138026320.85
+            "valor": 137589640.85
           },
           {
             "codigo": "1305",
@@ -1258,7 +1343,7 @@
             "valor": 0.0
           }
         ],
-        "subtotal_ac": 204809258.0,
+        "subtotal_ac": 204372578.0,
         "activos_no_corrientes": [
           {
             "codigo": "1504",
@@ -1282,7 +1367,7 @@
           }
         ],
         "subtotal_anc": 207331085.94,
-        "total_activos": 412140343.93,
+        "total_activos": 411703663.93,
         "pasivos_corrientes": [
           {
             "codigo": "2105",
@@ -1312,7 +1397,7 @@
           {
             "codigo": "2468",
             "cuenta": "IMPUESTO DE ICA RETENIDO A TERCEROS",
-            "valor": 1183176.0
+            "valor": 746496.0
           },
           {
             "codigo": "2499",
@@ -1345,7 +1430,7 @@
             "valor": 14058385.0
           }
         ],
-        "subtotal_pc": 118812313.16,
+        "subtotal_pc": 118375633.16,
         "pasivos_no_corrientes": [
           {
             "codigo": "2105",
@@ -1354,7 +1439,7 @@
           }
         ],
         "subtotal_pnc": 33761683.59,
-        "total_pasivos": 152573996.75,
+        "total_pasivos": 152137316.75,
         "patrimonio": [
           {
             "codigo": "3105",
@@ -1383,7 +1468,7 @@
           }
         ],
         "total_patrimonio": 259566347.19,
-        "total_pasivo_patrimonio": 412140343.94,
+        "total_pasivo_patrimonio": 411703663.94,
         "diferencia": -0.01
       }
     },
@@ -1399,6 +1484,9 @@
             "precio_venta": 5000000.0,
             "ventas_netas": 65000000.0,
             "iva": 12350000.0,
+            "ica": 624000.0,
+            "avisos": 93600.0,
+            "bomberil": 62400.0,
             "reteica": 780000.0,
             "neto_cobrar": 76570000.0,
             "autoret": 1625000.0
@@ -1412,6 +1500,9 @@
             "precio_venta": 792857.14,
             "ventas_netas": 9514285.71,
             "iva": 1807714.29,
+            "ica": 91337.14,
+            "avisos": 13700.57,
+            "bomberil": 9133.72,
             "reteica": 114171.43,
             "neto_cobrar": 11207828.57,
             "autoret": 237857.14
@@ -1425,6 +1516,9 @@
             "precio_venta": 1042857.14,
             "ventas_netas": 12514285.71,
             "iva": 2377714.29,
+            "ica": 120137.14,
+            "avisos": 18020.57,
+            "bomberil": 12013.72,
             "reteica": 150171.43,
             "neto_cobrar": 14741828.57,
             "autoret": 312857.14
@@ -1438,6 +1532,9 @@
             "precio_venta": 131428.57,
             "ventas_netas": 1840000.0,
             "iva": 349600.0,
+            "ica": 17664.0,
+            "avisos": 2649.6,
+            "bomberil": 1766.4,
             "reteica": 22080.0,
             "neto_cobrar": 2167520.0,
             "autoret": 46000.0
@@ -1448,6 +1545,9 @@
           "costo_total": 62208000.0,
           "ventas_netas": 88868571.43,
           "iva": 16885028.57,
+          "ica": 853138.28,
+          "avisos": 127970.74,
+          "bomberil": 85313.84,
           "reteica": 1066422.86,
           "neto_cobrar": 104687177.14,
           "autoret": 2221714.29,
@@ -1531,6 +1631,9 @@
             "subtotal": 45500000.0,
             "iva_desc": 8645000.0,
             "retefuente": 1137500.0,
+            "ica": 436800.0,
+            "avisos": 65520.0,
+            "bomberil": 43680.0,
             "reteica": 546000.0,
             "neto_pagar": 52461500.0,
             "contado_50": 26230750.0,
@@ -1544,6 +1647,9 @@
             "subtotal": 3660000.0,
             "iva_desc": 695400.0,
             "retefuente": 91500.0,
+            "ica": 35136.0,
+            "avisos": 5270.4,
+            "bomberil": 3513.6,
             "reteica": 43920.0,
             "neto_pagar": 4219980.0,
             "contado_50": 2109990.0,
@@ -1557,6 +1663,9 @@
             "subtotal": 3000000.0,
             "iva_desc": 0.0,
             "retefuente": 75000.0,
+            "ica": 28800.0,
+            "avisos": 4320.0,
+            "bomberil": 2880.0,
             "reteica": 36000.0,
             "neto_pagar": 2889000.0,
             "contado_50": 1444500.0,
@@ -1570,6 +1679,9 @@
             "subtotal": 8760000.0,
             "iva_desc": 1664400.0,
             "retefuente": 219000.0,
+            "ica": 84096.0,
+            "avisos": 12614.4,
+            "bomberil": 8409.6,
             "reteica": 105120.0,
             "neto_pagar": 10100280.0,
             "contado_50": 5050140.0,
@@ -1583,6 +1695,9 @@
             "subtotal": 1288000.0,
             "iva_desc": 244720.0,
             "retefuente": 32200.0,
+            "ica": 12364.8,
+            "avisos": 1854.72,
+            "bomberil": 1236.48,
             "reteica": 15456.0,
             "neto_pagar": 1485064.0,
             "contado_50": 742532.0,
@@ -1594,6 +1709,9 @@
           "subtotal": 62208000.0,
           "iva_desc": 11249520.0,
           "retefuente": 1555200.0,
+          "ica": 597196.8,
+          "avisos": 89579.52,
+          "bomberil": 59719.68,
           "reteica": 746496.0,
           "neto_pagar": 71155824.0,
           "contado_50": 35577912.0,
@@ -1603,19 +1721,19 @@
       "tributaria": [
         {
           "concepto": "Retefuente practicada en compras (2,5%)",
-          "puc": "236540",
+          "puc": "246540",
           "valor": 1555200.0,
           "nota": "Integrado en Formulario 350 mensual"
         },
         {
           "concepto": "Autorretención en Renta (2,5% normal + 0,55% Dec. 2201)",
-          "puc": "236575",
+          "puc": "246575",
           "valor": 2221714.29,
           "nota": "Integrado en Formulario 350 mensual"
         },
         {
           "concepto": "TOTAL FORMULARIO 350 DEL MES (RETEFUENTE + AUTORRET.)",
-          "puc": "2365",
+          "puc": "2465",
           "valor": 3776914.29,
           "nota": "Pago mensual DIAN al mes siguiente"
         },
@@ -1623,7 +1741,7 @@
           "concepto": "ReteICA total practicada en compras (9,6‰ + 15% Avisos + 10% Bomberil = 12‰)",
           "puc": "2465",
           "valor": 746496.0,
-          "nota": "Pago bimestral Hacienda Bucaramanga (Julio: May–Jun)"
+          "nota": "Pago mensual Hacienda Bucaramanga (mes siguiente)"
         },
         {
           "concepto": "Anticipo de Impuestos generado en ventas (ReteICA + Autorret.)",
@@ -1645,60 +1763,60 @@
             "concepto": "SALDO INICIAL",
             "entrada": null,
             "salida": null,
-            "total": 139076320.85
+            "total": 138639640.85
           },
           {
             "concepto": "COMPRAS AL CONTADO",
             "entrada": null,
             "salida": 35577912.0,
-            "total": 103498408.85
+            "total": 103061728.85
           },
           {
             "concepto": "VENTAS AL CONTADO",
             "entrada": 52343588.57,
             "salida": null,
-            "total": 155841997.43
+            "total": 155405317.43
           },
           {
             "concepto": "VENTAS CREDITO JUNIO (50%)",
             "entrada": 52343588.57,
             "salida": null,
-            "total": 208185586.0
+            "total": 207748906.0
           },
           {
             "concepto": "PAGO PROVEEDORES JUNIO (50%)",
             "entrada": null,
             "salida": 35577912.0,
-            "total": 172607674.0
+            "total": 172170994.0
           },
           {
             "concepto": "PAGO CUOTA CREDITO",
             "entrada": null,
             "salida": 1892260.45,
-            "total": 170715413.55
+            "total": 170278733.55
           },
           {
             "concepto": "PAGO SEGURIDAD SOCIAL",
             "entrada": null,
             "salida": 1753544.92,
-            "total": 168961868.63
+            "total": 168525188.63
           },
           {
             "concepto": "PAGO SALARIOS",
             "entrada": null,
             "salida": 6827927.6,
-            "total": 162133941.03
+            "total": 161697261.03
           },
           {
             "concepto": "PAGO FORMULARIO 350 JUNIO",
             "entrada": null,
             "salida": 3776914.29,
-            "total": 158357026.74
+            "total": 157920346.74
           },
           {
-            "concepto": "PAGO RETEICA BIM. MAY-JUN",
+            "concepto": "PAGO RETEICA JUNIO (MENSUAL)",
             "entrada": null,
-            "salida": 1183176.0,
+            "salida": 746496.0,
             "total": 157173850.74
           },
           {
@@ -1708,9 +1826,9 @@
             "total": 139944596.46
           }
         ],
-        "saldo_inicial": 139076320.85,
+        "saldo_inicial": 138639640.85,
         "total_entradas": 104687177.14,
-        "total_salidas": 103818901.54,
+        "total_salidas": 103382221.54,
         "saldo_final": 139944596.46
       },
       "er": {
