@@ -6,7 +6,7 @@
 
 let PRESUP_MJJ_DATA = null;
 let PRESUP_MJJ_LOADING = false;
-let PRESUP_ACTIVE_TAB = "RESUMEN";
+let PRESUP_ACTIVE_TAB = "MES_COMPLETO";
 let PRESUP_ACTIVE_MONTH = "MAYO";
 let PRESUP_EFC_MODE = "COMPARATIVO"; // "MAYO" | "JUNIO" | "JULIO" | "COMPARATIVO"
 let PRESUP_SHOW_GUIDE = true;
@@ -84,6 +84,9 @@ function setPresupMjjTab(tab) {
 
 function setPresupMjjMonth(mes) {
   PRESUP_ACTIVE_MONTH = mes;
+  if (typeof ACTIVE_PERIOD !== "undefined" && typeof setGlobalPeriod === "function" && ACTIVE_PERIOD !== mes) {
+    try { setGlobalPeriod(mes); return; } catch (_) {}
+  }
   renderPresupuestoMJJ();
 }
 
@@ -156,13 +159,14 @@ async function renderPresupuestoMJJ() {
   const crecCajaPct = cajaAbril > 0 ? ((cajaJulio - cajaAbril) / cajaAbril) : 0;
 
   const tabs = [
-    { id: "RESUMEN",    label: "📌 Resumen & Maestro" },
-    { id: "BASES",      label: "📊 Bases (DEP • TA • NOM • ESF Abril)" },
-    { id: "PARAMETROS", label: "⚙️ Parámetros & Proyectado" },
-    { id: "OPERATIVO",  label: "🛒 Compras (COM) & Ventas (VTA)" },
-    { id: "EFC",        label: "💵 Flujo de Caja (EFC)" },
-    { id: "ER",         label: "📈 Estado de Resultados (ER)" },
-    { id: "ESF",        label: "🏛️ Situación Financiera (ESF)" },
+    { id: "MES_COMPLETO", label: `📅 Todo ${PRESUP_ACTIVE_MONTH} (Ventas • Compras • Gastos • EFC • ER • ESF)` },
+    { id: "RESUMEN",      label: "📌 Resumen & Maestro" },
+    { id: "BASES",        label: "📊 Bases (DEP • TA • NOM • ESF Abril)" },
+    { id: "PARAMETROS",   label: "⚙️ Parámetros & Proyectado" },
+    { id: "OPERATIVO",    label: "🛒 Compras & Ventas" },
+    { id: "EFC",          label: "💵 Flujo de Caja (EFC)" },
+    { id: "ER",           label: "📈 Estado de Resultados (ER)" },
+    { id: "ESF",          label: "🏛️ Situación Financiera (ESF)" },
   ];
 
   root.innerHTML = `
@@ -218,8 +222,8 @@ async function renderPresupuestoMJJ() {
       </div>
     </div>
 
-    <!-- NAVEGACIÓN DE SUB-PESTAÑAS -->
-    <div class="filter-bar pmjj-subbar">
+    <!-- NAVEGACIÓN DE SUB-PESTAÑAS Y SELECTOR DE MES -->
+    <div class="filter-bar pmjj-subbar" style="flex-wrap:wrap; gap:10px;">
       <div class="filter-tabs">
         ${tabs.map(t => `
           <button class="filter-chip ${PRESUP_ACTIVE_TAB === t.id ? "active" : ""}" onclick="setPresupMjjTab('${t.id}')">
@@ -227,8 +231,13 @@ async function renderPresupuestoMJJ() {
           </button>
         `).join("")}
       </div>
-      <div style="font-size:0.75rem; color:var(--brand-primary); font-weight:700;">
-        Mes Activo: ${PRESUP_ACTIVE_MONTH} • 25 Hojas Sincronizadas
+      <div style="display:flex; align-items:center; gap:6px;">
+        <span style="font-size:0.75rem; color:var(--brand-primary); font-weight:700;">Mes:</span>
+        ${["MAYO", "JUNIO", "JULIO"].map(mes => `
+          <button class="filter-chip ${PRESUP_ACTIVE_MONTH === mes ? "active" : ""}" style="padding:4px 10px; font-size:0.74rem;" onclick="setPresupMjjMonth('${mes}')">
+            ${mes} 2026
+          </button>
+        `).join("")}
       </div>
     </div>
 
@@ -239,7 +248,9 @@ async function renderPresupuestoMJJ() {
   const container = document.getElementById("presupMjjTabContent");
   destroyPresupCharts();
 
-  if (PRESUP_ACTIVE_TAB === "RESUMEN") {
+  if (PRESUP_ACTIVE_TAB === "MES_COMPLETO") {
+    renderTabMesCompleto(container, d);
+  } else if (PRESUP_ACTIVE_TAB === "RESUMEN") {
     renderTabResumen(container, d);
   } else if (PRESUP_ACTIVE_TAB === "BASES") {
     renderTabBases(container, d);
@@ -254,6 +265,482 @@ async function renderPresupuestoMJJ() {
   } else if (PRESUP_ACTIVE_TAB === "ESF") {
     renderTabESF(container, d);
   }
+}
+
+/* ==========================================================================
+   0. TAB: VISTA COMPLETA POR MES (VENTAS • COMPRAS • GASTOS • EFC • ER • ESF)
+   ========================================================================== */
+function renderTabMesCompleto(container, d) {
+  const m = ["MAYO", "JUNIO", "JULIO"].includes(PRESUP_ACTIVE_MONTH) ? PRESUP_ACTIVE_MONTH : "MAYO";
+  const mesData = d.meses[m];
+  const proy = mesData.proyectado || {};
+  const gastos = proy.gastos || [];
+  const tm = proy.tasas_meta || {};
+  const efc = mesData.efc;
+  const er = mesData.er;
+  const esf = mesData.esf;
+  const meta = d.meta.meta_utilidad_mensual;
+
+  const gastoPorCodigo = (erObj, cod) => {
+    const found = (erObj.gastos_detalle || []).find(g => g.codigo === cod);
+    return found ? found.valor : 0;
+  };
+
+  const filasERMes = [
+    { cod: "4135", nom: "COMERCIO AL POR MAYOR Y POR MENOR (VENTAS NETAS)", val: er.ingresos_4135, cls: "pmjj-row-subtle" },
+    { cod: "6135", nom: "COMERCIO AL POR MAYOR Y MENOR (COSTO DE VENTAS)", val: er.costos_6135 },
+    { cod: "—",    nom: "UTILIDAD BRUTA EN VENTAS (MARGEN 30%)", val: er.utilidad_bruta, cls: "pmjj-row-highlight" },
+    { cod: "5105", nom: "BENEFICIOS A EMPLEADOS", val: gastoPorCodigo(er, "5105") },
+    { cod: "5260", nom: "DEPRECIACIONES (CONSTRUCCIONES Y EDIFICACIONES)", val: gastoPorCodigo(er, "5260") },
+    { cod: "5160", nom: "DEPRECIACIONES (FLOTA Y EQUIPO DE TRANSPORTE)", val: gastoPorCodigo(er, "5160") },
+    { cod: "5305", nom: "FINANCIEROS (INTERESES CRÉDITO BANCOLOMBIA — TA)", val: gastoPorCodigo(er, "5305") },
+    { cod: "—",    nom: "TOTAL GASTOS OPERACIONALES Y FINANCIEROS", val: er.total_gastos, cls: "pmjj-row-subtle" },
+    { cod: "—",    nom: "RESULTADO DEL EJERCICIO ANTES DE IMPUESTOS (UAI)", val: er.uai, cls: "pmjj-row-subtle" },
+    { cod: "2499", nom: "IMPUESTO DE RENTA (PROVISIÓN MENSUAL 35%)", val: er.impuesto_renta },
+    { cod: "—",    nom: "UTILIDAD DESPUÉS DEL IMPUESTO (UDI)", val: er.udi },
+    { cod: "3305", nom: "RESERVA LEGAL (10%)", val: er.reserva_legal },
+    { cod: "3605", nom: "RESULTADO DEL EJERCICIO (UTILIDAD NETA)", val: er.utilidad_neta, cls: "pmjj-row-highlight" },
+  ];
+
+  const filterNonZero = (arr) => (arr || []).filter(item => Math.abs(Number(item.valor || 0)) >= 0.01);
+
+  container.innerHTML = `
+    <!-- SELECTOR RÁPIDO DE MES Y RESUMEN DEL MES -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header" style="flex-wrap:wrap; gap:10px;">
+        <div class="card-title">📅 Expediente Completo del Mes de ${m} 2026 — Todas las Cédulas y Estados Proyectados</div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          ${["MAYO", "JUNIO", "JULIO"].map(mes => `
+            <button class="btn ${m === mes ? "btn-primary" : "btn-outline"} btn-sm" onclick="setPresupMjjMonth('${mes}')">
+              📅 Ver ${mes} 2026
+            </button>
+          `).join("")}
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="kpi-row" style="margin-bottom:0;">
+          <div class="kpi-card">
+            <div class="kpi-label">1. Ventas Netas ${m} (4135)</div>
+            <div class="kpi-value" style="color:var(--brand-primary);">${pmjjCop(mesData.ventas.totales.ventas_netas, 2)}</div>
+            <div class="kpi-sub">${pmjjNum(mesData.ventas.totales.unidades)} und. vendidas • Contado 50%: ${pmjjCop(mesData.ventas.totales.contado_50, 0)}</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">2. Compras ${m} (1435)</div>
+            <div class="kpi-value" style="color:var(--brand-primary);">${pmjjCop(mesData.compras.totales.subtotal, 2)}</div>
+            <div class="kpi-sub">${pmjjNum(mesData.compras.totales.unidades)} und. compradas • Stock Final = 0</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">3. Total Gastos ${m} (51+52+53)</div>
+            <div class="kpi-value" style="color:#B45309;">${pmjjCop(er.total_gastos, 2)}</div>
+            <div class="kpi-sub">Nómina $10.186.476 + Dep. $1.279.533 + Interés TA</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">4. Caja Final y Utilidad Neta ${m}</div>
+            <div class="kpi-value" style="color:var(--brand-emerald);">${pmjjCop(efc.saldo_final, 0)}</div>
+            <div class="kpi-sub">Utilidad Neta: ${pmjjCop(er.utilidad_neta, 2)} • Activos: ${pmjjCop(esf.total_activos, 0)}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. CÉDULA DE VENTAS -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">🛍️ 1. Cédula de Ventas e Impuestos — ${m} 2026 (50% Contado / 50% Crédito a 30 Días)</div>
+        <span class="pmjj-badge pmjj-badge-gold">50% Contado: ${pmjjCop(mesData.ventas.totales.contado_50, 2)} | 50% Crédito (1305): ${pmjjCop(mesData.ventas.totales.credito_50, 2)}</span>
+      </div>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table class="acct-table">
+            <thead>
+              <tr>
+                <th>Lote</th><th>Producto</th><th class="num-col">Unid.</th>
+                <th class="num-col">Costo Unit.</th><th class="num-col">Costo Ventas (6135)</th>
+                <th class="num-col">Base de Venta</th><th class="num-col">Ventas Netas (4135)</th>
+                <th class="num-col">IVA Gen. 19%</th>
+                <th class="num-col">ICA 9,6‰</th>
+                <th class="num-col">Avisos 15%</th>
+                <th class="num-col">Bomberil 10%</th>
+                <th class="num-col">Neto Cobrar</th><th class="num-col">Autorret. 2,5% (246575)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${mesData.ventas.filas.map(f => `
+                <tr>
+                  <td><code>${pmjjEsc(f.ref)}</code></td>
+                  <td><strong>${pmjjEsc(f.producto)}</strong></td>
+                  <td class="num-col"><strong>${pmjjNum(f.unidades)}</strong></td>
+                  <td class="num-col">${pmjjCop(f.costo_unit)}</td>
+                  <td class="num-col">${pmjjCop(f.costo_total)}</td>
+                  <td class="num-col">${pmjjCop(f.precio_venta, 2)}</td>
+                  <td class="num-col"><strong>${pmjjCop(f.ventas_netas, 2)}</strong></td>
+                  <td class="num-col">${pmjjCop(f.iva, 2)}</td>
+                  <td class="num-col">${pmjjCop(f.ica ?? 0, 2)}</td>
+                  <td class="num-col">${pmjjCop(f.avisos ?? 0, 2)}</td>
+                  <td class="num-col">${pmjjCop(f.bomberil ?? 0, 2)}</td>
+                  <td class="num-col" style="font-weight:700; color:var(--brand-primary);">${pmjjCop(f.neto_cobrar, 2)}</td>
+                  <td class="num-col">${pmjjCop(f.autoret, 2)}</td>
+                </tr>
+              `).join("")}
+              <tr class="pmjj-row-highlight">
+                <td>TOTAL</td>
+                <td><strong>TOTAL VENTAS ${m} 2026</strong></td>
+                <td class="num-col"><strong>${pmjjNum(mesData.ventas.totales.unidades)}</strong></td>
+                <td class="num-col">-</td>
+                <td class="num-col"><strong>${pmjjCop(mesData.ventas.totales.costo_total)}</strong></td>
+                <td class="num-col">-</td>
+                <td class="num-col"><strong>${pmjjCop(mesData.ventas.totales.ventas_netas, 2)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.ventas.totales.iva, 2)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.ventas.totales.ica ?? 0, 2)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.ventas.totales.avisos ?? 0, 2)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.ventas.totales.bomberil ?? 0, 2)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.ventas.totales.neto_cobrar, 2)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.ventas.totales.autoret, 2)}</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. CÉDULA DE COMPRAS E INVENTARIO -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">🛒 2. Cédula de Compras por Proveedor y Control de Inventario (Stock Final = 0) — ${m} 2026</div>
+        <span class="pmjj-badge pmjj-badge-purple">50% Contado: ${pmjjCop(mesData.compras.totales.contado_50, 2)} | 50% Crédito (2205): ${pmjjCop(mesData.compras.totales.credito_50, 2)}</span>
+      </div>
+      <div class="card-body">
+        <div class="table-wrap" style="margin-bottom:14px;">
+          <table class="acct-table">
+            <thead>
+              <tr>
+                <th>Proveedor</th><th>Producto</th><th class="num-col">Unid.</th>
+                <th class="num-col">Base Compra Unit.</th><th class="num-col">Base Compra Total</th>
+                <th class="num-col">IVA Desc. 19%</th><th class="num-col">Retefuente 2,5% (246540)</th>
+                <th class="num-col">ICA 9,6‰ (246801)</th>
+                <th class="num-col">Avisos 15% (246802)</th>
+                <th class="num-col">Bomberil 10% (246803)</th>
+                <th class="num-col">Neto Pagar</th>
+                <th class="num-col">50% Contado</th><th class="num-col">50% Crédito</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${mesData.compras.filas.map(f => `
+                <tr>
+                  <td><strong>${pmjjEsc(f.proveedor)}</strong></td>
+                  <td>${pmjjEsc(f.producto)}</td>
+                  <td class="num-col"><strong>${pmjjNum(f.unidades)}</strong></td>
+                  <td class="num-col">${pmjjCop(f.costo_unit)}</td>
+                  <td class="num-col">${pmjjCop(f.subtotal)}</td>
+                  <td class="num-col">${pmjjCop(f.iva_desc)}</td>
+                  <td class="num-col">${pmjjCop(f.retefuente)}</td>
+                  <td class="num-col">${pmjjCop(f.ica ?? 0, 2)}</td>
+                  <td class="num-col">${pmjjCop(f.avisos ?? 0, 2)}</td>
+                  <td class="num-col">${pmjjCop(f.bomberil ?? 0, 2)}</td>
+                  <td class="num-col" style="font-weight:700; color:var(--brand-primary);">${pmjjCop(f.neto_pagar)}</td>
+                  <td class="num-col">${pmjjCop(f.contado_50)}</td>
+                  <td class="num-col">${pmjjCop(f.credito_50)}</td>
+                </tr>
+              `).join("")}
+              <tr class="pmjj-row-highlight">
+                <td>TOTAL</td>
+                <td><strong>TOTAL COMPRAS ${m} 2026</strong></td>
+                <td class="num-col"><strong>${pmjjNum(mesData.compras.totales.unidades)}</strong></td>
+                <td class="num-col">-</td>
+                <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.subtotal)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.iva_desc)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.retefuente)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.ica ?? 0, 2)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.avisos ?? 0, 2)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.bomberil ?? 0, 2)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.neto_pagar)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.contado_50)}</strong></td>
+                <td class="num-col"><strong>${pmjjCop(mesData.compras.totales.credito_50)}</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-wrap">
+          <table class="acct-table">
+            <thead>
+              <tr>
+                <th>Ref.</th><th>Recuento de Inventario (${m})</th><th class="num-col">Unid. a Vender</th>
+                <th class="num-col">(-) Inv. Inicial</th><th class="num-col">(=) Unid. a Comprar</th>
+                <th class="num-col">Stock Final (1435)</th><th class="num-col">Costo Inv. Inicial</th><th class="num-col">Costo Compras Mes</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${mesData.inventario.filas.map(f => `
+                <tr>
+                  <td><code>${pmjjEsc(f.ref)}</code></td>
+                  <td><strong>${pmjjEsc(f.producto)}</strong></td>
+                  <td class="num-col">${pmjjNum(f.vender)}</td>
+                  <td class="num-col">${pmjjNum(f.inv_inicial)}</td>
+                  <td class="num-col" style="font-weight:800; color:var(--brand-primary);">${pmjjNum(f.comprar)}</td>
+                  <td class="num-col">${pmjjNum(f.stock_final)} (${pmjjCop(f.val_inv_final)})</td>
+                  <td class="num-col">${pmjjCop(f.val_inv_inicial)}</td>
+                  <td class="num-col">${pmjjCop(f.val_comprar)}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. CÉDULA DE GASTOS Y PROYECCIÓN DE META -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📋 3. Cédula de Gastos Operacionales y Financieros — ${m} 2026</div>
+          <span class="pmjj-badge pmjj-badge-emerald">Total Gastos: ${pmjjCop(er.total_gastos, 2)}</span>
+        </div>
+        <div class="card-body">
+          <div class="table-wrap">
+            <table class="acct-table">
+              <thead>
+                <tr>
+                  <th>PUC</th>
+                  <th>Concepto del Gasto (${m})</th>
+                  <th class="num-col">Valor Causado</th>
+                  <th>Origen</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${gastos.map(g => {
+                  const isTot = g.codigo === "TOTAL";
+                  const origenMap = {
+                    "5105": "Hoja NOM (Nómina + Seg. Social + Prestaciones)",
+                    "5260": "Hoja DEP (Depreciación Construcciones y Edificaciones)",
+                    "5160": "Hoja DEP (Depreciación Flota y Equipo de Transporte)",
+                    "5305": "Hoja TA (Intereses Crédito Bancolombia Bajo NIIF)",
+                    "TOTAL": "Pasa a Estado de Resultados Proyectado"
+                  };
+                  return `
+                    <tr class="${isTot ? "pmjj-row-highlight" : ""}">
+                      <td><code>${pmjjEsc(g.codigo)}</code></td>
+                      <td><strong>${pmjjEsc(g.concepto)}</strong></td>
+                      <td class="num-col"><strong>${pmjjCopHtml(g.valor, 2)}</strong></td>
+                      <td style="font-size:0.78rem; color:var(--text-secondary);">${pmjjEsc(origenMap[g.codigo] || "")}</td>
+                    </tr>
+                  `;
+                }).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🎯 Proyección de Meta 50% E.A. y Unidades Requeridas — ${m} 2026</div>
+          <span class="pmjj-badge pmjj-badge-gold">Práctico vs. Teórico: +${pmjjCop(tm.diferencia_resultado, 2)} ✓</span>
+        </div>
+        <div class="card-body">
+          <div class="table-wrap">
+            <table class="acct-table">
+              <thead>
+                <tr>
+                  <th>Parámetro de Meta (${m})</th>
+                  <th class="num-col">Valor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Capital Suscrito (3105)</strong></td><td class="num-col">${pmjjCop(tm.capital_suscrito)}</td></tr>
+                <tr><td><strong>Tasa Efectiva Anual / Tasa Mensual</strong></td><td class="num-col">${pmjjPct(tm.tasa_ea, 2)} E.A. (${pmjjPct(tm.tasa_mensual, 4)}/mes)</td></tr>
+                <tr><td><strong>Resultado Teórico Esperado (Meta Neta)</strong></td><td class="num-col"><strong>${pmjjCop(tm.resultado_teorico, 2)}</strong></td></tr>
+                <tr><td><strong>Utilidad Antes de Impuestos Requerida (UAI)</strong></td><td class="num-col">${pmjjCop(tm.uai_meta, 2)}</td></tr>
+                <tr><td><strong>(+) Total Gastos del Mes (${m})</strong></td><td class="num-col">${pmjjCop(tm.gastos_proyectados, 2)}</td></tr>
+                <tr><td><strong>Factor Exacto de Unidades a Comprar</strong></td><td class="num-col"><strong>${pmjjNum(tm.unidades_a_comprar_factor, 4)} und.</strong></td></tr>
+                <tr class="pmjj-row-highlight"><td><strong>Resultado Práctico Logrado en ${m} (3605)</strong></td><td class="num-col"><strong>${pmjjCop(tm.resultado_practico, 2)}</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. FLUJO DE CAJA (EFC) Y 5. ESTADO DE RESULTADOS (ER) -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">💵 4. Flujo de Caja Proyectado (EFC) — ${m} 2026</div>
+          <span class="pmjj-badge pmjj-badge-purple">Saldo Final: ${pmjjCop(efc.saldo_final, 2)}</span>
+        </div>
+        <div class="card-body">
+          <div class="table-wrap">
+            <table class="pmjj-efc-table">
+              <thead>
+                <tr>
+                  <th>CONCEPTO</th>
+                  <th class="num-col">ENTRADA</th>
+                  <th class="num-col">SALIDA</th>
+                  <th class="num-col">ACUMULADO</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${efc.filas.map(f => `
+                  <tr>
+                    <td><strong>${pmjjEsc(f.concepto)}</strong></td>
+                    <td class="num-col" style="color:#047857; font-weight:600;">${f.entrada !== null ? pmjjCopHtml(f.entrada, 2) : ""}</td>
+                    <td class="num-col" style="color:#B91C1C; font-weight:600;">${f.salida !== null ? pmjjCopHtml(f.salida, 2) : ""}</td>
+                    <td class="num-col" style="font-weight:700;">${pmjjCopHtml(f.total, 2)}</td>
+                  </tr>
+                `).join("")}
+                <tr class="pmjj-efc-total">
+                  <td><strong>SALDO NETO FINAL ${m}</strong></td>
+                  <td class="num-col"><strong>${pmjjCopHtml(efc.total_entradas, 2)}</strong></td>
+                  <td class="num-col"><strong>${pmjjCopHtml(efc.total_salidas, 2)}</strong></td>
+                  <td class="num-col"><strong>${pmjjCopHtml(efc.saldo_final, 2)}</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📈 5. Estado de Resultados Proyectado (ER) — ${m} 2026</div>
+          <span class="pmjj-badge pmjj-badge-emerald">Utilidad Neta: ${pmjjCop(er.utilidad_neta, 2)} ✓</span>
+        </div>
+        <div class="card-body">
+          <div class="table-wrap">
+            <table class="acct-table">
+              <thead>
+                <tr>
+                  <th>PUC</th>
+                  <th>Concepto (${m} 2026)</th>
+                  <th class="num-col">Valor (COP)</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${filasERMes.map(r => `
+                  <tr class="${r.cls || ""}">
+                    <td><code>${pmjjEsc(r.cod)}</code></td>
+                    <td><strong>${pmjjEsc(r.nom)}</strong></td>
+                    <td class="num-col"><strong>${pmjjCopHtml(r.val, 2)}</strong></td>
+                  </tr>
+                `).join("")}
+                <tr>
+                  <td>✓</td>
+                  <td><strong>Superávit sobre Meta Teórica (${pmjjCop(meta, 2)})</strong></td>
+                  <td class="num-col" style="color:#047857; font-weight:800;">+${pmjjCop(er.utilidad_neta - meta, 2)} ✓</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. ESTADO DE SITUACIÓN FINANCIERA PROYECTADO (ESF) DEL MES -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">🏛️ 6. Estado de Situación Financiera Proyectado (ESF) — Al cierre de ${m} 2026</div>
+        <span class="pmjj-badge pmjj-badge-emerald">Activo = Pasivo + Patrimonio = ${pmjjCop(esf.total_activos, 2)} (Diferencia $0 ✓)</span>
+      </div>
+      <div class="card-body">
+        <div class="grid-2">
+          <div class="table-wrap">
+            <table class="acct-table">
+              <thead>
+                <tr><th>PUC</th><th>ACTIVOS (${m} 2026)</th><th class="num-col">Valor (COP)</th></tr>
+              </thead>
+              <tbody>
+                <tr class="niif-row-grupo niif-grupo-activo-corr"><td colspan="3">Activos Corrientes</td></tr>
+                ${filterNonZero(esf.activos_corrientes).map(a => `
+                  <tr>
+                    <td><code>${pmjjEsc(a.codigo)}</code></td>
+                    <td>${pmjjEsc(a.cuenta)}</td>
+                    <td class="num-col">${pmjjCopHtml(a.valor, 2)}</td>
+                  </tr>
+                `).join("")}
+                <tr class="pmjj-row-subtle">
+                  <td></td><td><strong>SUBTOTAL ACTIVOS CORRIENTES</strong></td>
+                  <td class="num-col"><strong>${pmjjCopHtml(esf.subtotal_ac, 2)}</strong></td>
+                </tr>
+
+                <tr class="niif-row-grupo niif-grupo-activo-fijo"><td colspan="3">Activos Fijos</td></tr>
+                ${filterNonZero(esf.activos_no_corrientes).map(a => `
+                  <tr>
+                    <td><code>${pmjjEsc(a.codigo)}</code></td>
+                    <td>${pmjjEsc(a.cuenta)}</td>
+                    <td class="num-col">${pmjjCopHtml(a.valor, 2)}</td>
+                  </tr>
+                `).join("")}
+                <tr class="pmjj-row-subtle">
+                  <td></td><td><strong>SUBTOTAL ACTIVOS FIJOS</strong></td>
+                  <td class="num-col"><strong>${pmjjCopHtml(esf.subtotal_anc, 2)}</strong></td>
+                </tr>
+
+                <tr class="pmjj-row-highlight">
+                  <td>1</td><td><strong>TOTAL ACTIVOS ${m}</strong></td>
+                  <td class="num-col"><strong>${pmjjCopHtml(esf.total_activos, 2)}</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-wrap">
+            <table class="acct-table">
+              <thead>
+                <tr><th>PUC</th><th>PASIVOS Y PATRIMONIO (${m} 2026)</th><th class="num-col">Valor (COP)</th></tr>
+              </thead>
+              <tbody>
+                <tr class="niif-row-grupo niif-grupo-pasivo-corr"><td colspan="3">Pasivos Corrientes</td></tr>
+                ${filterNonZero(esf.pasivos_corrientes).map(p => `
+                  <tr>
+                    <td><code>${pmjjEsc(p.codigo)}</code></td>
+                    <td>${pmjjEsc(p.cuenta)}</td>
+                    <td class="num-col">${pmjjCopHtml(p.valor, 2)}</td>
+                  </tr>
+                `).join("")}
+                <tr class="pmjj-row-subtle">
+                  <td></td><td><strong>SUBTOTAL PASIVOS CORRIENTES</strong></td>
+                  <td class="num-col"><strong>${pmjjCopHtml(esf.subtotal_pc, 2)}</strong></td>
+                </tr>
+
+                <tr class="niif-row-grupo niif-grupo-pasivo-nocorr"><td colspan="3">Pasivos No Corrientes</td></tr>
+                <tr>
+                  <td><code>2105</code></td><td>BANCOS NACIONALES (Largo Plazo)</td>
+                  <td class="num-col">${pmjjCopHtml(esf.subtotal_pnc, 2)}</td>
+                </tr>
+                <tr class="pmjj-row-subtle">
+                  <td>2</td><td><strong>TOTAL PASIVOS ${m}</strong></td>
+                  <td class="num-col"><strong>${pmjjCopHtml(esf.total_pasivos, 2)}</strong></td>
+                </tr>
+
+                <tr class="niif-row-grupo niif-grupo-patrimonio"><td colspan="3">Patrimonio</td></tr>
+                ${filterNonZero(esf.patrimonio).map(pt => `
+                  <tr>
+                    <td><code>${pmjjEsc(pt.codigo)}</code></td>
+                    <td>${pmjjEsc(pt.cuenta)}</td>
+                    <td class="num-col">${pmjjCopHtml(pt.valor, 2)}</td>
+                  </tr>
+                `).join("")}
+                <tr class="pmjj-row-subtle">
+                  <td>3</td><td><strong>TOTAL PATRIMONIO ${m}</strong></td>
+                  <td class="num-col"><strong>${pmjjCopHtml(esf.total_patrimonio, 2)}</strong></td>
+                </tr>
+
+                <tr class="pmjj-row-highlight">
+                  <td>2+3</td><td><strong>TOTAL PASIVO Y PATRIMONIO ${m}</strong></td>
+                  <td class="num-col"><strong>${pmjjCopHtml(esf.total_pasivo_patrimonio, 2)}</strong></td>
+                </tr>
+                <tr>
+                  <td>=</td>
+                  <td><strong>Comprobación Ecuación Contable (<span class="ef-col-activo">Activo</span> = <span class="ef-col-pasivo">Pasivo</span> + <span class="ef-col-patrimonio">Patrimonio</span>)</strong></td>
+                  <td class="num-col" style="color:var(--brand-emerald); font-weight:800;">$0 ✓</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 /* ==========================================================================
@@ -1165,6 +1652,30 @@ function renderTabOperativo(container, d) {
                   <td><code>${pmjjEsc(t.puc)}</code></td>
                   <td class="num-col" style="font-weight:800;">${pmjjCop(t.valor, 2)}</td>
                   <td style="font-size:0.8rem; color:var(--text-secondary);">${pmjjEsc(t.nota)}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. CÉDULA DE GASTOS DEL MES -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">5. Cédula de Gastos Operacionales y Financieros Causados en ${m} 2026 (5105 • 5260 • 5160 • 5305)</div>
+        <span class="pmjj-badge pmjj-badge-emerald">Total Gastos ${m}: ${pmjjCop(mesData.er.total_gastos, 2)}</span>
+      </div>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table class="acct-table">
+            <thead><tr><th>PUC</th><th>Concepto del Gasto (${m})</th><th class="num-col">Valor Causado (COP)</th></tr></thead>
+            <tbody>
+              ${(mesData.proyectado?.gastos || []).map(g => `
+                <tr class="${g.codigo === "TOTAL" ? "pmjj-row-highlight" : ""}">
+                  <td><code>${pmjjEsc(g.codigo)}</code></td>
+                  <td><strong>${pmjjEsc(g.concepto)}</strong></td>
+                  <td class="num-col"><strong>${pmjjCopHtml(g.valor, 2)}</strong></td>
                 </tr>
               `).join("")}
             </tbody>
