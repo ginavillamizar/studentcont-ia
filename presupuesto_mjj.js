@@ -174,7 +174,10 @@ async function renderPresupuestoMJJ() {
     <div class="card pmjj-hero-card">
       <div class="pmjj-hero-inner">
         <div>
-          <div class="pmjj-badges">
+          <div class="pmjj-badges" style="align-items:center;">
+            <span style="background:#ffffff; padding:3px 10px; border-radius:6px; border:1px solid #cbd5e1; display:inline-flex; align-items:center;">
+              <img src="assets/logo-electrovivienda.png" alt="ELECTROVIVIENDA S.A.S" style="height:26px; width:auto; object-fit:contain;" />
+            </span>
             <span class="pmjj-badge pmjj-badge-gold">ELECTROVIVIENDA S.A.S • NIT ${pmjjEsc(d.meta.nit)}</span>
             <span class="pmjj-badge pmjj-badge-emerald">${d.meta.hojas_count} Hojas Ordenadas</span>
             <span class="pmjj-badge pmjj-badge-blue">Meta 50% EA (${pmjjCop(d.meta.meta_utilidad_mensual)}/mes)</span>

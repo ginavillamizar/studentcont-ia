@@ -587,6 +587,8 @@ function getBlankElectroviviendaDb(studentName) {
       razon_social: "ELECTROVIVIENDA S.A.S",
       nit: "901.765.438-3",
       dv: "8",
+      ultimo_digito_nit: "8",
+      logo: "assets/logo-electrovivienda.png",
       regimen: "Responsable de IVA (RRI) - Agente Retenedor y Autorretenedor",
       ciudad: "Bucaramanga, Santander",
       direccion: "Carrera 27 # 36 - 14",
@@ -629,6 +631,24 @@ function updateStudentProfileUI() {
   // 2. La autoría del sistema y de la plataforma contable SIEMPRE es de Gina Villamizar
   if (sAuthor) sAuthor.textContent = "Gina Villamizar";
   if (sRole) sRole.textContent = "Contadora Titular • SENA CSET";
+
+  // 3. El logo de la página (STUDENTCONT.IA) SOLO lo puede modificar Gina Villamizar
+  const isGinaOwner = (
+    ACTIVE_STUDENT_PROFILE?.id === "gina_villamizar" ||
+    String(ACTIVE_STUDENT_PROFILE?.usuario || "").toLowerCase() === "gina" ||
+    String(ACTIVE_STUDENT_PROFILE?.nombre || "").toLowerCase().includes("gina villamizar")
+  );
+  const brandBtn = document.getElementById("topbarBrandLogoBtn");
+  if (brandBtn) {
+    brandBtn.style.display = isGinaOwner ? "inline-flex" : "none";
+  }
+  const logoBox = document.getElementById("sidebarLogoContainer");
+  if (logoBox) {
+    logoBox.style.cursor = isGinaOwner ? "pointer" : "default";
+    logoBox.title = isGinaOwner
+      ? "Exclusivo Gina Villamizar: Personalizar Logo de STUDENTCONT.IA"
+      : "STUDENTCONT.IA — Plataforma Oficial de Gina Villamizar";
+  }
 }
 
 async function loadDatabase(wsId = null) {
@@ -1042,6 +1062,15 @@ function renderDashboard() {
   `;
 
   document.getElementById("companyProfileBody").innerHTML = `
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:14px; background:var(--bg-subtle); border:1px solid var(--border-light); border-radius:8px; padding:10px 14px; margin-bottom:12px;">
+      <div style="background:#ffffff; padding:6px 12px; border-radius:6px; border:1px solid #cbd5e1; display:flex; align-items:center; justify-content:center;">
+        <img src="assets/logo-electrovivienda.png" alt="${emp.razon_social}" style="height:40px; width:auto; object-fit:contain;" />
+      </div>
+      <div style="flex:1;">
+        <div style="font-weight:800; font-size:0.92rem; color:var(--brand-primary);">${emp.razon_social}</div>
+        <div style="font-size:0.75rem; color:var(--text-secondary);">NIT: <strong>${emp.nit}</strong> • Dígito DIAN: <strong>${emp.ultimo_digito_nit}</strong> • Logo corporativo activo en todos los documentos</div>
+      </div>
+    </div>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:0.82rem;">
       <div><strong>Razón Social:</strong><br/>${emp.razon_social}</div>
       <div><strong>NIT y Dígito DIAN:</strong><br/><span class="code-col">${emp.nit}</span> (Dígito <strong>${emp.ultimo_digito_nit}</strong>)</div>
@@ -7570,7 +7599,19 @@ function closeAlertsModal() {
   document.getElementById("alertsModal")?.classList.remove("open");
 }
 
+function isCurrentUserGina() {
+  return (
+    ACTIVE_STUDENT_PROFILE?.id === "gina_villamizar" ||
+    String(ACTIVE_STUDENT_PROFILE?.usuario || "").toLowerCase() === "gina" ||
+    String(ACTIVE_STUDENT_PROFILE?.nombre || "").toLowerCase().includes("gina villamizar")
+  );
+}
+
 function openBrandModal() {
+  if (!isCurrentUserGina()) {
+    showToast("🔒 Solo Gina Villamizar (Titular) puede modificar el logo de la plataforma STUDENTCONT.IA");
+    return;
+  }
   document.getElementById("brandModal")?.classList.add("open");
   updateCustomLogoPreview();
 }
@@ -7580,6 +7621,7 @@ function closeBrandModal() {
 }
 
 function applyThemeSelection(theme) {
+  if (!isCurrentUserGina()) return;
   if (theme === "default") {
     document.documentElement.removeAttribute("data-theme");
   } else {
@@ -7610,11 +7652,16 @@ function updateCustomLogoPreview() {
 }
 
 function applyCustomLogoToHeader() {
+  if (!isCurrentUserGina()) {
+    showToast("🔒 Solo Gina Villamizar (Titular) puede modificar el logo de la plataforma");
+    closeBrandModal();
+    return;
+  }
   const svg = buildCustomLogoSvgString();
   const container = document.getElementById("sidebarLogoContainer");
   if (container) container.innerHTML = svg;
   closeBrandModal();
-  showToast("Logo y tema aplicados con éxito");
+  showToast("Logo y tema aplicados con éxito por Gina Villamizar");
 }
 
 function downloadCustomLogoSvg() {
