@@ -5791,6 +5791,19 @@ function renderEstadosFinancieros() {
 // ============================================================================
 // CONTROL RESPONSIVO MULTI-DISPOSITIVO (MAC, PC, PORTÁTIL Y CELULAR)
 // ============================================================================
+function toggleAppSidebar(force) {
+  if (window.innerWidth <= 1024) {
+    toggleMobileSidebar(force);
+    return;
+  }
+  const isCollapsed = document.body.classList.contains("sidebar-collapsed");
+  const next = (typeof force === "boolean") ? force : !isCollapsed;
+  document.body.classList.toggle("sidebar-collapsed", next);
+  try {
+    localStorage.setItem("sc_sidebar_collapsed", next ? "1" : "0");
+  } catch (_) {}
+}
+
 function toggleMobileSidebar(force) {
   const sidebar = document.querySelector(".app-sidebar");
   const backdrop = document.getElementById("mobileSidebarBackdrop");
@@ -5800,6 +5813,12 @@ function toggleMobileSidebar(force) {
   sidebar.classList.toggle("mobile-open", next);
   if (backdrop) backdrop.classList.toggle("open", next);
 }
+
+try {
+  if (localStorage.getItem("sc_sidebar_collapsed") === "1" && window.innerWidth > 1024) {
+    document.body.classList.add("sidebar-collapsed");
+  }
+} catch (_) {}
 
 // ============================================================================
 // 7.B SECCIÓN: NÓMINA & LIQUIDACIÓN LABORAL COLOMBIANA (PLANILLA COMPLETA NIIF)
