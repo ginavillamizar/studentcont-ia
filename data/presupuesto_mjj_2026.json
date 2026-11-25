@@ -4,7 +4,7 @@
     "nit": "901.765.438-3",
     "regimen": "RRI - Agente Autorretenedor de Renta",
     "archivo": "PRESUPUESTO_MAYO_JUNIO_JULIO_2026.xlsx",
-    "hojas_count": 24,
+    "hojas_count": 21,
     "hojas": [
       "PARAMETROS",
       "DEP",
@@ -26,15 +26,12 @@
       "MAESTRO",
       "ER CONSOLIDADO",
       "ESF CONSOLIDADO",
-      "JULIO ECP PROY",
-      "JULIO ESF CONS PROY",
-      "JULIO F&E PROY",
       "PUC"
     ],
     "meta_utilidad_mensual": 8543408.27,
     "saldo_inicial_caja_abril": 51852811.65,
-    "excel_mtime": "2026-11-24 14:02:18",
-    "sincronizado_el": "2026-11-24 14:04:37"
+    "excel_mtime": "2026-11-25 09:49:16",
+    "sincronizado_el": "2026-11-25 09:59:17"
   },
   "parametros": {
     "reglas": [
@@ -262,15 +259,15 @@
         "concepto": "Saldo Final de Caja Acumulado",
         "mayo": 99487754.39,
         "junio": 135557540.85,
-        "julio": 136862496.45,
-        "trimestre": 136862496.45
+        "julio": 136862496.46,
+        "trimestre": 136862496.46
       },
       {
         "concepto": "Total Activos = Total Pasivo + Patrimonio (ESF)",
         "mayo": 370588610.29,
         "junio": 408621563.93,
-        "julio": 411747783.86,
-        "trimestre": 411747783.86
+        "julio": 411747783.87,
+        "trimestre": 411747783.87
       },
       {
         "concepto": "Comprobación Ecuación Contable (Diferencia = $0)",
@@ -1440,18 +1437,18 @@
       "proyectado": {
         "tasas_meta": {
           "tasa_ea": 0.5,
-          "tasa_nominal": 0.412393,
+          "tasa_nominal": 0.412392,
           "tasa_mensual": 0.034366,
           "capital_suscrito": 248600000.0,
           "resultado_proyectado": 8543408.27,
           "resultado_teorico": 8543408.27,
           "resultado_practico": 8555199.28,
           "diferencia_resultado": 11791.01,
-          "uai_meta": 14604116.7,
-          "udi_meta": 9492675.85,
+          "uai_meta": 14604116.71,
+          "udi_meta": 9492675.86,
           "un_meta": 8543408.27,
-          "ganancia_vender_1_und": 2090142.86,
-          "unidades_a_comprar_factor": 5.8218,
+          "ganancia_vender_1_und": 2135142.86,
+          "unidades_a_comprar_factor": 12.488,
           "gastos_proyectados": 12059442.02
         },
         "gastos": [
@@ -1576,8 +1573,8 @@
           "reteica": 1067348.57,
           "neto_cobrar": 104778051.43,
           "autoret": 2223642.86,
-          "contado_50": 52389025.71,
-          "credito_50": 52389025.71
+          "contado_50": 52389025.72,
+          "credito_50": 52389025.72
         }
       },
       "inventario": {
@@ -1761,19 +1758,19 @@
           "concepto": "Retefuente practicada en compras (2,5%)",
           "puc": "246540",
           "valor": 711000.0,
-          "nota": "Integrado en Formulario 350 mensual"
+          "nota": "Liquidación mensual proyectada"
         },
         {
           "concepto": "Autorretención en Renta (2,5% normal + 0,55% Dec. 2201)",
           "puc": "246575",
           "valor": 2223642.86,
-          "nota": "Integrado en Formulario 350 mensual"
+          "nota": "Liquidación mensual proyectada"
         },
         {
           "concepto": "TOTAL FORMULARIO 350 DEL MES (RETEFUENTE + AUTORRET.)",
           "puc": "2465",
           "valor": 2934642.86,
-          "nota": "Pago mensual DIAN al mes siguiente"
+          "nota": "Liquidación mensual proyectada"
         },
         {
           "concepto": "ICA retenido en compras (9,6 × 1.000)",
@@ -1803,17 +1800,17 @@
           "concepto": "Anticipo de Impuestos generado en ventas (ReteICA + Autorret.)",
           "puc": "1355",
           "valor": 3290991.43,
-          "nota": "Activo corriente a favor de Electrovivienda"
+          "nota": "Liquidación mensual proyectada"
         },
         {
           "concepto": "IVA Neto del mes (IVA Generado 19% − IVA Descontable RRI)",
           "puc": "2408",
           "valor": 11781085.71,
-          "nota": "Declaración bimestral F-300 (Pago en Julio: May–Jun)"
+          "nota": "Liquidación mensual proyectada"
         }
       ],
       "efc": {
-        "titulo": "CAJA — EFC PROYECTADO MAYO 2026",
+        "titulo": "ESTADO DE FUJO DE CAJA PROYECTADO",
         "filas": [
           {
             "concepto": "SALDO INICIAL",
@@ -1877,7 +1874,7 @@
           },
           {
             "concepto": "RETEICA",
-            "entrada": 81246525.71,
+            "entrada": null,
             "salida": 95400.0,
             "total": 99487754.39
           }
@@ -2001,6 +1998,11 @@
             "valor": 0.0
           },
           {
+            "codigo": "2335",
+            "cuenta": "COSTOS Y GASTOS POR PAGAR",
+            "valor": 0.0
+          },
+          {
             "codigo": "2408",
             "cuenta": "IMPUESTOS A LAS VENTAS POR PAGAR - IVA",
             "valor": 11781085.71
@@ -2046,7 +2048,7 @@
             "valor": 14058385.0
           }
         ],
-        "subtotal_pc": 85260889.72,
+        "subtotal_pc": 85260889.73,
         "pasivos_no_corrientes": [
           {
             "codigo": "2105",
@@ -2092,18 +2094,18 @@
       "proyectado": {
         "tasas_meta": {
           "tasa_ea": 0.5,
-          "tasa_nominal": 0.412393,
+          "tasa_nominal": 0.412392,
           "tasa_mensual": 0.034366,
           "capital_suscrito": 248600000.0,
           "resultado_proyectado": 8543408.27,
           "resultado_teorico": 8543408.27,
           "resultado_practico": 8550117.01,
           "diferencia_resultado": 6708.74,
-          "uai_meta": 14604116.7,
-          "udi_meta": 9492675.85,
+          "uai_meta": 14604116.71,
+          "udi_meta": 9492675.86,
           "un_meta": 8543408.27,
-          "ganancia_vender_1_und": 2090142.86,
-          "unidades_a_comprar_factor": 12.7499,
+          "ganancia_vender_1_und": 2135142.86,
+          "unidades_a_comprar_factor": 12.4812,
           "gastos_proyectados": 12044986.8
         },
         "gastos": [
@@ -2384,19 +2386,19 @@
           "concepto": "Retefuente practicada en compras (2,5%)",
           "puc": "246540",
           "valor": 1555200.0,
-          "nota": "Integrado en Formulario 350 mensual"
+          "nota": "Liquidación mensual proyectada"
         },
         {
           "concepto": "Autorretención en Renta (2,5% normal + 0,55% Dec. 2201)",
           "puc": "246575",
           "valor": 2221714.29,
-          "nota": "Integrado en Formulario 350 mensual"
+          "nota": "Liquidación mensual proyectada"
         },
         {
           "concepto": "TOTAL FORMULARIO 350 DEL MES (RETEFUENTE + AUTORRET.)",
           "puc": "2465",
           "valor": 3776914.29,
-          "nota": "Pago mensual DIAN al mes siguiente"
+          "nota": "Liquidación mensual proyectada"
         },
         {
           "concepto": "ICA retenido en compras (9,6 × 1.000)",
@@ -2426,17 +2428,17 @@
           "concepto": "Anticipo de Impuestos generado en ventas (ReteICA + Autorret.)",
           "puc": "1355",
           "valor": 3288137.14,
-          "nota": "Activo corriente a favor de Electrovivienda"
+          "nota": "Liquidación mensual proyectada"
         },
         {
           "concepto": "IVA Neto del mes (IVA Generado 19% − IVA Descontable RRI)",
           "puc": "2408",
           "valor": 5635508.57,
-          "nota": "Declaración bimestral F-300 (Pago en Julio: May–Jun)"
+          "nota": "Liquidación mensual proyectada"
         }
       ],
       "efc": {
-        "titulo": "CAJA — EFC PROYECTADO JUNIO 2026",
+        "titulo": "ESTADO DE FUJO DE CAJA PROYECTADO",
         "filas": [
           {
             "concepto": "SALDO INICIAL",
@@ -2500,7 +2502,7 @@
           },
           {
             "concepto": "PRIMA SEMESTRAL",
-            "entrada": 104732614.29,
+            "entrada": null,
             "salida": 3082100.0,
             "total": 135557540.85
           }
@@ -2575,14 +2577,9 @@
             "codigo": "1355",
             "cuenta": "ANTICIPO DE IMPUESTOS",
             "valor": 13389348.57
-          },
-          {
-            "codigo": "1435",
-            "cuenta": "MERCANCÍA NO FABRICADA POR LA EMPRESA",
-            "valor": 0.0
           }
         ],
-        "subtotal_ac": 201290477.99,
+        "subtotal_ac": 201290478.0,
         "activos_no_corrientes": [
           {
             "codigo": "1504",
@@ -2619,11 +2616,6 @@
             "valor": 35577912.0
           },
           {
-            "codigo": "2320",
-            "cuenta": "A CONTRATISTAS",
-            "valor": 0.0
-          },
-          {
             "codigo": "2408",
             "cuenta": "IMPUESTOS A LAS VENTAS POR PAGAR - IVA",
             "valor": 17416594.29
@@ -2644,11 +2636,6 @@
             "valor": 20073486.45
           },
           {
-            "codigo": "2505",
-            "cuenta": "SALARIO POR PAGAR",
-            "valor": 0.0
-          },
-          {
             "codigo": "2570",
             "cuenta": "RETENCIONES Y APORTES DE NOMINA",
             "valor": 609400.12
@@ -2661,7 +2648,7 @@
           {
             "codigo": "2610",
             "cuenta": "PROVISIÓN PARA OBLIGACIONES LABORALES",
-            "valor": 4942915.69
+            "valor": 4942915.7
           },
           {
             "codigo": "2705",
@@ -2669,7 +2656,7 @@
             "valor": 14058385.0
           }
         ],
-        "subtotal_pc": 115293533.15,
+        "subtotal_pc": 115293533.16,
         "pasivos_no_corrientes": [
           {
             "codigo": "2105",
@@ -2678,7 +2665,7 @@
           }
         ],
         "subtotal_pnc": 33761683.59,
-        "total_pasivos": 149055216.74,
+        "total_pasivos": 149055216.75,
         "patrimonio": [
           {
             "codigo": "3105",
@@ -2707,7 +2694,7 @@
           }
         ],
         "total_patrimonio": 259566347.19,
-        "total_pasivo_patrimonio": 408621563.93,
+        "total_pasivo_patrimonio": 408621563.94,
         "diferencia": 0.0
       }
     },
@@ -2715,18 +2702,18 @@
       "proyectado": {
         "tasas_meta": {
           "tasa_ea": 0.5,
-          "tasa_nominal": 0.412393,
+          "tasa_nominal": 0.412392,
           "tasa_mensual": 0.034366,
           "capital_suscrito": 248600000.0,
           "resultado_proyectado": 8543408.27,
           "resultado_teorico": 8543408.27,
           "resultado_practico": 8558667.42,
           "diferencia_resultado": 15259.15,
-          "uai_meta": 14604116.7,
-          "udi_meta": 9492675.85,
+          "uai_meta": 14604116.71,
+          "udi_meta": 9492675.86,
           "un_meta": 8543408.27,
-          "ganancia_vender_1_und": 2090142.86,
-          "unidades_a_comprar_factor": 12.7429,
+          "ganancia_vender_1_und": 2135142.86,
+          "unidades_a_comprar_factor": 12.4743,
           "gastos_proyectados": 12030370.71
         },
         "gastos": [
@@ -3007,19 +2994,19 @@
           "concepto": "Retefuente practicada en compras (2,5%)",
           "puc": "246540",
           "valor": 1555200.0,
-          "nota": "Integrado en Formulario 350 mensual"
+          "nota": "Liquidación mensual proyectada"
         },
         {
           "concepto": "Autorretención en Renta (2,5% normal + 0,55% Dec. 2201)",
           "puc": "246575",
           "valor": 2221714.29,
-          "nota": "Integrado en Formulario 350 mensual"
+          "nota": "Liquidación mensual proyectada"
         },
         {
           "concepto": "TOTAL FORMULARIO 350 DEL MES (RETEFUENTE + AUTORRET.)",
           "puc": "2465",
           "valor": 3776914.29,
-          "nota": "Pago mensual DIAN al mes siguiente"
+          "nota": "Liquidación mensual proyectada"
         },
         {
           "concepto": "ICA retenido en compras (9,6 × 1.000)",
@@ -3049,17 +3036,17 @@
           "concepto": "Anticipo de Impuestos generado en ventas (ReteICA + Autorret.)",
           "puc": "1355",
           "valor": 3288137.14,
-          "nota": "Activo corriente a favor de Electrovivienda"
+          "nota": "Liquidación mensual proyectada"
         },
         {
           "concepto": "IVA Neto del mes (IVA Generado 19% − IVA Descontable RRI)",
           "puc": "2408",
           "valor": 5635508.57,
-          "nota": "Declaración bimestral F-300 (Pago en Julio: May–Jun)"
+          "nota": "Liquidación mensual proyectada"
         }
       ],
       "efc": {
-        "titulo": "CAJA — EFC PROYECTADO JULIO 2026",
+        "titulo": "ESTADO DE FUJO DE CAJA PROYECTADO",
         "filas": [
           {
             "concepto": "SALDO INICIAL",
@@ -3077,61 +3064,61 @@
             "concepto": "VENTAS AL CONTADO",
             "entrada": 52343588.57,
             "salida": null,
-            "total": 152323217.42
+            "total": 152323217.43
           },
           {
             "concepto": "VENTAS CREDITO JUNIO (50%)",
             "entrada": 52343588.57,
             "salida": null,
-            "total": 204666805.99
+            "total": 204666806.0
           },
           {
             "concepto": "PAGO PROVEEDORES JUNIO (50%)",
             "entrada": null,
             "salida": 35577912.0,
-            "total": 169088893.99
+            "total": 169088894.0
           },
           {
             "concepto": "PAGO CUOTA CREDITO",
             "entrada": null,
             "salida": 1892260.45,
-            "total": 167196633.54
+            "total": 167196633.55
           },
           {
             "concepto": "PAGO SEGURIDAD SOCIAL",
             "entrada": null,
             "salida": 1753544.92,
-            "total": 165443088.62
+            "total": 165443088.63
           },
           {
             "concepto": "PAGO SALARIOS",
             "entrada": null,
             "salida": 6827927.6,
-            "total": 158615161.02
+            "total": 158615161.03
           },
           {
             "concepto": "PAGO FORMULARIO 350 JUNIO",
             "entrada": null,
             "salida": 3776914.29,
-            "total": 154838246.73
+            "total": 154838246.74
           },
           {
             "concepto": "PAGO RETEICA JUNIO (MENSUAL)",
             "entrada": null,
             "salida": 746496.0,
-            "total": 154091750.73
+            "total": 154091750.74
           },
           {
             "concepto": "PAGO IVA F-300 BIM. MAY-JUN",
             "entrada": null,
             "salida": 17229254.29,
-            "total": 136862496.45
+            "total": 136862496.46
           }
         ],
         "saldo_inicial": 135557540.85,
         "total_entradas": 104687177.14,
         "total_salidas": 103382221.54,
-        "saldo_final": 136862496.45,
+        "saldo_final": 136862496.46,
         "excedente": 1304955.6
       },
       "er": {
@@ -3182,7 +3169,7 @@
           {
             "codigo": "1110",
             "cuenta": "BANCOS",
-            "valor": 135812496.45
+            "valor": 135812496.46
           },
           {
             "codigo": "1305",
@@ -3205,7 +3192,7 @@
             "valor": 0.0
           }
         ],
-        "subtotal_ac": 205696230.73,
+        "subtotal_ac": 205696230.74,
         "activos_no_corrientes": [
           {
             "codigo": "1504",
@@ -3229,7 +3216,7 @@
           }
         ],
         "subtotal_anc": 206051553.12,
-        "total_activos": 411747783.86,
+        "total_activos": 411747783.87,
         "pasivos_corrientes": [
           {
             "codigo": "2105",
@@ -3240,11 +3227,6 @@
             "codigo": "2205",
             "cuenta": "PROVEEDORES",
             "valor": 35577912.0
-          },
-          {
-            "codigo": "2320",
-            "cuenta": "A CONTRATISTAS",
-            "valor": 0.0
           },
           {
             "codigo": "2408",
@@ -3284,7 +3266,7 @@
           {
             "codigo": "2610",
             "cuenta": "PROVISIÓN PARA OBLIGACIONES LABORALES",
-            "valor": 6547918.83
+            "valor": 6547918.84
           },
           {
             "codigo": "2705",
@@ -3292,7 +3274,7 @@
             "valor": 14058385.0
           }
         ],
-        "subtotal_pc": 110426634.55,
+        "subtotal_pc": 110426634.56,
         "pasivos_no_corrientes": [
           {
             "codigo": "2105",
@@ -3301,7 +3283,7 @@
           }
         ],
         "subtotal_pnc": 32245171.66,
-        "total_pasivos": 142671806.21,
+        "total_pasivos": 142671806.22,
         "patrimonio": [
           {
             "codigo": "3105",
@@ -3330,7 +3312,7 @@
           }
         ],
         "total_patrimonio": 269075977.65,
-        "total_pasivo_patrimonio": 411747783.86,
+        "total_pasivo_patrimonio": 411747783.87,
         "diferencia": 0.0
       }
     }

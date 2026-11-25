@@ -193,7 +193,7 @@ async function renderPresupuestoMJJ() {
           <button class="btn ${PRESUP_SHOW_GUIDE ? "btn-primary" : "btn-outline"} btn-sm" style="${PRESUP_SHOW_GUIDE ? "background:#B45309; border-color:var(--brand-emerald);" : "border-color:var(--brand-emerald); color:var(--brand-emerald);"}" onclick="togglePresupMjjGuide()">
             🎤 Guía de Sustentación: ${PRESUP_SHOW_GUIDE ? "ON" : "OFF"}
           </button>
-          <a class="btn btn-gold btn-sm" href="${pmjjEsc(d.meta.archivo)}?v=20261124_01" download="${pmjjEsc(d.meta.archivo)}">
+          <a class="btn btn-gold btn-sm" href="${pmjjEsc(d.meta.archivo)}?v=20261125_01" download="${pmjjEsc(d.meta.archivo)}">
             📥 Descargar Excel (.xlsx)
           </a>
           <button class="btn btn-outline btn-sm" style="border-color:var(--brand-primary); color:var(--brand-primary);" onclick="window.print()">🖨️ Imprimir</button>
