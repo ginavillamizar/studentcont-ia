@@ -589,30 +589,32 @@ def extract_esf(ws):
 
 
 def extract_maestro(ws):
+    c0 = 4 if ws.cell(3, 4).value else 2
     gastos_trim = [
         {
-            "concepto": txt(ws.cell(r, 2).value),
-            "mayo": num(ws.cell(r, 3).value),
-            "junio": num(ws.cell(r, 4).value),
-            "julio": num(ws.cell(r, 5).value),
-            "total": num(ws.cell(r, 6).value),
+            "concepto": txt(ws.cell(r, c0).value),
+            "mayo": num(ws.cell(r, c0 + 1).value),
+            "junio": num(ws.cell(r, c0 + 2).value),
+            "julio": num(ws.cell(r, c0 + 3).value),
+            "total": num(ws.cell(r, c0 + 4).value),
         }
         for r in range(4, 9)
     ]
+    r_start = 38 if txt(ws.cell(38, c0).value).upper().startswith("SALDO") else 35
     flujo_comp = [
         {
-            "concepto": txt(ws.cell(r, 2).value),
-            "mayo_ent": num(ws.cell(r, 3).value) if ws.cell(r, 3).value is not None else None,
-            "mayo_sal": num(ws.cell(r, 4).value) if ws.cell(r, 4).value is not None else None,
-            "mayo_tot": num(ws.cell(r, 5).value),
-            "junio_ent": num(ws.cell(r, 6).value) if ws.cell(r, 6).value is not None else None,
-            "junio_sal": num(ws.cell(r, 7).value) if ws.cell(r, 7).value is not None else None,
-            "junio_tot": num(ws.cell(r, 8).value),
-            "julio_ent": num(ws.cell(r, 9).value) if ws.cell(r, 9).value is not None else None,
-            "julio_sal": num(ws.cell(r, 10).value) if ws.cell(r, 10).value is not None else None,
-            "julio_tot": num(ws.cell(r, 11).value),
+            "concepto": txt(ws.cell(r, c0).value),
+            "mayo_ent": num(ws.cell(r, c0 + 1).value) if ws.cell(r, c0 + 1).value is not None else None,
+            "mayo_sal": num(ws.cell(r, c0 + 2).value) if ws.cell(r, c0 + 2).value is not None else None,
+            "mayo_tot": num(ws.cell(r, c0 + 3).value),
+            "junio_ent": num(ws.cell(r, c0 + 4).value) if ws.cell(r, c0 + 4).value is not None else None,
+            "junio_sal": num(ws.cell(r, c0 + 5).value) if ws.cell(r, c0 + 5).value is not None else None,
+            "junio_tot": num(ws.cell(r, c0 + 6).value),
+            "julio_ent": num(ws.cell(r, c0 + 7).value) if ws.cell(r, c0 + 7).value is not None else None,
+            "julio_sal": num(ws.cell(r, c0 + 8).value) if ws.cell(r, c0 + 8).value is not None else None,
+            "julio_tot": num(ws.cell(r, c0 + 9).value),
         }
-        for r in range(35, 49)
+        for r in range(r_start, r_start + 14)
     ]
     return {"gastos_trimestre": gastos_trim, "flujo_caja_comparativo": flujo_comp}
 
